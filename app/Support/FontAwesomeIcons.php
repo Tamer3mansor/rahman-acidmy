@@ -14,6 +14,7 @@ class FontAwesomeIcons
         return [
             'fa-solid fa-circle-check' => 'علامة صح',
             'fa-solid fa-clock' => 'ساعة',
+            'fa-solid fa-gift' => 'هدية',
             'fa-solid fa-shield-halved' => 'درع',
             'fa-solid fa-star' => 'نجمة',
             'fa-solid fa-users' => 'أشخاص',

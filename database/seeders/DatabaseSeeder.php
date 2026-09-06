@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             LandingFaqsSeeder::class,
             BlogCategorySeeder::class,
             BlogPostSeeder::class,
+            PricingPackageSeeder::class,
+            PricingPerkSeeder::class,
         ]);
     }
 }

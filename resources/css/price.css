@@ -1,0 +1,346 @@
+/* ============================================================
+   PRICE — page-specific styles (loaded AFTER landing.css)
+   Only components unique to the pricing page live here; design
+   tokens and shared components come from landing.css.
+   ============================================================ */
+
+.inter-font { font-family: 'Inter', sans-serif; }
+
+.section { padding: 60px 0; }
+
+.section-white { background-color: var(--white); }
+
+/* ============================================================
+   DURATION SELECTOR BAR
+   ============================================================ */
+.duration-hint {
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: var(--green);
+  font-size: 0.95rem;
+}
+
+.duration-picker-wrapper {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: 50px;
+  display: inline-flex;
+  padding: 6px;
+  margin-top: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.duration-btn {
+  background: transparent;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.duration-btn.active {
+  background: var(--green);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(27, 67, 50, 0.2);
+}
+
+/* ============================================================
+   PACKAGES GRID & CARDS
+   ============================================================ */
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.package-card {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--r-xl);
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.package-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--green-light);
+}
+
+/* Featured pack highlight */
+.package-card.featured {
+  border: 2px solid var(--gold);
+  background: #FFFDF9;
+  box-shadow: 0 8px 30px rgba(201, 150, 58, 0.15);
+}
+
+.featured-tag {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(201, 150, 58, 0.4);
+  white-space: nowrap;
+}
+
+/* Badge variations */
+.badge-gold { background: rgba(201, 150, 58, 0.2); color: var(--gold); }
+.badge-green { background: rgba(64, 145, 108, 0.2); color: var(--green-light); }
+
+.pack-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.pack-title {
+  font-size: 1.25rem;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.pack-desc {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  min-height: 40px;
+  margin-bottom: 15px;
+}
+
+.pack-classes-box {
+  background: var(--cream);
+  border-radius: var(--r-md);
+  padding: 12px;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.pack-classes-count {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+}
+
+.pack-classes-sub {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  margin-top: 4px;
+}
+
+/* Pricing display */
+.pack-price-box {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--cream-dark);
+  padding-bottom: 18px;
+}
+
+.price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.price-amount {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.price-currency {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.price-original {
+  font-size: 1rem;
+  color: var(--text-light);
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+
+.price-per-lesson {
+  font-size: 0.85rem;
+  color: var(--green-mid);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.savings-pill {
+  display: inline-block;
+  background: rgba(45, 106, 79, 0.1);
+  color: var(--green-mid);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+}
+
+/* Checklist items */
+.pack-features {
+  list-style: none;
+  margin-bottom: 25px;
+  flex-grow: 1;
+}
+
+.pack-features li {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pack-features li i {
+  color: var(--green-light);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.select-package-btn { width: 100%; }
+
+.btn-whatsapp {
+  background: #25D366;
+  color: #FFF;
+  padding: 12px 24px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+.btn-whatsapp:hover { background: #1ebc57; transform: translateY(-2px); }
+
+/* ============================================================
+   FEATURES INCLUDED IN ALL PACKAGES
+   ============================================================ */
+.included-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.included-card {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--r-lg);
+  padding: 24px 18px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.included-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.included-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--cream);
+  color: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin: 0 auto 15px;
+}
+
+.included-title {
+  font-size: 1.05rem;
+  color: var(--green);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.included-desc {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+}
+
+/* ============================================================
+   FINAL CTA BANNER
+   ============================================================ */
+.cta-banner {
+  background: linear-gradient(135deg, var(--green), var(--green-mid));
+  color: var(--white);
+  border-radius: var(--r-xl);
+  padding: 50px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 60px;
+  box-shadow: 0 10px 30px rgba(27, 67, 50, 0.2);
+}
+
+.cta-banner-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFF;
+  margin-bottom: 15px;
+}
+
+.cta-banner-title {
+  font-size: 2rem;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+
+.cta-banner-sub {
+  color: var(--cream);
+  font-size: 1.05rem;
+  max-width: 650px;
+  margin: 0 auto 30px;
+}
+
+.cta-buttons-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-buttons-group .btn-whatsapp,
+.cta-buttons-group .btn-primary {
+  width: auto;
+  min-width: 220px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .section-title { font-size: 1.8rem; }
+  .duration-btn { padding: 8px 18px; font-size: 0.9rem; }
+  .packages-grid { grid-template-columns: 1fr; }
+  .cta-banner { padding: 35px 20px; }
+  .cta-banner-title { font-size: 1.5rem; }
+}

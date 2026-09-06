@@ -6,6 +6,7 @@
         ['label' => 'منهجنا', 'url' => $homeUrl . '#journey'],
         ['label' => 'معلمونا', 'url' => $homeUrl . '#teachers'],
         ['label' => 'أسئلة شائعة', 'url' => $homeUrl . '#faq'],
+        ['label' => 'الأسعار', 'url' => route('price.index'), 'active' => $activePage === 'price'],
         ['label' => 'المدونة', 'url' => route('blog.index'), 'active' => $activePage === 'blog'],
     ];
     $navLinks = $navLinks ?? $defaultNavLinks;
