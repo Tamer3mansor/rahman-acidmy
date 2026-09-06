@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>باقات الأسعار - أكاديمية القرآن واللغة العربية</title>
+
+  <!-- Fonts & Font Awesome CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ==========================================
+       DESIGN SYSTEM VARIABLES & BASE STYLES
+       ========================================== */
+    :root {
+      --green: #1B4332;
+      --green-mid: #2D6A4F;
+      --green-light: #40916C;
+      --gold: #C9963A;
+      --gold-light: #E8B84B;
+      --cream: #F8F5EE;
+      --cream-dark: #EDE9DF;
+      --white: #FFF;
+      --text-dark: #1A1A1A;
+      --text-mid: #4A4A4A;
+      --text-light: #7A7A7A;
+      --r-sm: 8px;
+      --r-md: 16px;
+      --r-lg: 24px;
+      --r-xl: 32px;
+      --shadow-card: 0 2px 20px rgba(27, 67, 50, 0.08);
+      --shadow-btn: 0 4px 16px rgba(201, 150, 58, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Serif Arabic', serif;
+      background-color: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+
+    .inter-font { font-family: 'Inter', sans-serif; }
+
+    /* Layout Components */
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .pattern-bg {
+      background-image: radial-gradient(var(--gold) 0.75px, transparent 0.75px);
+      background-size: 24px 24px;
+      background-color: var(--cream);
+    }
+
+    .section { padding: 60px 0; }
+    .section-white { background-color: var(--white); }
+
+    /* Reusable Typography & Badges */
+    .section-label {
+      display: inline-block;
+      background: rgba(201, 150, 58, 0.15);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 4px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: var(--text-mid);
+      font-size: 1.05rem;
+      margin-bottom: 30px;
+    }
+
+    .section-center { text-align: center; }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--cream-dark);
+      color: var(--green-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pinned {
+      background: var(--gold);
+      color: var(--white);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--gold);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: var(--r-sm);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: var(--shadow-btn);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--green);
+      border: 1.5px solid var(--green);
+      padding: 12px 24px;
+      border-radius: var(--r-sm);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    .btn-outline:hover {
+      background: var(--green);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: #FFF;
+      padding: 12px 24px;
+      border-radius: var(--r-sm);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-whatsapp:hover {
+      background: #1ebc57;
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================
+       DURATION SELECTOR BAR
+       ========================================== */
+    .duration-picker-wrapper {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 50px;
+      display: inline-flex;
+      padding: 6px;
+      margin-top: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .duration-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .duration-btn.active {
+      background: var(--green);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(27, 67, 50, 0.2);
+    }
+
+    /* ==========================================
+       PACKAGES GRID & CARDS
+       ========================================== */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .package-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: var(--r-xl);
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .package-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-card);
+      border-color: var(--green-light);
+    }
+
+    /* Featured Pack Highlight */
+    .package-card.featured {
+      border: 2px solid var(--gold);
+      background: #FFFDF9;
+      box-shadow: 0 8px 30px rgba(201, 150, 58, 0.15);
+    }
+
+    .featured-tag {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(201, 150, 58, 0.4);
+      white-space: nowrap;
+    }
+
+    .pack-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .pack-title {
+      font-size: 1.25rem;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .pack-desc {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      min-height: 40px;
+      margin-bottom: 15px;
+    }
+
+    .pack-classes-box {
+      background: var(--cream);
+      border-radius: var(--r-md);
+      padding: 12px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .pack-classes-count {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .pack-classes-sub {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+      margin-top: 4px;
+    }
+
+    /* Pricing Display */
+    .pack-price-box {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--cream-dark);
+      padding-bottom: 18px;
+    }
+
+    .price-main {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .price-amount {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .price-currency {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .price-original {
+      font-size: 1rem;
+      color: var(--text-light);
+      text-decoration: line-through;
+      margin-right: 8px;
+    }
+
+    .price-per-lesson {
+      font-size: 0.85rem;
+      color: var(--green-mid);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .savings-pill {
+      display: inline-block;
+      background: rgba(45, 106, 79, 0.1);
+      color: var(--green-mid);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-top: 6px;
+    }
+
+    /* Checklist Items */
+    .pack-features {
+      list-style: none;
+      margin-bottom: 25px;
+      flex-grow: 1;
+    }
+
+    .pack-features li {
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pack-features li i {
+      color: var(--green-light);
+      font-size: 0.9rem;
+    }
+
+    /* ==========================================
+       FEATURES INCLUDED IN ALL PACKAGES
+       ========================================== */
+    .included-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .included-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: var(--r-lg);
+      padding: 24px 18px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .included-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .included-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--cream);
+      color: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin: 0 auto 15px;
+    }
+
+    .included-title {
+      font-size: 1.05rem;
+      color: var(--green);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .included-desc {
+      font-size: 0.82rem;
+      color: var(--text-mid);
+    }
+
+    /* ==========================================
+       FINAL CTA BANNER
+       ========================================== */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--green), var(--green-mid));
+      color: var(--white);
+      border-radius: var(--r-xl);
+      padding: 50px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-top: 60px;
+      box-shadow: 0 10px 30px rgba(27, 67, 50, 0.2);
+    }
+
+    .cta-banner-title {
+      font-size: 2rem;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+    }
+
+    .cta-banner-sub {
+      color: var(--cream);
+      font-size: 1.05rem;
+      max-width: 650px;
+      margin: 0 auto 30px;
+    }
+
+    .cta-buttons-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-buttons-group .btn-whatsapp,
+    .cta-buttons-group .btn-primary {
+      width: auto;
+      min-width: 220px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .section-title { font-size: 1.8rem; }
+      .duration-btn { padding: 8px 18px; font-size: 0.9rem; }
+      .packages-grid { grid-template-columns: 1fr; }
+      .cta-banner { padding: 35px 20px; }
+      .cta-banner-title { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body class="pattern-bg">
+
+  <!-- ==========================================
+       HERO & DURATION SELECTOR SECTION
+       ========================================== -->
+  <section class="section">
+    <div class="container section-center">
+      <span class="section-label"><i class="fa-solid fa-gift"></i> الحصة الأولى مجاناً</span>
+      <h1 class="section-title">باقات واضحة للتعلم بأسلوب مريح وسلس</h1>
+      <p class="section-sub">كلما زاد عدد الحصص في الباقة، قل سعر الحصة الواحدة. اختر مدة الحصة المناسبة لطفلك وابدأ الآن.</p>
+
+      <!-- Duration Selector Tabs -->
+      <div style="margin-bottom: 10px; font-weight: 700; color: var(--green); font-size: 0.95rem;">
+        اختر مدة الحصة الواحدة:
+      </div>
+      <div class="duration-picker-wrapper">
+        <button class="duration-btn active" onclick="setDuration(30, this)">30 دقيقة</button>
+        <button class="duration-btn" onclick="setDuration(45, this)">45 دقيقة</button>
+        <button class="duration-btn" onclick="setDuration(60, this)">60 دقيقة</button>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PACKAGES GRID
+         ========================================== -->
+    <div class="container">
+      <div class="packages-grid" id="packagesGrid">
+
+        <!-- Pack 1: Discovery / الاكتشاف -->
+        <article class="package-card" 
+                 data-pack-name="باقة الاكتشاف (Pack Découverte)" 
+                 data-classes="4" 
+                 data-rate-30="5.00" 
+                 data-rate-45="7.50" 
+                 data-rate-60="10.00" 
+                 data-is-custom="false">
+          <div class="pack-header">
+            <h3 class="pack-title">باقة الاكتشاف</h3>
+            <span class="badge">مبتدئ</span>
+          </div>
+          <p class="pack-desc">مثالية لتجربة المنهج والتعرف على المعلم بدون أي التزام طويل.</p>
+
+          <div class="pack-classes-box">
+            <div class="pack-classes-count inter-font">4 حصص</div>
+            <div class="pack-classes-sub duration-label-text">بواقع 30 دقيقة للحصة</div>
+          </div>
+
+          <div class="pack-price-box">
+            <div class="price-main">
+              <span class="price-amount inter-font main-price-val">19.99</span>
+              <span class="price-currency">€</span>
+            </div>
+            <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">5.00</span>€ / للحصة</div>
+          </div>
+
+          <ul class="pack-features">
+            <li><i class="fa-solid fa-check-circle"></i> <span>4 حصص فردية تفاعلية</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span class="duration-label-text">مدة الحصة 30 دقيقة</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span>متابعة شخصية وتقييم مستمر</span></li>
+          </ul>
+
+          <button class="btn-outline" onclick="selectPackage(this)">
+            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+          </button>
+        </article>
+
+
+        <!-- Pack 2: Hafiz / حافظ -->
+        <article class="package-card" 
+                 data-pack-name="باقة حافظ (Pack Hafiz)" 
+                 data-classes="8" 
+                 data-rate-30="5.00" 
+                 data-rate-45="7.50" 
+                 data-rate-60="10.00" 
+                 data-is-custom="false">
+          <div class="pack-header">
+            <h3 class="pack-title">باقة حافظ</h3>
+            <span class="badge">منتظم</span>
+          </div>
+          <p class="pack-desc">لبدء رحلة التعلم المنتظم وبناء عادة حفظ يومية ثابتة.</p>
+
+          <div class="pack-classes-box">
+            <div class="pack-classes-count inter-font">8 حصص</div>
+            <div class="pack-classes-sub duration-label-text">بواقع 30 دقيقة للحصة</div>
+          </div>
+
+          <div class="pack-price-box">
+            <div class="price-main">
+              <span class="price-amount inter-font main-price-val">39.99</span>
+              <span class="price-currency">€</span>
+            </div>
+            <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">5.00</span>€ / للحصة</div>
+          </div>
+
+          <ul class="pack-features">
+            <li><i class="fa-solid fa-check-circle"></i> <span>8 حصص فردية تفاعلية</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span class="duration-label-text">مدة الحصة 30 دقيقة</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span>متابعة وتقارير دورية للأهل</span></li>
+          </ul>
+
+          <button class="btn-outline" onclick="selectPackage(this)">
+            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+          </button>
+        </article>
+
+
+        <!-- Pack 3: Mujtahid / مجتهد -->
+        <article class="package-card" 
+                 data-pack-name="باقة مجتهد (Pack Mujtahid)" 
+                 data-classes="12" 
+                 data-rate-30="4.83" 
+                 data-rate-45="7.25" 
+                 data-rate-60="9.60" 
+                 data-is-custom="false">
+          <div class="pack-header">
+            <h3 class="pack-title">باقة مجتهد</h3>
+            <span class="badge">متقدم</span>
+          </div>
+          <p class="pack-desc">لتحقيق تقدم سريع وملحوظ في الحفظ والتجويد برتم ممتاز.</p>
+
+          <div class="pack-classes-box">
+            <div class="pack-classes-count inter-font">12 حصة</div>
+            <div class="pack-classes-sub duration-label-text">بواقع 30 دقيقة للحصة</div>
+          </div>
+
+          <div class="pack-price-box">
+            <div class="price-main">
+              <span class="price-amount inter-font main-price-val">57.99</span>
+              <span class="price-currency">€</span>
+              <span class="price-original inter-font orig-price-val">60.00€</span>
+            </div>
+            <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">4.83</span>€ / للحصة</div>
+            <div class="savings-pill">وفرت <span class="savings-val inter-font">2.01</span>€</div>
+          </div>
+
+          <ul class="pack-features">
+            <li><i class="fa-solid fa-check-circle"></i> <span>12 حصة فردية تفاعلية</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span class="duration-label-text">مدة الحصة 30 دقيقة</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span>خطة دراسية مخصصة لطُفلك</span></li>
+          </ul>
+
+          <button class="btn-outline" onclick="selectPackage(this)">
+            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+          </button>
+        </article>
+
+
+        <!-- Pack 4: Bronze / البرونزية -->
+        <article class="package-card" 
+                 data-pack-name="الباقة البرونزية (Pack Bronze)" 
+                 data-classes="16" 
+                 data-rate-30="4.75" 
+                 data-rate-45="7.10" 
+                 data-rate-60="9.50" 
+                 data-is-custom="false">
+          <div class="pack-header">
+            <h3 class="pack-title">الباقة البرونزية</h3>
+            <span class="badge">برونزي</span>
+          </div>
+          <p class="pack-desc">حجم حصص مريح ومستمر يضمن الاستمرارية وعدم النسيان.</p>
+
+          <div class="pack-classes-box">
+            <div class="pack-classes-count inter-font">16 حصة</div>
+            <div class="pack-classes-sub duration-label-text">بواقع 30 دقيقة للحصة</div>
+          </div>
+
+          <div class="pack-price-box">
+            <div class="price-main">
+              <span class="price-amount inter-font main-price-val">75.99</span>
+              <span class="price-currency">€</span>
+              <span class="price-original inter-font orig-price-val">80.00€</span>
+            </div>
+            <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">4.75</span>€ / للحصة</div>
+            <div class="savings-pill">وفرت <span class="savings-val inter-font">4.01</span>€</div>
+          </div>
+
+          <ul class="pack-features">
+            <li><i class="fa-solid fa-check-circle"></i> <span>16 حصة فردية تفاعلية</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span class="duration-label-text">مدة الحصة 30 دقيقة</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span>مرونة كاملة في تحديد المواعيد</span></li>
+          </ul>
+
+          <button class="btn-outline" onclick="selectPackage(this)">
+            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+          </button>
+        </article>
+
+
+        <!-- Pack 5: Silver / الفضية (الأكثر طلباً - Featured) -->
+        <article class="package-card featured" 
+                 data-pack-name="الباقة الفضية (Pack Argent)" 
+                 data-classes="24" 
+                 data-rate-30="4.58" 
+                 data-rate-45="6.80" 
+                 data-rate-60="9.00" 
+                 data-is-custom="false">
+          <span class="featured-tag"><i class="fa-solid fa-star"></i> الأكثر طلباً</span>
+          <div class="pack-header">
+            <h3 class="pack-title">الباقة الفضية</h3>
+            <span class="badge badge-pinned">فضائي</span>
+          </div>
+          <p class="pack-desc">الخيار المتوازن والأفضل قيمة للحصول على نتائج ممتازة وراسخة.</p>
+
+          <div class="pack-classes-box">
+            <div class="pack-classes-count inter-font">24 حصة</div>
+            <div class="pack-classes-sub duration-label-text">بواقع 30 دقيقة للحصة</div>
+          </div>
+
+          <div class="pack-price-box">
+            <div class="price-main">
+              <span class="price-amount inter-font main-price-val">109.99</span>
+              <span class="price-currency">€</span>
+              <span class="price-original inter-font orig-price-val">120.00€</span>
+            </div>
+            <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">4.58</span>€ / للحصة</div>
+            <div class="savings-pill">وفرت <span class="savings-val inter-font">10.01</span>€</div>
+          </div>
+
+          <ul class="pack-features">
+            <li><i class="fa-solid fa-check-circle"></i> <span>24 حصة فردية تفاعلية</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span class="duration-label-text">مدة الحصة 30 دقيقة</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span>أولوية في اختيار الأوقات والمعلمين</span></li>
+          </ul>
+
+          <button class="btn-primary" onclick="selectPackage(this)">
+            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+          </button>
+        </article>
+
+
+        <!-- Pack 6: Gold / الذهبية -->
+        <article class="package-card" 
+                 data-pack-name="الباقة الذهبية (Pack Or)" 
+                 data-classes="48" 
+                 data-rate-30="4.58" 
+                 data-rate-45="6.80" 
+                 data-rate-60="8.90" 
+                 data-is-custom="false">
+          <div class="pack-header">
+            <h3 class="pack-title">الباقة الذهبية</h3>
+            <span class="badge" style="background: rgba(201,150,58,0.2); color: var(--gold);">ذهبي</span>
+          </div>
+          <p class="pack-desc">التزام متقدم ومكثف لإتقان القرآن الكريم واللغة العربية بسرعة.</p>
+
+          <div class="pack-classes-box">
+            <div class="pack-classes-count inter-font">48 حصة</div>
+            <div class="pack-classes-sub duration-label-text">بواقع 30 دقيقة للحصة</div>
+          </div>
+
+          <div class="pack-price-box">
+            <div class="price-main">
+              <span class="price-amount inter-font main-price-val">219.99</span>
+              <span class="price-currency">€</span>
+              <span class="price-original inter-font orig-price-val">240.00€</span>
+            </div>
+            <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">4.58</span>€ / للحصة</div>
+            <div class="savings-pill">وفرت <span class="savings-val inter-font">20.01</span>€</div>
+          </div>
+
+          <ul class="pack-features">
+            <li><i class="fa-solid fa-check-circle"></i> <span>48 حصة فردية تفاعلية</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span class="duration-label-text">مدة الحصة 30 دقيقة</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span>تقارير شهرية شامِلة وشهادة إتمام</span></li>
+          </ul>
+
+          <button class="btn-outline" onclick="selectPackage(this)">
+            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+          </button>
+        </article>
+
+
+        <!-- Pack 7: Diamond / الماسية -->
+        <article class="package-card" 
+                 data-pack-name="الباقة الماسية (Pack Diamond)" 
+                 data-classes="100" 
+                 data-rate-30="4.50" 
+                 data-rate-45="6.50" 
+                 data-rate-60="8.50" 
+                 data-is-custom="false">
+          <div class="pack-header">
+            <h3 class="pack-title">الباقة الماسية</h3>
+            <span class="badge" style="background: rgba(64,145,108,0.2); color: var(--green-light);">ماسي</span>
+          </div>
+          <p class="pack-desc">الباقة الشاملة والأعلى توفيراً لمعايشة كاملة واحترافية.</p>
+
+          <div class="pack-classes-box">
+            <div class="pack-classes-count inter-font">100 حصة</div>
+            <div class="pack-classes-sub duration-label-text">بواقع 30 دقيقة للحصة</div>
+          </div>
+
+          <div class="pack-price-box">
+            <div class="price-main">
+              <span class="price-amount inter-font main-price-val">449.99</span>
+              <span class="price-currency">€</span>
+              <span class="price-original inter-font orig-price-val">500.00€</span>
+            </div>
+            <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">4.50</span>€ / للحصة</div>
+            <div class="savings-pill">وفرت <span class="savings-val inter-font">50.01</span>€</div>
+          </div>
+
+          <ul class="pack-features">
+            <li><i class="fa-solid fa-check-circle"></i> <span>100 حصة فردية تفاعلية</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span class="duration-label-text">مدة الحصة 30 دقيقة</span></li>
+            <li><i class="fa-solid fa-check-circle"></i> <span>تثبيت جدول المواعيد السنوي</span></li>
+          </ul>
+
+          <button class="btn-outline" onclick="selectPackage(this)">
+            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+          </button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       INCLUDED IN ALL PACKAGES SECTION
+       ========================================== -->
+  <section class="section section-white">
+    <div class="container section-center">
+      <span class="section-label">ضمان الجودة</span>
+      <h2 class="section-title">مميّزات شاملة في جميع الباقات</h2>
+      <p class="section-sub">نفس الضمانات والخدمات المتميزة تُقدّم لكل طالب بغض النظر عن الباقة المختارة.</p>
+
+      <div class="included-grid">
+        
+        <!-- Card 1 -->
+        <div class="included-card">
+          <div class="included-icon"><i class="fa-solid fa-gift"></i></div>
+          <h3 class="included-title">حصة تجريبية مجاناً</h3>
+          <p class="included-desc">اختبر أسلوبنا وطريقتنا في التدريس بكل أريحية وبدون أي التزام.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="included-card">
+          <div class="included-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <h3 class="included-title">معلمون من الأزهر</h3>
+          <p class="included-desc">معلمون ومعلمات مجازون ومختصون لتدريس الأطفال والكبار.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="included-card">
+          <div class="included-icon"><i class="fa-solid fa-certificate"></i></div>
+          <h3 class="included-title">شهادة إتمام معتمدة</h3>
+          <p class="included-desc">تُمنح للطالب عند إتمام المستوى وتجاوز الاختبارات بنجاح.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="included-card">
+          <div class="included-icon"><i class="fa-solid fa-calendar-days"></i></div>
+          <h3 class="included-title">مواعيد مرنة</h3>
+          <p class="included-desc">جدولة الحصص بما يتناسب تماماً مع جدول طفلك وحياتكم اليومية.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="included-card">
+          <div class="included-icon"><i class="fa-solid fa-book-quran"></i></div>
+          <h3 class="included-title">تنوّع المواد</h3>
+          <p class="included-desc">حرية الاختيار بين القرآن الكريم، التجويد، اللغة العربية، والدراسات الإسلامية.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       FINAL CTA BANNER
+       ========================================== -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner">
+        <span class="badge" style="background: rgba(255,255,255,0.2); color: #FFF; margin-bottom: 15px;">بدون أي التزام</span>
+        <h2 class="cta-banner-title">هل تحتار في اختيار الباقة المناسبة لطفلك؟</h2>
+        <p class="cta-banner-sub">فريقنا التعليمي يرافقك مجاناً لمساعدتك في تحديد المستوى، اختيار الباقة الأنسب، وتحديد مواعيد الحصص.</p>
+        
+        <div class="cta-buttons-group">
+          <a href="https://wa.me/201000000000?text=%D0%A1%D0%BB%D0%B0%D0%BC%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D9%80%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D9%84%D8%AE%D8%AA%D9%8A%D8%A7%D8%B1%20%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9%20%D8%A7%D9%84%D9%85%D9%86%D8%A7%D8%B3%D8%A8%D8%A9" target="_blank" class="btn-whatsapp">
+            <i class="fa-brands fa-whatsapp"></i> تحدث معنا عبر WhatsApp
+          </a>
+          <a href="#" class="btn-primary">
+            <i class="fa-solid fa-laptop"></i> احجز حصتك التجريبية مجاناً
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       INTERACTIVE JAVASCRIPT LOGIC
+       ========================================== -->
+  <script>
+    // Configurable Target WhatsApp Number
+    const WHATSAPP_PHONE = "201000000000"; 
+
+    // Current selected duration state (default 30 min)
+    let currentDuration = 30;
+
+    /**
+     * Set Duration & Dynamic Price Calculation
+     */
+    function setDuration(minutes, btnElement) {
+      currentDuration = minutes;
+
+      // Toggle active button UI
+      document.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      // Update text in all cards
+      document.querySelectorAll('.duration-label-text').forEach(el => {
+        if (el.tagName === 'SPAN') {
+          el.textContent = `مدة الحصة ${minutes} دقيقة`;
+        } else {
+          el.textContent = `بواقع ${minutes} دقيقة للحصة`;
+        }
+      });
+
+      // Recalculate prices for each package card
+      document.querySelectorAll('.package-card').forEach(card => {
+        const classes = parseInt(card.getAttribute('data-classes'));
+        const rate = parseFloat(card.getAttribute(`data-rate-${minutes}`));
+
+        // Total calculation
+        let totalPrice = (classes * rate).toFixed(2);
+        
+        // Base standard price (without discount) for calculating savings
+        let baseRate = minutes === 30 ? 5.00 : (minutes === 45 ? 7.50 : 10.00);
+        let originalTotal = (classes * baseRate).toFixed(2);
+        let savings = (originalTotal - totalPrice).toFixed(2);
+
+        // Update card DOM elements
+        card.querySelector('.main-price-val').textContent = totalPrice;
+        card.querySelector('.per-lesson-val').textContent = rate.toFixed(2);
+
+        const origPriceEl = card.querySelector('.orig-price-val');
+        const savingsPillEl = card.querySelector('.savings-pill');
+
+        if (savings > 0 && origPriceEl) {
+          origPriceEl.textContent = `${originalTotal}€`;
+          origPriceEl.style.display = 'inline';
+          if (savingsPillEl) {
+            savingsPillEl.querySelector('.savings-val').textContent = savings;
+            savingsPillEl.style.display = 'inline-block';
+          }
+        } else {
+          if (origPriceEl) origPriceEl.style.display = 'none';
+          if (savingsPillEl) savingsPillEl.style.display = 'none';
+        }
+      });
+    }
+
+    /**
+     * Handle "هذه الباقة تناسبني" Click -> Opens pre-filled WhatsApp link
+     */
+    function selectPackage(buttonElement) {
+      const card = buttonElement.closest('.package-card');
+      const packName = card.getAttribute('data-pack-name');
+      const classesCount = card.getAttribute('data-classes');
+      const totalPrice = card.querySelector('.main-price-val').textContent;
+
+      // Construct customized WhatsApp message
+      const message = `السلام عليكم ورحمة الله وبركاته،\nأرغب في الاشتراك في: *${packName}*\n- عدد الحصص: ${classesCount} حصة\n- مدة الحصة: ${currentDuration} دقيقة\n- إجمالي السعر: ${totalPrice}€\n\nأرجو التواصل معي لتحديد المواعيد والبدء.`;
+
+      const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+      
+      window.open(whatsappUrl, '_blank');
+    }
+  </script>
+
+</body>
+</html>

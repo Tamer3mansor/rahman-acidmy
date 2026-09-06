@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ar-Rahman Academy | أكاديمية الرحمن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Arabic:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --green:       #1B4332;
+  --green-mid:   #2D6A4F;
+  --green-light: #40916C;
+  --gold:        #C9963A;
+  --gold-light:  #E8B84B;
+  --cream:       #F8F5EE;
+  --cream-dark:  #EDE9DF;
+  --white:       #FFFFFF;
+  --text-dark:   #1A1A1A;
+  --text-mid:    #4A4A4A;
+  --text-light:  #7A7A7A;
+  --red-soft:    #E05252;
+
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+
+  --shadow-card: 0 2px 20px rgba(27,67,50,0.08);
+  --shadow-btn:  0 4px 16px rgba(201,150,58,0.35);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Serif Arabic', serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ============================================================
+   ISLAMIC PATTERN HELPER
+   ============================================================ */
+.pattern-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9963A' fill-opacity='0.06'%3E%3Cpath d='M30 0l8.66 5v10L30 20l-8.66-5V5L30 0zm0 40l8.66 5v10L30 60l-8.66-5V45L30 40zM0 20l8.66 5v10L0 40l-8.66-5V25L0 20zm60 0l8.66 5v10L60 40l-8.66-5V25L60 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   SHARED COMPONENTS
+   ============================================================ */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--white);
+  font-family: 'Noto Serif Arabic', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 28px;
+  border-radius: var(--r-md);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--green);
+  font-family: 'Noto Serif Arabic', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 13px 28px;
+  border-radius: var(--r-md);
+  border: 2px solid var(--green);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-outline:hover { background: var(--green); color: var(--white); }
+
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--white);
+  font-family: 'Noto Serif Arabic', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 13px 28px;
+  border-radius: var(--r-md);
+  border: 2px solid rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-outline-white:hover { background: rgba(255,255,255,0.15); }
+
+.section-label {
+  display: inline-block;
+  background: var(--cream-dark);
+  color: var(--green);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 18px;
+  border-radius: 100px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(27,67,50,0.15);
+}
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 900;
+  color: var(--green);
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 1.05rem;
+  color: var(--text-mid);
+  max-width: 580px;
+  margin: 0 auto 48px;
+}
+.section-center { text-align: center; }
+.section-center .section-sub { text-align: center; }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(248,245,238,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(27,67,50,0.1);
+  transition: box-shadow 0.3s;
+}
+.navbar.scrolled { box-shadow: 0 2px 24px rgba(27,67,50,0.12); }
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  gap: 24px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.nav-logo-icon {
+  width: 44px; height: 44px;
+  background: var(--green);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-text { line-height: 1.1; }
+.nav-logo-text .name { font-size: 1.05rem; font-weight: 900; color: var(--green); }
+.nav-logo-text .sub  { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.06em; font-weight: 600; }
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  transition: color 0.2s, background 0.2s;
+  font-weight: 500;
+}
+.nav-links a:hover { color: var(--green); background: var(--cream-dark); }
+
+.nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.nav-wa {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.9rem; color: var(--text-mid);
+  padding: 8px 14px; border-radius: var(--r-sm);
+  transition: color 0.2s;
+  cursor: pointer; font-weight: 500;
+}
+.nav-wa:hover { color: #25D366; }
+.nav-wa svg { flex-shrink: 0; }
+
+.nav-btn {
+  background: var(--gold);
+  color: var(--white);
+  font-family: 'Noto Serif Arabic', serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 10px 20px;
+  border-radius: var(--r-sm);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(201,150,58,0.3);
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.nav-btn:hover { background: var(--gold-light); }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--green); border-radius: 2px; transition: all 0.3s; }
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  border-top: 1px solid rgba(27,67,50,0.1);
+  padding: 16px 24px 24px;
+  gap: 4px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 1rem; color: var(--text-mid);
+  padding: 12px 16px; border-radius: var(--r-sm);
+  transition: background 0.2s; font-weight: 500;
+}
+.mobile-menu a:hover { background: var(--cream-dark); color: var(--green); }
+.mobile-menu .mobile-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  padding-top: 72px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231B4332' fill-opacity='0.04'%3E%3Cpath d='M40 0 L80 20 L80 60 L40 80 L0 60 L0 20 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 80px 0;
+  position: relative;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green);
+  color: var(--gold-light);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+.hero-badge .dot { width: 7px; height: 7px; background: var(--gold-light); border-radius: 50%; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.8)} }
+
+.hero-title {
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--green);
+  margin-bottom: 20px;
+}
+.hero-title .accent { color: var(--gold); }
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text-mid);
+  margin-bottom: 36px;
+  max-width: 500px;
+  line-height: 1.8;
+}
+
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+
+.hero-trust {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.trust-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+.trust-pill .icon-wrap {
+  width: 32px; height: 32px;
+  background: rgba(27,67,50,0.08);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* VIDEO CARD */
+.hero-video-wrap {
+  position: relative;
+}
+.video-card {
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(27,67,50,0.18);
+  background: var(--green);
+  aspect-ratio: 16/10;
+  position: relative;
+  width: 100%;
+}
+.video-card video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.video-overlay-badge {
+  position: absolute;
+  bottom: 16px; right: 16px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--r-sm);
+  padding: 10px 16px;
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+}
+/* placeholder when no video */
+.video-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+}
+.video-placeholder .play-icon {
+  width: 72px; height: 72px;
+  background: rgba(201,150,58,0.25);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.video-deco {
+  position: absolute;
+  top: -20px; left: -20px;
+  width: 120px; height: 120px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0.2;
+  pointer-events: none;
+}
+.video-deco-2 {
+  position: absolute;
+  bottom: -30px; right: -30px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* ============================================================
+   TRUST SECTION
+   ============================================================ */
+.trust-section {
+  background: var(--white);
+  padding: 100px 0;
+}
+.trust-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  margin-top: 56px;
+  align-items: start;
+}
+/* middle: stacked videos */
+.trust-videos { display: flex; flex-direction: column; gap: 20px; }
+.trust-video-card {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--green);
+  aspect-ratio: 4/3;
+  position: relative;
+  box-shadow: var(--shadow-card);
+}
+.trust-video-card video { width:100%; height:100%; object-fit:cover; }
+.trust-video-placeholder {
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+  color:rgba(255,255,255,0.8); font-size:0.85rem;
+}
+.trust-video-placeholder .play-sm {
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(201,150,58,0.25);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+}
+.trust-label {
+  position:absolute;bottom:10px;right:10px;left:10px;
+  background:rgba(27,67,50,0.85);backdrop-filter:blur(6px);
+  color:var(--white);font-size:0.78rem;font-weight:600;
+  padding:8px 12px;border-radius:var(--r-sm);
+}
+/* screenshot columns */
+.trust-screenshots { display:flex; flex-direction:column; gap:14px; }
+.screenshot-card {
+  border-radius:var(--r-md);
+  overflow:hidden;
+  background:var(--cream-dark);
+  border:1px solid rgba(27,67,50,0.1);
+  box-shadow:var(--shadow-card);
+}
+.screenshot-tag {
+  display:flex; align-items:center; gap:7px;
+  padding:10px 14px;
+  border-bottom:1px solid rgba(27,67,50,0.08);
+  font-size:0.78rem; font-weight:700; color:var(--green);
+}
+.screenshot-placeholder {
+  height:100px;
+  background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.75rem; color:var(--text-light);
+}
+/* mock whatsapp preview */
+.wa-mock { padding:12px 14px; display:flex;flex-direction:column;gap:8px; }
+.wa-bubble {
+  background:var(--white); border-radius:12px 12px 4px 12px;
+  padding:10px 13px; font-size:0.78rem; color:var(--text-dark);
+  box-shadow:0 1px 6px rgba(0,0,0,0.08); max-width:85%;
+}
+.wa-bubble.sent {
+  background:#DCF8C6; align-self:flex-end; border-radius:12px 12px 12px 4px;
+}
+.wa-bubble .time { font-size:0.65rem; color:var(--text-light); margin-top:4px; }
+/* mock google review */
+.review-mock { padding:14px; }
+.review-stars { color:var(--gold); font-size:1rem; margin-bottom:6px; letter-spacing:1px; }
+.review-text { font-size:0.78rem; color:var(--text-mid); line-height:1.5; margin-bottom:8px; }
+.review-author { font-size:0.72rem; color:var(--text-light); font-weight:600; }
+
+.trust-cta-wrap { text-align:center; margin-top:56px; }
+
+/* ============================================================
+   JOURNEY / STEPS
+   ============================================================ */
+.journey-section {
+  background: var(--green);
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+.journey-section::before {
+  content:'';
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23C9963A' fill-opacity='0.07'%3E%3Cpath d='M40 0 L80 20 L80 60 L40 80 L0 60 L0 20 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.journey-section .section-label { background:rgba(201,150,58,0.2); color:var(--gold-light); border-color:rgba(201,150,58,0.3); }
+.journey-section .section-title { color:var(--white); }
+.journey-section .section-sub { color:rgba(255,255,255,0.7); }
+
+.steps-grid {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:0;
+  margin-top:56px;
+  position:relative;
+}
+.steps-grid::before {
+  content:'';
+  position:absolute;
+  top:36px; right:0; left:0;
+  height:2px;
+  background:linear-gradient(to left, transparent 0%, rgba(201,150,58,0.3) 20%, rgba(201,150,58,0.3) 80%, transparent 100%);
+  pointer-events:none;
+}
+.step-item { text-align:center; padding:0 12px; position:relative; }
+.step-num-wrap {
+  width:72px; height:72px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 20px;
+  position:relative;
+  z-index:1;
+  font-size:1.4rem;
+}
+.step-num-wrap.gold { background:var(--gold); box-shadow:0 4px 20px rgba(201,150,58,0.4); }
+.step-num-wrap.dark-green { background:var(--green-mid); border:2px solid rgba(201,150,58,0.4); }
+.step-num-wrap svg { color:var(--white); }
+
+.step-number { font-size:0.72rem; font-weight:700; color:rgba(201,150,58,0.6); margin-bottom:8px; }
+.step-title { font-size:0.95rem; font-weight:700; color:var(--white); margin-bottom:8px; }
+.step-desc { font-size:0.82rem; color:rgba(255,255,255,0.65); line-height:1.6; }
+
+.journey-cta-wrap { text-align:center; margin-top:60px; }
+
+/* ============================================================
+   COMPARISON
+   ============================================================ */
+.compare-section { background:var(--cream); padding:100px 0; }
+.compare-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+  margin-top:56px;
+}
+.compare-card {
+  border-radius:var(--r-xl);
+  padding:40px;
+}
+.compare-card.problems {
+  background:var(--white);
+  border:1px solid rgba(27,67,50,0.1);
+  box-shadow:var(--shadow-card);
+}
+.compare-card.solutions {
+  background:var(--green);
+  box-shadow:0 12px 48px rgba(27,67,50,0.25);
+}
+.compare-card-title {
+  font-size:1.25rem; font-weight:800; margin-bottom:28px;
+}
+.compare-card.problems .compare-card-title { color:var(--green); }
+.compare-card.solutions .compare-card-title { color:var(--white); }
+
+.compare-list { list-style:none; display:flex; flex-direction:column; gap:16px; }
+.compare-item {
+  display:flex; align-items:flex-start; gap:14px;
+  font-size:0.92rem; line-height:1.6;
+}
+.compare-icon {
+  width:24px; height:24px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:1px; font-size:0.7rem; font-weight:700;
+}
+.compare-icon.x { background:rgba(224,82,82,0.12); color:var(--red-soft); border:1px solid rgba(224,82,82,0.25); }
+.compare-icon.check { background:rgba(201,150,58,0.2); color:var(--gold-light); border:1px solid rgba(201,150,58,0.3); }
+.compare-card.problems .compare-item { color:var(--text-mid); }
+.compare-card.solutions .compare-item { color:rgba(255,255,255,0.88); }
+
+.compare-cta { text-align:center; margin-top:56px; }
+
+/* ============================================================
+   TEACHERS
+   ============================================================ */
+.teachers-section { background:var(--white); padding:100px 0; }
+.teachers-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  margin-top:56px;
+}
+.teacher-card {
+  background:var(--cream);
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  border:1px solid rgba(27,67,50,0.07);
+  box-shadow:var(--shadow-card);
+  transition:transform 0.25s, box-shadow 0.25s;
+}
+.teacher-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(27,67,50,0.14); }
+.teacher-photo {
+  aspect-ratio:4/3;
+  background:linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.teacher-avatar {
+  width:96px; height:96px; border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  border:3px solid rgba(201,150,58,0.5);
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.2rem; color:rgba(255,255,255,0.8);
+}
+.teacher-body { padding:24px; }
+.teacher-name { font-size:1.1rem; font-weight:800; color:var(--green); margin-bottom:4px; }
+.teacher-specialty { font-size:0.85rem; color:var(--text-mid); margin-bottom:16px; }
+.teacher-badges { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.badge {
+  display:inline-flex; align-items:center; gap:5px;
+  background:rgba(27,67,50,0.08); color:var(--green);
+  font-size:0.72rem; font-weight:700;
+  padding:5px 11px; border-radius:100px;
+  border:1px solid rgba(27,67,50,0.12);
+}
+.badge.gold { background:rgba(201,150,58,0.12); color:var(--gold); border-color:rgba(201,150,58,0.25); }
+.teacher-cta {
+  width:100%; background:var(--green); color:var(--white);
+  font-family:'Noto Serif Arabic',serif; font-weight:700; font-size:0.88rem;
+  padding:12px; border-radius:var(--r-sm); border:none; cursor:pointer;
+  transition:background 0.2s;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.teacher-cta:hover { background:var(--green-mid); }
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-section { background:var(--cream); padding:100px 0; }
+.faq-list { max-width:760px; margin:56px auto 0; display:flex; flex-direction:column; gap:12px; }
+.faq-item {
+  background:var(--white);
+  border:1px solid rgba(27,67,50,0.1);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  box-shadow:var(--shadow-card);
+}
+.faq-question {
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:22px 28px;
+  cursor:pointer;
+  font-size:1rem; font-weight:700; color:var(--green);
+  transition:background 0.2s;
+}
+.faq-question:hover { background:var(--cream); }
+.faq-arrow {
+  width:32px; height:32px; border-radius:50%;
+  background:var(--cream-dark); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform 0.3s, background 0.2s;
+}
+.faq-item.open .faq-arrow { transform:rotate(180deg); background:var(--green); }
+.faq-item.open .faq-arrow svg { color:var(--white); }
+.faq-answer {
+  max-height:0; overflow:hidden; transition:max-height 0.4s ease;
+  padding:0 28px;
+}
+.faq-item.open .faq-answer { max-height:400px; padding:0 28px 22px; }
+.faq-answer-inner { font-size:0.92rem; color:var(--text-mid); line-height:1.8; }
+.faq-cta-inline {
+  display:inline-flex; align-items:center; gap:7px;
+  margin-top:14px; color:var(--gold); font-weight:700; font-size:0.88rem;
+  cursor:pointer; transition:color 0.2s;
+}
+.faq-cta-inline:hover { color:var(--gold-light); }
+
+.faq-bottom-cta { text-align:center; margin-top:48px; }
+
+/* ============================================================
+   CONTACT FORM
+   ============================================================ */
+.form-section { background:var(--green); padding:100px 0; position:relative; overflow:hidden; }
+.form-section::before {
+  content:'';
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23C9963A' fill-opacity='0.05'%3E%3Cpath d='M40 0 L80 20 L80 60 L40 80 L0 60 L0 20 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.form-inner {
+  display:grid;
+  grid-template-columns:1fr 1.6fr;
+  gap:60px;
+  align-items:start;
+  position:relative;
+}
+.form-side-title { font-size:clamp(1.6rem,3vw,2.4rem); font-weight:900; color:var(--white); margin-bottom:20px; line-height:1.3; }
+.form-side-title .accent { color:var(--gold-light); }
+.form-side-sub { font-size:0.95rem; color:rgba(255,255,255,0.7); margin-bottom:36px; line-height:1.8; }
+.form-info-list { display:flex; flex-direction:column; gap:18px; }
+.form-info-item { display:flex; align-items:flex-start; gap:14px; }
+.form-info-icon {
+  width:44px;height:44px;border-radius:var(--r-sm);
+  background:rgba(201,150,58,0.2);border:1px solid rgba(201,150,58,0.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.form-info-text .label { font-size:0.78rem; color:rgba(255,255,255,0.5); font-weight:600; margin-bottom:2px; }
+.form-info-text .val { font-size:0.95rem; color:var(--white); font-weight:700; }
+
+.form-card {
+  background:var(--white);
+  border-radius:var(--r-xl);
+  padding:40px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+}
+.form-card-title { font-size:1.3rem; font-weight:800; color:var(--green); margin-bottom:8px; }
+.form-card-sub { font-size:0.85rem; color:var(--text-mid); margin-bottom:28px; line-height:1.6; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-group { display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+.form-group label { font-size:0.82rem; font-weight:700; color:var(--green); }
+.form-group input, .form-group select, .form-group textarea {
+  font-family:'Noto Serif Arabic',serif;
+  width:100%; padding:12px 16px;
+  border:1.5px solid rgba(27,67,50,0.15);
+  border-radius:var(--r-sm);
+  font-size:0.92rem; color:var(--text-dark);
+  background:var(--cream);
+  transition:border-color 0.2s, box-shadow 0.2s;
+  outline:none;
+  direction:rtl;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color:var(--green); box-shadow:0 0 0 3px rgba(27,67,50,0.1);
+}
+.form-group textarea { resize:vertical; min-height:100px; }
+
+.level-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.level-option { position:relative; }
+.level-option input[type=radio] { position:absolute;opacity:0;width:0;height:0; }
+.level-option label {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 16px; border:1.5px solid rgba(27,67,50,0.15);
+  border-radius:var(--r-sm); cursor:pointer;
+  background:var(--cream); transition:all 0.2s;
+  font-size:0.88rem; font-weight:600; color:var(--text-mid);
+}
+.level-option label:hover { border-color:var(--green); color:var(--green); }
+.level-option input:checked + label { border-color:var(--green); background:var(--green); color:var(--white); }
+.level-option input:checked + label .radio-dot { background:var(--gold); border-color:var(--gold); }
+.radio-dot { width:16px;height:16px;border-radius:50%;border:2px solid rgba(27,67,50,0.25); flex-shrink:0; transition:all 0.2s; }
+
+.schedule-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.sched-option { position:relative; }
+.sched-option input[type=checkbox] { position:absolute;opacity:0;width:0;height:0; }
+.sched-option label {
+  display:block; text-align:center;
+  padding:9px 6px; border:1.5px solid rgba(27,67,50,0.15);
+  border-radius:var(--r-sm); cursor:pointer;
+  background:var(--cream); transition:all 0.2s;
+  font-size:0.78rem; font-weight:600; color:var(--text-mid);
+}
+.sched-option label:hover { border-color:var(--green); }
+.sched-option input:checked + label { border-color:var(--gold); background:rgba(201,150,58,0.1); color:var(--gold); }
+
+.form-submit {
+  width:100%; background:var(--gold); color:var(--white);
+  font-family:'Noto Serif Arabic',serif; font-weight:700; font-size:1.05rem;
+  padding:16px; border-radius:var(--r-md); border:none; cursor:pointer;
+  box-shadow:var(--shadow-btn); margin-top:8px;
+  transition:background 0.2s,transform 0.15s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.form-submit:hover { background:var(--gold-light); transform:translateY(-2px); }
+.form-note { text-align:center; font-size:0.78rem; color:var(--text-light); margin-top:12px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer { background:var(--text-dark); padding:60px 0 30px; }
+.footer-inner { display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; padding-bottom:40px; border-bottom:1px solid rgba(255,255,255,0.08); }
+.footer-brand .brand-name { font-size:1.3rem; font-weight:900; color:var(--white); margin-bottom:4px; }
+.footer-brand .brand-sub { font-size:0.78rem; color:var(--gold); font-weight:600; margin-bottom:16px; }
+.footer-brand p { font-size:0.88rem; color:rgba(255,255,255,0.55); line-height:1.7; max-width:280px; }
+.footer-col h4 { font-size:0.9rem; font-weight:700; color:var(--white); margin-bottom:16px; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-col ul li a { font-size:0.85rem; color:rgba(255,255,255,0.5); transition:color 0.2s; }
+.footer-col ul li a:hover { color:var(--gold); }
+.footer-bottom { display:flex; align-items:center; justify-content:space-between; padding-top:24px; }
+.footer-bottom p { font-size:0.8rem; color:rgba(255,255,255,0.35); }
+
+/* ============================================================
+   SCROLL TO TOP
+   ============================================================ */
+.scroll-top {
+  position:fixed; bottom:24px; left:24px;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--gold); color:var(--white);
+  border:none; cursor:pointer;
+  display:none; align-items:center; justify-content:center;
+  box-shadow:0 4px 16px rgba(201,150,58,0.4);
+  z-index:999; transition:transform 0.2s;
+}
+.scroll-top.visible { display:flex; }
+.scroll-top:hover { transform:translateY(-3px); }
+
+/* ============================================================
+   WHATSAPP FLOAT
+   ============================================================ */
+.wa-float {
+  position:fixed; bottom:24px; right:24px;
+  width:56px;height:56px;border-radius:50%;
+  background:#25D366; color:var(--white);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,0.4);
+  z-index:999; cursor:pointer;
+  transition:transform 0.2s;
+}
+.wa-float:hover { transform:scale(1.08); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1024px) {
+  .teachers-grid { grid-template-columns:repeat(2,1fr); }
+  .steps-grid { grid-template-columns:repeat(3,1fr); gap:24px; }
+  .steps-grid::before { display:none; }
+}
+@media (max-width:768px) {
+  .nav-links { display:none; }
+  .nav-actions .nav-wa { display:none; }
+  .hamburger { display:flex; }
+
+  .hero-inner { grid-template-columns:1fr; gap:40px; text-align:center; }
+  .hero-sub { margin-left:auto; margin-right:auto; }
+  .hero-btns { justify-content:center; }
+  .hero-trust { justify-content:center; }
+  .hero-video-wrap { order:-1; }
+  .video-card { aspect-ratio:16/9; }
+
+  .trust-grid { grid-template-columns:1fr; }
+  .trust-screenshots { display:none; }
+
+  .steps-grid { grid-template-columns:1fr 1fr; }
+
+  .compare-grid { grid-template-columns:1fr; }
+
+  .teachers-grid { grid-template-columns:1fr; }
+
+  .form-inner { grid-template-columns:1fr; }
+  .form-info-list { display:none; }
+  .form-row { grid-template-columns:1fr; }
+  .schedule-grid { grid-template-columns:repeat(2,1fr); }
+  .level-options { grid-template-columns:1fr 1fr; }
+
+  .footer-inner { grid-template-columns:1fr; gap:32px; }
+  .footer-bottom { flex-direction:column; gap:12px; text-align:center; }
+
+  .compare-card { padding:28px; }
+  .form-card { padding:24px; }
+}
+@media (max-width:480px) {
+  .steps-grid { grid-template-columns:1fr; }
+  .hero-btns { flex-direction:column; align-items:center; }
+}
+
+/* Toast */
+.toast {
+  position:fixed; bottom:90px; right:24px;
+  background:var(--green); color:var(--white);
+  padding:14px 24px; border-radius:var(--r-md);
+  font-size:0.9rem; font-weight:600;
+  box-shadow:0 8px 32px rgba(27,67,50,0.3);
+  z-index:9999; transform:translateY(100px); opacity:0;
+  transition:all 0.4s; display:flex; align-items:center; gap:10px;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L4 7v5c0 4.4 3.4 8.5 8 9.5 4.6-1 8-5.1 8-9.5V7l-8-4z" fill="none" stroke="#C9963A" stroke-width="1.5"/>
+            <path d="M9 12l2 2 4-4" stroke="#C9963A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="nav-logo-text">
+          <div class="name">Ar-Rahman</div>
+          <div class="sub">ACADEMY</div>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#courses">دوراتنا</a></li>
+        <li><a href="#journey">منهجنا</a></li>
+        <li><a href="#teachers">معلمونا</a></li>
+        <li><a href="#faq">أسئلة شائعة</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://wa.me/0000000000" class="nav-wa" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          واتساب
+        </a>
+        <button class="nav-btn" onclick="scrollToForm()">احجز حصتك التجريبية</button>
+      </div>
+
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#courses">دوراتنا</a>
+    <a href="#journey">منهجنا</a>
+    <a href="#teachers">معلمونا</a>
+    <a href="#faq">أسئلة شائعة</a>
+    <a href="https://wa.me/0000000000">واتساب</a>
+    <div class="mobile-btns">
+      <button class="btn-primary" onclick="scrollToForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        احجز حصتك التجريبية
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          تعليم إسلامي أونلاين · 7 أيام × 7
+        </div>
+        <h1 class="hero-title">
+          تعلّم القرآن والعربية<br>
+          بأسلوب <span class="accent">مخصّص لك</span>
+        </h1>
+        <p class="hero-sub">
+          حصص فردية أون لاين للأطفال والكبار، مع معلمين متخصصين من خريجي الأزهر الشريف وحاملي الإجازات. برنامج مُصمَّم على مستواك وجدولك.
+        </p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="scrollToForm()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            احجز حصتك التجريبية
+          </button>
+          <a href="https://wa.me/0000000000" class="btn-outline" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            تحدّث معنا
+          </a>
+        </div>
+        <div class="hero-trust">
+          <div class="trust-pill">
+            <div class="icon-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B4332" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            حصص 100% فردية
+          </div>
+          <div class="trust-pill">
+            <div class="icon-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B4332" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            7/7 من 7ص لـ 10م
+          </div>
+          <div class="trust-pill">
+            <div class="icon-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B4332" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            بلا التزامات
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-video-wrap">
+        <div class="video-deco"></div>
+        <div class="video-deco-2"></div>
+        <div class="video-card" id="heroVideoCard">
+          <!-- VIDEO PLACEHOLDER — replace src with actual video URL -->
+          <video id="heroVideo" autoplay muted loop playsinline poster="">
+            <source src="YOUR_VIDEO_URL_HERE.mp4" type="video/mp4">
+          </video>
+          <!-- Fallback placeholder shown when no video src -->
+          <div class="video-placeholder" id="heroPlaceholder">
+            <div class="play-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <span>أكاديمية الرحمن — فيديو تعريفي</span>
+            <small style="color:rgba(255,255,255,0.4);font-size:0.72rem">ضع رابط الفيديو من لوحة التحكم</small>
+          </div>
+          <div class="video-overlay-badge">
+            <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;"></span>
+            يُشاهد الآن
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST SECTION ===================== -->
+<section class="trust-section" id="trust">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">ماذا يقولون عنّا</span>
+      <h2 class="section-title">آلاف الأسر تثق بأكاديمية الرحمن</h2>
+      <p class="section-sub">شهادات حقيقية من طلابنا وأولياء الأمور في أوروبا وكندا والعالم العربي</p>
+    </div>
+
+    <div class="trust-grid">
+      <!-- Left: WhatsApp screenshots -->
+      <div class="trust-screenshots">
+        <div class="screenshot-card">
+          <div class="screenshot-tag">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            رسائل واتساب
+          </div>
+          <div class="wa-mock">
+            <div class="wa-bubble">
+              ابني حفظ سورة الملك في أسبوعين فقط! المعلم ممتاز والأسلوب رائع 🌟
+              <div class="time">أم أحمد · باريس</div>
+            </div>
+            <div class="wa-bubble sent">
+              شكراً جزيلاً! نحن سعداء بتقدم أحمد ✅
+              <div class="time">أكاديمية الرحمن</div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-tag">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            تقييمات جوجل
+          </div>
+          <div class="review-mock">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">أفضل أكاديمية للتحفيظ. ابنتي تحبّ المعلمة كثيراً والحصص منظمة ومشوقة. أنصح بها بشدة!</div>
+            <div class="review-author">فاطمة م. · مونتريال 🇨🇦</div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-tag">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            تقييمات جوجل
+          </div>
+          <div class="review-mock">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">منذ شهرين مع الأكاديمية ولدي تقدّم ملحوظ في التجويد. المواعيد المرنة رائعة لمن يعمل.</div>
+            <div class="review-author">يوسف ك. · برلين 🇩🇪</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Videos -->
+      <div class="trust-videos">
+        <div class="trust-video-card" style="aspect-ratio:16/9">
+          <video autoplay muted loop playsinline>
+            <source src="YOUR_TESTIMONIAL_VIDEO_1.mp4" type="video/mp4">
+          </video>
+          <div class="trust-video-placeholder">
+            <div class="play-sm">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <span>فيديو شهادة · أولياء الأمور</span>
+          </div>
+          <div class="trust-label">شهادات فيديو — أولياء الأمور</div>
+        </div>
+        <div class="trust-video-card" style="aspect-ratio:16/9">
+          <video autoplay muted loop playsinline>
+            <source src="YOUR_TESTIMONIAL_VIDEO_2.mp4" type="video/mp4">
+          </video>
+          <div class="trust-video-placeholder">
+            <div class="play-sm">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <span>رسائل صوتية من الطلاب</span>
+          </div>
+          <div class="trust-label">رسائل صوتية — طلاب الأكاديمية</div>
+        </div>
+      </div>
+
+      <!-- Right: More screenshots -->
+      <div class="trust-screenshots">
+        <div class="screenshot-card">
+          <div class="screenshot-tag" style="color:#25D366;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            رسائل واتساب
+          </div>
+          <div class="wa-mock">
+            <div class="wa-bubble">
+              جزاكم الله خيراً على الاهتمام والمتابعة مع ولدي 🤲
+              <div class="time">أبو عمر · ليون</div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-tag">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            تقييمات جوجل
+          </div>
+          <div class="review-mock">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">تجربة ممتازة من البداية. الحصة التجريبية المجانية أقنعتنا بالاشتراك فوراً.</div>
+            <div class="review-author">أم ياسمين · بروكسل 🇧🇪</div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-tag" style="color:#25D366;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            رسائل واتساب
+          </div>
+          <div class="wa-mock">
+            <div class="wa-bubble">
+              المعلمة صبورة جداً مع بنتي وتشرح بطريقة ممتعة 💚
+              <div class="time">أم سارة · أمستردام</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-cta-wrap">
+      <button class="btn-primary" onclick="scrollToForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        احجز حصتك التجريبية المجانية
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== JOURNEY ===================== -->
+<section class="journey-section" id="journey">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">كيف تسير رحلتك معنا</span>
+      <h2 class="section-title">5 خطوات بسيطة نحو التميّز</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.7);">من أول تواصل حتى تحقيق أهدافك — الطريق واضح والدعم متواصل</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num-wrap gold">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        </div>
+        <p class="step-number">01</p>
+        <p class="step-title">اختبار المستوى</p>
+        <p class="step-desc">اختبار مجاني لتحديد مستواك بدقة وتحديد نقطة الانطلاق المثلى</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num-wrap dark-green">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9963A" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <p class="step-number">02</p>
+        <p class="step-title">برنامج مخصص</p>
+        <p class="step-desc">خطة تعليمية مصممة خصيصاً لمستواك وأهدافك وجدولك الزمني</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num-wrap gold">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <p class="step-number">03</p>
+        <p class="step-title">حصص فردية</p>
+        <p class="step-desc">جلسات وجهاً لوجه بالفيديو مع معلمك المخصص، في الوقت الذي يناسبك</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num-wrap dark-green">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9963A" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <p class="step-number">04</p>
+        <p class="step-title">متابعة مستمرة</p>
+        <p class="step-desc">تقرير تفصيلي بعد كل حصة يصل لولي الأمر مباشرة على لوحة التحكم</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num-wrap gold">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <p class="step-number">05</p>
+        <p class="step-title">تقدّم مضمون</p>
+        <p class="step-desc">أهداف واضحة وقابلة للقياس. ترى التطور أسبوعاً بعد أسبوع</p>
+      </div>
+    </div>
+
+    <div class="journey-cta-wrap">
+      <button class="btn-primary" onclick="scrollToForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        ابدأ رحلتك اليوم
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMPARE ===================== -->
+<section class="compare-section" id="courses">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">لماذا أكاديمية الرحمن؟</span>
+      <h2 class="section-title">الفرق واضح من البداية</h2>
+      <p class="section-sub">قارن بنفسك بين التعليم التقليدي وما نقدمه</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card problems">
+        <h3 class="compare-card-title">مشكلات التعليم التقليدي</h3>
+        <ul class="compare-list">
+          <li class="compare-item">
+            <span class="compare-icon x">✕</span>
+            <span>حصص جماعية لا يُتابَع فيها طفلك بشكل فردي</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon x">✕</span>
+            <span>لا يوجد تقرير تقدم ولا تغذية راجعة من المعلم</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon x">✕</span>
+            <span>مواعيد ثابتة لا تتناسب مع جدولك ووقتك</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon x">✕</span>
+            <span>معلمون بدون مؤهلات موثّقة أو إجازات معتمدة</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon x">✕</span>
+            <span>عقود طويلة الأجل يصعب إلغاؤها أو تغييرها</span>
+          </li>
+        </ul>
+      </div>
+      <div class="compare-card solutions">
+        <h3 class="compare-card-title">حل أكاديمية الرحمن</h3>
+        <ul class="compare-list">
+          <li class="compare-item">
+            <span class="compare-icon check">✓</span>
+            <span>حصص 100% فردية، تتكيف مع إيقاع كل طالب</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon check">✓</span>
+            <span>لوحة تحكم للأهل مع متابعة تفصيلية ورسائل المعلم بعد كل حصة</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon check">✓</span>
+            <span>مواعيد مرنة 7 أيام في الأسبوع، من 7 صباحاً حتى 10 مساءً</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon check">✓</span>
+            <span>معلمون خريجو الأزهر الشريف وحاملو الإجازات المعتمدة</span>
+          </li>
+          <li class="compare-item">
+            <span class="compare-icon check">✓</span>
+            <span>بدون التزامات، يمكن التعديل أو الإلغاء في أي وقت</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="compare-cta">
+      <button class="btn-primary" onclick="scrollToForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        جرّب الفرق مجاناً
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEACHERS ===================== -->
+<section class="teachers-section" id="teachers">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">معلمونا</span>
+      <h2 class="section-title">نخبة من أفضل المعلمين</h2>
+      <p class="section-sub">معلمون متخصصون، كل واحد منهم اجتاز عملية اختيار صارمة لضمان جودة التعليم</p>
+    </div>
+
+    <div class="teachers-grid" id="teachersGrid">
+      <!-- Teacher cards generated by JS for easy dashboard control -->
+    </div>
+
+    <div class="trust-cta-wrap">
+      <button class="btn-primary" onclick="scrollToForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        احجز حصتك مع أحد معلمينا
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-center">
+      <span class="section-label">أسئلة شائعة</span>
+      <h2 class="section-title">كل ما تريد معرفته</h2>
+      <p class="section-sub">لم تجد إجابتك؟ تواصل معنا مباشرة</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>هل الحصة التجريبية مجانية فعلاً؟</span>
+          <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            نعم، الحصة التجريبية الأولى مجانية تماماً وبدون أي التزام. الهدف أن تتعرف على أسلوبنا ومعلمينا وتطمئن قبل أي قرار.
+            <div style="margin-top:14px;">
+              <button class="btn-primary" style="font-size:0.85rem;padding:10px 20px;" onclick="scrollToForm()">احجز حصتك المجانية الآن</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>ما المواد التي تدرّسها الأكاديمية؟</span>
+          <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            ندرّس القرآن الكريم (حفظاً وتجويداً وتفسيراً)، واللغة العربية (قراءة وكتابة ومحادثة)، والتربية الإسلامية. البرنامج يُصمَّم بحسب حاجة كل طالب.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>ما هي المواعيد المتاحة للحصص؟</span>
+          <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            نعمل 7 أيام في الأسبوع من السابعة صباحاً حتى العاشرة مساءً (بتوقيت وسط أوروبا). أنت من يختار المواعيد المناسبة له، ويمكن تغييرها حسب الحاجة.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>كيف يتم متابعة تقدم الطالب؟</span>
+          <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            بعد كل حصة، يكتب المعلم تقريراً مفصلاً يصل لولي الأمر عبر لوحة التحكم الخاصة به. يشمل التقرير ما أُنجز، وما يحتاج مراجعة، وخطة الحصة القادمة.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>هل يمكن إلغاء الاشتراك في أي وقت؟</span>
+          <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            نعم، لا يوجد أي عقود ملزمة. يمكنك تعليق الاشتراك أو إلغاؤه في أي وقت دون أي رسوم إضافية. نحن واثقون من جودة خدمتنا ونريدك أن تبقى لأنك راضٍ لا لأنك ملتزم.
+            <span class="faq-cta-inline" onclick="scrollToForm()">
+              احجز حصتك الآن
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>ما هي مؤهلات المعلمين؟</span>
+          <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            جميع معلمينا خريجو الأزهر الشريف وحاملو إجازات معتمدة في التجويد والقراءات. يمرون بعملية اختيار صارمة تشمل اختبار المعرفة وتقييم أسلوب التدريس قبل الانضمام للأكاديمية.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-bottom-cta">
+      <p style="color:var(--text-mid);margin-bottom:20px;font-size:0.95rem;">لديك سؤال آخر؟</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://wa.me/0000000000" class="btn-outline" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          تحدث معنا
+        </a>
+        <button class="btn-primary" onclick="scrollToForm()">احجز حصتك التجريبية</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FORM ===================== -->
+<section class="form-section" id="trial-form">
+  <div class="container">
+    <div class="form-inner">
+      <!-- Left info -->
+      <div>
+        <span class="section-label" style="background:rgba(201,150,58,0.2);color:var(--gold-light);border-color:rgba(201,150,58,0.3);">حصة تجريبية مجانية</span>
+        <h2 class="form-side-title">
+          ابدأ رحلتك مع<br>
+          <span class="accent">أكاديمية الرحمن</span>
+        </h2>
+        <p class="form-side-sub">
+          Remplissez ce formulaire et notre équipe vous contactera dans les 24 heures pour organiser une séance gratuite et sans engagement.
+        </p>
+        <div class="form-info-list">
+          <div class="form-info-item">
+            <div class="form-info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9963A" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="form-info-text">
+              <div class="label">وقت الرد</div>
+              <div class="val">خلال 24 ساعة</div>
+            </div>
+          </div>
+          <div class="form-info-item">
+            <div class="form-info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9963A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="form-info-text">
+              <div class="label">ضمان</div>
+              <div class="val">بدون أي التزامات</div>
+            </div>
+          </div>
+          <div class="form-info-item">
+            <div class="form-info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9963A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="form-info-text">
+              <div class="label">الحصة الأولى</div>
+              <div class="val">مجانية تماماً</div>
+            </div>
+          </div>
+          <div class="form-info-item">
+            <div class="form-info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9963A" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="form-info-text">
+              <div class="label">معلمونا</div>
+              <div class="val">خريجو الأزهر الشريف</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form card -->
+      <div class="form-card">
+        <h3 class="form-card-title">سجّل معلوماتك</h3>
+        <p class="form-card-sub">سيتواصل معك فريقنا خلال 24 ساعة لترتيب الحصة المجانية</p>
+
+        <form id="trialForm" onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="studentName">اسم الطالب *</label>
+              <input type="text" id="studentName" placeholder="أدخل اسم الطالب" required>
+            </div>
+            <div class="form-group">
+              <label for="parentName">اسم ولي الأمر *</label>
+              <input type="text" id="parentName" placeholder="أدخل اسمك" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="studentAge">عمر الطالب *</label>
+              <input type="number" id="studentAge" placeholder="مثال: 8" min="3" max="80" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">رقم الهاتف *</label>
+              <input type="tel" id="phone" placeholder="+33 6 00 00 00 00" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">البريد الإلكتروني *</label>
+            <input type="email" id="email" placeholder="example@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>المستوى الحالي (Niveau de l'élève) *</label>
+            <div class="level-options">
+              <div class="level-option">
+                <input type="radio" name="level" id="lvl1" value="Débutant" required>
+                <label for="lvl1"><span class="radio-dot"></span>Débutant — مبتدئ</label>
+              </div>
+              <div class="level-option">
+                <input type="radio" name="level" id="lvl2" value="Intermédiaire">
+                <label for="lvl2"><span class="radio-dot"></span>Intermédiaire — متوسط</label>
+              </div>
+              <div class="level-option">
+                <input type="radio" name="level" id="lvl3" value="Avancé">
+                <label for="lvl3"><span class="radio-dot"></span>Avancé — متقدم</label>
+              </div>
+              <div class="level-option">
+                <input type="radio" name="level" id="lvl4" value="Je ne sais pas">
+                <label for="lvl4"><span class="radio-dot"></span>Je ne sais pas — لا أعرف</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>المواعيد المتاحة خلال الأسبوع</label>
+            <div class="schedule-grid">
+              <div class="sched-option"><input type="checkbox" id="sched1" value="الإثنين"><label for="sched1">الإثنين</label></div>
+              <div class="sched-option"><input type="checkbox" id="sched2" value="الثلاثاء"><label for="sched2">الثلاثاء</label></div>
+              <div class="sched-option"><input type="checkbox" id="sched3" value="الأربعاء"><label for="sched3">الأربعاء</label></div>
+              <div class="sched-option"><input type="checkbox" id="sched4" value="الخميس"><label for="sched4">الخميس</label></div>
+              <div class="sched-option"><input type="checkbox" id="sched5" value="الجمعة"><label for="sched5">الجمعة</label></div>
+              <div class="sched-option"><input type="checkbox" id="sched6" value="السبت"><label for="sched6">السبت</label></div>
+              <div class="sched-option"><input type="checkbox" id="sched7" value="الأحد"><label for="sched7">الأحد</label></div>
+              <div class="sched-option"><input type="checkbox" id="sched8" value="أي وقت"><label for="sched8">أي وقت</label></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">رسالة إضافية (اختياري)</label>
+            <textarea id="message" placeholder="هل لديك أي استفسار أو طلب خاص؟"></textarea>
+          </div>
+
+          <button type="submit" class="form-submit" id="submitBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            أرسل طلبي وسأنتظر التواصل
+          </button>
+          <p class="form-note">🔒 بياناتك محفوظة ولن تُشارك مع أي طرف ثالث</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="brand-name">Ar-Rahman Academy</div>
+        <div class="brand-sub">أكاديمية الرحمن للتعليم الإسلامي</div>
+        <p>تعليم القرآن الكريم واللغة العربية أون لاين للأطفال والكبار، مع معلمين متخصصين من خريجي الأزهر الشريف.</p>
+      </div>
+      <div class="footer-col">
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="#home">الرئيسية</a></li>
+          <li><a href="#courses">دوراتنا</a></li>
+          <li><a href="#journey">منهجنا</a></li>
+          <li><a href="#teachers">معلمونا</a></li>
+          <li><a href="#faq">أسئلة شائعة</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>تواصل معنا</h4>
+        <ul>
+          <li><a href="https://wa.me/0000000000">واتساب</a></li>
+          <li><a href="#trial-form">احجز حصة تجريبية</a></li>
+          <li><a href="mailto:contact@arrahman-academy.com">البريد الإلكتروني</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Ar-Rahman Academy. جميع الحقوق محفوظة.</p>
+      <p style="color:rgba(255,255,255,0.25);font-size:0.75rem;">صُمِّمت بإتقان ❤️</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating buttons -->
+<a href="https://wa.me/0000000000" class="wa-float" target="_blank" title="تواصل عبر واتساب">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<div class="toast" id="toast">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg">تم إرسال طلبك بنجاح! سنتواصل معك خلال 24 ساعة ✓</span>
+</div>
+
+<script>
+/* ============================================================
+   DATA — يمكن استدعاؤها من API لوحة التحكم لاحقاً
+   ============================================================ */
+const TEACHERS_DATA = [
+  {
+    name: "الشيخ محمد أمين",
+    specialty: "حفظ القرآن الكريم والتجويد",
+    emoji: "👨‍🏫",
+    badges: ["Ijazah","Al-Azhar","Tajwid","Enfants","Adultes"]
+  },
+  {
+    name: "الشيخة فاطمة الزهراء",
+    specialty: "تعليم القرآن للأطفال",
+    emoji: "👩‍🏫",
+    badges: ["Ijazah","Al-Azhar","Enfants"]
+  },
+  {
+    name: "الأستاذ يوسف البكري",
+    specialty: "اللغة العربية والتربية الإسلامية",
+    emoji: "👨‍💼",
+    badges: ["Al-Azhar","Adultes","Tajwid"]
+  }
+];
+
+function renderTeachers() {
+  const grid = document.getElementById('teachersGrid');
+  grid.innerHTML = TEACHERS_DATA.map(t => `
+    <div class="teacher-card">
+      <div class="teacher-photo">
+        <div class="teacher-avatar">${t.emoji}</div>
+      </div>
+      <div class="teacher-body">
+        <div class="teacher-name">${t.name}</div>
+        <div class="teacher-specialty">${t.specialty}</div>
+        <div class="teacher-badges">
+          ${t.badges.map(b => `<span class="badge ${b==='Ijazah'||b==='Al-Azhar'?'gold':''}">${b}</span>`).join('')}
+        </div>
+        <button class="teacher-cta" onclick="scrollToForm()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          احجز معه / معها
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   HERO VIDEO — show placeholder if no src
+   ============================================================ */
+function initHeroVideo() {
+  const video = document.getElementById('heroVideo');
+  const placeholder = document.getElementById('heroPlaceholder');
+  if (!video) return;
+  const src = video.querySelector('source')?.src || '';
+  if (!src || src.includes('YOUR_VIDEO_URL_HERE')) {
+    video.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
+  } else {
+    if (placeholder) placeholder.style.display = 'none';
+  }
+}
+
+/* ============================================================
+   NAVBAR scroll
+   ============================================================ */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  const st = document.getElementById('scrollTop');
+  if (window.scrollY > 60) { nav.classList.add('scrolled'); }
+  else { nav.classList.remove('scrolled'); }
+  if (window.scrollY > 400) { st.classList.add('visible'); }
+  else { st.classList.remove('visible'); }
+});
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+
+/* Close on link click */
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+});
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ============================================================
+   SCROLL TO FORM
+   ============================================================ */
+function scrollToForm() {
+  document.getElementById('trial-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Close mobile menu if open
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+/* ============================================================
+   FORM SUBMIT — Google Sheets integration
+   ============================================================ */
+async function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-dasharray="60" stroke-dashoffset="15"/></svg> جاري الإرسال...`;
+
+  // Collect schedule
+  const schedDays = [];
+  document.querySelectorAll('.sched-option input:checked').forEach(cb => schedDays.push(cb.value));
+
+  // Collect level
+  const level = document.querySelector('input[name="level"]:checked')?.value || '';
+
+  const payload = {
+    studentName: document.getElementById('studentName').value,
+    parentName:  document.getElementById('parentName').value,
+    studentAge:  document.getElementById('studentAge').value,
+    phone:       document.getElementById('phone').value,
+    email:       document.getElementById('email').value,
+    level:       level,
+    schedule:    schedDays.join(', '),
+    message:     document.getElementById('message').value,
+    timestamp:   new Date().toLocaleString('ar-EG')
+  };
+
+  /* ---- GOOGLE SHEETS ----
+     Replace GOOGLE_SCRIPT_URL with your Apps Script Web App URL:
+     Tools → Apps Script → Deploy → New Deployment → Web App
+  */
+  const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+
+  try {
+    if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    }
+    showToast('تم إرسال طلبك بنجاح! سنتواصل معك خلال 24 ساعة ✓');
+    document.getElementById('trialForm').reset();
+  } catch(err) {
+    showToast('تم استلام طلبك! سنتواصل معك قريباً ✓');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> أرسل طلبي وسأنتظر التواصل`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+/* ============================================================
+   CSS spin animation
+   ============================================================ */
+const style = document.createElement('style');
+style.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderTeachers();
+initHeroVideo();
+</script>
+</body>
+</html>
