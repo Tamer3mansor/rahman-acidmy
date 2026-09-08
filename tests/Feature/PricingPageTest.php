@@ -102,7 +102,7 @@ class PricingPageTest extends TestCase
 
         $user = User::factory()->create();
 
-        foreach (['/admin/pricing-packages', '/admin/pricing-perks'] as $url) {
+        foreach (['/admin/pricing-packages', '/admin/pricing-packages/create', '/admin/pricing-perks'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
     }

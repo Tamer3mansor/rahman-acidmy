@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحصص والنماذج المجانية - اقرأ أونلاين</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black text-teal-600">اقرأ <span class="text-amber-500">أونلاين</span></a>
+            <nav class="hidden md:flex space-x-8 space-x-reverse font-semibold text-slate-600">
+                <a href="kids.html" class="hover:text-teal-600 transition">قسم الأطفال 👧</a>
+                <a href="adults.html" class="hover:text-teal-600 transition">قسم الكبار 👨‍💼</a>
+                <a href="free-lessons.html" class="text-teal-600 border-b-2 border-teal-600 pb-1">حصص ونماذج مجانية 🎁</a>
+            </nav>
+            <a href="kids.html#courses" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2.5 rounded-full font-bold shadow-md transition">
+                احجز حصتك 🎯
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO Section -->
+    <section class="bg-gradient-to-b from-teal-50 via-slate-50 to-slate-50 py-12 md:py-16 border-b border-slate-100">
+        <div class="max-w-4xl mx-auto px-4 text-center space-y-4">
+            <span class="inline-block bg-teal-100 text-teal-800 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full">
+                🎁 نماذج وشروحات مجانية
+            </span>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight">
+                استكشف طريقة الشرح وجودة التعليم بنفسك
+            </h1>
+            <p class="text-slate-600 text-base md:text-lg max-w-2xl mx-auto">
+                مجموعة من النماذج والحصص المصغرة تشرح مفاهيم التجويد والقراءة واللغة العربية بأسلوب مبسط مدعوم بالصوت والصور.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+            <button class="bg-teal-600 text-white font-bold px-5 py-2 rounded-xl text-sm shadow-sm">الكل</button>
+            <button class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-semibold px-5 py-2 rounded-xl text-sm transition">👶 قسم الأطفال</button>
+            <button class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-semibold px-5 py-2 rounded-xl text-sm transition">👨‍💼 قسم الكبار</button>
+            <button class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-semibold px-5 py-2 rounded-xl text-sm transition">✨ تجويد وتلاوة</button>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Lesson Card 1 -->
+            <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col">
+                <div class="relative h-48 bg-slate-200 overflow-hidden">
+                    <img src="https://picsum.photos/600/400?random=1" alt="غلاف الحصة" class="w-full h-full object-cover">
+                    <span class="absolute top-3 right-3 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                        👶 كورس تأسيس البراعم
+                    </span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-400">
+                            <span>⏱️ وقت القراءة: 4 دقائق</span>
+                            <span>🎧 يتضمن ملف صوتي</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 hover:text-teal-600 transition">
+                            كيف تنطق حروف المد الثلاثة بطريقة سهلة مع طفلك؟
+                        </h3>
+                        <p class="text-slate-600 text-sm line-clamp-2">
+                            شرح ميسر بالصوت والأمثلة البصرية لتعليم الطفل الفرق بين الفتحة والألف، الضمة والواو، والكسرة والياء.
+                        </p>
+                    </div>
+                    <a href="lesson-details.html?id=1" class="block w-full text-center bg-teal-50 hover:bg-teal-600 hover:text-white text-teal-700 font-bold py-3 rounded-xl transition">
+                        استعرض الحصة الكاملة ⬅️
+                    </a>
+                </div>
+            </article>
+
+            <!-- Lesson Card 2 -->
+            <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col">
+                <div class="relative h-48 bg-slate-200 overflow-hidden">
+                    <img src="https://picsum.photos/600/400?random=2" alt="غلاف الحصة" class="w-full h-full object-cover">
+                    <span class="absolute top-3 right-3 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                        👨‍💼 دورة التجويد للكبار
+                    </span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-400">
+                            <span>⏱️ وقت القراءة: 7 دقائق</span>
+                            <span>🎧 تطبيق تلاوة ممرسة</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 hover:text-teal-600 transition">
+                            شرح أحكام النون الساكنة والتنوين - الإظهار الحلقي
+                        </h3>
+                        <p class="text-slate-600 text-sm line-clamp-2">
+                            نموذج عملي يوضح حروف الإظهار الستة وكيفية تطبيق الحكم أثناء قراءة السور مع استماع للنموذج الصوتي.
+                        </p>
+                    </div>
+                    <a href="lesson-details.html?id=2" class="block w-full text-center bg-teal-50 hover:bg-teal-600 hover:text-white text-teal-700 font-bold py-3 rounded-xl transition">
+                        استعرض الحصة الكاملة ⬅️
+                    </a>
+                </div>
+            </article>
+
+            <!-- Lesson Card 3 -->
+            <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col">
+                <div class="relative h-48 bg-slate-200 overflow-hidden">
+                    <img src="https://picsum.photos/600/400?random=3" alt="غلاف الحصة" class="w-full h-full object-cover">
+                    <span class="absolute top-3 right-3 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                        👧 كورس اللغة العربية
+                    </span>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-400">
+                            <span>⏱️ وقت القراءة: 5 دقائق</span>
+                            <span>🖼️ بطاقات تعليمية</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 hover:text-teal-600 transition">
+                            أذكار الصباح والمساء للأطفال مع التفسير الميسر
+                        </h3>
+                        <p class="text-slate-600 text-sm line-clamp-2">
+                            بطاقات تفاعلية وشرح لطيف لمعاني الأذكار اليومية وكيف نغرسها في سلوك الطفل اليومي.
+                        </p>
+                    </div>
+                    <a href="lesson-details.html?id=3" class="block w-full text-center bg-teal-50 hover:bg-teal-600 hover:text-white text-teal-700 font-bold py-3 rounded-xl transition">
+                        استعرض الحصة الكاملة ⬅️
+                    </a>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm border-t border-slate-800">
+        <p>© 2026 جميع الحقوق محفوظة - منصة تعليم القرآن أونلاين للأطفال والكبار</p>
+    </footer>
+
+</body>
+</html>

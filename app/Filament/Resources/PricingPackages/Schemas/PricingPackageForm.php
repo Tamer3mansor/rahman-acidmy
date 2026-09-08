@@ -73,9 +73,14 @@ class PricingPackageForm
                             ->reorderableWithButtons()
                             ->collapsible()
                             ->afterStateHydrated(function (Repeater $component, ?array $state): void {
-                                if ($state !== null) {
-                                    $component->state(array_map(fn (string $feature) => ['feature' => $feature], $state));
+                                if ($state === null) {
+                                    return;
                                 }
+
+                                $component->state(array_map(
+                                    fn (string|array $item) => is_array($item) ? $item : ['feature' => $item],
+                                    $state,
+                                ));
                             })
                             ->dehydrateStateUsing(fn (?array $state): array => array_column($state ?? [], 'feature'))
                             ->columnSpanFull(),

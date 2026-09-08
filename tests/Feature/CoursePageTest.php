@@ -147,6 +147,7 @@ class CoursePageTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)->get('/admin/courses')->assertOk();
+        $this->actingAs($user)->get('/admin/courses/create')->assertOk();
         $this->actingAs($user)->get('/admin/courses/1/edit')->assertOk();
         $this->actingAs($user)->get('/admin/course-page-settings')->assertOk();
     }
