@@ -46,7 +46,7 @@
     {{-- Organization Schema --}}
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
+        "@@context": "https://schema.org",
         "@type": "EducationalOrganization",
         "name": "Ar-Rahman Academy",
         "alternateName": "Académie Ar-Rahman",
