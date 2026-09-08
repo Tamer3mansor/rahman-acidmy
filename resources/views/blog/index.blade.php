@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 
-@section('title', 'Blog - Articles et conseils éducatifs | ' . $settings->footer_brand_name)
+@section('title', 'Blog islamique - Coran, Tajwid et arabe | Ar-Rahman Academy')
 
-@section('meta_description', 'Votre guide complet pour la mémorisation du Coran et l\'apprentissage de la langue arabe pour enfants et adultes avec des méthodes modernes.')
+@section('description', 'Blog islamique | Ar-Rahman Academy. Articles sur l\'apprentissage du Coran, le Tajwid, la langue arabe et l\'éducation islamique.')
 
 @section('bodyClass', 'pattern-bg')
 

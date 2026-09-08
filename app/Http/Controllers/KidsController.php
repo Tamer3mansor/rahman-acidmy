@@ -25,6 +25,7 @@ class KidsController extends Controller
             'pageSettings' => $pageSettings,
             'courses' => $courses,
             'whatsappPhone' => $this->resolveWhatsAppPhone($pageSettings->kids_wa_url),
+            'isIndexed' => $pageSettings->is_indexed,
         ]);
     }
 

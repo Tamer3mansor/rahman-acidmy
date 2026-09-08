@@ -61,7 +61,7 @@ class PricingPageTest extends TestCase
 
         $this->get('/price')
             ->assertOk()
-            ->assertSee('data-wa-phone="0000000000"', false);
+            ->assertSee('data-wa-phone="201028268553"', false);
     }
 
     public function test_pricing_model_calculations(): void

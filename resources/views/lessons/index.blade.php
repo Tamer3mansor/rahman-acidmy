@@ -2,7 +2,7 @@
 
 @section('title', 'Leçons gratuites - Exemples et explications | ' . $settings->footer_brand_name)
 
-@section('meta_description', 'Découvrez notre méthode d\'explication et la qualité de notre enseignement : des leçons et des exemples gratuits de tajwid, de lecture et de langue arabe, simplifiés avec l\'audio et les visuels.')
+@section('description', 'Leçons gratuites de Coran, Tajwid et langue arabe en ligne. Découvrez notre méthode d\'enseignement avec des exemples et explications simplifiés pour enfants et adultes.')
 
 @section('bodyClass', 'pattern-bg')
 

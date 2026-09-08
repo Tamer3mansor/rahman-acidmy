@@ -1,5 +1,9 @@
 @extends('layouts.landing')
 
+@section('title', $settings->meta_title ?: 'Ar-Rahman Academy | Cours de Coran et arabe en ligne')
+
+@section('description', $settings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants et adultes. Enseignants diplômés Al-Azhar, cours particuliers 7j/7. Séance d\'essai gratuite sans engagement.')
+
 @section('content')
 
     @include('landing.partials.nav')

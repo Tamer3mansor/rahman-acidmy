@@ -42,7 +42,7 @@ class LandingPageSettingsTest extends TestCase
         $this->assertSame('Ar-Rahman', $settings->header_brand_name);
         $this->assertSame('ACADEMY', $settings->header_brand_sub);
         $this->assertSame('WhatsApp', $settings->header_btn1_title);
-        $this->assertSame('https://wa.me/0000000000', $settings->header_btn1_url);
+        $this->assertSame('https://wa.me/201028268553', $settings->header_btn1_url);
         $this->assertSame('Réservez votre essai gratuit', $settings->header_btn2_title);
         $this->assertSame('#trial-form', $settings->header_btn2_url);
         $this->assertSame('video', $settings->hero_media_type->value);

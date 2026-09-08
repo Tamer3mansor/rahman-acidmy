@@ -8,7 +8,7 @@
 
 @section('title', $post->title . ' - ' . $settings->footer_brand_name)
 
-@section('meta_description', $post->excerpt)
+@section('description', $post->excerpt)
 
 @section('bodyClass', 'pattern-bg')
 
@@ -25,11 +25,6 @@
 
     {{-- Structured data (SEO) --}}
     @section('head')
-        <link rel="canonical" href="{{ $currentUrl }}">
-        <meta property="og:type" content="article">
-        <meta property="og:title" content="{{ $post->title }}">
-        <meta property="og:description" content="{{ $post->excerpt }}">
-        <meta property="og:url" content="{{ $currentUrl }}">
         @if ($post->cover_image_url)
             <meta property="og:image" content="{{ $post->cover_image_url }}">
         @endif

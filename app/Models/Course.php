@@ -33,6 +33,11 @@ class Course extends Model
         'faqs',
         'is_active',
         'sort_order',
+        'meta_title',
+        'meta_description',
+        'og_image',
+        'schema_type',
+        'is_indexed',
     ];
 
     protected $casts = [
@@ -47,6 +52,7 @@ class Course extends Model
         'faqs' => 'array',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'is_indexed' => 'boolean',
     ];
 
     #[Scope]

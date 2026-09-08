@@ -65,6 +65,7 @@ class LandingController extends Controller
             'teachers' => $teachers,
             'faqs' => $faqs,
             'formInfos' => $formInfos,
+            'isIndexed' => $settings->is_indexed,
         ]);
     }
 

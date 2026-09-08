@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 
-@section('title', 'Cours des adultes - Coran, Tajwid et arabe | ' . $settings->footer_brand_name)
+@section('title', $pageSettings->meta_title ?: 'Cours de Coran et Tajwid pour adultes en ligne | Ar-Rahman Academy')
 
-@section('meta_description', $pageSettings->adults_subtitle)
+@section('description', $pageSettings->meta_description ?: 'Cours de Coran, Tajwid et arabe pour adultes. Apprentissage personnalisé, horaires flexibles 7j/7, enseignants diplômés Al-Azhar avec Ijazah.')
 
 @section('bodyClass', '')
 
@@ -10,7 +10,54 @@
     @vite(['resources/css/courses.css'])
 @endsection
 
+@section('head')
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "{{ config('seo.url') }}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Cours adultes",
+                "item": "{{ config('seo.url') }}/adultes"
+            }
+        ]
+    }
+    </script>
+@endsection
+
 @section('content')
+
+    @php
+        $adultsFaqs = [
+            ['q' => 'Puis-je apprendre le Coran à mon rythme ?', 'a' => 'Oui. Après une évaluation initiale, l\'enseignant établit un plan d\'étude personnalisé, adapté à votre niveau, vos objectifs et votre emploi du temps.'],
+            ['q' => 'Les cours pour adultes sont-ils individuels ?', 'a' => 'Oui, les cours sont 100% particuliers : vous travaillez seul avec un enseignant (homme) ou une enseignante (femme), selon votre préférence.'],
+            ['q' => 'Y a-t-il un engagement ou un contrat ?', 'a' => 'Non. Sans contrat ni frais d\'annulation : vous pouvez modifier ou annuler vos cours à tout moment.'],
+            ['q' => 'Comment se déroule la correction de la récitation (Tajwid) ?', 'a' => 'L\'enseignant écoute votre récitation, corrige les erreurs lettre par lettre et applique les règles de Tajwid de façon progressive et pratique.'],
+            ['q' => 'Quelles sont les qualifications des enseignants ?', 'a' => 'Tous nos enseignants sont diplômés de l\'Al-Azhar et titulaires d\'Ijazah certifiées en Tajwid, avec une expérience confirmée dans l\'enseignement des adultes.'],
+        ];
+
+        $adultsWhyUs = [
+            ['icon' => '👨‍🏫', 'title' => 'Enseignants Al-Azhar', 'description' => 'Diplômés de l\'Al-Azhar et titulaires d\'Ijazah, avec une expérience confirmée dans l\'enseignement des adultes.'],
+            ['icon' => '🕰️', 'title' => 'Horaires flexibles', 'description' => 'Cours disponibles 7 jours sur 7, de 7h à 22h, avec la possibilité de les déplacer gratuitement à tout moment.'],
+            ['icon' => '🎯', 'title' => 'Plan personnalisé', 'description' => 'Un programme d\'étude sur mesure, établi après évaluation de votre niveau, pour progresser efficacement vers votre objectif.'],
+            ['icon' => '📊', 'title' => 'Suivi continu', 'description' => 'Une évaluation régulière de votre progression avec des objectifs clairs à chaque étape de votre parcours.'],
+        ];
+
+        $adultsSteps = [
+            ['title' => 'Réservez votre essai', 'description' => 'Une séance d\'essai gratuite pour découvrir la méthode et rencontrer votre enseignant.'],
+            ['title' => 'Évaluation du niveau', 'description' => 'L\'enseignant évalue votre récitation, votre niveau en arabe et vos objectifs.'],
+            ['title' => 'Plan d\'étude', 'description' => 'Un programme personnalisé est défini : matière, durée, horaires et fréquence des séances.'],
+            ['title' => 'Progression suivie', 'description' => 'Des cours réguliers avec un suivi détaillé de vos acquis et de vos points de progression.'],
+        ];
+    @endphp
 
     @include('landing.partials.nav', [
         'activePage' => 'adults',
@@ -46,6 +93,13 @@
             </div>
         </div>
     </section>
+
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="breadcrumb">
+            <a href="{{ route('home') }}">Accueil</a> /
+            <span aria-current="page">Cours adultes</span>
+        </nav>
+    </div>
 
     <section class="section" id="catalog">
         <div class="container">
@@ -85,6 +139,100 @@
             @else
                 <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">Aucun cours disponible pour le moment.</p>
             @endif
+        </div>
+    </section>
+
+    <section class="section section-white">
+        <div class="container">
+            <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                <span class="section-label">Pourquoi Ar-Rahman Academy</span>
+                <h2 class="section-title">🎯 Pourquoi nous choisir pour apprendre le Coran ?</h2>
+                <p class="section-sub">Une méthode éprouvée, des enseignants qualifiés et une flexibilité totale pour les adultes.</p>
+            </div>
+            <div class="suitability-grid">
+                @foreach ($adultsWhyUs as $feature)
+                    <div class="suitability-item">
+                        <span class="check"><span style="font-size: 1rem;">{{ $feature['icon'] }}</span></span>
+                        <p><strong style="color: var(--green);">{{ $feature['title'] }}.</strong> {{ $feature['description'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                <span class="section-label">Comment ça marche</span>
+                <h2 class="section-title">🚀 Comment se déroule votre parcours</h2>
+                <p class="section-sub">Quatre étapes simples entre vous et votre objectif d'apprentissage du Coran.</p>
+            </div>
+            <div class="journey-steps">
+                @foreach ($adultsSteps as $step)
+                    <div class="step-card">
+                        <div class="journey-step-num {{ $loop->iteration % 2 === 0 ? 'dark-green' : 'gold' }}">{{ $loop->iteration }}</div>
+                        <h4>{{ $step['title'] }}</h4>
+                        <p>{{ $step['description'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-white">
+        <div class="container">
+            <div class="catalog-head section-center">
+                <span class="section-label">Questions fréquentes</span>
+                <h2 class="section-title">❓ Questions fréquentes — Cours adultes</h2>
+                <p class="section-sub">Toutes les réponses aux questions des adultes avant de commencer leur apprentissage.</p>
+            </div>
+
+            <div class="faq-list" style="margin: 0 auto;">
+                @foreach ($adultsFaqs as $faq)
+                    <div class="faq-item">
+                        <div class="faq-question" data-faq-toggle>
+                            <span>{{ $faq['q'] }}</span>
+                            <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                {{ $faq['a'] }}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            @foreach ($adultsFaqs as $faq)
+            {
+                "@type": "Question",
+                "name": @json($faq['q']),
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": @json($faq['a'])
+                }
+            }@if (! $loop->last),@endif
+            @endforeach
+        ]
+    }
+    </script>
+
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="booking-cta">
+                <h2>Commencez votre apprentissage du Coran dès aujourd'hui</h2>
+                <p>Réservez votre séance d'essai gratuite. Votre enseignant vous contactera dans les 24 heures pour évaluer votre niveau et définir votre plan d'étude personnalisé.</p>
+                <div class="booking-btn">
+                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">Réserver ma séance d'essai gratuite</a>
+                </div>
+            </div>
         </div>
     </section>
 

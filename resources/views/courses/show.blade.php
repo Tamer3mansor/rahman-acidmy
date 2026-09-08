@@ -10,9 +10,9 @@
 
 @extends('layouts.landing')
 
-@section('title', $course->title . ' | ' . $settings->footer_brand_name)
+@section('title', $course->meta_title ?: $course->title . ' | ' . $settings->footer_brand_name)
 
-@section('meta_description', $course->short_description)
+@section('description', $course->meta_description ?: $course->description)
 
 @section('bodyClass', '')
 
@@ -22,18 +22,51 @@
 
 {{-- Structured data (SEO) --}}
 @section('head')
-    <link rel="canonical" href="{{ route('courses.show', $course->slug) }}">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="{{ $course->title }}">
-    <meta property="og:description" content="{{ $course->short_description }}">
-    <meta property="og:url" content="{{ route('courses.show', $course->slug) }}">
     <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
         "@type": "Course",
         "name": @json($course->title),
-        "description": @json($course->short_description),
-        "provider": { "@type": "Organization", "name": @json($settings->footer_brand_name) }
+        "description": @json($course->description),
+        "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Ar-Rahman Academy",
+            "url": "https://el-rahman.looptech.cloud"
+        },
+        "educationalLevel": @json($course->level_label),
+        "inLanguage": ["fr", "ar"],
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "Première séance gratuite"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "{{ config('seo.url') }}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": {{ json_encode($backLabel) }},
+                "item": "{{ config('seo.url') }}{{ parse_url($backUrl, PHP_URL_PATH) }}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": @json($course->title),
+                "item": "{{ url()->current() }}"
+            }
+        ]
     }
     </script>
 @endsection
@@ -67,11 +100,11 @@
     </section>
 
     <div class="container">
-        <div class="breadcrumbs">
+        <nav class="breadcrumbs" aria-label="breadcrumb">
             <a href="{{ route('home') }}">Accueil</a> /
             <a href="{{ $backUrl }}">{{ $backLabel }}</a> /
-            <span>{{ $course->title }}</span>
-        </div>
+            <span aria-current="page">{{ $course->title }}</span>
+        </nav>
     </div>
 
     <main class="container details-layout" style="padding: 56px 24px;">
@@ -164,6 +197,25 @@
                     @endforeach
                 </div>
             </section>
+
+            <script type="application/ld+json">
+            {
+                "@@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    @foreach ($course->faqs as $faq)
+                    {
+                        "@type": "Question",
+                        "name": @json($faq['question']),
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": @json($faq['answer'])
+                        }
+                    }@if (! $loop->last),@endif
+                    @endforeach
+                ]
+            }
+            </script>
         @endif
 
         <section class="booking-cta" id="bookingForm">

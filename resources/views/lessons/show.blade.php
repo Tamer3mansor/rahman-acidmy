@@ -8,7 +8,7 @@
 
 @section('title', $lesson->title . ' - ' . $settings->footer_brand_name)
 
-@section('meta_description', $lesson->excerpt)
+@section('description', $lesson->excerpt)
 
 @section('bodyClass', 'pattern-bg')
 
@@ -25,11 +25,6 @@
 
     {{-- Structured data (SEO) --}}
     @section('head')
-        <link rel="canonical" href="{{ $currentUrl }}">
-        <meta property="og:type" content="article">
-        <meta property="og:title" content="{{ $lesson->title }}">
-        <meta property="og:description" content="{{ $lesson->excerpt }}">
-        <meta property="og:url" content="{{ $currentUrl }}">
         @if ($lesson->cover_image_url)
             <meta property="og:image" content="{{ $lesson->cover_image_url }}">
         @endif

@@ -19,6 +19,7 @@ class CourseController extends Controller
             'settings' => $settings,
             'pageSettings' => $pageSettings,
             'course' => $course,
+            'isIndexed' => $course->is_indexed,
         ]);
     }
 }

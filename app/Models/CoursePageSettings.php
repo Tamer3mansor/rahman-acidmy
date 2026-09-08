@@ -34,10 +34,15 @@ class CoursePageSettings extends Model
         'details_booking_note',
 
         'is_active',
+        'meta_title',
+        'meta_description',
+        'og_image',
+        'is_indexed',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_indexed' => 'boolean',
     ];
 
     public static function singleton(): self

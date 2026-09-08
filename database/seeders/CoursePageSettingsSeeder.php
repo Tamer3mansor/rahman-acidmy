@@ -27,7 +27,7 @@ class CoursePageSettingsSeeder extends Seeder
                 'kids_cta_title' => 'Voir les cours des enfants',
                 'kids_cta_url' => '#catalog',
                 'kids_wa_title' => 'Contactez-nous via WhatsApp',
-                'kids_wa_url' => 'https://wa.me/0000000000',
+                'kids_wa_url' => 'https://wa.me/201028268553',
 
                 // ---- Page Adultes ----
                 'adults_label' => 'Cours pour adultes',
@@ -38,7 +38,7 @@ class CoursePageSettingsSeeder extends Seeder
                 'adults_cta_title' => 'Voir les cours des adultes',
                 'adults_cta_url' => '#catalog',
                 'adults_wa_title' => 'Contactez-nous via WhatsApp',
-                'adults_wa_url' => 'https://wa.me/0000000000',
+                'adults_wa_url' => 'https://wa.me/201028268553',
 
                 // ---- Page Détails du cours ----
                 'details_booking_title' => 'Commencez votre parcours d\'apprentissage dès aujourd\'hui',

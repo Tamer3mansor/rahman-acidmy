@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 
-@section('title', 'Nos tarifs - Académie Coran et Langue Arabe')
+@section('title', 'Tarifs des cours de Coran et arabe en ligne | Ar-Rahman Academy')
 
-@section('meta_description', 'Des offres claires pour l\'apprentissage du Coran et de la langue arabe en ligne. Choisissez la durée de cours qui convient et commencez avec un essai gratuit.')
+@section('description', 'Tarifs des cours de Coran et arabe en ligne. Cours particuliers à partir de 4,50 €/séance. Première séance gratuite sans engagement.')
 
 @section('bodyClass', 'pattern-bg')
 

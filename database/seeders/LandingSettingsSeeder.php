@@ -20,7 +20,7 @@ class LandingSettingsSeeder extends Seeder
                 'header_brand_sub' => 'ACADEMY',
                 'header_logo_path' => null,
                 'header_btn1_title' => 'WhatsApp',
-                'header_btn1_url' => 'https://wa.me/0000000000',
+                'header_btn1_url' => 'https://wa.me/201028268553',
                 'header_btn2_title' => 'Réservez votre essai gratuit',
                 'header_btn2_url' => '#trial-form',
 
@@ -31,7 +31,7 @@ class LandingSettingsSeeder extends Seeder
                 'hero_btn1_title' => 'Réservez votre essai gratuit',
                 'hero_btn1_url' => '#trial-form',
                 'hero_btn2_title' => 'Contactez-nous',
-                'hero_btn2_url' => 'https://wa.me/0000000000',
+                'hero_btn2_url' => 'https://wa.me/201028268553',
                 'hero_video_path' => null,
                 'hero_media_type' => MediaType::Video->value,
                 'hero_video_autoplay' => true,

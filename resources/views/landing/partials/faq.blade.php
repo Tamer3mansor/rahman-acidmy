@@ -47,3 +47,52 @@
         </div>
     </div>
 </section>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "La séance d'essai est-elle vraiment gratuite ?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Oui, la première séance est entièrement gratuite et sans engagement."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Les cours sont-ils individuels ou en groupe ?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Les cours sont 100% particuliers — votre enfant ou vous-même avec votre enseignant uniquement."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Quels sont les horaires disponibles ?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Nous sommes disponibles 7 jours sur 7, de 7h à 22h (heure Europe centrale)."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Peut-on annuler à tout moment ?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Oui, sans contrat ni frais d'annulation. Vous pouvez modifier ou annuler à tout moment."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Quelles sont les qualifications des enseignants ?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Tous nos enseignants sont diplômés de l'Al-Azhar et titulaires d'Ijazah certifiées en Tajwid."
+            }
+        }
+    ]
+}
+</script>

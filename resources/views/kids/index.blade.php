@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 
-@section('title', 'Cours des enfants - Coran et arabe | ' . $settings->footer_brand_name)
+@section('title', $pageSettings->meta_title ?: 'Cours de Coran pour enfants en ligne | Ar-Rahman Academy')
 
-@section('meta_description', $pageSettings->kids_subtitle)
+@section('description', $pageSettings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants de 4 à 16 ans. Mémorisation, Tajwid, langue arabe avec des enseignants spécialisés Al-Azhar.')
 
 @section('bodyClass', '')
 
@@ -10,7 +10,58 @@
     @vite(['resources/css/courses.css'])
 @endsection
 
+@section('head')
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "{{ config('seo.url') }}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Cours enfants",
+                "item": "{{ config('seo.url') }}/enfants"
+            }
+        ]
+    }
+    </script>
+@endsection
+
 @section('content')
+
+    @php
+        $kidsFaqs = [
+            ['q' => 'Les cours de Coran pour enfants sont-ils individuels ?', 'a' => 'Oui, les cours sont 100% particuliers : votre enfant travaille seul avec son enseignant, sans groupe ni distraction.'],
+            ['q' => 'Comment l\'enseignant est-il choisi ?', 'a' => 'Nous choisissons l\'enseignant en fonction de l\'âge, du niveau et des objectifs de votre enfant. Enseignant pour les garçons et enseignante pour les filles, selon votre préférence.'],
+            ['q' => 'Peut-on changer l\'horaire des cours ?', 'a' => 'Oui, sans frais et sans engagement. Nous sommes disponibles 7 jours sur 7, de 7h à 22h, et vous pouvez modifier vos créneaux à tout moment.'],
+            ['q' => 'Comment suivre les progrès de mon enfant ?', 'a' => 'Après chaque séance, l\'enseignant envoie un rapport périodique aux parents avec l\'évaluation de la séance, les acquis et les points à travailler.'],
+            ['q' => 'La séance d\'essai est-elle gratuite ?', 'a' => 'Oui, la première séance est entièrement gratuite et sans engagement. Vous pourrez évaluer la méthode et l\'enseignant avant de vous inscrire.'],
+            ['q' => 'Quelles sont les qualifications des enseignants ?', 'a' => 'Tous nos enseignants sont diplômés de l\'Al-Azhar et titulaires d\'Ijazah certifiées en Tajwid, avec une expérience confirmée dans l\'enseignement des enfants.'],
+        ];
+
+        $kidsSubjects = [
+            ['icon' => '📖', 'title' => 'Récitation du Coran', 'description' => 'Une lecture correcte, fluide et appliquée, lettre par lettre, dès le premier jour.'],
+            ['icon' => '🎵', 'title' => 'Tajwid', 'description' => 'Les règles de récitation enseignées de façon ludique et progressive, adaptées à chaque âge.'],
+            ['icon' => '🧠', 'title' => 'Mémorisation', 'description' => 'Un programme de mémorisation (Hifz) structuré avec révision continue des sourates apprises.'],
+            ['icon' => '🗣️', 'title' => 'Langue arabe', 'description' => 'Le vocabulaire, la lecture et la conversation en arabe avec une méthode simple et interactive.'],
+            ['icon' => '🤲', 'title' => 'Invocations', 'description' => 'Les invocations quotidiennes et adhkar du matin et du soir mémorisés avec leur signification.'],
+            ['icon' => '🌿', 'title' => 'Valeurs islamiques', 'description' => 'Les bonnes manières, le respect des parents et les valeurs de l\'Islam enseignées avec bienveillance.'],
+        ];
+
+        $kidsSessionFeatures = [
+            ['title' => '👨‍🏫 Enseignant dédié', 'description' => 'Un même enseignant suit votre enfant toute l\'année pour assurer une continuité et une relation de confiance.'],
+            ['title' => '💻 Séance interactive', 'description' => 'Une plateforme en ligne sûre, avec partage d\'écran, exercices visuels et outils pédagogiques.'],
+            ['title' => '🏠 Sans déplacement', 'description' => 'Votre enfant apprend depuis la maison, à un horaire choisi selon votre emploi du temps familial.'],
+            ['title' => '📝 Suivi parental', 'description' => 'Un rapport après chaque séance pour suivre la progression, les points forts et les points à améliorer.'],
+            ['title' => '⏰ Horaires flexibles', 'description' => 'Disponibilité 7 jours sur 7, de 7h à 22h, avec possibilité de modifier les créneaux à tout moment.'],
+        ];
+    @endphp
 
     @include('landing.partials.nav', [
         'activePage' => 'kids',
@@ -46,6 +97,13 @@
             </div>
         </div>
     </section>
+
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="breadcrumb">
+            <a href="{{ route('home') }}">Accueil</a> /
+            <span aria-current="page">Cours enfants</span>
+        </nav>
+    </div>
 
     <section class="section" id="catalog">
         <div class="container">
@@ -85,6 +143,121 @@
             @else
                 <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">Aucun cours disponible pour le moment.</p>
             @endif
+        </div>
+    </section>
+
+    <section class="section section-white">
+        <div class="container">
+            <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                <span class="section-label">Pour les parents</span>
+                <h2 class="section-title">🎯 Ce cours convient-il à mon enfant ?</h2>
+                <p class="section-sub">Nos programmes sont conçus pour répondre aux besoins spécifiques des enfants et des familles.</p>
+            </div>
+            <div class="suitability-grid">
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Apprentissage 100% en ligne, sans déplacement ni perte de temps</p></div>
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Enseignant dédié qui s'adapte à la personnalité et au rythme de votre enfant</p></div>
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Méthode ludique, positive et bienveillante qui motive l'enfant</p></div>
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Rapports périodiques aux parents pour suivre chaque séance</p></div>
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Horaires flexibles compatibles avec l'école et les activités familiales</p></div>
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Enseignant pour les garçons et enseignante pour les filles, selon votre préférence</p></div>
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Programme personnalisé selon l'âge, le niveau et les objectifs de l'enfant</p></div>
+                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Première séance d'essai gratuite et sans engagement</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                <span class="section-label">Le programme</span>
+                <h2 class="section-title">📚 Que va apprendre mon enfant ?</h2>
+                <p class="section-sub">Un programme complet qui couvre le Coran, la langue arabe et l'éducation islamique.</p>
+            </div>
+            <div class="curriculum-grid">
+                @foreach ($kidsSubjects as $subject)
+                    <div class="curriculum-card">
+                        <div class="icon">{{ $subject['icon'] }}</div>
+                        <h3>{{ $subject['title'] }}</h3>
+                        <p>{{ $subject['description'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-white">
+        <div class="container">
+            <div class="detail-section" style="margin-bottom: 0;">
+                <div class="session-features">
+                    <h2>💡 😊 Comment se déroule la séance ?</h2>
+                    <p>Nous garantissons une expérience interactive, sûre et motivante à chaque séance :</p>
+                    <div class="session-grid">
+                        @foreach ($kidsSessionFeatures as $feature)
+                            <div class="session-card">
+                                <div class="session-card-title">{{ $feature['title'] }}</div>
+                                <p>{{ $feature['description'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="catalog-head section-center">
+                <span class="section-label">Questions fréquentes</span>
+                <h2 class="section-title">❓ Questions fréquentes — Cours enfants</h2>
+                <p class="section-sub">Toutes les réponses aux questions que se posent les parents avant de commencer.</p>
+            </div>
+
+            <div class="faq-list" style="margin: 0 auto;">
+                @foreach ($kidsFaqs as $faq)
+                    <div class="faq-item">
+                        <div class="faq-question" data-faq-toggle>
+                            <span>{{ $faq['q'] }}</span>
+                            <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                {{ $faq['a'] }}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            @foreach ($kidsFaqs as $faq)
+            {
+                "@type": "Question",
+                "name": @json($faq['q']),
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": @json($faq['a'])
+                }
+            }@if (! $loop->last),@endif
+            @endforeach
+        ]
+    }
+    </script>
+
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="booking-cta">
+                <h2>Offrez à votre enfant la meilleure éducation coranique</h2>
+                <p>Réservez dès maintenant la séance d'essai gratuite. Notre équipe pédagogique vous contactera dans les 24 heures pour évaluer le niveau de votre enfant et fixer le premier créneau.</p>
+                <div class="booking-btn">
+                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">Réserver une séance d'essai gratuite</a>
+                </div>
+            </div>
         </div>
     </section>
 

@@ -19,3 +19,6 @@ Route::get('/adultes', [AdultsController::class, 'index'])->name('adults.index')
 Route::get('/cours/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
 Route::get('/lecons-gratuites', [LessonController::class, 'index'])->name('lessons.index');
 Route::get('/lecons-gratuites/{lesson:slug}', [LessonController::class, 'show'])->name('lessons.show');
+Route::get('/sitemap.xml', function () {
+    return response()->file(public_path('sitemap.xml'));
+});

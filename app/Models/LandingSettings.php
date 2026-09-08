@@ -73,12 +73,18 @@ class LandingSettings extends Model
         'footer_brand_sub',
         'footer_description',
         'footer_copyright',
+
+        'meta_title',
+        'meta_description',
+        'og_image',
+        'is_indexed',
     ];
 
     protected $casts = [
         'hero_media_type' => MediaType::class,
         'hero_video_autoplay' => 'boolean',
         'hero_video_loop' => 'boolean',
+        'is_indexed' => 'boolean',
     ];
 
     public static function singleton(): self

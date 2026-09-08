@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Courses\Schemas;
 
 use App\Enums\CourseAudience;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -174,6 +175,46 @@ class CourseForm
                                     ->addActionLabel('إضافة سؤال')
                                     ->reorderableWithButtons()
                                     ->collapsible(),
+                            ]),
+                        Tab::make('تحسين محركات البحث (SEO)')
+                            ->schema([
+                                TextInput::make('meta_title')
+                                    ->label('عنوان الميتا (Meta Title)')
+                                    ->helperText('يُوصى بألا يتجاوز 60 حرفاً')
+                                    ->maxLength(60)
+                                    ->live()
+                                    ->hint(fn (?string $state): string => mb_strlen((string) $state).'/60')
+                                    ->columnSpan(1),
+                                Textarea::make('meta_description')
+                                    ->label('وصف الميتا (Meta Description)')
+                                    ->helperText('يُوصى بألا يتجاوز 160 حرفاً')
+                                    ->maxLength(160)
+                                    ->rows(3)
+                                    ->live()
+                                    ->hint(fn (?string $state): string => mb_strlen((string) $state).'/160')
+                                    ->columnSpan(1),
+                                FileUpload::make('og_image')
+                                    ->label('صورة المشاركة (Open Graph)')
+                                    ->image()
+                                    ->disk('public')
+                                    ->directory('images/og')
+                                    ->imageResizeMode('contain')
+                                    ->imageResizeTargetWidth('1200')
+                                    ->imageResizeTargetHeight('630')
+                                    ->columnSpan(1),
+                                Select::make('schema_type')
+                                    ->label('نوع Schema')
+                                    ->options([
+                                        'EducationalOrganization' => 'EducationalOrganization',
+                                        'Course' => 'Course',
+                                        'FAQPage' => 'FAQPage',
+                                        'Article' => 'Article',
+                                    ])
+                                    ->default('Course')
+                                    ->columnSpan(1),
+                                Toggle::make('is_indexed')
+                                    ->label('السماح لفهارس البحث (Allow search engine indexing)')
+                                    ->default(true),
                             ]),
                     ]),
 
