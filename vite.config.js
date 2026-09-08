@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/css/landing.css',
                 'resources/js/landing.js',
                 'resources/css/blog.css',
+                'resources/css/lessons.css',
                 'resources/css/price.css',
                 'resources/css/courses.css',
                 'resources/js/price.js',

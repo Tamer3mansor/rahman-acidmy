@@ -63,6 +63,15 @@
     "src": "resources/css/landing.css",
     "isEntry": true
   },
+  "resources/css/lessons.css": {
+    "file": "assets/lessons-DQkOMaye.css",
+    "name": "lessons",
+    "names": [
+      "lessons.css"
+    ],
+    "src": "resources/css/lessons.css",
+    "isEntry": true
+  },
   "resources/css/price.css": {
     "file": "assets/price-JHHdcs88.css",
     "name": "price",

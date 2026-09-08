@@ -10,6 +10,7 @@
         ['label' => 'FAQ', 'url' => $homeUrl . '#faq'],
         ['label' => 'Tarifs', 'url' => route('price.index'), 'active' => $activePage === 'price'],
         ['label' => 'Blog', 'url' => route('blog.index'), 'active' => $activePage === 'blog'],
+        ['label' => 'Leçons gratuites', 'url' => route('lessons.index'), 'active' => $activePage === 'lessons'],
     ];
     $navLinks = $navLinks ?? $defaultNavLinks;
 ?>

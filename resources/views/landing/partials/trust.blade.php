@@ -52,9 +52,6 @@
             <!-- Center: Videos -->
             <div class="trust-videos">
                 <div class="trust-video-card" style="aspect-ratio:16/9">
-                    <video autoplay muted loop playsinline>
-                        <source src="YOUR_TESTIMONIAL_VIDEO_1.mp4" type="video/mp4">
-                    </video>
                     <div class="trust-video-placeholder">
                         <div class="play-sm">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -64,9 +61,6 @@
                     <div class="trust-label">Témoignages vidéo — Parents</div>
                 </div>
                 <div class="trust-video-card" style="aspect-ratio:16/9">
-                    <video autoplay muted loop playsinline>
-                        <source src="YOUR_TESTIMONIAL_VIDEO_2.mp4" type="video/mp4">
-                    </video>
                     <div class="trust-video-placeholder">
                         <div class="play-sm">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>

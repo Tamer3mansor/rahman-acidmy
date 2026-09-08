@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             PricingPerkSeeder::class,
             CourseSeeder::class,
             CoursePageSettingsSeeder::class,
+            LessonSeeder::class,
         ]);
     }
 }
