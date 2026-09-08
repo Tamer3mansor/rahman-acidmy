@@ -16,22 +16,22 @@ class BlogPostSeeder extends Seeder
     {
         $categories = BlogCategory::pluck('id', 'slug');
 
-        $featuredBody = '<p>يواجه الكثير من الآباء والأمهات تحدياً في ترغيب أبنائهم في حفظ القرآن الكريم بدون استخدام أسلوب الضغط أو الإجبار. الهدف ليس فقط الحفظ، بل غرس حب كلام الله في قلوبهم منذ الصغر.</p>'
-            .'<h2>التمهيد والقدوة الحسنة في المنزل</h2>'
-            .'<p>الطفل يقلد ما يراه لا ما يسمعه. عندما يرى الطفل والديه يخصصان وقتاً يومياً لقراءة القرآن بكل هدوء وسعادة، يتولد لديه الفضول والشغف لمشاركتهم هذا الوقت.</p>'
-            .'<h2>تحويل الحفظ إلى مكافآت وتحديات ممتعة</h2>'
-            .'<p>ربط السور القصيرة بمكافآت معنوية ومادية يشجع الطفل، مثل "شجرة الحفظ" التي يلون فيها الطفل ورقة كلما حفظ سورة جديدة.</p>'
-            .'<h2>استخدام التكنولوجيا والتعليم الأونلاين</h2>'
-            .'<p>المنصات التفاعلية اليوم توفر بيئة ممتعة تجمع بين التنافس بين الأطفال والألعاب التعليمية المبتكرة، وتمكن الطفل من الحفظ في أي وقت ومن أي مكان.</p>';
+        $featuredBody = '<p>Beaucoup de parents rencontrent des difficultés à motivar leurs enfants pour la mémorisation du Saint Coran sans recourir à la pression ou la contrainte. L\'objectif n\'est pas seulement la mémorisation, mais d\'inculquer l\'amour de la parole de Dieu dans leurs cœurs dès le plus jeune âge.</p>'
+            .'<h2>Préparer le terrain et donner le bon exemple à la maison</h2>'
+            .'<p>L\'enfant imite ce qu\'il voit, pas ce qu\'il entend. Lorsque l\'enfant voit ses parents consacrer un moment quotidien à la lecture du Coran avec calme et bonheur, il développe de la curiosité et de la passion pour partager ce moment.</p>'
+            .'<h2>Transformer la mémorisation en récompenses et défis ludiques</h2>'
+            .'<p>Associer les courtes sourates à des récompenses morales et matérielles encourage l\'enfant, comme l\'"arbre de la mémorisation" où l\'enfant colore une feuille chaque fois qu\'il mémorise une nouvelle sourate.</p>'
+            .'<h2>Utiliser la technologie et l\'enseignement en ligne</h2>'
+            .'<p>Les plateformes interactives d\'aujourd\'hui offrent un environnement ludique qui combine la compétition entre les enfants et les jeux éducatifs innovants, permettant à l\'enfant de mémoriser à tout moment et depuis n\'importe où.</p>';
 
         $posts = [
             [
                 'category_slug' => 'parent-tips',
-                'title' => 'كيف تجعل طفلك يحب حفظ القرآن الكريم بدون إجبار؟',
+                'title' => 'Comment faire aimer la mémorisation du Coran à votre enfant sans contrainte ?',
                 'slug' => 'how-to-make-kids-love-quran',
-                'excerpt' => 'طرق تربوية وعملية لمساعدة أطفالك على التعلق بالقرآن الكريم، واستغلال التقنيات الحديثة في جعل عملية الحفظ ممتعة وتفاعلية.',
+                'excerpt' => 'Méthodes éducatives et pratiques pour aider vos enfants à s\'attacher au Saint Coran, en utilisant les technologies modernes pour rendre la mémorisation ludique et interactive.',
                 'body' => $featuredBody,
-                'author_name' => 'د. أحمد المنشاوي',
+                'author_name' => 'Dr. Ahmed El-Menchaoui',
                 'author_image' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200',
                 'cover_image' => 'https://images.unsplash.com/photo-1584286595398-a59f21d313f5?q=80&w=800&auto=format&fit=crop',
                 'reading_time' => 6,
@@ -40,13 +40,13 @@ class BlogPostSeeder extends Seeder
             ],
             [
                 'category_slug' => 'tajweed',
-                'title' => 'أهم 5 أحكام تجويد يجب أن يبدأ بها المبتدئون',
+                'title' => 'Les 5 règles essentielles du Tajwid pour les débutants',
                 'slug' => 'tajweed-rules-for-beginners',
-                'excerpt' => 'شرح مبسط لأهم أحكام النون الساكنة والتنوين وكيفية تطبيقها أثناء القراءة اليومية بسهولة.',
-                'body' => '<p>شرح مبسط لأهم أحكام النون الساكنة والتنوين وكيفية تطبيقها أثناء القراءة اليومية بسهولة.</p>'
-                    .'<h2>أحكام النون الساكنة والتنوين</h2>'
-                    .'<p>تنقسم أحكام النون الساكنة والتنوين إلى أربعة أقسام: الإظهار، الإدغام، الإقلاب، والإخفاء، ولكل قسم حالاته وحروفه التي تتحكم في تطبيقه.</p>',
-                'author_name' => 'د. أحمد المنشاوي',
+                'excerpt' => 'Explication simplifiée des règles principales de la Nun Sakinah, du Tanwin et de leur application lors de la lecture quotidienne.',
+                'body' => '<p>Explication simplifiée des règles principales de la Nun Sakinah, du Tanwin et de leur application lors de la lecture quotidienne.</p>'
+                    .'<h2>Règles de la Nun Sakinah et du Tanwin</h2>'
+                    .'<p>Les règles de la Nun Sakinah et du Tanwin se divisent en quatre catégories : Izhar, Idgham, Qalb et Ikhfa, chacune avec ses cas et ses lettres qui en déterminent l\'application.</p>',
+                'author_name' => 'Dr. Ahmed El-Menchaoui',
                 'author_image' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200',
                 'cover_image' => 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=600&auto=format&fit=crop',
                 'reading_time' => 5,
@@ -55,13 +55,13 @@ class BlogPostSeeder extends Seeder
             ],
             [
                 'category_slug' => 'arabic-language',
-                'title' => 'طرق حديثة لتعليم اللغة العربية للأطفال غير الناطقين بها',
+                'title' => 'Méthodes modernes pour enseigner la langue arabe aux enfants non francophones',
                 'slug' => 'teaching-arabic-to-non-native-kids',
-                'excerpt' => 'استعراض لأبرز المناهج التفاعلية والألعاب اللغوية التي تسرع من استيعاب الطفل للغة العربية.',
-                'body' => '<p>استعراض لأبرز المناهج التفاعلية والألعاب اللغوية التي تسرع من استيعاب الطفل للغة العربية.</p>'
-                    .'<h2>التعلم عبر الألعاب</h2>'
-                    .'<p>الألعاب اللغوية تساعد الطفل على اكتساب المفردات بشكل طبيعي، خاصة عندما ترتبط بصور ومواقف حياتية تعيشها يومياً.</p>',
-                'author_name' => 'أ. سارة الجابري',
+                'excerpt' => 'Présentation des programmes interactifs et des jeux linguistiques qui accélèrent l\'apprentissage de la langue arabe chez l\'enfant.',
+                'body' => '<p>Présentation des programmes interactifs et des jeux linguistiques qui accélèrent l\'apprentissage de la langue arabe chez l\'enfant.</p>'
+                    .'<h2>Apprendre par le jeu</h2>'
+                    .'<p>Les jeux linguistiques aident l\'enfant à acquérir du vocabulaire de manière naturelle, surtout lorsqu\'ils sont associés à des images et des situations de la vie quotidienne.</p>',
+                'author_name' => 'Mme Sara Al-Jabri',
                 'author_image' => null,
                 'cover_image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=600&auto=format&fit=crop',
                 'reading_time' => 7,
@@ -70,13 +70,13 @@ class BlogPostSeeder extends Seeder
             ],
             [
                 'category_slug' => 'kibar',
-                'title' => 'خطة تنظيم الوقت لحفظ القرآن الكريم أسبوعياً للأشخاص المشغولين',
+                'title' => 'Plan d\'organisation du temps pour la mémorisation du Coran pour les personnes actives',
                 'slug' => 'time-plan-for-quran-memorization',
-                'excerpt' => 'كيف توفق بين عملك وحفظ القرآن؟ جدول عملي ومجرب لإنجاز وردك اليومي بدون إرهاق.',
-                'body' => '<p>كيف توفق بين عملك وحفظ القرآن؟ جدول عملي ومجرب لإنجاز وردك اليومي بدون إرهاق.</p>'
-                    .'<h2>أساسيات نجاح الورد اليومي</h2>'
-                    .'<p>الانتظام على قدر قليل يومياً خير من الانقطاع لفترات طويلة، مع تثبيت وقت محدد للحفظ يجعل العادة أسهل في الاستمرار.</p>',
-                'author_name' => 'أحمد الحمادي',
+                'excerpt' => 'Comment concilier travail et mémorisation du Coran ? Un emploi du temps pratique et éprouvé pour accomplir votre quota quotidien sans épuisement.',
+                'body' => '<p>Comment concilier travail et mémorisation du Coran ? Un emploi du temps pratique et éprouvé pour accomplir votre quota quotidien sans épuisement.</p>'
+                    .'<h2>Les fondamentaux du succès du quota quotidien</h2>'
+                    .'<p>La régularité avec une petite quantité chaque jour vaut mieux que l\'interruption pendant de longues périodes. Fixer un moment précis pour la mémorisation rend l\'habitude plus facile à maintenir.</p>',
+                'author_name' => 'Ahmed El-Hammadi',
                 'author_image' => null,
                 'cover_image' => 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600&auto=format&fit=crop',
                 'reading_time' => 4,

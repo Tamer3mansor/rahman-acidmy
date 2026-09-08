@@ -25,15 +25,15 @@ class PricingPageTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('price.index')
-            ->assertSee('باقات واضحة للتعلم بأسلوب مريح وسلس')
-            ->assertSee('باقة الاكتشاف')
-            ->assertSee('الباقة الفضية')
-            ->assertSee('الأكثر طلباً')
-            ->assertSee('مميّزات شاملة في جميع الباقات')
-            ->assertSee('حصة تجريبية مجاناً')
-            ->assertSee('30 دقيقة')
-            ->assertSee('45 دقيقة')
-            ->assertSee('60 دقيقة')
+            ->assertSee('Des offres claires pour apprendre en toute sérénité')
+            ->assertSee('Pack Découverte')
+            ->assertSee('Pack Argent')
+            ->assertSee('Le plus demandé')
+            ->assertSee('Avantages inclus dans tous les packs')
+            ->assertSee('essai gratuite')
+            ->assertSee('30 min')
+            ->assertSee('45 min')
+            ->assertSee('60 min')
             ->assertSee('build/assets/price-', false)
             ->assertDontSee('data-scroll-to-form');
     }
@@ -90,7 +90,7 @@ class PricingPageTest extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('الأسعار');
+            ->assertSee('Tarifs');
     }
 
     public function test_price_admin_resources_render(): void

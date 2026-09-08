@@ -24,9 +24,9 @@ class LandingPageTest extends TestCase
         $response->assertOk()
             ->assertViewIs('landing.index')
             ->assertSee('Ar-Rahman')
-            ->assertSee('تعلّم القرآن والعربية')
-            ->assertSee('الشيخ محمد أمين')
-            ->assertSee('هل الحصة التجريبية مجانية فعلاً؟')
+            ->assertSee('Apprenez le Coran')
+            ->assertSee('Cheikh Mohamed Amine')
+            ->assertSee('essai est-elle vraiment gratuite')
             ->assertSee('id="trialForm"', false);
     }
 
@@ -105,6 +105,6 @@ class LandingPageTest extends TestCase
 
         $page = $this->get('/');
 
-        $this->assertStringContainsString('احجز حصتك المجانية الآن', $page->getContent());
+        $this->assertStringContainsString('Réservez votre essai gratuit', $page->getContent());
     }
 }

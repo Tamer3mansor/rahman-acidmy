@@ -14,37 +14,37 @@ class LandingFaqsSeeder extends Seeder
     {
         $faqs = [
             [
-                'question' => 'هل الحصة التجريبية مجانية فعلاً؟',
-                'answer' => 'نعم، الحصة التجريبية الأولى مجانية تماماً وبدون أي التزام. الهدف أن تتعرف على أسلوبنا ومعلمينا وتطمئن قبل أي قرار.',
+                'question' => 'La séance d\'essai est-elle vraiment gratuite ?',
+                'answer' => 'Oui, la première séance d\'essai est entièrement gratuite et sans aucun engagement. Le but est que vous découvriez notre approche, nos enseignants et que vous soyez rassuré avant toute décision.',
                 'show_cta' => true,
-                'cta_text' => 'احجز حصتك المجانية الآن',
+                'cta_text' => 'Réservez votre séance gratuite maintenant',
                 'cta_url' => '#',
             ],
             [
-                'question' => 'ما المواد التي تدرّسها الأكاديمية؟',
-                'answer' => 'ندرس القرآن الكريم (حفظاً وتجويداً وتفسيراً)، واللغة العربية (قراءة وكتابة ومحادثة)، والتربية الإسلامية. البرنامج يُصمَّم بحسب حاجة كل طالب.',
+                'question' => 'Quelles matières enseigne l\'académie ?',
+                'answer' => 'Nous enseignons le Saint Coran (mémorisation, Tajwid et Tafsir), la langue arabe (lecture, écriture et conversation), et l\'éducation islamique. Le programme est adapté aux besoins de chaque élève.',
                 'show_cta' => false,
             ],
             [
-                'question' => 'ما هي المواعيد المتاحة للحصص؟',
-                'answer' => 'نعمل 7 أيام في الأسبوع من السابعة صباحاً حتى العاشرة مساءً (بتوقيت وسط أوروبا). أنت من يختار المواعيد المناسبة له، ويمكن تغييرها حسب الحاجة.',
+                'question' => 'Quels sont les horaires disponibles pour les cours ?',
+                'answer' => 'Nous sommes ouverts 7 jours sur 7, de 7h du matin à 22h (heure de l\'Europe centrale). C\'est vous qui choisissez les créneaux qui vous conviennent, et ils peuvent être modifiés selon vos besoins.',
                 'show_cta' => false,
             ],
             [
-                'question' => 'كيف يتم متابعة تقدم الطالب؟',
-                'answer' => 'بعد كل حصة، يكتب المعلم تقريراً مفصلاً يصل لولي الأمر عبر لوحة التحكم الخاصة به. يشمل التقرير ما أُنجز، وما يحتاج مراجعة، وخطة الحصة القادمة.',
+                'question' => 'Comment le progrès de l\'élève est-il suivi ?',
+                'answer' => 'Après chaque cours, l\'enseignant rédige un rapport détaillé transmis aux parents via le tableau de bord. Le rapport inclut ce qui a été accompli, les points à revoir et le plan du prochain cours.',
                 'show_cta' => false,
             ],
             [
-                'question' => 'هل يمكن إلغاء الاشتراك في أي وقت؟',
-                'answer' => 'نعم، لا يوجد أي عقود ملزمة. يمكنك تعليق الاشتراك أو إلغاؤه في أي وقت دون أي رسوم إضافية. نحن واثقون من جودة خدمتنا ونريدك أن تبقى لأنك راضٍ لا لأنك ملتزم.',
+                'question' => 'Peut-on annuler l\'abonnement à tout moment ?',
+                'answer' => 'Oui, il n\'y a aucun contrat engageant. Vous pouvez suspendre ou annuler votre abonnement à tout moment sans frais supplémentaires. Nous sommes convaincus de la qualité de notre service et nous voulons que vous restiez parce que vous êtes satisfait, pas parce que vous êtes engagé.',
                 'show_cta' => true,
-                'cta_text' => 'احجز حصتك الآن',
+                'cta_text' => 'Réservez votre cours maintenant',
                 'cta_url' => '#',
             ],
             [
-                'question' => 'ما هي مؤهلات المعلمين؟',
-                'answer' => 'جميع معلمينا خريجو الأزهر الشريف وحاملو إجازات معتمدة في التجويد والقراءات. يمرون بعملية اختيار صارمة تشمل اختبار المعرفة وتقييم أسلوب التدريس قبل الانضمام للأكاديمية.',
+                'question' => 'Quelles sont les qualifications des enseignants ?',
+                'answer' => 'Tous nos enseignants sont diplômés de l\'Al-Azhar et détenteurs d\'Ijazah certifiées en Tajwid et en Qira\'at. Ils passent un processus de sélection rigoureux comprenant un test de connaissances et une évaluation pédagogique avant de rejoindre l\'académie.',
                 'show_cta' => false,
             ],
         ];

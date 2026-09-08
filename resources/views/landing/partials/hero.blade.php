@@ -8,7 +8,7 @@
                 </div>
                 <h1 class="hero-title">
                     {{ $settings->hero_title }}<br>
-                    بأسلوب <span class="accent">{{ $settings->hero_title_accent }}</span>
+                    <span class="accent">{{ $settings->hero_title_accent }}</span>
                 </h1>
                 <p class="hero-sub">{!! $settings->hero_subtitle !!}</p>
                 <div class="hero-btns">
@@ -34,7 +34,7 @@
                             <div class="icon-wrap">
                                 <i class="fa-solid fa-circle-check"></i>
                             </div>
-                            حصص 100% فردية
+                            Cours 100% particuliers
                         </div>
                     @endforelse
                 </div>
@@ -55,13 +55,13 @@
                             <div class="play-icon">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                             </div>
-                            <span>أكاديمية الرحمن — فيديو تعريفي</span>
-                            <small style="color:rgba(255,255,255,0.4);font-size:0.72rem">ارفع صورة أو فيديو من لوحة التحكم</small>
+                            <span>Ar-Rahman Academy — Vidéo de présentation</span>
+                            <small style="color:rgba(255,255,255,0.4);font-size:0.72rem">Téléchargez une image ou une vidéo depuis le tableau de bord</small>
                         </div>
                     @endif
                     <div class="video-overlay-badge">
                         <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;"></span>
-                        يُشاهد الآن
+                        En cours de visionnage
                     </div>
                 </div>
             </div>

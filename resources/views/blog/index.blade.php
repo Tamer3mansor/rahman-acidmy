@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 
-@section('title', 'المدونة - المقالات والنصائح التعليمية | ' . $settings->footer_brand_name)
+@section('title', 'Blog - Articles et conseils éducatifs | ' . $settings->footer_brand_name)
 
-@section('meta_description', 'دليلك الكامل لتحفيظ القرآن الكريم واللغة العربية للأطفال والكبار بأساليب حديثة.')
+@section('meta_description', 'Votre guide complet pour la mémorisation du Coran et l\'apprentissage de la langue arabe pour enfants et adultes avec des méthodes modernes.')
 
 @section('bodyClass', 'pattern-bg')
 
@@ -19,12 +19,12 @@
 
     <section class="section">
         <div class="container section-center">
-            <span class="section-label">مدونة إقرأ وارتقِ</span>
-            <h1 class="section-title">أحدث المقالات والنصائح التعليمية</h1>
-            <p class="section-sub">دليلك الكامل لتحفيظ القرآن الكريم واللغة العربية للأطفال والكبار بأساليب حديثة.</p>
+            <span class="section-label">Blog éducatif</span>
+            <h1 class="section-title">Derniers articles et conseils éducatifs</h1>
+            <p class="section-sub">Votre guide complet pour la mémorisation du Coran et l'apprentissage de la langue arabe pour enfants et adultes avec des méthodes modernes.</p>
 
             <div class="filter-bar">
-                <a href="{{ route('blog.index') }}" class="filter-btn {{ $activeCategorySlug === null ? 'active' : '' }}">الكل</a>
+                <a href="{{ route('blog.index') }}" class="filter-btn {{ $activeCategorySlug === null ? 'active' : '' }}">Tous</a>
                 @foreach ($categories as $category)
                     <a href="{{ route('blog.index', ['k' => $category->slug]) }}" class="filter-btn {{ $activeCategorySlug === $category->slug ? 'active' : '' }}">{{ $category->name }}</a>
                 @endforeach
@@ -37,7 +37,7 @@
                     <img src="{{ $featured->cover_image_url ?? 'https://images.unsplash.com/photo-1584286595398-a59f21d313f5?q=80&w=800&auto=format&fit=crop' }}" alt="{{ $featured->title }}" class="featured-img">
                     <div class="featured-content">
                         <div>
-                            <span class="badge gold"><i class="fa-solid fa-thumbtack"></i> مقال مميز</span>
+                            <span class="badge gold"><i class="fa-solid fa-thumbtack"></i> Article vedette</span>
                             <span class="badge">{{ $featured->category?->name }}</span>
                         </div>
                         <h2 class="card-title">{{ $featured->title }}</h2>
@@ -47,7 +47,7 @@
                             <span><i class="fa-regular fa-calendar"></i> {{ $featured->published_at->translatedFormat('j F Y') }}</span>
                         </div>
                         <div>
-                            <a href="{{ route('blog.show', $featured->slug) }}" class="btn-primary">اقرأ المقال كاملاً <i class="fa-solid fa-arrow-left"></i></a>
+                            <a href="{{ route('blog.show', $featured->slug) }}" class="btn-primary">Lire l'article complet <i class="fa-solid fa-arrow-left"></i></a>
                         </div>
                     </div>
                 </div>
@@ -63,13 +63,13 @@
                             <div class="card-body">
                                 <div class="card-meta">
                                     <span class="badge">{{ $post->category?->name }}</span>
-                                    <span><i class="fa-regular fa-clock"></i> {{ $post->reading_time }} دقائق</span>
+                                    <span><i class="fa-regular fa-clock"></i> {{ $post->reading_time }} min</span>
                                 </div>
                                 <h3 class="card-title">{{ $post->title }}</h3>
                                 <p class="card-excerpt">{{ $post->excerpt }}</p>
                                 <div class="card-footer">
                                     <span class="card-meta"><i class="fa-regular fa-calendar"></i> {{ $post->published_at->translatedFormat('j F Y') }}</span>
-                                    <a href="{{ route('blog.show', $post->slug) }}" class="btn-outline" style="padding: 6px 14px; font-size:0.85rem;">اقرأ المزيد</a>
+                                    <a href="{{ route('blog.show', $post->slug) }}" class="btn-outline" style="padding: 6px 14px; font-size:0.85rem;">Lire la suite</a>
                                 </div>
                             </div>
                         </article>
@@ -96,7 +96,7 @@
                     </div>
                 @endif
             @else
-                <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">لا توجد مقالات في هذا القسم حالياً.</p>
+                <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">Aucun article dans cette catégorie pour le moment.</p>
             @endif
         </div>
     </section>

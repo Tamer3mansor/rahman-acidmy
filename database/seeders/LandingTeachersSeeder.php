@@ -14,20 +14,20 @@ class LandingTeachersSeeder extends Seeder
     {
         $teachers = [
             [
-                'name' => 'الشيخ محمد أمين',
-                'specialty' => 'حفظ القرآن الكريم والتجويد',
+                'name' => 'Cheikh Mohamed Amine',
+                'specialty' => 'Mémorisation du Coran et Tajwid',
                 'emoji' => '👨🏫',
                 'badges' => ['Ijazah', 'Al-Azhar', 'Tajwid', 'Enfants', 'Adultes'],
             ],
             [
-                'name' => 'الشيخة فاطمة الزهراء',
-                'specialty' => 'تعليم القرآن للأطفال',
+                'name' => 'Cheikha Fatima El-Zahra',
+                'specialty' => 'Enseignement du Coran aux enfants',
                 'emoji' => '👩‍🏫',
                 'badges' => ['Ijazah', 'Al-Azhar', 'Enfants'],
             ],
             [
-                'name' => 'الأستاذ يوسف البكري',
-                'specialty' => 'اللغة العربية والتربية الإسلامية',
+                'name' => 'Professeur Youssef El-Bekri',
+                'specialty' => 'Langue arabe et éducation islamique',
                 'emoji' => '👨‍💼',
                 'badges' => ['Al-Azhar', 'Adultes', 'Tajwid'],
             ],

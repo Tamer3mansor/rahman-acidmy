@@ -41,15 +41,15 @@ class LandingPageSettingsTest extends TestCase
         $this->assertNotNull($settings);
         $this->assertSame('Ar-Rahman', $settings->header_brand_name);
         $this->assertSame('ACADEMY', $settings->header_brand_sub);
-        $this->assertSame('واتساب', $settings->header_btn1_title);
+        $this->assertSame('WhatsApp', $settings->header_btn1_title);
         $this->assertSame('https://wa.me/0000000000', $settings->header_btn1_url);
-        $this->assertSame('احجز حصتك التجريبية', $settings->header_btn2_title);
+        $this->assertSame('Réservez votre essai gratuit', $settings->header_btn2_title);
         $this->assertSame('#trial-form', $settings->header_btn2_url);
         $this->assertSame('video', $settings->hero_media_type->value);
-        $this->assertSame('تعلّم القرآن والعربية', $settings->hero_title);
-        $this->assertSame('مخصّص لك', $settings->hero_title_accent);
-        $this->assertSame('الفرق واضح من البداية', $settings->compare_title);
-        $this->assertSame('© 2025 Ar-Rahman Academy. جميع الحقوق محفوظة.', $settings->footer_copyright);
+        $this->assertSame('Apprenez le Coran et l\'arabe', $settings->hero_title);
+        $this->assertSame('Personnalisé pour vous', $settings->hero_title_accent);
+        $this->assertSame('La différence est évidente dès le début', $settings->compare_title);
+        $this->assertSame('© 2025 Ar-Rahman Academy. Tous droits réservés.', $settings->footer_copyright);
 
         $this->assertSame(3, HeroTrustPill::query()->count());
         $this->assertSame(5, JourneyStep::query()->count());

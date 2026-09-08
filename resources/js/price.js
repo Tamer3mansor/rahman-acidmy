@@ -44,7 +44,7 @@ const price = (() => {
             return;
         }
 
-        const message = `السلام عليكم ورحمة الله وبركاته،\nأرغب في الاشتراك في: *${packName}*\n- عدد الحصص: ${classesCount} حصة\n- مدة الحصة: ${currentDuration} دقيقة\n- إجمالي السعر: ${totalPrice}€\n\nأرجو التواصل معي لتحديد المواعيد والبدء.`;
+        const message = `Bonjour,\nJe souhaite m'inscrire au : *${packName}*\n- Nombre de cours : ${classesCount} cours\n- Durée du cours : ${currentDuration} minutes\n- Prix total : ${totalPrice}€\n\nMerci de me contacter pour planifier les créneaux et commencer.`;
 
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     };

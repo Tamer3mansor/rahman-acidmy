@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل الكورس - تفاصيل البرنامج والمنهج</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Header & Dynamic Back Navigation (1) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <a href="index.html" class="text-2xl font-black text-teal-600">اقرأ <span class="text-amber-500">أونلاين</span></a>
+            </div>
+
+            <!-- Dynamic Back Button (زر الرجوع المخصص) -->
+            <a id="backBtn" href="kids.html" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm transition flex items-center gap-2">
+                <span id="backBtnIcon">⬅️</span>
+                <span id="backBtnText">الرجوع للحصص</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- 1. HERO Section & Main Title -->
+    <section class="bg-gradient-to-b from-teal-50 via-white to-slate-50 py-12 md:py-16 border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 text-center space-y-6">
+            
+            <span id="categoryBadge" class="inline-block bg-teal-100 text-teal-800 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full">
+                🌱 برنامج مخصص للأطفال والناشئة
+            </span>
+
+            <!-- Main Title (مثال باللغة الفرنسية/العربية كالمطلوب) -->
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight">
+                Cours de Coran et d’arabe en ligne pour enfants
+            </h1>
+
+            <!-- Subtitle Description -->
+            <p class="text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                دروس فردية، معلم مناسب، برنامج حسب العمر والمستوى، ومتابعة مستمرة للتقدم.
+            </p>
+
+            <!-- Main CTAs -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+                <a href="#bookingForm" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-teal-600/20 transition">
+                    🎯 احجز حصة تجريبية
+                </a>
+                <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2">
+                    <span>💬 تحدث معنا عبر الواتساب</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 py-12 space-y-16">
+
+        <!-- 2. هل هذا الكورس مناسب لطفلي؟ -->
+        <section class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                <span class="text-teal-600">🎯</span> هل هذا الكورس مناسب لطفلي؟
+            </h2>
+            <div class="grid md:grid-cols-2 gap-4 text-slate-600 leading-relaxed pt-2">
+                <div class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl">
+                    <span class="text-teal-500 text-lg">✅</span>
+                    <p>الأطفال والناشئة من سن 5 إلى 15 سنة الراغبون في بدء رحلة حفظ القرآن والتأسيس الصحيح.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl">
+                    <span class="text-teal-500 text-lg">✅</span>
+                    <p>من يبحثون عن تعديل التلاوة وتطبيق أحكام التجويد الميسرة دون تعقيد.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl">
+                    <span class="text-teal-500 text-lg">✅</span>
+                    <p>الراغبون في تعلم مبادئ اللغة العربية الفصحى والقراءة بطريقة نور البيان.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-50 p-4 rounded-xl">
+                    <span class="text-teal-500 text-lg">✅</span>
+                    <p>أولياء الأمور المعتمدون على التعليم الأونلاين التفاعلي الفردي (1-on-1).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ماذا سيتعلم الطفل؟ (Cards قابلة للتعديل) -->
+        <section class="space-y-6">
+            <div class="text-center md:text-right space-y-2">
+                <h2 class="text-2xl font-bold text-slate-900">📚 ماذا سيتعلم الطفل في هذا البرنامِج؟</h2>
+                <p class="text-slate-500 text-sm">المواد والمسارات المتاحة المخصصة لهذا الكورس:</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 transition space-y-3">
+                    <div class="text-3xl">📖</div>
+                    <h3 class="font-bold text-lg text-slate-800">تلاوة القرآن الكريم</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">تعليم القراءة الصحيحة وتصحيح مخارج الحروف بالترتيل الميسر.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 transition space-y-3">
+                    <div class="text-3xl">✨</div>
+                    <h3 class="font-bold text-lg text-slate-800">أحكام التجويد</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">تطبيق الأحكام الأساسية (النون الساكنة، المدود) بأسلوب عملي دون تعقيد.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 transition space-y-3">
+                    <div class="text-3xl">🧠</div>
+                    <h3 class="font-bold text-lg text-slate-800">الحفظ الميسر</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">خطة حفظ متدرجة تناسب طاقة الطفل مع نظام مراجعة تثبيتي.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 transition space-y-3">
+                    <div class="text-3xl">🗣️</div>
+                    <h3 class="font-bold text-lg text-slate-800">اللغة العربية</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">مهارات القراءة والكتابة والمحادثة البسيطة باللغة العربية الفصحى.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-teal-500 transition space-y-3">
+                    <div class="text-3xl">🌱</div>
+                    <h3 class="font-bold text-lg text-slate-800">الأدعية والقيم الإسلامية</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">غرس الأذكار اليومية والأخلاق الحميدة والسيرة العطرة بأسلوب قصصي.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. كيف تكون الحصة؟ -->
+        <section class="bg-slate-900 text-white p-8 md:p-10 rounded-3xl space-y-8">
+            <div class="text-center md:text-right space-y-2">
+                <h2 class="text-2xl font-bold text-emerald-400">💡 كيف تكون الحصة التعليمية؟</h2>
+                <p class="text-slate-300 text-sm">نضمن تجربة تفاعلية آمنة ومحفزة للطفل خلال كل جلسة:</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <div class="font-bold text-teal-300">👨‍🏫 حصة فردية أونلاين</div>
+                    <p class="text-xs text-slate-300">تركيز كامل من المعلم مع الطالب (1-on-1) دون أي تشتيت.</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <div class="font-bold text-teal-300">🎨 تفاعل يناسب العمر</div>
+                    <p class="text-xs text-slate-300">استخدام الألعاب والألغاز والوسائل Visual المبهجة.</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <div class="font-bold text-teal-300">🌸 مدرس أو مدرسة مناسبة</div>
+                    <p class="text-xs text-slate-300">امكانية اختيار معلمة متخصصة للبنات والأطفال الصغار.</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <div class="font-bold text-teal-300">📈 برنامج يتطور مع الطفل</div>
+                    <p class="text-xs text-slate-300">سرعة الشرح تتكيف تماماً مع قدرة الطفل ومستواه.</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <div class="font-bold text-teal-300">📝 متابعة لولي الأمر</div>
+                    <p class="text-xs text-slate-300">تقرير مكتوب بعد كل حصة لإحاطتك بمدى التطور والواجبات.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. رحلة الطفل وتقدمه (Stepper / Process) -->
+        <section class="space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900 text-center md:text-right">🚀 رحلة الطفل وتقدمه معنا</h2>
+
+            <div class="grid md:grid-cols-5 gap-4 text-center">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                    <div class="w-8 h-8 bg-teal-100 text-teal-700 font-bold rounded-full flex items-center justify-center mx-auto text-sm">1</div>
+                    <h4 class="font-bold text-sm text-slate-800">تقييم المستوى</h4>
+                    <p class="text-xs text-slate-500">حصة تجريبية لتحديد المستوى والاحتياج.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                    <div class="w-8 h-8 bg-teal-100 text-teal-700 font-bold rounded-full flex items-center justify-center mx-auto text-sm">2</div>
+                    <h4 class="font-bold text-sm text-slate-800">برنامج مناسب</h4>
+                    <p class="text-xs text-slate-500">خطة عمل مخصصة تناسب وقت الطفل.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                    <div class="w-8 h-8 bg-teal-100 text-teal-700 font-bold rounded-full flex items-center justify-center mx-auto text-sm">3</div>
+                    <h4 class="font-bold text-sm text-slate-800">دروس منتظمة</h4>
+                    <p class="text-xs text-slate-500">مواعيد أسبوعية ثابتة وحصص تفاعلية.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                    <div class="w-8 h-8 bg-teal-100 text-teal-700 font-bold rounded-full flex items-center justify-center mx-auto text-sm">4</div>
+                    <h4 class="font-bold text-sm text-slate-800">متابعة دقيقة</h4>
+                    <p class="text-xs text-slate-500">تقارير واختبارات قصيرة مستمرة.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                    <div class="w-8 h-8 bg-amber-100 text-amber-700 font-bold rounded-full flex items-center justify-center mx-auto text-sm">5</div>
+                    <h4 class="font-bold text-sm text-slate-800">تقدم وإتقان</h4>
+                    <p class="text-xs text-slate-500">الانتقال للمستويات والأجزاء التالية.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. آراء أولياء الأمور والشهادات -->
+        <section class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-8 text-center space-y-4">
+            <h3 class="text-xl font-bold text-amber-900">⭐ ماذا يقول أولياء الأمور عن تجربتهم معنا؟</h3>
+            <p class="text-sm text-amber-800/80 max-w-xl mx-auto">
+                استمع إلى آراء وتجارب عائلات شاركناهم رحلة تحفيظ القرآن الكريم واللغة العربية لأبنائهم.
+            </p>
+            <a href="testimonials.html" class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">
+                مشاهدة آراء أولياء الأمور والشهادات ➡️
+            </a>
+        </section>
+
+        <!-- 9. الأسئلة الشائعة (FAQ Accordion) -->
+        <section class="space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900 text-center md:text-right">❓ الأسئلة الشائعة</h2>
+
+            <div class="space-y-3">
+                <details class="bg-white border border-slate-200 rounded-xl p-4 transition group">
+                    <summary class="font-bold text-slate-800 cursor-pointer flex justify-between items-center">
+                        <span>هل الدروس فردية أم في مجموعات؟</span>
+                        <span class="text-teal-600 font-bold text-lg group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-100 leading-relaxed">
+                        جميع دروسنا فردية بالكامل (1-on-1) للتركيز التام مع الطفل وضمان أقصى فائدة علمية وتربوية.
+                    </p>
+                </details>
+
+                <details class="bg-white border border-slate-200 rounded-xl p-4 transition group">
+                    <summary class="font-bold text-slate-800 cursor-pointer flex justify-between items-center">
+                        <span>كيف يتم اختيار المعلم المناسب؟</span>
+                        <span class="text-teal-600 font-bold text-lg group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-100 leading-relaxed">
+                        يتم الترشيح بناءً على عمر الطفل وجنسه ومستواه الحالي، مع حرصنا على إسناد الأطفال لمعلمين معتمدين ذوي خبرة تربوية.
+                    </p>
+                </details>
+
+                <details class="bg-white border border-slate-200 rounded-xl p-4 transition group">
+                    <summary class="font-bold text-slate-800 cursor-pointer flex justify-between items-center">
+                        <span>هل يمكن تغيير أو تعديل موعد الحصة؟</span>
+                        <span class="text-teal-600 font-bold text-lg group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-100 leading-relaxed">
+                        نعم، تتوفر مرونة في إعادة جدولة الحصص قبل موعدها بوقت كافٍ بالتنسيق المباشر عبر خدمة العملاء.
+                    </p>
+                </details>
+
+                <details class="bg-white border border-slate-200 rounded-xl p-4 transition group">
+                    <summary class="font-bold text-slate-800 cursor-pointer flex justify-between items-center">
+                        <span>كيف أتابع تقدم طفلي ومستواه؟</span>
+                        <span class="text-teal-600 font-bold text-lg group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-100 leading-relaxed">
+                        يصلك تقرير دوري عقب الحصص يوضح ما تم حفظه وقراءته وملاحظات المعلم ونقاط التحسين.
+                    </p>
+                </details>
+
+                <details class="bg-white border border-slate-200 rounded-xl p-4 transition group">
+                    <summary class="font-bold text-slate-800 cursor-pointer flex justify-between items-center">
+                        <span>هل الحصة التجريبية مجانية أم مدفوعة؟</span>
+                        <span class="text-teal-600 font-bold text-lg group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3 pt-3 border-t border-slate-100 leading-relaxed">
+                        نوفر حصة تجريبية تقييمية ليتعرف الطفل على المعلم ونحدد المستوى والمنهج قبل الاشتراك الرسمي.
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <!-- 10. CTA أخير + فورم الحجز (Booking Form & Final CTA) -->
+        <section id="bookingForm" class="bg-teal-700 text-white p-8 md:p-12 rounded-3xl shadow-xl space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-3xl font-extrabold" id="formTitle">ابدأ رحلة طفلك التعليمية اليوم</h2>
+                <p class="text-teal-100 text-sm max-w-lg mx-auto">
+                    املا النموذج وسنتواصل معك فوراً لتحديد موعد الحصة التجريبية المناسبة:
+                </p>
+            </div>
+
+            <form class="max-w-xl mx-auto space-y-4 text-slate-800" onsubmit="event.preventDefault(); alert('تم استلام طلبك بنجاح! سنتواصل معك عبر الواتساب.');">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-teal-100 mb-1">اسم ولي الأمر / الطالب</label>
+                        <input type="text" required placeholder="الاسم الكامل" class="w-full px-4 py-3 rounded-xl border-0 focus:ring-2 focus:ring-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-teal-100 mb-1">رقم الواتساب (مع رمز الدولة)</label>
+                        <input type="tel" required placeholder="+20 123 456 789" class="w-full px-4 py-3 rounded-xl border-0 focus:ring-2 focus:ring-amber-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-teal-100 mb-1">العمر / المستوى الحالي</label>
+                    <input type="text" placeholder="مثال: 8 سنوات / مبتدئ في التجويد" class="w-full px-4 py-3 rounded-xl border-0 focus:ring-2 focus:ring-amber-400">
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row gap-4">
+                    <button type="submit" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition">
+                        حجز الحصة التجريبية 🎯
+                    </button>
+                    <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-6 rounded-xl transition text-center flex items-center justify-center gap-2">
+                        <span>💬 تواصل واتساب مباشر</span>
+                    </a>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm border-t border-slate-800">
+        <p>© 2026 جميع الحقوق محفوظة - منصة تعليم القرآن أونلاين للأطفال والكبار</p>
+    </footer>
+
+    <!-- JS Handling Dynamic Navigation Context -->
+    <script>
+        // قراءة بارامترات الرابط (URL Parameters)
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref'); // kids أو adults
+
+        const backBtn = document.getElementById('backBtn');
+        const backBtnText = document.getElementById('backBtnText');
+        const categoryBadge = document.getElementById('categoryBadge');
+        const formTitle = document.getElementById('formTitle');
+
+        if (ref === 'adults') {
+            // تخصيص الصفحة لزوار قسم الكبار
+            backBtn.href = 'adults.html';
+            backBtnText.innerText = 'الرجوع لدورات الكبار';
+            categoryBadge.innerText = '🕌 برنامج مخصص للبالغين والكبار';
+            categoryBadge.className = 'inline-block bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full';
+            formTitle.innerText = 'ابدأ رحلتك التعليمية اليوم';
+        } else {
+            // الإفتراضي: قسم الأطفال
+            backBtn.href = 'kids.html';
+            backBtnText.innerText = 'الرجوع لكورسات الأطفال';
+        }
+    </script>
+</body>
+</html>

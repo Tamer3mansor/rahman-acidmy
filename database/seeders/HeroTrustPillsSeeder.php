@@ -13,9 +13,9 @@ class HeroTrustPillsSeeder extends Seeder
     public function run(): void
     {
         $pills = [
-            ['icon' => 'fa-solid fa-circle-check', 'text' => 'حصص 100% فردية'],
-            ['icon' => 'fa-solid fa-clock', 'text' => '7/7 من 7ص لـ 10م'],
-            ['icon' => 'fa-solid fa-shield-halved', 'text' => 'بلا التزامات'],
+            ['icon' => 'fa-solid fa-circle-check', 'text' => 'Cours 100% particuliers'],
+            ['icon' => 'fa-solid fa-clock', 'text' => '7j/7 de 7h à 22h'],
+            ['icon' => 'fa-solid fa-shield-halved', 'text' => 'Sans engagement'],
         ];
 
         foreach ($pills as $sort => $pill) {

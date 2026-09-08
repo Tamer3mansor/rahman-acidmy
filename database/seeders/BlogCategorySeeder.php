@@ -13,12 +13,12 @@ class BlogCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'أطفال', 'slug' => 'atfal'],
-            ['name' => 'كبار', 'slug' => 'kibar'],
-            ['name' => 'القرآن الكريم', 'slug' => 'quran'],
-            ['name' => 'اللغة العربية', 'slug' => 'arabic-language'],
-            ['name' => 'التجويد', 'slug' => 'tajweed'],
-            ['name' => 'نصائح للأهل', 'slug' => 'parent-tips'],
+            ['name' => 'Enfants', 'slug' => 'atfal'],
+            ['name' => 'Adultes', 'slug' => 'kibar'],
+            ['name' => 'Le Saint Coran', 'slug' => 'quran'],
+            ['name' => 'Langue arabe', 'slug' => 'arabic-language'],
+            ['name' => 'Tajwid', 'slug' => 'tajweed'],
+            ['name' => 'Conseils aux parents', 'slug' => 'parent-tips'],
         ];
 
         foreach ($categories as $sort => $category) {

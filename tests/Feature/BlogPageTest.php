@@ -26,9 +26,9 @@ class BlogPageTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('blog.index')
-            ->assertSee('أحدث المقالات والنصائح التعليمية')
-            ->assertSee('كيف تجعل طفلك يحب حفظ القرآن الكريم بدون إجبار؟')
-            ->assertSee('أهم 5 أحكام تجويد يجب أن يبدأ بها المبتدئون')
+            ->assertSee('Derniers articles et conseils éducatifs')
+            ->assertSee('Comment faire aimer la mémorisation du Coran à votre enfant sans contrainte ?')
+            ->assertSee('Les 5 règles essentielles du Tajwid pour les débutants')
             ->assertSee('filter-btn active')
             ->assertDontSee('data-scroll-to-form')
             ->assertSee('build/assets/blog-', false);
@@ -44,8 +44,8 @@ class BlogPageTest extends TestCase
         $response = $this->get('/blog?k=tajweed');
 
         $response->assertOk()
-            ->assertSee('أهم 5 أحكام تجويد يجب أن يبدأ بها المبتدئون')
-            ->assertDontSee('كيف تجعل طفلك يحب حفظ القرآن الكريم بدون إجبار؟');
+            ->assertSee('Les 5 règles essentielles du Tajwid pour les débutants')
+            ->assertDontSee('Comment faire aimer la mémorisation du Coran à votre enfant sans contrainte ?');
     }
 
     public function test_blog_show_renders_article_with_toc_and_related(): void
@@ -59,11 +59,11 @@ class BlogPageTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('blog.show')
-            ->assertSee('كيف تجعل طفلك يحب حفظ القرآن الكريم بدون إجبار؟')
-            ->assertSee('د. أحمد المنشاوي')
-            ->assertSee('محتويات المقال')
-            ->assertSee('id="التمهيد-والقدوة-الحسنة-في-المنزل"', false)
-            ->assertSee('مقالات ذات صلة')
+            ->assertSee('Comment faire aimer la mémorisation du Coran à votre enfant sans contrainte ?')
+            ->assertSee('Dr. Ahmed El-Menchaoui')
+            ->assertSee('Sommaire')
+            ->assertSee('id="Préparer-le-terrain-et-donner-le-bon-exemple-à-la-maison"', false)
+            ->assertSee('Articles similaires')
             ->assertSee('application/ld+json', false);
     }
 
@@ -88,7 +88,7 @@ class BlogPageTest extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('المدونة');
+            ->assertSee('Blog');
     }
 
     public function test_post_image_accessors_resolve_uploads_and_absolute_urls(): void

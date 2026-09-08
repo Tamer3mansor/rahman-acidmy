@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 
-@section('title', 'باقات الأسعار - أكاديمية القرآن واللغة العربية')
+@section('title', 'Nos tarifs - Académie Coran et Langue Arabe')
 
-@section('meta_description', 'باقات واضحة لتعليم القرآن الكريم واللغة العربية عبر الإنترنت، اختر مدة الحصة المناسبة وابدأ رحلة طفلك مع حصة تجريبية مجانية.')
+@section('meta_description', 'Des offres claires pour l\'apprentissage du Coran et de la langue arabe en ligne. Choisissez la durée de cours qui convient et commencez avec un essai gratuit.')
 
 @section('bodyClass', 'pattern-bg')
 
@@ -24,14 +24,14 @@
     {{-- Hero & duration selector --}}
     <section class="section">
         <div class="container section-center">
-            <span class="section-label"><i class="fa-solid fa-gift"></i> الحصة الأولى مجاناً</span>
-            <h1 class="section-title">باقات واضحة للتعلم بأسلوب مريح وسلس</h1>
-            <p class="section-sub">كلما زاد عدد الحصص في الباقة، قل سعر الحصة الواحدة. اختر مدة الحصة المناسبة لطفلك وابدأ الآن.</p>
+            <span class="section-label"><i class="fa-solid fa-gift"></i> Première séance gratuite</span>
+            <h1 class="section-title">Des offres claires pour apprendre en toute sérénité</h1>
+            <p class="section-sub">Plus le nombre de cours augmente, plus le tarif unitaire diminue. Choisissez la durée qui convient à votre enfant et commencez dès maintenant.</p>
 
-            <div class="duration-hint">اختر مدة الحصة الواحدة:</div>
+            <div class="duration-hint">Choisissez la durée du cours :</div>
             <div class="duration-picker-wrapper" id="durationPicker">
                 @foreach ($durations as $duration)
-                    <button type="button" class="duration-btn {{ $loop->first ? 'active' : '' }}" data-duration="{{ $duration }}">{{ $duration }} دقيقة</button>
+                    <button type="button" class="duration-btn {{ $loop->first ? 'active' : '' }}" data-duration="{{ $duration }}">{{ $duration }} min</button>
                 @endforeach
             </div>
         </div>
@@ -48,7 +48,7 @@
                              data-price-60="{{ number_format($package->totalFor(60), 2) }}">
 
                         @if ($package->is_featured)
-                            <span class="featured-tag"><i class="fa-solid fa-star"></i> الأكثر طلباً</span>
+                            <span class="featured-tag"><i class="fa-solid fa-star"></i> Le plus demandé</span>
                         @endif
 
                         <div class="pack-header">
@@ -58,11 +58,11 @@
                         <p class="pack-desc">{{ $package->description }}</p>
 
                         <div class="pack-classes-box">
-                            <div class="pack-classes-count inter-font">{{ $package->classes_count }} {{ $package->classes_count >= 3 && $package->classes_count <= 10 ? 'حصص' : 'حصة' }}</div>
+                            <div class="pack-classes-count inter-font">{{ $package->classes_count }} {{ $package->classes_count >= 3 && $package->classes_count <= 10 ? 'cours' : 'cours' }}</div>
                             <div class="pack-classes-sub duration-label-text"
-                                 data-duration-label-30="بواقع 30 دقيقة للحصة"
-                                 data-duration-label-45="بواقع 45 دقيقة للحصة"
-                                 data-duration-label-60="بواقع 60 دقيقة للحصة">بواقع 30 دقيقة للحصة</div>
+                                 data-duration-label-30="de 30 minutes par cours"
+                                 data-duration-label-45="de 45 minutes par cours"
+                                 data-duration-label-60="de 60 minutes par cours">de 30 minutes par cours</div>
                         </div>
 
                         <div class="pack-price-box">
@@ -76,9 +76,9 @@
                                             <span class="price-original inter-font">{{ number_format($package->originalFor($duration), 2) }}€</span>
                                         @endif
                                     </div>
-                                    <div class="price-per-lesson">أي <span class="per-lesson-val inter-font">{{ number_format($package->rateFor($duration), 2) }}</span>€ / للحصة</div>
+                                    <div class="price-per-lesson">soit <span class="per-lesson-val inter-font">{{ number_format($package->rateFor($duration), 2) }}</span>€ / cours</div>
                                     @if ($savings > 0)
-                                        <div class="savings-pill">وفرت <span class="savings-val inter-font">{{ number_format($savings, 2) }}</span>€</div>
+                                        <div class="savings-pill">Économie de <span class="savings-val inter-font">{{ number_format($savings, 2) }}</span>€</div>
                                     @endif
                                 </div>
                             @endforeach
@@ -87,11 +87,11 @@
                         <ul class="pack-features">
                             @foreach ($package->features as $feature)
                                 <li><i class="fa-solid fa-check-circle"></i>
-                                    @if ($feature === 'مدة الحصة حسب الاختيار')
+                                    @if ($feature === 'Durée du cours au choix')
                                         <span class="duration-label-text"
-                                              data-duration-label-30="مدة الحصة 30 دقيقة"
-                                              data-duration-label-45="مدة الحصة 45 دقيقة"
-                                              data-duration-label-60="مدة الحصة 60 دقيقة">مدة الحصة 30 دقيقة</span>
+                                              data-duration-label-30="Durée du cours : 30 minutes"
+                                              data-duration-label-45="Durée du cours : 45 minutes"
+                                              data-duration-label-60="Durée du cours : 60 minutes">Durée du cours : 30 minutes</span>
                                     @else
                                         <span>{{ $feature }}</span>
                                     @endif
@@ -100,7 +100,7 @@
                         </ul>
 
                         <button type="button" class="{{ $package->is_featured ? 'btn-primary' : 'btn-outline' }} select-package-btn" data-select-package>
-                            <i class="fa-brands fa-whatsapp"></i> هذه الباقة تناسبني
+                            <i class="fa-brands fa-whatsapp"></i> Ce pack me convient
                         </button>
                     </article>
                 @endforeach
@@ -111,9 +111,9 @@
     {{-- Included in all packages --}}
     <section class="section section-white">
         <div class="container section-center">
-            <span class="section-label">ضمان الجودة</span>
-            <h2 class="section-title">مميّزات شاملة في جميع الباقات</h2>
-            <p class="section-sub">نفس الضمانات والخدمات المتميزة تُقدّم لكل طالب بغض النظر عن الباقة المختارة.</p>
+            <span class="section-label">Garantie qualité</span>
+            <h2 class="section-title">Avantages inclus dans tous les packs</h2>
+            <p class="section-sub">Les mêmes garanties et services premium offerts à chaque élève, quel que soit le pack choisi.</p>
 
             <div class="included-grid">
                 @foreach ($perks as $perk)
@@ -131,16 +131,16 @@
     <section class="section">
         <div class="container">
             <div class="cta-banner">
-                <span class="badge cta-banner-badge">بدون أي التزام</span>
-                <h2 class="cta-banner-title">هل تحتار في اختيار الباقة المناسبة لطفلك؟</h2>
-                <p class="cta-banner-sub">فريقنا التعليمي يرافقك مجاناً لمساعدتك في تحديد المستوى، اختيار الباقة الأنسب، وتحديد مواعيد الحصص.</p>
+                <span class="badge cta-banner-badge">Sans aucun engagement</span>
+                <h2 class="cta-banner-title">Vous hésitez sur le pack qui convient à votre enfant ?</h2>
+                <p class="cta-banner-sub">Notre équipe pédagogique vous accompagne gratuitement pour évaluer le niveau, choisir le pack adapté et planifier les cours.</p>
 
                 <div class="cta-buttons-group">
                     <a href="{{ $settings->header_btn1_url }}" target="_blank" rel="noopener" class="btn-whatsapp">
-                        <i class="fa-brands fa-whatsapp"></i> تحدث معنا عبر WhatsApp
+                        <i class="fa-brands fa-whatsapp"></i> Discutez avec nous via WhatsApp
                     </a>
                     <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">
-                        <i class="fa-solid fa-laptop"></i> احجز حصتك التجريبية مجاناً
+                        <i class="fa-solid fa-laptop"></i> Réservez votre essai gratuit
                     </a>
                 </div>
             </div>

@@ -12,28 +12,28 @@ class PricingPerkSeeder extends Seeder
         $perks = [
             [
                 'icon' => 'fa-solid fa-gift',
-                'title' => 'حصة تجريبية مجاناً',
-                'description' => 'اختبر أسلوبنا وطريقتنا في التدريس بكل أريحية وبدون أي التزام.',
+                'title' => 'Séance d\'essai gratuite',
+                'description' => 'Testez notre approche et notre méthode d\'enseignement en toute sérénité et sans aucun engagement.',
             ],
             [
                 'icon' => 'fa-solid fa-graduation-cap',
-                'title' => 'معلمون من الأزهر',
-                'description' => 'معلمون ومعلمات مجازون ومختصون لتدريس الأطفال والكبار.',
+                'title' => 'Enseignants de l\'Al-Azhar',
+                'description' => 'Enseignants qualifiés et certifiés pour l\'enseignement aux enfants et aux adultes.',
             ],
             [
                 'icon' => 'fa-solid fa-certificate',
-                'title' => 'شهادة إتمام معتمدة',
-                'description' => 'تُمنح للطالب عند إتمام المستوى وتجاوز الاختبارات بنجاح.',
+                'title' => 'Certificat de réussite officiel',
+                'description' => 'Délivré à l\'élève lorsqu\'il termine le niveau avec succès et réussit les examens.',
             ],
             [
                 'icon' => 'fa-solid fa-calendar-days',
-                'title' => 'مواعيد مرنة',
-                'description' => 'جدولة الحصص بما يتناسب تماماً مع جدول طفلك وحياتكم اليومية.',
+                'title' => 'Horaires flexibles',
+                'description' => 'Planifiez vos cours parfaitement en accord avec l\'emploi du temps de votre enfant et votre vie quotidienne.',
             ],
             [
                 'icon' => 'fa-solid fa-book-quran',
-                'title' => 'تنوّع المواد',
-                'description' => 'حرية الاختيار بين القرآن الكريم، التجويد، اللغة العربية، والدراسات الإسلامية.',
+                'title' => 'Variété de matières',
+                'description' => 'Liberté de choix entre le Coran, le Tajwid, la langue arabe et les études islamiques.',
             ],
         ];
 

@@ -49,8 +49,8 @@
 
     <div class="container">
         <div class="breadcrumbs">
-            <a href="{{ route('home') }}">الرئيسية</a> /
-            <a href="{{ route('blog.index') }}">المدونة</a> /
+            <a href="{{ route('home') }}">Accueil</a> /
+            <a href="{{ route('blog.index') }}">Blog</a> /
             @if ($post->category)
                 <a href="{{ route('blog.index', ['k' => $post->category->slug]) }}">{{ $post->category->name }}</a> /
             @endif
@@ -69,7 +69,7 @@
                     @endif
                     <div>
                         <strong>{{ $post->author_name }}</strong>
-                        <div>نُشر في {{ $post->published_at->translatedFormat('j F Y') }} • قراءة {{ $post->reading_time }} دقائق</div>
+                        <div>Publié le {{ $post->published_at->translatedFormat('j F Y') }} • {{ $post->reading_time }} min de lecture</div>
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@
 
                 @if ($toc)
                     <div class="toc">
-                        <h4><i class="fa-solid fa-list-ul"></i> محتويات المقال:</h4>
+                        <h4><i class="fa-solid fa-list-ul"></i> Sommaire :</h4>
                         <ul>
                             @foreach ($toc as $entry)
                                 <li><a href="#{{ $entry['id'] }}">{{ $loop->iteration }}. {{ $entry['text'] }}</a></li>
@@ -92,17 +92,17 @@
                     {!! $bodyHtml !!}
 
                     <div class="in-article-cta">
-                        <h3>هل ترغب في معلم متمرس يرافق طفلك؟</h3>
-                        <p>احجز الآن حصة تجريبية مجانية مع أفضل معلمي القرآن الكريم التفاعليين للأطفال.</p>
-                        <a href="{{ route('home') . '#trial-form' }}" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> احجز حصة تجريبية مجاناً</a>
+                        <h3>Vous souhaitez un enseignant expérimenté pour accompagner votre enfant ?</h3>
+                        <p>Réservez dès maintenant une séance d'essai gratuite avec les meilleurs enseignants du Coran pour enfants.</p>
+                        <a href="{{ route('home') . '#trial-form' }}" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver un essai gratuit</a>
                     </div>
                 </div>
 
                 <div class="share-buttons">
-                    <span>مشاركة المقال:</span>
-                    <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" class="share-btn share-wa" aria-label="واتساب" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" class="share-btn share-fb" aria-label="فيسبوك" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareText }}" class="share-btn share-tw" aria-label="تويتر" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i></a>
+                    <span>Partager l'article :</span>
+                    <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" class="share-btn share-wa" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" class="share-btn share-fb" aria-label="Facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareText }}" class="share-btn share-tw" aria-label="Twitter" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i></a>
                 </div>
 
                 <div class="author-box">
@@ -110,23 +110,23 @@
                         <img src="{{ $post->author_image_url }}" alt="{{ $post->author_name }}" class="author-img">
                     @endif
                     <div>
-                        <h4 style="color: var(--green);">عن الكاتب: {{ $post->author_name }}</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-mid);">متخصص في تعليم القرآن الكريم واللغة العربية.</p>
+                        <h4 style="color: var(--green);">À propos de l'auteur : {{ $post->author_name }}</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-mid);">Spécialisé dans l'enseignement du Coran et de la langue arabe.</p>
                     </div>
                 </div>
             </main>
 
             <aside>
                 <div class="sidebar-widget shadow-card">
-                    <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> ابدأ رحلة طفلك</h3>
-                    <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">حصول طفلك على التوجيه الصحيح من البداية يختصر سنوات من المحاولة.</p>
+                    <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> Commencez le parcours de votre enfant</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais.</p>
 
                     <a href="{{ route('home') . '#trial-form' }}" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
-                        <i class="fa-solid fa-laptop"></i> احجز تجربة مجانية
+                        <i class="fa-solid fa-laptop"></i> Essai gratuit
                     </a>
 
                     <a href="{{ $settings->header_btn1_url }}" class="btn-whatsapp" target="_blank" rel="noopener">
-                        <i class="fa-brands fa-whatsapp"></i> تواصل عبر الواتساب
+                        <i class="fa-brands fa-whatsapp"></i> Contactez-nous via WhatsApp
                     </a>
                 </div>
             </aside>
@@ -136,8 +136,8 @@
         @if ($related->count())
             <section style="margin-top: 60px; padding-top: 40px; border-top: 2px dashed var(--cream-dark);">
                 <div style="margin-bottom: 30px;">
-                    <span class="section-label">إثراء معرفي</span>
-                    <h2 class="section-title" style="font-size: 1.8rem;">مقالات ذات صلة</h2>
+                    <span class="section-label">Enrichissement culturel</span>
+                    <h2 class="section-title" style="font-size: 1.8rem;">Articles similaires</h2>
                 </div>
 
                 <div class="blog-grid">
@@ -149,13 +149,13 @@
                             <div class="card-body">
                                 <div class="card-meta">
                                     <span class="badge">{{ $rel->category?->name }}</span>
-                                    <span><i class="fa-regular fa-clock"></i> {{ $rel->reading_time }} دقائق</span>
+                                    <span><i class="fa-regular fa-clock"></i> {{ $rel->reading_time }} min</span>
                                 </div>
                                 <h3 class="card-title">{{ $rel->title }}</h3>
                                 <p class="card-excerpt">{{ $rel->excerpt }}</p>
                                 <div class="card-footer">
                                     <span class="card-meta"><i class="fa-regular fa-calendar"></i> {{ $rel->published_at->translatedFormat('j F Y') }}</span>
-                                    <a href="{{ route('blog.show', $rel->slug) }}" class="btn-outline">اقرأ المقال</a>
+                                    <a href="{{ route('blog.show', $rel->slug) }}" class="btn-outline">Lire l'article</a>
                                 </div>
                             </div>
                         </article>

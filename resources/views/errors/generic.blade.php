@@ -3,21 +3,21 @@
     $hint = $hint ?? null;
 
     [$title, $message] = match ($code) {
-        400 => ['طلب غير صالح', 'الطلب الذي أرسلته غير مفهوم أو غير مسموح. يرجى التحقق والعودة للوحة التحكم.'],
-        401 => ['تسجيل الدخول مطلوب', 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.'],
-        403 => ['وصول مرفوض', 'ليست لديك صلاحية الوصول إلى هذه الصفحة. يمكنك التواصل مع المشرف في حال كان ذلك خطأ.'],
-        404 => ['الصفحة غير موجودة', 'الصفحة التي تبحث عنها غير متوفرة أو تم نقلها إلى عنوان آخر.'],
-        405 => ['طريقة الطلب غير مدعومة', 'طريقة الطلب المستخدمة غير مدعومة لهذه الصفحة.'],
-        413 => ['البيانات كبيرة جداً', 'البيانات أو الملف الذي أرسلته أكبر من الحد المسموح. حاول تقليل حجمه أو إرساله على دفعات.'],
-        419 => ['انتهت الجلسة', 'انتهت صلاحية جلستك بسبب مرور وقت طويل. يرجى العودة وإعادة المحاولة.'],
-        429 => ['طلبات كثيرة جداً', 'لقد أرسلت عدداً كبيراً من الطلبات في وقت قصير. انتظر لحظات ثم أعد المحاولة.'],
-        500 => ['خطأ غير متوقع', 'حدث خطأ غير متوقع أثناء تنفيذ العملية. تم تسجيل المشكلة وسيتم حلها قريباً، يرجى إعادة المحاولة بعد قليل.'],
-        503 => ['الصيانة جارية', 'نقوم حالياً بتحديث الخدمة. يرجى العودة بعد قليل.'],
-        default => ['خطأ غير متوقع', 'حدث خطأ غير متوقع أثناء تنفيذ العملية. تم تسجيل المشكلة وسيتم حلها قريباً، يرجى إعادة المحاولة بعد قليل.'],
+        400 => ['Requête invalide', 'La requête envoyée est incompréhensible ou non autorisée. Veuillez vérifier et revenir au tableau de bord.'],
+        401 => ['Connexion requise', 'Vous devez vous connecter pour accéder à cette page.'],
+        403 => ['Accès refusé', 'Vous n\'avez pas les droits d\'accès à cette page. Vous pouvez contacter l\'administrateur si c\'est une erreur.'],
+        404 => ['Page non trouvée', 'La page que vous recherchez n\'est pas disponible ou a été déplacée vers une autre adresse.'],
+        405 => ['Méthode non supportée', 'La méthode de requête utilisée n\'est pas supportée pour cette page.'],
+        413 => ['Données trop volumineuses', 'Les données ou le fichier envoyé dépassent la limite autorisée. Essayez de réduire la taille ou de l\'envoyer par lots.'],
+        419 => ['Session expirée', 'Votre session a expiré en raison d\'une inactivité prolongée. Veuillez revenir et réessayer.'],
+        429 => ['Trop de requêtes', 'Vous avez envoyé un nombre excessif de requêtes en peu de temps. Patientez quelques instants puis réessayez.'],
+        500 => ['Erreur inattendue', 'Une erreur inattendue s\'est produite lors de l\'opération. Le problème a été enregistré et sera résolu prochainement, veuillez réessayer.'],
+        503 => ['Maintenance en cours', 'Nous mettons actuellement à jour le service. Veuillez revenir dans quelques instants.'],
+        default => ['Erreur inattendue', 'Une erreur inattendue s\'est produite lors de l\'opération. Le problème a été enregistré et sera résolu prochainement, veuillez réessayer.'],
     };
 @endphp
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -84,7 +84,7 @@
             <p class="hint">{{ $hint }}</p>
         @endif
         <div class="actions">
-            <a href="{{ url('/') }}">العودة للصفحة الرئيسية</a>
+            <a href="{{ url('/') }}">Retour à l'accueil</a>
         </div>
     </div>
 </body>

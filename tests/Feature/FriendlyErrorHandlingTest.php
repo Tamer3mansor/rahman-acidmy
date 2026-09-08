@@ -15,7 +15,7 @@ class FriendlyErrorHandlingTest extends TestCase
     {
         $this->get('/this-page-does-not-exist')
             ->assertStatus(404)
-            ->assertSee('الصفحة غير موجودة')
+            ->assertSee('Page non trouvée')
             ->assertDontSee('Stack trace');
     }
 
@@ -25,7 +25,7 @@ class FriendlyErrorHandlingTest extends TestCase
 
         $this->get('/friendly-forbidden')
             ->assertStatus(403)
-            ->assertSee('وصول مرفوض');
+            ->assertSee('Accès refusé');
     }
 
     public function test_server_error_renders_friendly_500_page(): void
@@ -34,7 +34,7 @@ class FriendlyErrorHandlingTest extends TestCase
 
         $this->get('/friendly-server-error')
             ->assertStatus(500)
-            ->assertSee('خطأ غير متوقع')
+            ->assertSee('Erreur inattendue')
             ->assertDontSee('vendor/');
     }
 
@@ -44,7 +44,7 @@ class FriendlyErrorHandlingTest extends TestCase
 
         $this->get('/friendly-boom')
             ->assertStatus(500)
-            ->assertSee('خطأ غير متوقع')
+            ->assertSee('Erreur inattendue')
             ->assertDontSee('secret-db-dsn leaked');
     }
 

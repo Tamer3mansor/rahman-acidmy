@@ -14,16 +14,16 @@ class CompareItemsSeeder extends Seeder
     public function run(): void
     {
         $items = [
-            ['type' => CompareItemType::Problem, 'text' => 'حصص جماعية لا يُتابَع فيها طفلك بشكل فردي'],
-            ['type' => CompareItemType::Problem, 'text' => 'لا يوجد تقرير تقدم ولا تغذية راجعة من المعلم'],
-            ['type' => CompareItemType::Problem, 'text' => 'مواعيد ثابتة لا تتناسب مع جدولك ووقتك'],
-            ['type' => CompareItemType::Problem, 'text' => 'معلمون بدون مؤهلات موثّقة أو إجازات معتمدة'],
-            ['type' => CompareItemType::Problem, 'text' => 'عقود طويلة الأجل يصعب إلغاؤها أو تغييرها'],
-            ['type' => CompareItemType::Solution, 'text' => 'حصص 100% فردية، تتكيف مع إيقاع كل طالب'],
-            ['type' => CompareItemType::Solution, 'text' => 'لوحة تحكم للأهل مع متابعة تفصيلية ورسائل المعلم بعد كل حصة'],
-            ['type' => CompareItemType::Solution, 'text' => 'مواعيد مرنة 7 أيام في الأسبوع، من 7 صباحاً حتى 10 مساءً'],
-            ['type' => CompareItemType::Solution, 'text' => 'معلمون خريجو الأزهر الشريف وحاملو الإجازات المعتمدة'],
-            ['type' => CompareItemType::Solution, 'text' => 'بدون التزامات، يمكن التعديل أو الإلغاء في أي وقت'],
+            ['type' => CompareItemType::Problem, 'text' => 'Cours en groupe sans suivi individualisé de votre enfant'],
+            ['type' => CompareItemType::Problem, 'text' => 'Aucun rapport de progression ni retour de l\'enseignant'],
+            ['type' => CompareItemType::Problem, 'text' => 'Horaires fixes qui ne s\'adaptent pas à votre emploi du temps'],
+            ['type' => CompareItemType::Problem, 'text' => 'Enseignants sans qualifications certifiées ni Ijazah'],
+            ['type' => CompareItemType::Problem, 'text' => 'Contrats à long terme difficiles à annuler ou modifier'],
+            ['type' => CompareItemType::Solution, 'text' => 'Cours 100% particuliers, adaptés au rythme de chaque élève'],
+            ['type' => CompareItemType::Solution, 'text' => 'Tableau de bord pour les parents avec suivi détaillé et messages de l\'enseignant après chaque cours'],
+            ['type' => CompareItemType::Solution, 'text' => 'Horaires flexibles 7 jours sur 7, de 7h à 22h'],
+            ['type' => CompareItemType::Solution, 'text' => 'Enseignants diplômés de l\'Al-Azhar et détenteurs d\'Ijazah certifiées'],
+            ['type' => CompareItemType::Solution, 'text' => 'Sans engagement, modification ou annulation possible à tout moment'],
         ];
 
         foreach ($items as $sort => $item) {

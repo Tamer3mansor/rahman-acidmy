@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/js/landing.js',
                 'resources/css/blog.css',
                 'resources/css/price.css',
+                'resources/css/courses.css',
                 'resources/js/price.js',
             ],
             refresh: true,

@@ -1,20 +1,20 @@
 @php
     $levels = [
-        \App\Enums\StudentLevel::Debutant->value => 'Débutant — مبتدئ',
-        \App\Enums\StudentLevel::Intermediaire->value => 'Intermédiaire — متوسط',
-        \App\Enums\StudentLevel::Avance->value => 'Avancé — متقدم',
-        \App\Enums\StudentLevel::JeNeSaisPas->value => 'Je ne sais pas — لا أعرف',
+        \App\Enums\StudentLevel::Debutant->value => 'Débutant',
+        \App\Enums\StudentLevel::Intermediaire->value => 'Intermédiaire',
+        \App\Enums\StudentLevel::Avance->value => 'Avancé',
+        \App\Enums\StudentLevel::JeNeSaisPas->value => 'Je ne sais pas',
     ];
 
     $scheduleDays = [
-        'الإثنين',
-        'الثلاثاء',
-        'الأربعاء',
-        'الخميس',
-        'الجمعة',
-        'السبت',
-        'الأحد',
-        'أي وقت',
+        'Lundi',
+        'Mardi',
+        'Mercredi',
+        'Jeudi',
+        'Vendredi',
+        'Samedi',
+        'Dimanche',
+        'N\'importe quel moment',
     ];
 @endphp
 
@@ -54,31 +54,31 @@
                       data-google-url="{{ config('services.google_sheets.form_url', '') }}">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="studentName">اسم الطالب *</label>
-                            <input type="text" id="studentName" name="student_name" placeholder="أدخل اسم الطالب" required>
+                            <label for="studentName">Nom de l'élève *</label>
+                            <input type="text" id="studentName" name="student_name" placeholder="Entrez le nom de l'élève" required>
                         </div>
                         <div class="form-group">
-                            <label for="parentName">اسم ولي الأمر *</label>
-                            <input type="text" id="parentName" name="parent_name" placeholder="أدخل اسمك" required>
+                            <label for="parentName">Nom du parent *</label>
+                            <input type="text" id="parentName" name="parent_name" placeholder="Entrez votre nom" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="studentAge">عمر الطالب *</label>
-                            <input type="number" id="studentAge" name="student_age" placeholder="مثال: 8" min="3" max="80" required>
+                            <label for="studentAge">Âge de l'élève *</label>
+                            <input type="number" id="studentAge" name="student_age" placeholder="Ex: 8" min="3" max="80" required>
                         </div>
                         <div class="form-group">
-                            <label for="phone">رقم الهاتف *</label>
+                            <label for="phone">Numéro de téléphone *</label>
                             <input type="tel" id="phone" name="phone" placeholder="+33 6 00 00 00 00" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="email">البريد الإلكتروني *</label>
+                            <label for="email">Adresse e-mail *</label>
                         <input type="email" id="email" name="email" placeholder="example@email.com" required>
                     </div>
 
                     <div class="form-group">
-                        <label>المستوى الحالي (Niveau de l'élève) *</label>
+                        <label>Niveau actuel de l'élève *</label>
                         <div class="level-options">
                             @foreach ($levels as $value => $label)
                                 <div class="level-option">
@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>المواعيد المتاحة خلال الأسبوع</label>
+                        <label>Créneaux disponibles dans la semaine</label>
                         <div class="schedule-grid">
                             @foreach ($scheduleDays as $index => $day)
                                 <div class="sched-option">
@@ -102,13 +102,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="message">رسالة إضافية (اختياري)</label>
-                        <textarea id="message" name="message" placeholder="هل لديك أي استفسار أو طلب خاص؟"></textarea>
+                            <label for="message">Message supplémentaire (optionnel)</label>
+                        <textarea id="message" name="message" placeholder="Avez-vous une demande ou une question particulière ?"></textarea>
                     </div>
 
                     <button type="submit" class="form-submit" id="submitBtn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        أرسل طلبي وسأنتظر التواصل
+                        Envoyer ma demande et attendre le contact
                     </button>
                     <p class="form-note">{{ $settings->form_privacy_note }}</p>
                 </form>

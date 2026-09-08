@@ -2,22 +2,22 @@ window.FriendlyErrorHandler = (() => {
     let toastEl = null;
 
     const MESSAGES = {
-        400: { title: 'طلب غير صالح', body: 'لم يتم فهم البيانات المرسلة. يرجى التحقق ثم إعادة المحاولة.' },
-        401: { title: 'تسجيل الدخول مطلوب', body: 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.' },
-        403: { title: 'وصول مرفوض', body: 'ليست لديك صلاحية تنفيذ هذه العملية.' },
-        404: { title: 'غير موجود', body: 'العنصر أو الصفحة المطلوبة غير متوفرة.' },
-        405: { title: 'طريقة طلب غير مدعومة', body: 'تم إرسال الطلب بطريقة غير صحيحة.' },
-        413: { title: 'البيانات كبيرة جداً', body: 'الملف أو البيانات أكبر من الحد المسموح.' },
-        419: { title: 'انتهت الجلسة', body: 'انتهت صلاحية الجلسة. سيتم نقلك إلى تسجيل الدخول.' },
-        429: { title: 'طلبات كثيرة جداً', body: 'أرسلت عدداً كبيراً من الطلبات. انتظر لحظات ثم أعد المحاولة.' },
-        500: { title: 'خطأ غير متوقع', body: 'حدث خطأ أثناء تنفيذ العملية. تم تسجيل المشكلة، يرجى إعادة المحاولة.' },
-        503: { title: 'الصيانة جارية', body: 'الخدمة تتحدث حالياً، يرجى المحاولة لاحقاً.' },
+        400: { title: 'Requête invalide', body: 'Les données envoyées n\'ont pas été comprises. Veuillez vérifier et réessayer.' },
+        401: { title: 'Connexion requise', body: 'Vous devez vous connecter pour accéder à cette page.' },
+        403: { title: 'Accès refusé', body: 'Vous n\'avez pas les droits pour effectuer cette opération.' },
+        404: { title: 'Non trouvé', body: 'L\'élément ou la page demandé n\'est pas disponible.' },
+        405: { title: 'Méthode non supportée', body: 'La requête a été envoyée de manière incorrecte.' },
+        413: { title: 'Données trop volumineuses', body: 'Le fichier ou les données dépassent la limite autorisée.' },
+        419: { title: 'Session expirée', body: 'La session a expiré. Vous allez être redirigé vers la connexion.' },
+        429: { title: 'Trop de requêtes', body: 'Trop de requêtes envoyées. Patientez quelques instants puis réessayez.' },
+        500: { title: 'Erreur inattendue', body: 'Une erreur s\'est produite lors de l\'opération. Le problème a été enregistré, veuillez réessayer.' },
+        503: { title: 'Maintenance en cours', body: 'Le service est en cours de mise à jour, veuillez réessayer plus tard.' },
     };
 
     function messageFor(status) {
         return MESSAGES[status] ?? {
-            title: 'خطأ غير متوقع',
-            body: 'حدث خطأ أثناء تنفيذ العملية. تم تسجيل المشكلة، يرجى إعادة المحاولة.',
+            title: 'Erreur inattendue',
+            body: 'Une erreur s\'est produite lors de l\'opération. Le problème a été enregistré, veuillez réessayer.',
         };
     }
 
@@ -72,7 +72,7 @@ window.FriendlyErrorHandler = (() => {
 
         const toast = document.createElement('div');
         toast.id = 'friendly-error-toast';
-        toast.setAttribute('dir', 'rtl');
+        toast.setAttribute('dir', 'ltr');
         document.body.appendChild(toast);
 
         toastEl = toast;
@@ -85,7 +85,7 @@ window.FriendlyErrorHandler = (() => {
         const { title, body } = messageFor(status);
 
         toast.innerHTML = `
-            <button type="button" class="friendly-error-close" aria-label="إغلاق">&times;</button>
+            <button type="button" class="friendly-error-close" aria-label="Fermer">&times;</button>
             <div class="friendly-error-title">${title}</div>
             <div>${body}</div>
         `;

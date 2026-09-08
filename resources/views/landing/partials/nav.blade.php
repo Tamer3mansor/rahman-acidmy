@@ -2,12 +2,14 @@
     $homeUrl = $homeUrl ?? route('home');
     $activePage = $activePage ?? 'home';
     $defaultNavLinks = [
-        ['label' => 'دوراتنا', 'url' => $homeUrl . '#courses'],
-        ['label' => 'منهجنا', 'url' => $homeUrl . '#journey'],
-        ['label' => 'معلمونا', 'url' => $homeUrl . '#teachers'],
-        ['label' => 'أسئلة شائعة', 'url' => $homeUrl . '#faq'],
-        ['label' => 'الأسعار', 'url' => route('price.index'), 'active' => $activePage === 'price'],
-        ['label' => 'المدونة', 'url' => route('blog.index'), 'active' => $activePage === 'blog'],
+        ['label' => 'Nos cours', 'url' => $homeUrl . '#courses'],
+        ['label' => 'Cours enfants', 'url' => route('kids.index'), 'active' => $activePage === 'kids'],
+        ['label' => 'Cours adultes', 'url' => route('adults.index'), 'active' => $activePage === 'adults'],
+        ['label' => 'Notre parcours', 'url' => $homeUrl . '#journey'],
+        ['label' => 'Nos enseignants', 'url' => $homeUrl . '#teachers'],
+        ['label' => 'FAQ', 'url' => $homeUrl . '#faq'],
+        ['label' => 'Tarifs', 'url' => route('price.index'), 'active' => $activePage === 'price'],
+        ['label' => 'Blog', 'url' => route('blog.index'), 'active' => $activePage === 'blog'],
     ];
     $navLinks = $navLinks ?? $defaultNavLinks;
 ?>
@@ -49,7 +51,7 @@
                 @endif
             </div>
 
-            <div class="hamburger" id="hamburger" aria-label="القائمة">
+            <div class="hamburger" id="hamburger" aria-label="Menu">
                 <span></span><span></span><span></span>
             </div>
         </div>
