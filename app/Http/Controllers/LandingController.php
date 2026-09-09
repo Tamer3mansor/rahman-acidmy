@@ -12,6 +12,7 @@ use App\Models\JourneyStep;
 use App\Models\LandingFaq;
 use App\Models\LandingSettings;
 use App\Models\LandingTeacher;
+use App\Models\LandingTestimonial;
 
 class LandingController extends Controller
 {
@@ -56,6 +57,11 @@ class LandingController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $testimonials = LandingTestimonial::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
         return view('landing.index', [
             'settings' => $settings,
             'trustPills' => $trustPills,
@@ -65,6 +71,7 @@ class LandingController extends Controller
             'teachers' => $teachers,
             'faqs' => $faqs,
             'formInfos' => $formInfos,
+            'testimonials' => $testimonials,
             'isIndexed' => $settings->is_indexed,
         ]);
     }
