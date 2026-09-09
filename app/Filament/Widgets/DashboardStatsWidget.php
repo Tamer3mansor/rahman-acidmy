@@ -38,7 +38,7 @@ class DashboardStatsWidget extends BaseWidget
                 ->descriptionIcon('heroicon-o-bell-alert')
                 ->color('danger'),
             Stat::make('تم الجدولة', $scheduledSubmissions)
-                ->description('حصص مجدولة')
+                ->description('تم الجدولة')
                 ->descriptionIcon('heroicon-o-calendar')
                 ->color('success'),
             Stat::make('طلبات هذا الشهر', $thisMonthSubmissions)

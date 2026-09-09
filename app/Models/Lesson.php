@@ -55,6 +55,13 @@ class Lesson extends Model
         );
     }
 
+    protected function audioDownloadUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->audio_url ? $this->resolveImageUrl($this->audio_url) : null,
+        );
+    }
+
     private function resolveImageUrl(string $path): string
     {
         foreach (['https://', 'http://', 'data:'] as $prefix) {

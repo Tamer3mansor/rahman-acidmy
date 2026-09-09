@@ -39,7 +39,7 @@ class CoursePageSettingsForm
                                     ])
                                     ->columns(2),
 
-                                Section::make('بطاقة عرض البطل')
+                                Section::make('بطاقة العرض الرئيسية')
                                     ->schema([
                                         TextInput::make('kids_showcase_emoji')->label('إيموجي البطاقة')->default('📖 ✨')->columnSpan(2),
                                         TextInput::make('kids_showcase_title')->label('عنوان البطاقة')->columnSpan(2),
@@ -66,7 +66,7 @@ class CoursePageSettingsForm
                                     ])
                                     ->columns(2),
 
-                                Section::make('بطاقة عرض البطل')
+                                Section::make('بطاقة العرض الرئيسية')
                                     ->schema([
                                         TextInput::make('adults_showcase_emoji')->label('إيموجي البطاقة')->default('📖')->columnSpan(2),
                                         TextInput::make('adults_showcase_title')->label('عنوان البطاقة')->columnSpan(2),

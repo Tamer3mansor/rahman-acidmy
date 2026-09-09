@@ -21,7 +21,7 @@ class ContactSubmissionStatsWidget extends BaseWidget
                 ->icon('heroicon-o-bell-alert')
                 ->color('danger'),
             Stat::make('تم الجدولة', ContactSubmission::where('status', SubmissionStatus::Scheduled)->count())
-                ->description('حصص مجدولة')
+                ->description('تم الجدولة')
                 ->icon('heroicon-o-calendar')
                 ->color('success'),
             Stat::make('هذا الأسبوع', ContactSubmission::where('created_at', '>=', now()->startOfWeek())->count())

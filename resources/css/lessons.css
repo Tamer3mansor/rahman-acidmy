@@ -97,6 +97,15 @@
 .lesson-body p { margin-bottom: 20px; color: var(--text-mid); font-size: 1.05rem; }
 .lesson-body h4 { font-weight: 700; }
 
+.lesson-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-md);
+  margin: 20px 0;
+  display: block;
+}
+.lesson-body audio:not(.audio-player) { width: 100%; margin: 12px 0; }
+
 /* Audio block inside body */
 .lesson-audio {
   background: var(--cream);

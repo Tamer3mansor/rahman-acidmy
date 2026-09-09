@@ -47,6 +47,8 @@ class LessonForm
                                     ->columnSpanFull(),
                                 RichEditor::make('body')
                                     ->label('محتوى الدرس')
+                                    ->fileAttachmentsDisk('public')
+                                    ->fileAttachmentsDirectory('lessons/attachments')
                                     ->helperText('يمكنك إدراج الصوت داخل المحتوى باستخدام الصيغة: [audio:URL]')
                                     ->columnSpanFull(),
                             ])
@@ -63,11 +65,29 @@ class LessonForm
                                             ->directory('lessons/covers')
                                             ->imageResizeMode('cover')
                                             ->imageCropAspectRatio('16:9')
-                                            ->imageEditor(),
-                                        TextInput::make('audio_url')
-                                            ->label('رابط الصوت')
-                                            ->url()
-                                            ->placeholder('https://...')
+                                            ->imageEditor()
+                                            ->rule('dimensions:ratio=16/9')
+                                            ->validationMessages([
+                                                'dimensions' => 'صورة الغلاف يجب أن تكون بنسبة 16:9 (مثال: 1920×1080). ارفع صورة بمقاس أفقي كبير.',
+                                            ])
+                                            ->helperText('المقاس المطلوب: نسبة 16:9 بدقة كبيرة (يُفضّل 1920×1080).')
+                                            ->columnSpanFull(),
+                                        FileUpload::make('audio_url')
+                                            ->label('الملف الصوتي الرئيسي')
+                                            ->acceptedFileTypes([
+                                                'audio/mpeg',
+                                                'audio/mp3',
+                                                'audio/wav',
+                                                'audio/x-wav',
+                                                'audio/ogg',
+                                                'audio/mp4',
+                                                'audio/aac',
+                                                'audio/webm',
+                                            ])
+                                            ->maxSize(51200)
+                                            ->disk('public')
+                                            ->directory('lessons/audio')
+                                            ->helperText('ارفع الملف الصوتي الرئيسي للدرس (MP3، WAV، OGG…).')
                                             ->columnSpanFull(),
                                         FileUpload::make('pdf_url')
                                             ->label('ملف PDF')

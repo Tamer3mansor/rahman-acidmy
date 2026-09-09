@@ -161,6 +161,43 @@ class LessonPageTest extends TestCase
             ->assertSee('lessons/pdfs/fichier.pdf', false);
     }
 
+    public function test_lesson_main_audio_renders_uploaded_file_url(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'audio_url' => 'lessons/audio/lecon.mp3',
+        ]);
+
+        $response = $this->get('/lecons-gratuites/'.$lesson->slug);
+
+        $response->assertOk()
+            ->assertSee('Fichier audio de la leçon')
+            ->assertSee('lessons/audio/lecon.mp3', false);
+    }
+
+    public function test_lesson_main_audio_renders_external_url(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'audio_url' => 'https://example.com/audio.mp3',
+        ]);
+
+        $response = $this->get('/lecons-gratuites/'.$lesson->slug);
+
+        $response->assertOk()
+            ->assertSee('https://example.com/audio.mp3', false);
+    }
+
+    public function test_lesson_rich_editor_image_attachment_renders_in_body(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'body' => '<h2>L\'exemple</h2><p>Voici une image :</p><img src="storage/lessons/attachments/illustration.jpg" alt="Illustration">',
+        ]);
+
+        $response = $this->get('/lecons-gratuites/'.$lesson->slug);
+
+        $response->assertOk()
+            ->assertSee('<img src="storage/lessons/attachments/illustration.jpg" alt="Illustration">', false);
+    }
+
     public function test_lesson_with_nullable_fields_renders(): void
     {
         $lesson = Lesson::factory()->create([

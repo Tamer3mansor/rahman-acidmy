@@ -131,7 +131,7 @@
                 <span class="section-label">Fichier audio de la leçon</span>
                 <h2 class="section-title" style="font-size: 1.6rem;">Écoutez la prononciation présentée dans ce modèle</h2>
                 <audio controls class="audio-player">
-                    <source src="{{ $lesson->audio_url }}" type="audio/mpeg">
+                    <source src="{{ $lesson->audio_download_url }}" type="audio/mpeg">
                     Votre navigateur ne prend pas en charge le lecteur audio.
                 </audio>
             </section>
