@@ -14,7 +14,7 @@ class UploadEndpointProbeTest extends TestCase
     private function signedUploadUrl(): string
     {
         $key = config('app.key');
-        $path = route('livewire.upload-file');
+        $path = route('livewire.upload-file', [], false);
         $expires = now()->addMinutes(5)->timestamp;
         $original = $path.'?expires='.$expires;
         $signature = hash_hmac('sha256', $original, $key);
