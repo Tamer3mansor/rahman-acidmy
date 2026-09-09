@@ -27,6 +27,12 @@ window.FriendlyErrorHandler=(()=>{let e=null,t={400:{title:`Requête invalide`,b
                 font-weight: bold;
                 margin-bottom: 0.25rem;
             }
+            #friendly-error-toast .friendly-error-debug {
+                margin-top: 0.5rem;
+                font-family: Consolas, 'Courier New', monospace;
+                font-size: 0.75rem;
+                color: #fecaca;
+            }
             #friendly-error-toast .friendly-error-close {
                 float: inline-end;
                 background: transparent;
@@ -41,4 +47,5 @@ window.FriendlyErrorHandler=(()=>{let e=null,t={400:{title:`Requête invalide`,b
             <button type="button" class="friendly-error-close" aria-label="Fermer">&times;</button>
             <div class="friendly-error-title">${i}</div>
             <div>${a}</div>
+            <div class="friendly-error-debug">${e==null||e===0?`Le serveur n'a pas répondu (erreur réseau). Vérifiez la console.`:`HTTP ${e}`}</div>
         `,t.querySelector(`.friendly-error-close`).addEventListener(`click`,()=>{t.classList.remove(`is-visible`)}),t.classList.add(`is-visible`),setTimeout(()=>t.classList.remove(`is-visible`),6e3)}function a(){return typeof window.Livewire?.interceptMessage==`function`&&(window.Livewire.interceptMessage(({onError:e})=>{e?.(({response:e,preventDefault:t})=>{let n=e?.status;console.error(`[friendly-error] Livewire request failed`,{status:n}),typeof t==`function`&&t(),i(n),n===419&&setTimeout(()=>window.location.reload(),1500)})}),!0)}function o(e=0){a()||e>=100||setTimeout(()=>o(e+1),100)}return window.addEventListener(`error`,e=>{console.error(`[friendly-error] uncaught error`,e.error??e.message)}),{boot:o}})(),window.FriendlyErrorHandler.boot();

@@ -8,6 +8,7 @@ use App\Filament\Widgets\SubmissionsByLevelChartWidget;
 use App\Filament\Widgets\SubmissionsByStatusChartWidget;
 use App\Filament\Widgets\SubmissionsChartWidget;
 use App\Models\SystemSettings;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -34,6 +35,10 @@ class AdminPanelProvider extends PanelProvider
 {
     public function boot(): void
     {
+        Filament::serving(function (): void {
+            app()->setLocale('ar');
+        });
+
         FilamentAsset::register([
             Css::make('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'),
         ], package: 'landing');
@@ -47,6 +52,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(CustomLogin::class)
             ->profile()
+            ->darkMode(false)
             ->colors([
                 'primary' => Color::hex('#2D6A4F'),
             ])

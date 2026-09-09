@@ -12,9 +12,54 @@
     --brand-green: #1B4332;
     --brand-green-mid: #2D6A4F;
     --brand-green-light: #40916C;
+    --brand-green-soft: #E7F2EC;
     --brand-gold: #C9963A;
     --brand-gold-light: #E8B84B;
     --brand-cream: #F8F5EE;
+    --brand-text: #1A2E27;
+    --brand-text-muted: #4A5A52;
+    --brand-border: #D8E2DC;
+}
+
+/* ==============================
+   GLOBAL  - coherent light theme
+   ============================== */
+.fi-body {
+    background-color: var(--brand-cream);
+    color: var(--brand-text);
+}
+
+.fi-main-ctn {
+    background-color: transparent;
+}
+
+.fi-topbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--brand-border);
+}
+
+.fi-section {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--brand-border);
+    border-radius: 1rem;
+    background-color: #ffffff;
+}
+
+/* ==============================
+   PAGE TITLES - dark, high contrast
+   ============================== */
+.fi-ta-header,
+.fi-header-heading {
+    color: var(--brand-text) !important;
+}
+
+.fi-breadcrumbs-item-label,
+.fi-breadcrumbs-item {
+    color: var(--brand-text-muted);
+}
+
+.fi-breadcrumbs {
+    color: var(--brand-text-muted);
 }
 
 /* ==============================
@@ -25,26 +70,26 @@
     color: #ffffff;
 }
 
-.fi-sidebar-header .fi-icon-btn-icon,
+.fi-sidebar-header .fi-icon-btn .fi-icon,
 .fi-sidebar-group-label,
 .fi-sidebar-item-icon,
 .fi-sidebar-item-label {
     color: rgba(255, 255, 255, 0.85);
 }
 
-.fi-sidebar-item:hover .fi-sidebar-item-button {
+.fi-sidebar-item:hover .fi-sidebar-item-btn {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.fi-sidebar-item-active .fi-sidebar-item-button {
+.fi-sidebar-item.fi-active .fi-sidebar-item-btn {
     background-color: var(--brand-gold);
-    color: #1B4332;
+    color: var(--brand-green);
     font-weight: 600;
 }
 
-.fi-sidebar-item-active .fi-sidebar-item-icon,
-.fi-sidebar-item-active .fi-sidebar-item-label {
-    color: #1B4332;
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-active .fi-sidebar-item-label {
+    color: var(--brand-green);
 }
 
 .fi-sidebar-group-label {
@@ -54,29 +99,21 @@
     letter-spacing: 0.06em;
 }
 
-/* Collapsed / mobile disable, keep open */
 .fi-sidebar-nav-groups {
     gap: 4px;
 }
 
-.fi-section {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(203, 213, 225, 0.6);
-    border-radius: 1rem;
-    background-color: #ffffff;
-}
-
 /* Stats cards */
 .fi-wi-stats-overview-stat {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(203, 213, 225, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--brand-border);
     border-radius: 1rem;
     background-color: #ffffff;
 }
 
-.fi-wi-stats-overview-stat-header,
+.fi-wi-stats-overview-stat-label-ctn,
 .fi-wi-stats-overview-stat-label {
-    color: #1B4332;
+    color: var(--brand-green);
     font-weight: 700;
 }
 
@@ -86,66 +123,61 @@
 }
 
 .fi-wi-stats-overview-stat-description {
-    color: #4A4A4A;
+    color: var(--brand-text-muted);
 }
 
-/* Global text contrast */
-.fi-body {
-    background-color: #F5F3EE;
-}
-
-.fi-main-ctn {
-    background-color: transparent;
-}
-
-.fi-topbar {
-    background-color: #ffffff;
-    border-bottom: 1px solid rgba(203, 213, 225, 0.6);
-}
-
-.fi-ta-header,
-.fi-header-heading {
-    color: #1B4332;
-}
-
-.fi-breadcrumbs-item-label,
-.fi-breadcrumbs-item {
-    color: #4A4A4A;
-}
-
-/* Buttons */
+/* ==============================
+   BUTTONS - harmonized
+   ============================== */
 .fi-btn {
     font-weight: 500;
 }
 
-.fi-btn-color-primary,
-.fi-btn-color-gray {
+.fi-btn.fi-color {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* Danger uses the default red */
-/* Ensure form inputs have readable text size */
+/* Gray (Cancelled/neutral) buttons render as outlined via .fi-outlined;
+   light mode already gives them dark text on a light background. */
+.fi-btn.fi-outlined {
+    border-color: var(--brand-border);
+}
+
+.fi-btn.fi-outlined:hover {
+    background-color: var(--brand-cream);
+}
+
+/* ==============================
+   FORM FIELDS - unified design
+   ============================== */
 .fi-fo-text-input,
-.fi-fo-select {
+.fi-fo-select,
+.fi-input {
     font-size: 0.9rem;
+    border: 1px solid var(--brand-border);
+    background-color: #ffffff;
+    color: var(--brand-text);
+    box-shadow: none;
 }
 
-/* ====== Dark mode overrides ====== */
-.dark .fi-sidebar {
-    background-color: #0F241A;
+.fi-fo-text-input:focus,
+.fi-fo-select:focus,
+.fi-input:focus {
+    border-color: var(--brand-green-mid);
+    box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.18);
 }
 
-.dark .fi-section,
-.dark .fi-wi-stats-overview-stat {
-    background-color: #142E21;
-    border-color: rgba(64, 145, 108, 0.3);
+.fi-input-wrp-label,
+.fi-fo-field-label {
+    color: var(--brand-text);
 }
 
-.dark .fi-wi-stats-overview-stat-label,
-.dark .fi-wi-stats-overview-stat-value {
-    color: #ffffff;
+.fi-input-wrp-prefix,
+.fi-input-wrp-suffix {
+    color: #8A9A91;
 }
 
-.dark .fi-header-heading {
-    color: #ffffff;
+/* Section headers inside dark panels */
+.fi-section-header {
+    color: var(--brand-text);
 }

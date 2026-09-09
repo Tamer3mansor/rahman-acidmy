@@ -12,6 +12,7 @@ class BlogCategoryForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(2)
             ->components([
                 Section::make('بيانات التصنيف')
                     ->schema([

@@ -6,8 +6,16 @@
 <div {{ $attributes->class(['lgn-root']) }}>
     <div class="lgn-aside">
         <div class="lgn-aside-inner">
-            @if ($this->hasLogo() && $this->getLogo())
-                <img src="{{ $this->getLogo() }}" alt="{{ filament()->getBrandName() }}" class="lgn-aside-logo">
+            @if ($logo = $this->getLogo())
+                <img
+                    src="{{ $logo }}"
+                    alt="{{ filament()->getBrandName() }}"
+                    class="lgn-aside-logo"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+                >
+                <div class="lgn-aside-fallback" style="display:none">
+                    <x-heroicon-o-academic-cap />
+                </div>
             @else
                 <div class="lgn-aside-fallback">
                     <x-heroicon-o-academic-cap />
@@ -24,7 +32,7 @@
                     <x-heroicon-o-shield-check />
                     <span>آمن ومحمي</span>
                 </div>
-                <div class="dot"></div>
+                <span class="lgn-features-sep"></span>
                 <div class="lgn-feature">
                     <x-heroicon-o-chart-bar />
                     <span>إدارة شاملة</span>
@@ -36,8 +44,13 @@
     <div class="lgn-main">
         <div class="lgn-card">
             <div class="lgn-mobile-head">
-                @if ($this->hasLogo() && $this->getLogo())
-                    <img src="{{ $this->getLogo() }}" alt="{{ filament()->getBrandName() }}" class="lgn-mobile-logo">
+                @if ($logo = $this->getLogo())
+                    <img
+                        src="{{ $logo }}"
+                        alt="{{ filament()->getBrandName() }}"
+                        class="lgn-mobile-logo"
+                        onerror="this.style.display='none'"
+                    >
                 @endif
                 <h2 class="lgn-heading">{{ filament()->getBrandName() }}</h2>
             </div>
@@ -54,7 +67,7 @@
             </div>
 
             <div class="lgn-footer">
-                &copy; {{ date('Y') }} {{ filament()->getBrandName() }}. All rights reserved.
+                &copy; {{ date('Y') }} {{ filament()->getBrandName() }} &mdash; جميع الحقوق محفوظة
             </div>
         </div>
     </div>

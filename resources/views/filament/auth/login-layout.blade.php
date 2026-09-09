@@ -10,9 +10,10 @@
             --gold-light: #E8B84B;
             --cream: #F8F5EE;
             --cream-dark: #EDE9DF;
-            --text-dark: #1A1A1A;
-            --text-mid: #4A4A4A;
+            --text-dark: #1A2E27;
+            --text-mid: #4A5A52;
             --text-light: #7A7A7A;
+            --border: #D8E2DC;
         }
 
         body {
@@ -122,30 +123,35 @@
 
         .lgn-features {
             display: flex;
-            gap: 22px;
+            gap: 14px;
             justify-content: center;
+            align-items: center;
             margin-top: 8px;
             color: rgba(255, 255, 255, 0.85);
             font-size: 0.9rem;
         }
 
         .lgn-feature {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
 
         .lgn-feature svg {
             width: 18px;
             height: 18px;
+            flex-shrink: 0;
             color: var(--gold-light);
         }
 
-        .lgn-feature .dot {
+        .lgn-features-sep {
+            display: inline-block;
             width: 5px;
             height: 5px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.45);
+            flex-shrink: 0;
         }
 
         .lgn-main {
@@ -209,6 +215,45 @@
             text-align: center;
             font-size: 0.86rem;
             color: #9aa3ad;
+        }
+
+        /* Consistent form inputs */
+        .fi-login-form .fi-input {
+            border: 1px solid var(--border) !important;
+            background-color: #fff !important;
+            box-shadow: none !important;
+            border-radius: 0.5rem;
+            padding: 0.65rem 0.85rem;
+            color: var(--text-dark) !important;
+        }
+
+        /* Neutralize browser autofill background/outline artifacts */
+        .fi-input:-webkit-autofill,
+        .fi-input:-webkit-autofill:hover,
+        .fi-input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+            -webkit-text-fill-color: var(--text-dark) !important;
+            caret-color: var(--text-dark);
+            border-color: var(--border) !important;
+            transition: background-color 9999s ease-in-out 0s;
+        }
+
+        .fi-login-form .fi-input:focus {
+            border-color: var(--green-mid) !important;
+            box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.15) !important;
+            outline: none;
+        }
+
+        /* Standardize checkboxes */
+        .fi-login-form .fi-fo-field-label:has(.fi-checkbox-input) {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .fi-login-form .fi-fo-field-label .fi-checkbox-input {
+            flex-shrink: 0;
         }
 
         .fi-w-undefined {

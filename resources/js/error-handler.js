@@ -57,6 +57,12 @@ window.FriendlyErrorHandler = (() => {
                 font-weight: bold;
                 margin-bottom: 0.25rem;
             }
+            #friendly-error-toast .friendly-error-debug {
+                margin-top: 0.5rem;
+                font-family: Consolas, 'Courier New', monospace;
+                font-size: 0.75rem;
+                color: #fecaca;
+            }
             #friendly-error-toast .friendly-error-close {
                 float: inline-end;
                 background: transparent;
@@ -84,10 +90,15 @@ window.FriendlyErrorHandler = (() => {
         const toast = ensureToast();
         const { title, body } = messageFor(status);
 
+        const debugText = status === undefined || status === null || status === 0
+            ? 'Le serveur n\'a pas répondu (erreur réseau). Vérifiez la console.'
+            : `HTTP ${status}`;
+
         toast.innerHTML = `
             <button type="button" class="friendly-error-close" aria-label="Fermer">&times;</button>
             <div class="friendly-error-title">${title}</div>
             <div>${body}</div>
+            <div class="friendly-error-debug">${debugText}</div>
         `;
 
         toast.querySelector('.friendly-error-close').addEventListener('click', () => {
