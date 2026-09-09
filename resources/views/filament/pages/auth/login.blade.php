@@ -26,7 +26,7 @@
 
             <div class="relative z-10 text-center px-12 max-w-lg">
                 @if($this->getLogo())
-                    <img src="{{ $this->getLogo() }}" alt="{{ $this->getBrandName() }}"
+                    <img src="{{ $this->getLogo() }}" alt="{{ filament()->getBrandName() }}"
                          class="h-20 w-auto mx-auto mb-8 rounded-xl shadow-2xl bg-white p-2">
                 @else
                     <div class="w-20 h-20 mx-auto mb-8 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl">
@@ -35,7 +35,7 @@
                 @endif
 
                 <h1 class="text-4xl font-bold text-white mb-4" style="font-family: 'Inter', sans-serif;">
-                    {{ $this->getBrandName() }}
+                    {{ filament()->getBrandName() }}
                 </h1>
                 <p class="text-xl text-white/90 mb-8 leading-relaxed">
                     لوحة التحكم الإدارية
@@ -61,11 +61,11 @@
                 {{-- Mobile Logo --}}
                 <div class="lg:hidden text-center mb-8">
                     @if($this->getLogo())
-                        <img src="{{ $this->getLogo() }}" alt="{{ $this->getBrandName() }}"
+                        <img src="{{ $this->getLogo() }}" alt="{{ filament()->getBrandName() }}"
                              class="h-16 w-auto mx-auto mb-4 rounded-xl shadow-lg bg-white p-1.5 dark:bg-gray-800">
                     @endif
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                        {{ $this->getBrandName() }}
+                        {{ filament()->getBrandName() }}
                     </h2>
                 </div>
 
@@ -88,7 +88,7 @@
 
                 {{-- Footer --}}
                 <div class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                    <p>&copy; {{ date('Y') }} {{ $this->getBrandName() }}. All rights reserved.</p>
+                    <p>&copy; {{ date('Y') }} {{ filament()->getBrandName() }}. All rights reserved.</p>
                 </div>
             </div>
         </div>
