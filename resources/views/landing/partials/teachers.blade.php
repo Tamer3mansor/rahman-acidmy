@@ -10,8 +10,8 @@
             @foreach ($teachers as $teacher)
                 <div class="teacher-card">
                     <div class="teacher-photo">
-                        @if ($teacher->photo_path)
-                            <img src="{{ asset('storage/' . $teacher->photo_path) }}" alt="{{ $teacher->name }}">
+                        @if ($teacher->photo_url)
+                            <img src="{{ $teacher->photo_url }}" alt="{{ $teacher->name }}">
                         @else
                             <div class="teacher-avatar">{{ $teacher->emoji }}</div>
                         @endif

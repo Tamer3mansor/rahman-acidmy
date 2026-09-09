@@ -28,7 +28,7 @@
     "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DKc3EGa-.css",
+    "file": "assets/app-CnvhpA3P.css",
     "name": "app",
     "names": [
       "app.css"
@@ -54,6 +54,15 @@
     "src": "resources/css/courses.css",
     "isEntry": true
   },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-CpVnjdlf.css",
+    "name": "theme",
+    "names": [
+      "theme.css"
+    ],
+    "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true
+  },
   "resources/css/landing.css": {
     "file": "assets/landing-DL1dW5_2.css",
     "name": "landing",
@@ -64,7 +73,7 @@
     "isEntry": true
   },
   "resources/css/lessons.css": {
-    "file": "assets/lessons-CoesX-b9.css",
+    "file": "assets/lessons-C422e13Z.css",
     "name": "lessons",
     "names": [
       "lessons.css"

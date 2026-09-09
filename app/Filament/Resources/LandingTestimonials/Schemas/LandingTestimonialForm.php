@@ -48,6 +48,7 @@ class LandingTestimonialForm
                             ->hidden(fn ($get) => $get('type') !== TestimonialType::Google && $get('type') !== TestimonialType::Whatsapp),
                         FileUpload::make('media_path')
                             ->label('ملف الفيديو / صورة المحادثة')
+                            ->disk('public')
                             ->directory('landing/testimonials')
                             ->acceptedFileTypes(['video/mp4', 'video/webm', 'image/jpeg', 'image/png', 'image/webp'])
                             ->columnSpanFull()

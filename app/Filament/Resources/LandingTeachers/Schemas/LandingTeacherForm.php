@@ -43,6 +43,7 @@ class LandingTeacherForm
                         FileUpload::make('photo_path')
                             ->label('الصورة الشخصية')
                             ->image()
+                            ->disk('public')
                             ->directory('landing/teachers')
                             ->imageResizeMode('cover')
                             ->imageCropAspectRatio('1:1')

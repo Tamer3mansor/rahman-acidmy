@@ -16,6 +16,7 @@ export default defineConfig({
                 'resources/css/price.css',
                 'resources/css/courses.css',
                 'resources/js/price.js',
+                'resources/css/filament/admin/theme.css',
             ],
             refresh: true,
             fonts: [

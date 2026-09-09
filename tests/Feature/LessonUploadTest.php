@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\LandingTeachers\Pages\CreateLandingTeacher;
 use App\Filament\Resources\Lessons\Pages\CreateLesson;
+use App\Models\LandingTeacher;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -66,6 +68,33 @@ class LessonUploadTest extends TestCase
         Livewire::test(CreateLesson::class)
             ->upload('data.audio_url', [$audio])
             ->assertHasNoErrors();
+    }
+
+    public function test_teacher_photo_upload_is_stored_on_the_public_disk(): void
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $photo = UploadedFile::fake()->image('teacher.jpg', 600, 600);
+
+        Livewire::test(CreateLandingTeacher::class)
+            ->upload('data.photo_path', [$photo])
+            ->set('data.name', 'Cheikh Test')
+            ->set('data.specialty', 'القرآن الكريم')
+            ->set('data.badges', [])
+            ->set('data.is_active', true)
+            ->set('data.sort_order', 0)
+            ->call('create')
+            ->assertHasNoErrors()
+            ->assertRedirect();
+
+        $teacher = LandingTeacher::firstOrFail();
+
+        $this->assertNotEmpty($teacher->photo_path);
+        Storage::disk('public')->assertExists($teacher->photo_path);
+        $this->assertStringStartsWith('http', $teacher->photo_url);
     }
 
     public function test_rich_editor_attachment_upload_through_livewire(): void

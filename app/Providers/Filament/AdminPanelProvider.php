@@ -48,8 +48,9 @@ class AdminPanelProvider extends PanelProvider
             ->login(CustomLogin::class)
             ->profile()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#2D6A4F'),
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->brandName(fn (): string => $this->panelTitle())
             ->brandLogo(fn (): ?string => $this->panelLogo())
             ->favicon(fn (): ?string => $this->panelFavicon())
