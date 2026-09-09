@@ -27,8 +27,7 @@ class LandingTeachersTable
                     ->searchable(),
                 TextColumn::make('emoji')
                     ->label('الأيقونة')
-                    ->html()
-                    ->formatStateUsing(fn (string $state): string => '<i class="'.$state.'"></i>'),
+                    ->searchable(),
                 IconColumn::make('is_active')
                     ->label('نشط')
                     ->boolean(),

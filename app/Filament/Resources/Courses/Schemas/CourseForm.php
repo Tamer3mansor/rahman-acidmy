@@ -47,9 +47,17 @@ class CourseForm
                             ->maxLength(10)
                             ->default('📖')
                             ->columnSpan(1),
-                        TextInput::make('card_theme')
+                        Select::make('card_theme')
                             ->label('لون رأس البطاقة')
-                            ->maxLength(30)
+                            ->options([
+                                'green' => 'أخضر',
+                                'teal' => 'أزرق مخضر',
+                                'amber' => 'ذهبي',
+                                'indigo' => 'نيلي',
+                                'emerald' => 'زمردي',
+                                'dark-green' => 'أخضر داكن',
+                            ])
+                            ->searchable()
                             ->default('green')
                             ->columnSpan(1),
                         TextInput::make('short_description')
@@ -128,7 +136,14 @@ class CourseForm
                                 Repeater::make('journey_steps')
                                     ->label('خطوات الرحلة')
                                     ->schema([
-                                        TextInput::make('htmlClass')->label('النمط (gold / dark-green)')->maxLength(30)->columnSpan(1),
+                                        Select::make('htmlClass')
+                                            ->label('النمط')
+                                            ->options([
+                                                'gold' => 'ذهبي',
+                                                'dark-green' => 'أخضر داكن',
+                                            ])
+                                            ->searchable()
+                                            ->columnSpan(1),
                                         TextInput::make('number')->label('الرقم')->maxLength(10)->columnSpan(1),
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
                                         Textarea::make('description')->label('الوصف')->columnSpanFull(),

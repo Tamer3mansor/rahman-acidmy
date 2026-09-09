@@ -7,7 +7,6 @@ use App\Models\PricingSettings;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\PricingPackageSeeder;
-use Database\Seeders\PricingPerkSeeder;
 use Database\Seeders\PricingSettingsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -21,7 +20,6 @@ class PricingPageTest extends TestCase
         $this->seed([
             PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
-            PricingPerkSeeder::class,
         ]);
 
         $response = $this->get('/price');
@@ -32,7 +30,6 @@ class PricingPageTest extends TestCase
             ->assertSee('Pack Découverte')
             ->assertSee('Pack Argent')
             ->assertSee('Le plus demandé')
-            ->assertSee('Avantages inclus dans tous les packs')
             ->assertSee('essai gratuite')
             ->assertSee('build/assets/price-', false)
             ->assertDontSee('data-scroll-to-form');
@@ -43,7 +40,6 @@ class PricingPageTest extends TestCase
         $this->seed([
             PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
-            PricingPerkSeeder::class,
         ]);
 
         $pack = PricingPackage::query()->where('name', 'Pack Découverte')->firstOrFail();
@@ -109,12 +105,11 @@ class PricingPageTest extends TestCase
         $this->seed([
             PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
-            PricingPerkSeeder::class,
         ]);
 
         $user = User::factory()->create();
 
-        foreach (['/admin/pricing-packages', '/admin/pricing-packages/create', '/admin/pricing-perks'] as $url) {
+        foreach (['/admin/pricing-packages', '/admin/pricing-packages/create'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
 

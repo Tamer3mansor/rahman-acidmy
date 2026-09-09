@@ -98,7 +98,7 @@ class LessonController extends Controller
 
                 return '<div class="lesson-audio"><strong>استمع إلى المقاطع الصوتية:</strong>'
                     .'<audio controls class="audio-player" preload="metadata">'
-                    .'<source src="'.$url.'" type="audio/mpeg">'
+                    .'<source src="'.$url.'">'
                     .'Votre navigateur ne prend pas en charge le lecteur audio.</audio></div>';
             },
             $body

@@ -78,25 +78,6 @@
         </div>
     </section>
 
-    {{-- Included in all packages --}}
-    <section class="section section-white">
-        <div class="container section-center">
-            <span class="section-label">Garantie qualité</span>
-            <h2 class="section-title">Avantages inclus dans tous les packs</h2>
-            <p class="section-sub">Les mêmes garanties et services premium offerts à chaque élève, quel que soit le pack choisi.</p>
-
-            <div class="included-grid">
-                @foreach ($perks as $perk)
-                    <div class="included-card">
-                        <div class="included-icon"><i class="{{ $perk->icon }}"></i></div>
-                        <h3 class="included-title">{{ $perk->title }}</h3>
-                        <p class="included-desc">{{ $perk->description }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
     {{-- Final CTA banner --}}
     <section class="section">
         <div class="container">

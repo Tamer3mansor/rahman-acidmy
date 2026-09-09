@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources\JourneySteps\Schemas;
 
-use App\Support\FontAwesomeIcons;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -22,10 +20,10 @@ class JourneyStepForm
                             ->label('رقم الخطوة')
                             ->required()
                             ->numeric(),
-                        Select::make('icon')
-                            ->label('الأيقونة')
-                            ->options(FontAwesomeIcons::all())
-                            ->searchable(),
+                        TextInput::make('icon')
+                            ->label('الأيقونة (إيموجي)')
+                            ->maxLength(50)
+                            ->placeholder('أدخل إيموجي أو رمزاً نصياً'),
                         TextInput::make('title')
                             ->label('العنوان')
                             ->required()

@@ -21,8 +21,7 @@ class JourneyStepsTable
                     ->sortable(),
                 TextColumn::make('icon')
                     ->label('الأيقونة')
-                    ->html()
-                    ->formatStateUsing(fn (string $state): string => '<i class="'.$state.'"></i>'),
+                    ->searchable(),
                 TextColumn::make('title')
                     ->label('العنوان')
                     ->searchable(),

@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources\LandingTeachers\Schemas;
 
-use App\Support\FontAwesomeIcons;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -27,10 +25,10 @@ class LandingTeacherForm
                             ->label('التخصص')
                             ->required()
                             ->maxLength(255),
-                        Select::make('emoji')
-                            ->label('الأيقونة')
-                            ->options(FontAwesomeIcons::all())
-                            ->searchable(),
+                        TextInput::make('emoji')
+                            ->label('الأيقونة (إيموجي)')
+                            ->maxLength(50)
+                            ->placeholder('أدخل إيموجي أو رمزاً نصياً'),
                         TagsInput::make('badges')
                             ->label('الشارات')
                             ->suggestions([

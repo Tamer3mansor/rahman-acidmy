@@ -17,8 +17,7 @@ class HeroTrustPillsTable
             ->columns([
                 TextColumn::make('icon')
                     ->label('الأيقونة')
-                    ->html()
-                    ->formatStateUsing(fn (string $state): string => '<i class="'.$state.'"></i>'),
+                    ->searchable(),
                 TextColumn::make('text')
                     ->label('النص')
                     ->searchable(),

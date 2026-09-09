@@ -10,7 +10,7 @@
             @foreach ($journeySteps as $step)
                 <div class="step-item">
                     <div class="step-num-wrap {{ $loop->odd ? 'gold' : 'dark-green' }}">
-                        <i class="{{ $step->icon }}"></i>
+                        {{ $step->icon }}
                     </div>
                     <p class="step-number">{{ str_pad($step->step_number, 2, '0', STR_PAD_LEFT) }}</p>
                     <p class="step-title">{{ $step->title }}</p>

@@ -24,9 +24,7 @@
                 <div class="hero-trust">
                     @forelse ($trustPills as $pill)
                         <div class="trust-pill">
-                            <div class="icon-wrap">
-                                <i class="{{ $pill->icon }}"></i>
-                            </div>
+                            <div class="icon-wrap">{{ $pill->icon }}</div>
                             {{ $pill->text }}
                         </div>
                     @empty

@@ -38,7 +38,6 @@ class DatabaseSeeder extends Seeder
             BlogPostSeeder::class,
             PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
-            PricingPerkSeeder::class,
             CourseSeeder::class,
             CoursePageSettingsSeeder::class,
             LessonSeeder::class,

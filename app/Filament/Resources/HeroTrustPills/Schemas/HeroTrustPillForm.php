@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\HeroTrustPills\Schemas;
 
-use App\Support\FontAwesomeIcons;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -17,10 +15,10 @@ class HeroTrustPillForm
             ->components([
                 Section::make('بيانات الشارة')
                     ->schema([
-                        Select::make('icon')
-                            ->label('الأيقونة')
-                            ->options(FontAwesomeIcons::all())
-                            ->searchable(),
+                        TextInput::make('icon')
+                            ->label('الأيقونة (إيموجي)')
+                            ->maxLength(50)
+                            ->placeholder('أدخل إيموجي أو رمزاً نصياً'),
                         TextInput::make('text')
                             ->label('النص')
                             ->required()

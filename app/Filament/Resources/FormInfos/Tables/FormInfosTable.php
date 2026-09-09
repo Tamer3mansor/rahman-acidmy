@@ -17,8 +17,7 @@ class FormInfosTable
             ->columns([
                 TextColumn::make('icon')
                     ->label('الأيقونة')
-                    ->html()
-                    ->formatStateUsing(fn (string $state): string => '<i class="'.$state.'"></i>'),
+                    ->searchable(),
                 TextColumn::make('label')
                     ->label('التسمية')
                     ->searchable(),

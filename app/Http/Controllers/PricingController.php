@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\LandingSettings;
 use App\Models\PricingPackage;
-use App\Models\PricingPerk;
 
 class PricingController extends Controller
 {
@@ -17,15 +16,9 @@ class PricingController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        $perks = PricingPerk::query()
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
-
         return view('price.index', [
             'settings' => $settings,
             'packages' => $packages,
-            'perks' => $perks,
             'whatsappPhone' => $this->resolveWhatsAppPhone($settings->header_btn1_url),
         ]);
     }

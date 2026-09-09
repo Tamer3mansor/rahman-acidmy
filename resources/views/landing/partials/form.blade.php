@@ -32,9 +32,7 @@
                 <div class="form-info-list">
                     @foreach ($formInfos as $info)
                         <div class="form-info-item">
-                            <div class="form-info-icon">
-                                <i class="{{ $info->icon }}"></i>
-                            </div>
+                            <div class="form-info-icon">{{ $info->icon }}</div>
                             <div class="form-info-text">
                                 <div class="label">{{ $info->label }}</div>
                                 <div class="val">{{ $info->value }}</div>

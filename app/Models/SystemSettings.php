@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
 class SystemSettings extends Model
@@ -13,6 +14,18 @@ class SystemSettings extends Model
         'logo_path',
         'favicon_path',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(function (self $settings): void {
+            $dirtyKeys = array_keys($settings->getDirty());
+
+            if (in_array('logo_path', $dirtyKeys) || in_array('favicon_path', $dirtyKeys) || in_array('title', $dirtyKeys)) {
+                Artisan::call('view:clear');
+                Artisan::call('filament:optimize-clear');
+            }
+        });
+    }
 
     public static function singleton(): self
     {

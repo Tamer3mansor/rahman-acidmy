@@ -77,17 +77,24 @@ class LessonForm
                                             ->acceptedFileTypes([
                                                 'audio/mpeg',
                                                 'audio/mp3',
+                                                'audio/mpeg3',
+                                                'audio/x-mpeg',
+                                                'audio/x-mp3',
                                                 'audio/wav',
                                                 'audio/x-wav',
+                                                'audio/wave',
                                                 'audio/ogg',
+                                                'audio/oga',
                                                 'audio/mp4',
+                                                'audio/x-m4a',
+                                                'audio/m4a',
                                                 'audio/aac',
                                                 'audio/webm',
                                             ])
                                             ->maxSize(51200)
                                             ->disk('public')
                                             ->directory('lessons/audio')
-                                            ->helperText('ارفع الملف الصوتي الرئيسي للدرس (MP3، WAV، OGG…).')
+                                            ->helperText('ارفع الملف الصوتي الرئيسي للدرس (MP3، WAV، OGG…). الحد الأقصى 50 ميجابايت.')
                                             ->columnSpanFull(),
                                         FileUpload::make('pdf_url')
                                             ->label('ملف PDF')
