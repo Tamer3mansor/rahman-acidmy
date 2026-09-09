@@ -181,3 +181,99 @@
 .fi-section-header {
     color: var(--brand-text);
 }
+
+/* ==================================
+   DARK MODE - forced (html.dark)
+   ================================== */
+.dark {
+    --brand-text: #EAF2ED;
+    --brand-text-muted: #AFC2B8;
+    --brand-border: #2C4A3C;
+    --brand-cream: #0E1B15;
+}
+
+.dark .fi-body {
+    background-color: #0E1B15;
+    color: #EAF2ED;
+}
+
+.dark .fi-topbar {
+    background-color: #14241C;
+    border-bottom: 1px solid var(--brand-border);
+}
+
+.dark .fi-section,
+.dark .fi-wi-stats-overview-stat {
+    background-color: #15291F;
+    border-color: var(--brand-border);
+}
+
+.dark .fi-header-heading,
+.dark .fi-ta-header,
+.dark .fi-section-header {
+    color: #FFFFFF !important;
+}
+
+.dark .fi-breadcrumbs,
+.dark .fi-breadcrumbs-item,
+.dark .fi-breadcrumbs-item-label {
+    color: #AFC2B8;
+}
+
+/* Sidebar stays the brand green; active item gold */
+.dark .fi-sidebar {
+    background-color: #122219;
+}
+
+.dark .fi-btn.fi-outlined {
+    border-color: var(--brand-border);
+    color: #EAF2ED;
+}
+
+.dark .fi-btn.fi-outlined:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Form fields in dark */
+.dark .fi-fo-text-input,
+.dark .fi-fo-select,
+.dark .fi-input {
+    background-color: #0F2017;
+    border-color: var(--brand-border);
+    color: #EAF2ED;
+}
+
+.dark .fi-fo-text-input:focus,
+.dark .fi-fo-select:focus,
+.dark .fi-input:focus {
+    border-color: var(--brand-green-light);
+    box-shadow: 0 0 0 2px rgba(64, 145, 108, 0.25);
+}
+
+.dark .fi-fo-text-input::placeholder,
+.dark .fi-input::placeholder {
+    color: #6E8A7C;
+}
+
+.dark .fi-input-wrp-label,
+.dark .fi-fo-field-label {
+    color: #D8E5DE;
+}
+
+.dark .fi-input-wrp-prefix,
+.dark .fi-input-wrp-suffix {
+    color: #6E8A7C;
+}
+
+.dark .fi-wi-stats-overview-stat-label,
+.dark .fi-wi-stats-overview-stat-label-ctn {
+    color: #FFFFFF;
+}
+
+.dark .fi-wi-stats-overview-stat-value {
+    color: #FFFFFF;
+}
+
+.dark .fi-wi-stats-overview-stat-description {
+    color: #AFC2B8;
+}
