@@ -83,7 +83,7 @@
 
                 {{-- Login Form --}}
                 <div class="fi-login-form">
-                    {!! $this->form !!}
+                    {{ $this->content }}
                 </div>
 
                 {{-- Footer --}}
