@@ -10,7 +10,7 @@ class CustomLogin extends Login
 {
     protected string $view = 'filament.pages.auth.login';
 
-    protected function getMaxWidth(): Width | string | null
+    public function getMaxWidth(): Width | string | null
     {
         return Width::Full;
     }
