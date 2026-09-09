@@ -4,16 +4,12 @@ namespace App\Filament\Pages\Auth;
 
 use App\Models\SystemSettings;
 use Filament\Auth\Pages\Login;
-use Filament\Support\Enums\Width;
 
 class CustomLogin extends Login
 {
     protected string $view = 'filament.pages.auth.login';
 
-    public function getMaxWidth(): Width | string | null
-    {
-        return Width::Full;
-    }
+    protected static string $layout = 'filament.auth.login-layout';
 
     public function getLogo(): ?string
     {
