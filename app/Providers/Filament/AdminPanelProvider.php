@@ -2,6 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\CustomLogin;
+use App\Filament\Widgets\DashboardStatsWidget;
+use App\Filament\Widgets\SubmissionsByLevelChartWidget;
+use App\Filament\Widgets\SubmissionsByStatusChartWidget;
+use App\Filament\Widgets\SubmissionsChartWidget;
 use App\Models\SystemSettings;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -15,7 +20,6 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -41,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(CustomLogin::class)
             ->profile()
             ->colors([
                 'primary' => Color::Amber,
@@ -57,7 +61,10 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                DashboardStatsWidget::class,
+                SubmissionsChartWidget::class,
+                SubmissionsByStatusChartWidget::class,
+                SubmissionsByLevelChartWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
