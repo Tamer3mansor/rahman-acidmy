@@ -52,7 +52,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(CustomLogin::class)
             ->profile()
-            ->darkMode()
+            ->darkMode(isForced: true)
             ->colors([
                 'primary' => Color::hex('#2D6A4F'),
             ])
