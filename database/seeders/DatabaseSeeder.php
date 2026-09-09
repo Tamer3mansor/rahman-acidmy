@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             LandingTestimonialSeeder::class,
             BlogCategorySeeder::class,
             BlogPostSeeder::class,
+            PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
             PricingPerkSeeder::class,
             CourseSeeder::class,

@@ -28,7 +28,7 @@
     "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-so2uCrsN.css",
+    "file": "assets/app-DKc3EGa-.css",
     "name": "app",
     "names": [
       "app.css"
@@ -64,7 +64,7 @@
     "isEntry": true
   },
   "resources/css/lessons.css": {
-    "file": "assets/lessons-DQkOMaye.css",
+    "file": "assets/lessons-CoesX-b9.css",
     "name": "lessons",
     "names": [
       "lessons.css"
@@ -73,7 +73,7 @@
     "isEntry": true
   },
   "resources/css/price.css": {
-    "file": "assets/price-JHHdcs88.css",
+    "file": "assets/price-CptddiFN.css",
     "name": "price",
     "names": [
       "price.css"
@@ -94,7 +94,7 @@
     "isEntry": true
   },
   "resources/js/price.js": {
-    "file": "assets/price-BoFGcMBM.js",
+    "file": "assets/price-gtTp2Vgs.js",
     "name": "price",
     "src": "resources/js/price.js",
     "isEntry": true

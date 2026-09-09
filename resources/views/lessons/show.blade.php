@@ -55,9 +55,13 @@
                     @if ($course)
                         <span class="badge gold"><i class="fa-solid fa-graduation-cap"></i> Lié au cours : {{ $course->title }}</span>
                     @endif
-                    <span class="badge">{{ $lesson->category->getLabel() }}</span>
-                    <span class="article-meta-item"><i class="fa-regular fa-clock"></i> Temps de lecture estimé : {{ $lesson->reading_time }} min</span>
-                    <span class="article-meta-item"><i class="fa-regular fa-calendar"></i> Mis à jour : {{ $lesson->updated_at->translatedFormat('F Y') }}</span>
+                    @if ($lesson->category)
+                        <span class="badge">{{ \App\Enums\LessonCategory::tryFrom($lesson->category)?->getLabel() ?? $lesson->category }}</span>
+                    @endif
+                    @if ($lesson->reading_time)
+                        <span class="article-meta-item"><i class="fa-regular fa-clock"></i> Temps de lecture estimé : {{ $lesson->reading_time }} min</span>
+                    @endif
+                    <span class="article-meta-item"><i class="fa-regular fa-calendar"></i> Mis à jour : {{ $lesson->updated_at?->translatedFormat('F Y') }}</span>
                 </div>
 
                 <h1 class="article-title">{{ $lesson->title }}</h1>
@@ -65,6 +69,21 @@
 
                 @if ($lesson->cover_image_url)
                     <img src="{{ $lesson->cover_image_url }}" alt="{{ $lesson->title }}" class="cover-img">
+                @endif
+
+                @if ($lesson->pdf_download_url)
+                    <div class="lesson-pdf-block">
+                        <div>
+                            <i class="fa-solid fa-file-pdf pdf-icon"></i>
+                            <div>
+                                <strong>Fiche PDF de la leçon</strong>
+                                <p>Imprimez ou téléchargez cette leçon pour la réviser hors ligne.</p>
+                            </div>
+                        </div>
+                        <a href="{{ $lesson->pdf_download_url }}" class="btn-primary" download target="_blank" rel="noopener">
+                            <i class="fa-solid fa-download"></i> Télécharger le PDF
+                        </a>
+                    </div>
                 @endif
 
                 @if ($toc)

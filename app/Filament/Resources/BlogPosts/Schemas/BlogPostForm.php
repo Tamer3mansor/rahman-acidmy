@@ -35,13 +35,14 @@ class BlogPostForm
                                     ->columnSpanFull(),
                                 TextInput::make('slug')
                                     ->label('الرابط (Slug)')
-                                    ->required()
                                     ->maxLength(255)
                                     ->unique(ignoreRecord: true)
+                                    ->helperText('اتركه فارغاً للإنشاء تلقائياً من العنوان')
                                     ->columnSpanFull(),
-                                Select::make('category_id')
-                                    ->label('التصنيف')
-                                    ->relationship('category', 'name')
+                                Select::make('categories')
+                                    ->label('التصنيفات')
+                                    ->relationship('categories', 'name')
+                                    ->multiple()
                                     ->searchable()
                                     ->preload()
                                     ->required(),

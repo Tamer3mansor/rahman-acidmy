@@ -27,7 +27,6 @@ class PricingController extends Controller
             'packages' => $packages,
             'perks' => $perks,
             'whatsappPhone' => $this->resolveWhatsAppPhone($settings->header_btn1_url),
-            'durations' => PricingPackage::DURATIONS,
         ]);
     }
 

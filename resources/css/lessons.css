@@ -135,6 +135,25 @@
   text-align: center;
 }
 
+/* PDF download block on detail page */
+.lesson-pdf-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, #fdf6ec, #fff);
+  border: 1px solid var(--cream-dark);
+  border-left: 4px solid #d93025;
+  border-radius: var(--r-md);
+  padding: 18px 22px;
+  margin-bottom: 30px;
+}
+.lesson-pdf-block > div { display: flex; align-items: center; gap: 14px; }
+.lesson-pdf-block .pdf-icon { font-size: 2rem; color: #d93025; }
+.lesson-pdf-block strong { color: var(--green); }
+.lesson-pdf-block p { margin: 2px 0 0; color: var(--text-mid); font-size: 0.9rem; }
+
 /* In-article CTA */
 .in-article-cta {
   background: linear-gradient(135deg, var(--green), var(--green-mid));

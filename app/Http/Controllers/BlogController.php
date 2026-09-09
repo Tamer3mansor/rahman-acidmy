@@ -28,7 +28,7 @@ class BlogController extends Controller
             ->when($activeCategorySlug, function ($q, $slug) use ($categories) {
                 $category = $categories->firstWhere('slug', $slug);
                 if ($category) {
-                    $q->where('category_id', $category->id);
+                    $q->whereHas('categories', fn ($cq) => $cq->where('blog_categories.id', $category->id));
                 }
             })
             ->latest('published_at')
@@ -49,11 +49,11 @@ class BlogController extends Controller
 
         $settings = LandingSettings::singleton();
 
-        $post->load('category');
+        $post->load('categories');
 
         $related = BlogPost::published()
             ->where('id', '!=', $post->id)
-            ->orderByRaw('category_id = ? DESC', [$post->category_id])
+            ->whereHas('categories', fn ($q) => $q->whereIn('blog_categories.id', $post->categories->pluck('id')))
             ->latest('published_at')
             ->limit(3)
             ->get();

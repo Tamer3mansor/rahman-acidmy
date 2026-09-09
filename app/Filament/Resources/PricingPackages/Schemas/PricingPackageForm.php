@@ -2,12 +2,17 @@
 
 namespace App\Filament\Resources\PricingPackages\Schemas;
 
+use App\Models\PricingPackage;
+use App\Models\PricingSettings;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class PricingPackageForm
@@ -44,22 +49,52 @@ class PricingPackageForm
                             ->required()
                             ->numeric()
                             ->minValue(1),
-                        TextInput::make('price_per_30')
-                            ->label('سعر الحصة (30 دقيقة)')
+                    ])
+                    ->columns(3),
+
+                Section::make('التسعير')
+                    ->description('اختر نوع التسعير: السعر/ساعة يُحسب تلقائياً من السعر العام، أو سعر خاص ثابت.')
+                    ->schema([
+                        Radio::make('pricing_type')
+                            ->label('نوع التسعير')
+                            ->options(PricingPackage::PRICING_TYPES)
+                            ->default(PricingPackage::TYPE_SPECIAL)
                             ->required()
+                            ->live()
+                            ->columnSpanFull()
+                            ->afterStateUpdated(function (Set $set, ?string $state): void {
+                                if ($state === PricingPackage::TYPE_PER_HOUR) {
+                                    $set('price', null);
+                                }
+                            }),
+                        TextInput::make('hours')
+                            ->label('عدد الساعات')
+                            ->helperText('يُحسب السعر تلقائياً: عدد الساعات × السعر العام للساعة')
+                            ->numeric()
+                            ->minValue(0.25)
+                            ->step(0.25)
+                            ->live()
+                            ->required(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_PER_HOUR)
+                            ->afterStateUpdated(function (Set $set, ?string $state): void {
+                                $perHour = PricingSettings::singleton()->per_hour_price;
+
+                                $set('price', $state !== null && $state !== '' ? round((float) $state * $perHour, 2) : null);
+                            })
+                            ->hint(fn (Get $get): string => match ($get('pricing_type')) {
+                                PricingPackage::TYPE_PER_HOUR => 'السعر المحسوب: '.number_format(round((float) ($get('hours') ?? 0) * PricingSettings::singleton()->per_hour_price, 2), 2).' €',
+                                default => '',
+                            })
+                            ->visible(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_PER_HOUR),
+                        TextInput::make('price')
+                            ->label('السعر (€)')
+                            ->helperText('سعر ثابت يُعتمد كما هو.')
                             ->numeric()
                             ->minValue(0)
-                            ->default(5.00),
-                        TextInput::make('price_per_45')
-                            ->label('سعر الحصة (45 دقيقة)')
-                            ->numeric()
-                            ->minValue(0)
-                            ->default(7.50),
-                        TextInput::make('price_per_60')
-                            ->label('سعر الحصة (60 دقيقة)')
-                            ->numeric()
-                            ->minValue(0)
-                            ->default(10.00),
+                            ->suffix('€')
+                            ->default(0)
+                            ->dehydrated()
+                            ->required(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_SPECIAL)
+                            ->visible(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_SPECIAL),
                         Repeater::make('features')
                             ->label('المميزات')
                             ->schema([

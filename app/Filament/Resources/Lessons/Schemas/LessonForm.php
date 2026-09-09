@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Lessons\Schemas;
 
-use App\Enums\LessonCategory;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -26,14 +25,12 @@ class LessonForm
 
                         Tab::make('المحتوى')
                             ->schema([
-                                Select::make('category')
+                                TextInput::make('category')
                                     ->label('الفئة')
-                                    ->options(LessonCategory::class)
-                                    ->required()
-                                    ->default(LessonCategory::Kids),
+                                    ->placeholder('مثال: تجويد، أطفال، كبار…')
+                                    ->maxLength(255),
                                 TextInput::make('title')
                                     ->label('العنوان')
-                                    ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', str($state)->slug()))
@@ -50,7 +47,7 @@ class LessonForm
                                     ->columnSpanFull(),
                                 RichEditor::make('body')
                                     ->label('محتوى الدرس')
-                                    ->required()
+                                    ->helperText('يمكنك إدراج الصوت داخل المحتوى باستخدام الصيغة: [audio:URL]')
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),
@@ -72,6 +69,13 @@ class LessonForm
                                             ->url()
                                             ->placeholder('https://...')
                                             ->columnSpanFull(),
+                                        FileUpload::make('pdf_url')
+                                            ->label('ملف PDF')
+                                            ->acceptedFileTypes(['application/pdf'])
+                                            ->disk('public')
+                                            ->directory('lessons/pdfs')
+                                            ->downloadable()
+                                            ->columnSpanFull(),
                                         Select::make('course_id')
                                             ->label('الدورة المرتبطة')
                                             ->relationship('course', 'title')
@@ -84,13 +88,10 @@ class LessonForm
                                     ->schema([
                                         TextInput::make('reading_time')
                                             ->label('وقت القراءة (دقائق)')
-                                            ->numeric()
-                                            ->required()
-                                            ->default(5),
+                                            ->numeric(),
                                         TextInput::make('sort_order')
                                             ->label('الترتيب')
-                                            ->numeric()
-                                            ->default(0),
+                                            ->numeric(),
                                         Toggle::make('is_active')
                                             ->label('نشط')
                                             ->default(true),

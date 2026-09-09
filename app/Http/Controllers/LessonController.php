@@ -50,11 +50,11 @@ class LessonController extends Controller
     }
 
     /**
-     * Add stable ids to <h2> tags and extract a table of contents.
+     * Add stable ids to <h2> tags, extract a table of contents, and render audio shortcodes.
      *
      * @return array{0: string, 1: array<int, array{id: string, text: string}>}
      */
-    private function prepareBody(string $body): array
+    private function prepareBody(?string $body): array
     {
         $toc = [];
         $usedIds = [];
@@ -80,9 +80,28 @@ class LessonController extends Controller
 
                 return '<h2'.$m[1].' id="'.$id.'">'.$m[2].'</h2>';
             },
-            $body
+            $body ?? ''
         );
 
-        return [$result ?? $body, $toc];
+        return [self::renderAudioShortcodes($result ?? ''), $toc];
+    }
+
+    /**
+     * Replace [audio:URL] shortcodes with inline audio players.
+     */
+    private function renderAudioShortcodes(string $body): string
+    {
+        return preg_replace_callback(
+            '/\[audio:\s*([^\]\s]+)\s*\]/i',
+            function (array $m): string {
+                $url = htmlspecialchars(trim($m[1]), ENT_QUOTES, 'UTF-8');
+
+                return '<div class="lesson-audio"><strong>استمع إلى المقاطع الصوتية:</strong>'
+                    .'<audio controls class="audio-player" preload="metadata">'
+                    .'<source src="'.$url.'" type="audio/mpeg">'
+                    .'Votre navigateur ne prend pas en charge le lecteur audio.</audio></div>';
+            },
+            $body
+        ) ?? $body;
     }
 }

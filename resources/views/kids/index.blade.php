@@ -91,9 +91,9 @@
             </div>
 
             <div class="hero-showcase">
-                <div class="emojis">📖 ✨</div>
-                <div class="hero-showcase-title">Un environnement d'apprentissage joyeux, conçu pour l'enfant</div>
-                <div class="hero-showcase-sub">Suivi précis avec des rapports périodiques pour les parents après chaque séance.</div>
+                <div class="emojis">{{ $pageSettings->kids_showcase_emoji ?? '📖 ✨' }}</div>
+                <div class="hero-showcase-title">{{ $pageSettings->kids_showcase_title ?? "Un environnement d'apprentissage joyeux, conçu pour l'enfant" }}</div>
+                <div class="hero-showcase-sub">{{ $pageSettings->kids_showcase_subtitle ?? 'Suivi précis avec des rapports périodiques pour les parents après chaque séance.' }}</div>
             </div>
         </div>
     </section>

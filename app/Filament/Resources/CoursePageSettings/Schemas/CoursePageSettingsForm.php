@@ -34,9 +34,16 @@ class CoursePageSettingsForm
                                 Section::make('الأزرار')
                                     ->schema([
                                         TextInput::make('kids_cta_title')->label('نص زر الحث')->required()->columnSpan(2),
-                                        TextInput::make('kids_cta_url')->label('رابط زر الحث')->default('#')->columnSpan(2),
                                         TextInput::make('kids_wa_title')->label('نص زر واتساب')->required()->columnSpan(2),
-                                        TextInput::make('kids_wa_url')->label('رابط واتساب')->default('#')->columnSpan(2),
+                                        TextInput::make('kids_wa_url')->label('رابط واتساب')->columnSpan(2),
+                                    ])
+                                    ->columns(2),
+
+                                Section::make('بطاقة عرض البطل')
+                                    ->schema([
+                                        TextInput::make('kids_showcase_emoji')->label('إيموجي البطاقة')->default('📖 ✨')->columnSpan(2),
+                                        TextInput::make('kids_showcase_title')->label('عنوان البطاقة')->columnSpan(2),
+                                        Textarea::make('kids_showcase_subtitle')->label('وصف البطاقة')->rows(2)->columnSpanFull(),
                                     ])
                                     ->columns(2),
                             ]),
@@ -54,9 +61,16 @@ class CoursePageSettingsForm
                                 Section::make('الأزرار')
                                     ->schema([
                                         TextInput::make('adults_cta_title')->label('نص زر الحث')->required()->columnSpan(2),
-                                        TextInput::make('adults_cta_url')->label('رابط زر الحث')->default('#')->columnSpan(2),
                                         TextInput::make('adults_wa_title')->label('نص زر واتساب')->required()->columnSpan(2),
-                                        TextInput::make('adults_wa_url')->label('رابط واتساب')->default('#')->columnSpan(2),
+                                        TextInput::make('adults_wa_url')->label('رابط واتساب')->columnSpan(2),
+                                    ])
+                                    ->columns(2),
+
+                                Section::make('بطاقة عرض البطل')
+                                    ->schema([
+                                        TextInput::make('adults_showcase_emoji')->label('إيموجي البطاقة')->default('📖')->columnSpan(2),
+                                        TextInput::make('adults_showcase_title')->label('عنوان البطاقة')->columnSpan(2),
+                                        Textarea::make('adults_showcase_subtitle')->label('وصف البطاقة')->rows(2)->columnSpanFull(),
                                     ])
                                     ->columns(2),
                             ]),

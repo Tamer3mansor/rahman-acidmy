@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\PricingPackage;
+use App\Models\PricingSettings;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\PricingPackageSeeder;
 use Database\Seeders\PricingPerkSeeder;
+use Database\Seeders\PricingSettingsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,9 +16,10 @@ class PricingPageTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_price_page_renders_packages_perks_and_duration_selector(): void
+    public function test_price_page_renders_packages_and_perks(): void
     {
         $this->seed([
+            PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
             PricingPerkSeeder::class,
         ]);
@@ -31,28 +34,25 @@ class PricingPageTest extends TestCase
             ->assertSee('Le plus demandé')
             ->assertSee('Avantages inclus dans tous les packs')
             ->assertSee('essai gratuite')
-            ->assertSee('30 min')
-            ->assertSee('45 min')
-            ->assertSee('60 min')
             ->assertSee('build/assets/price-', false)
             ->assertDontSee('data-scroll-to-form');
     }
 
-    public function test_price_cards_embed_precomputed_duration_states(): void
+    public function test_price_cards_embed_total_price(): void
     {
         $this->seed([
+            PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
             PricingPerkSeeder::class,
         ]);
 
+        $pack = PricingPackage::query()->where('name', 'Pack Découverte')->firstOrFail();
+
+        $expected = number_format((float) $pack->effectivePrice(), 2);
+
         $this->get('/price')
             ->assertOk()
-            ->assertSee('data-price-30', false)
-            ->assertSee('data-price-45', false)
-            ->assertSee('data-price-60', false)
-            ->assertSee('data-duration="30"', false)
-            ->assertSee('data-duration="45"', false)
-            ->assertSee('data-duration="60"', false);
+            ->assertSee("data-price=\"{$expected}\"", false);
     }
 
     public function test_page_embeds_whatsapp_phone_from_settings(): void
@@ -64,24 +64,35 @@ class PricingPageTest extends TestCase
             ->assertSee('data-wa-phone="201028268553"', false);
     }
 
-    public function test_pricing_model_calculations(): void
+    public function test_special_price_package_uses_stored_price(): void
     {
-        $package = PricingPackage::factory()->create([
+        PricingSettings::query()->create(['per_hour_price' => 8.00]);
+
+        $package = PricingPackage::factory()->special()->create([
             'classes_count' => 24,
-            'price_per_30' => 4.58,
-            'price_per_45' => 6.80,
-            'price_per_60' => 9.00,
+            'price' => 160.00,
         ]);
 
-        $this->assertSame(4.58, $package->rateFor(30));
-        $this->assertSame(109.92, $package->totalFor(30));
-        $this->assertSame(120.0, $package->originalFor(30));
-        $this->assertSame(10.08, $package->savingsFor(30));
+        $this->assertSame(160.00, $package->effectivePrice());
+        $this->assertSame(6.67, $package->ratePerLesson());
+    }
 
-        $this->assertSame(6.80, $package->rateFor(45));
-        $this->assertSame(163.2, $package->totalFor(45));
-        $this->assertSame(180.0, $package->originalFor(45));
-        $this->assertSame(16.8, $package->savingsFor(45));
+    public function test_per_hour_price_package_tracks_global_rate(): void
+    {
+        PricingSettings::query()->create(['per_hour_price' => 8.00]);
+
+        $package = PricingPackage::factory()->perHour()->create([
+            'classes_count' => 4,
+            'hours' => 4,
+        ]);
+
+        $this->assertSame(32.00, $package->effectivePrice());
+        $this->assertSame(8.00, $package->ratePerLesson());
+
+        $settings = PricingSettings::firstOrFail();
+        $settings->update(['per_hour_price' => 9.00]);
+
+        $this->assertSame(36.00, $package->effectivePrice());
     }
 
     public function test_landing_nav_includes_price_link(): void
@@ -96,6 +107,7 @@ class PricingPageTest extends TestCase
     public function test_price_admin_resources_render(): void
     {
         $this->seed([
+            PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
             PricingPerkSeeder::class,
         ]);
@@ -105,5 +117,11 @@ class PricingPageTest extends TestCase
         foreach (['/admin/pricing-packages', '/admin/pricing-packages/create', '/admin/pricing-perks'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
+
+        $this->actingAs($user)
+            ->get('/admin/pricing-packages')
+            ->assertOk()
+            ->assertSee('السعر العام للساعة')
+            ->assertSee('تعديل السعر العام');
     }
 }

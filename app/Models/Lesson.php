@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\LessonCategory;
 use Database\Factories\LessonFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,6 +23,7 @@ class Lesson extends Model
         'body',
         'cover_image',
         'audio_url',
+        'pdf_url',
         'reading_time',
         'course_id',
         'is_active',
@@ -31,7 +31,6 @@ class Lesson extends Model
     ];
 
     protected $casts = [
-        'category' => LessonCategory::class,
         'reading_time' => 'integer',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
@@ -46,6 +45,13 @@ class Lesson extends Model
     {
         return Attribute::make(
             get: fn (): ?string => $this->cover_image ? $this->resolveImageUrl($this->cover_image) : null,
+        );
+    }
+
+    protected function pdfDownloadUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->pdf_url ? $this->resolveImageUrl($this->pdf_url) : null,
         );
     }
 

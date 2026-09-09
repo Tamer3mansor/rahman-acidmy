@@ -11,12 +11,13 @@ class PricingPackage extends Model
     /** @use HasFactory<PricingPackageFactory> */
     use HasFactory;
 
-    public const DURATIONS = [30, 45, 60];
+    public const TYPE_PER_HOUR = 'per_hour';
 
-    public const BASE_RATES = [
-        30 => 5.00,
-        45 => 7.50,
-        60 => 10.00,
+    public const TYPE_SPECIAL = 'special';
+
+    public const PRICING_TYPES = [
+        self::TYPE_PER_HOUR => 'السعر/ساعة',
+        self::TYPE_SPECIAL => 'سعر خاص',
     ];
 
     protected $fillable = [
@@ -25,9 +26,9 @@ class PricingPackage extends Model
         'badge_style',
         'description',
         'classes_count',
-        'price_per_30',
-        'price_per_45',
-        'price_per_60',
+        'pricing_type',
+        'hours',
+        'price',
         'features',
         'is_featured',
         'is_active',
@@ -36,32 +37,30 @@ class PricingPackage extends Model
 
     protected $casts = [
         'classes_count' => 'integer',
-        'price_per_30' => 'float',
-        'price_per_45' => 'float',
-        'price_per_60' => 'float',
+        'pricing_type' => 'string',
+        'hours' => 'float',
+        'price' => 'float',
         'features' => 'array',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
 
-    public function rateFor(int $minutes): float
+    public function effectivePrice(): float
     {
-        return (float) $this->{"price_per_{$minutes}"};
+        if ($this->pricing_type === static::TYPE_PER_HOUR && $this->hours !== null) {
+            return round($this->hours * PricingSettings::singleton()->per_hour_price, 2);
+        }
+
+        return round((float) $this->price, 2);
     }
 
-    public function totalFor(int $minutes): float
+    public function ratePerLesson(): float
     {
-        return round($this->classes_count * $this->rateFor($minutes), 2);
-    }
+        if ($this->classes_count < 1) {
+            return $this->effectivePrice();
+        }
 
-    public function originalFor(int $minutes): float
-    {
-        return round($this->classes_count * static::BASE_RATES[$minutes], 2);
-    }
-
-    public function savingsFor(int $minutes): float
-    {
-        return round($this->originalFor($minutes) - $this->totalFor($minutes), 2);
+        return round($this->effectivePrice() / $this->classes_count, 2);
     }
 }

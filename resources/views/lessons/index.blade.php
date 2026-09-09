@@ -45,7 +45,7 @@
                         </div>
                         <div class="card-body">
                             <div class="card-meta">
-                                <span class="badge">{{ $lesson->category->getLabel() }}</span>
+                                <span class="badge">{{ \App\Enums\LessonCategory::tryFrom($lesson->category)?->getLabel() ?? $lesson->category }}</span>
                                 <span><i class="fa-regular fa-clock"></i> {{ $lesson->reading_time }} min</span>
                                 @if ($lesson->audio_url)
                                     <span><i class="fa-solid fa-headphones"></i> Fichier audio</span>

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PricingPackages\Tables;
 
+use App\Models\PricingPackage;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -22,21 +23,16 @@ class PricingPackagesTable
                     ->label('عدد الحصص')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('price_per_30')
-                    ->label('سعر 30 دقيقة (€)')
+                TextColumn::make('pricing_type')
+                    ->label('نوع التسعير')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => PricingPackage::PRICING_TYPES[$state] ?? $state)
+                    ->color(fn (string $state): string => $state === PricingPackage::TYPE_PER_HOUR ? 'success' : 'gray'),
+                TextColumn::make('price')
+                    ->label('السعر الإجمالي (€)')
                     ->money('EUR')
                     ->sortable()
-                    ->toggleable(),
-                TextColumn::make('price_per_45')
-                    ->label('سعر 45 دقيقة (€)')
-                    ->money('EUR')
-                    ->sortable()
-                    ->toggleable(),
-                TextColumn::make('price_per_60')
-                    ->label('سعر 60 دقيقة (€)')
-                    ->money('EUR')
-                    ->sortable()
-                    ->toggleable(),
+                    ->formatStateUsing(fn (PricingPackage $record): float => $record->effectivePrice()),
                 TextColumn::make('features')
                     ->label('المميزات')
                     ->formatStateUsing(fn (mixed $state): int => is_array($state) ? count($state) : 0)

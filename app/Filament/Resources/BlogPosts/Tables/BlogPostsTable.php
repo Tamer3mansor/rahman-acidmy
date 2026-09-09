@@ -20,10 +20,12 @@ class BlogPostsTable
                     ->label('العنوان')
                     ->searchable()
                     ->limit(50),
-                TextColumn::make('category.name')
-                    ->label('التصنيف')
+                TextColumn::make('categories.name')
+                    ->label('التصنيفات')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->separator(',')
+                    ->limitList(2),
                 TextColumn::make('author_name')
                     ->label('الكاتب')
                     ->searchable()
@@ -41,9 +43,10 @@ class BlogPostsTable
             ])
             ->defaultSort('published_at', 'desc')
             ->filters([
-                SelectFilter::make('category_id')
-                    ->label('التصنيف')
-                    ->relationship('category', 'name'),
+                SelectFilter::make('categories')
+                    ->label('التصنيفات')
+                    ->relationship('categories', 'name')
+                    ->multiple(),
             ])
             ->recordActions([
                 EditAction::make(),

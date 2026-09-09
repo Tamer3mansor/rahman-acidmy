@@ -46,8 +46,8 @@
         <div class="breadcrumbs">
             <a href="{{ route('home') }}">Accueil</a> /
             <a href="{{ route('blog.index') }}">Blog</a> /
-            @if ($post->category)
-                <a href="{{ route('blog.index', ['k' => $post->category->slug]) }}">{{ $post->category->name }}</a> /
+            @if ($post->categories->count())
+                <a href="{{ route('blog.index', ['k' => $post->categories->first()?->slug]) }}">{{ $post->categories->pluck('name')->implode(', ') }}</a> /
             @endif
             <span>{{ $post->title }}</span>
         </div>
@@ -55,7 +55,11 @@
         <div class="article-layout">
 
             <main class="article-main shadow-card">
-                <span class="badge">{{ $post->category?->name }}</span>
+                @if ($post->categories->count())
+                    @foreach ($post->categories as $cat)
+                        <span class="badge">{{ $cat->name }}</span>
+                    @endforeach
+                @endif
                 <h1 class="article-title">{{ $post->title }}</h1>
 
                 <div class="article-meta">
@@ -143,7 +147,9 @@
                             </div>
                             <div class="card-body">
                                 <div class="card-meta">
-                                    <span class="badge">{{ $rel->category?->name }}</span>
+                                    @foreach ($rel->categories->take(2) as $cat)
+                                        <span class="badge">{{ $cat->name }}</span>
+                                    @endforeach
                                     <span><i class="fa-regular fa-clock"></i> {{ $rel->reading_time }} min</span>
                                 </div>
                                 <h3 class="card-title">{{ $rel->title }}</h3>

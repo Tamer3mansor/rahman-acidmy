@@ -92,7 +92,6 @@ class LandingSettingsForm
                                             ->maxLength(255),
                                         TextInput::make('hero_btn1_url')
                                             ->label('رابط الزر الأساسي')
-                                            ->url()
                                             ->maxLength(255),
                                         TextInput::make('hero_btn2_title')
                                             ->label('نص الزر الثانوي')

@@ -2,7 +2,7 @@
 
 @section('title', 'Tarifs des cours de Coran et arabe en ligne | Ar-Rahman Academy')
 
-@section('description', 'Tarifs des cours de Coran et arabe en ligne. Cours particuliers à partir de 4,50 €/séance. Première séance gratuite sans engagement.')
+@section('description', 'Tarifs des cours de Coran et arabe en ligne. Cours particuliers à des tarifs clairs et sans engagement. Première séance gratuite.')
 
 @section('bodyClass', 'pattern-bg')
 
@@ -21,31 +21,24 @@
         'homeUrl' => route('home'),
     ])
 
-    {{-- Hero & duration selector --}}
+    {{-- Hero --}}
     <section class="section">
         <div class="container section-center">
             <span class="section-label"><i class="fa-solid fa-gift"></i> Première séance gratuite</span>
             <h1 class="section-title">Des offres claires pour apprendre en toute sérénité</h1>
-            <p class="section-sub">Plus le nombre de cours augmente, plus le tarif unitaire diminue. Choisissez la durée qui convient à votre enfant et commencez dès maintenant.</p>
-
-            <div class="duration-hint">Choisissez la durée du cours :</div>
-            <div class="duration-picker-wrapper" id="durationPicker">
-                @foreach ($durations as $duration)
-                    <button type="button" class="duration-btn {{ $loop->first ? 'active' : '' }}" data-duration="{{ $duration }}">{{ $duration }} min</button>
-                @endforeach
-            </div>
+            <p class="section-sub">Un tarif transparent calculé au taux horaire. Choisissez le pack qui convient à votre enfant et commencez dès maintenant.</p>
         </div>
 
         {{-- Packages grid --}}
         <div class="container">
             <div class="packages-grid" id="packagesGrid" data-wa-phone="{{ $whatsappPhone }}">
                 @foreach ($packages as $package)
+                    @php($total = $package->effectivePrice())
+                    @php($perLesson = $package->ratePerLesson())
                     <article class="package-card {{ $package->is_featured ? 'featured' : '' }}"
                              data-pack-name="{{ $package->name }}"
                              data-classes="{{ $package->classes_count }}"
-                             data-price-30="{{ number_format($package->totalFor(30), 2) }}"
-                             data-price-45="{{ number_format($package->totalFor(45), 2) }}"
-                             data-price-60="{{ number_format($package->totalFor(60), 2) }}">
+                             data-price="{{ number_format($total, 2) }}">
 
                         @if ($package->is_featured)
                             <span class="featured-tag"><i class="fa-solid fa-star"></i> Le plus demandé</span>
@@ -58,44 +51,21 @@
                         <p class="pack-desc">{{ $package->description }}</p>
 
                         <div class="pack-classes-box">
-                            <div class="pack-classes-count inter-font">{{ $package->classes_count }} {{ $package->classes_count >= 3 && $package->classes_count <= 10 ? 'cours' : 'cours' }}</div>
-                            <div class="pack-classes-sub duration-label-text"
-                                 data-duration-label-30="de 30 minutes par cours"
-                                 data-duration-label-45="de 45 minutes par cours"
-                                 data-duration-label-60="de 60 minutes par cours">de 30 minutes par cours</div>
+                            <div class="pack-classes-count inter-font">{{ $package->classes_count }}</div>
+                            <div class="pack-classes-sub">cours particuliers</div>
                         </div>
 
                         <div class="pack-price-box">
-                            @foreach ($durations as $duration)
-                                @php($savings = $package->savingsFor($duration))
-                                <div class="price-duration" data-duration="{{ $duration }}" @if ($duration !== 30) hidden @endif>
-                                    <div class="price-main">
-                                        <span class="price-amount inter-font">{{ number_format($package->totalFor($duration), 2) }}</span>
-                                        <span class="price-currency">€</span>
-                                        @if ($savings > 0)
-                                            <span class="price-original inter-font">{{ number_format($package->originalFor($duration), 2) }}€</span>
-                                        @endif
-                                    </div>
-                                    <div class="price-per-lesson">soit <span class="per-lesson-val inter-font">{{ number_format($package->rateFor($duration), 2) }}</span>€ / cours</div>
-                                    @if ($savings > 0)
-                                        <div class="savings-pill">Économie de <span class="savings-val inter-font">{{ number_format($savings, 2) }}</span>€</div>
-                                    @endif
-                                </div>
-                            @endforeach
+                            <div class="price-main">
+                                <span class="price-amount inter-font">{{ number_format($total, 2) }}</span>
+                                <span class="price-currency">€</span>
+                            </div>
+                            <div class="price-per-lesson">soit <span class="per-lesson-val inter-font">{{ number_format($perLesson, 2) }}</span>€ / cours</div>
                         </div>
 
                         <ul class="pack-features">
                             @foreach ($package->features as $feature)
-                                <li><i class="fa-solid fa-check-circle"></i>
-                                    @if ($feature === 'Durée du cours au choix')
-                                        <span class="duration-label-text"
-                                              data-duration-label-30="Durée du cours : 30 minutes"
-                                              data-duration-label-45="Durée du cours : 45 minutes"
-                                              data-duration-label-60="Durée du cours : 60 minutes">Durée du cours : 30 minutes</span>
-                                    @else
-                                        <span>{{ $feature }}</span>
-                                    @endif
-                                </li>
+                                <li><i class="fa-solid fa-check-circle"></i><span>{{ $feature }}</span></li>
                             @endforeach
                         </ul>
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Enums\LessonCategory;
 use App\Models\Lesson;
 use App\Models\User;
 use Database\Seeders\CourseSeeder;
@@ -125,13 +124,56 @@ class LessonPageTest extends TestCase
         $this->assertNotContains($inactive->id, Lesson::query()->active()->pluck('id')->all());
     }
 
-    public function test_lesson_category_label(): void
+    public function test_lesson_category_is_plain_text(): void
     {
         $lesson = Lesson::factory()->create([
-            'category' => LessonCategory::Tajwid,
+            'category' => 'tajwid',
         ]);
 
-        $this->assertSame('تجويد وتلاوة', $lesson->category->getLabel());
+        $this->assertSame('tajwid', $lesson->category);
+    }
+
+    public function test_lesson_inline_audio_shortcode_renders_audio_player(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'body' => '<h2>Introduction</h2><p>Le texte avant.</p>[audio:https://example.com/audio.mp3]<p>Le texte après.</p>',
+        ]);
+
+        $response = $this->get('/lecons-gratuites/'.$lesson->slug);
+
+        $response->assertOk()
+            ->assertSee('class="lesson-audio"', false)
+            ->assertSee('src="https://example.com/audio.mp3"', false)
+            ->assertDontSee('[audio:', false);
+    }
+
+    public function test_lesson_pdf_download_link_renders(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'pdf_url' => 'lessons/pdfs/fichier.pdf',
+        ]);
+
+        $response = $this->get('/lecons-gratuites/'.$lesson->slug);
+
+        $response->assertOk()
+            ->assertSee('Fiche PDF de la leçon')
+            ->assertSee('Télécharger le PDF')
+            ->assertSee('lessons/pdfs/fichier.pdf', false);
+    }
+
+    public function test_lesson_with_nullable_fields_renders(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'category' => null,
+            'title' => null,
+            'excerpt' => null,
+            'body' => null,
+            'reading_time' => null,
+            'sort_order' => null,
+        ]);
+
+        $this->get('/lecons-gratuites/'.$lesson->slug)->assertOk();
+        $this->get('/lecons-gratuites')->assertOk();
     }
 
     public function test_landing_nav_includes_lessons_link(): void

@@ -38,7 +38,9 @@
                     <div class="featured-content">
                         <div>
                             <span class="badge gold"><i class="fa-solid fa-thumbtack"></i> Article vedette</span>
-                            <span class="badge">{{ $featured->category?->name }}</span>
+                            @foreach ($featured->categories as $cat)
+                                <span class="badge">{{ $cat->name }}</span>
+                            @endforeach
                         </div>
                         <h2 class="card-title">{{ $featured->title }}</h2>
                         <p class="card-excerpt">{{ $featured->excerpt }}</p>
@@ -62,7 +64,9 @@
                             </div>
                             <div class="card-body">
                                 <div class="card-meta">
-                                    <span class="badge">{{ $post->category?->name }}</span>
+                                    @foreach ($post->categories->take(2) as $cat)
+                                        <span class="badge">{{ $cat->name }}</span>
+                                    @endforeach
                                     <span><i class="fa-regular fa-clock"></i> {{ $post->reading_time }} min</span>
                                 </div>
                                 <h3 class="card-title">{{ $post->title }}</h3>

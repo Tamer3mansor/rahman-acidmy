@@ -87,9 +87,9 @@
             </div>
 
             <div class="hero-showcase">
-                <div class="emojis">📖</div>
-                <div class="hero-showcase-title">Flexibilité et maîtrise pour les adultes</div>
-                <div class="hero-showcase-sub">Des plans d'étude adaptés à votre emploi du temps, avec un enseignant pour les hommes et une enseignante pour les femmes.</div>
+                <div class="emojis">{{ $pageSettings->adults_showcase_emoji ?? '📖' }}</div>
+                <div class="hero-showcase-title">{{ $pageSettings->adults_showcase_title ?? 'Flexibilité et maîtrise pour les adultes' }}</div>
+                <div class="hero-showcase-sub">{{ $pageSettings->adults_showcase_subtitle ?? "Des plans d'étude adaptés à votre emploi du temps, avec un enseignant pour les hommes et une enseignante pour les femmes." }}</div>
             </div>
         </div>
     </section>

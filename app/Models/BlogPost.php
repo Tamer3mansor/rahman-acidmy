@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class BlogPost extends Model
 {
@@ -16,7 +18,6 @@ class BlogPost extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
         'title',
         'slug',
         'excerpt',
@@ -37,9 +38,29 @@ class BlogPost extends Model
         'is_active' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (BlogPost $post): void {
+            if (blank($post->slug)) {
+                $post->slug = Str::slug($post->title);
+            }
+        });
+
+        static::updating(function (BlogPost $post): void {
+            if ($post->isDirty('title') && blank($post->getOriginal('slug'))) {
+                $post->slug = Str::slug($post->title);
+            }
+        });
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(BlogCategory::class, 'category_id');
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(BlogCategory::class, 'blog_post_category');
     }
 
     protected function coverImageUrl(): Attribute

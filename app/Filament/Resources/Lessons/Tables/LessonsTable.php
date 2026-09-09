@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Lessons\Tables;
 
-use App\Enums\LessonCategory;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -24,7 +23,6 @@ class LessonsTable
                 TextColumn::make('category')
                     ->label('الفئة')
                     ->badge()
-                    ->formatStateUsing(fn ($state) => $state instanceof LessonCategory ? $state->getLabel() : LessonCategory::tryFrom($state)?->getLabel() ?? $state)
                     ->sortable(),
                 TextColumn::make('course.title')
                     ->label('الدورة المرتبطة')
@@ -44,9 +42,6 @@ class LessonsTable
             ])
             ->defaultSort('sort_order')
             ->filters([
-                SelectFilter::make('category')
-                    ->label('الفئة')
-                    ->options(LessonCategory::class),
                 SelectFilter::make('course')
                     ->label('الدورة المرتبطة')
                     ->relationship('course', 'title'),
