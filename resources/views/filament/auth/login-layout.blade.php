@@ -260,6 +260,22 @@
             width: 100% !important;
             max-width: 100% !important;
         }
+
+        /* Keep the branded login page light even if the panel is forced to dark mode */
+        .dark .fi-login-form .fi-input {
+            background-color: #fff !important;
+            border-color: var(--border) !important;
+            color: var(--text-dark) !important;
+        }
+
+        .dark .fi-login-form .fi-fo-field-label {
+            color: var(--text-dark) !important;
+        }
+
+        .dark .lgn-main,
+        .dark .lgn-root {
+            background: #fff;
+        }
     </style>
     {{ $slot }}
 </x-filament-panels::layout.base>
