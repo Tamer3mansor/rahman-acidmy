@@ -109,7 +109,7 @@ class CourseForm
                                     ->schema([
                                         TextInput::make('icon')->label('الأيقونة')->maxLength(10)->columnSpan(1),
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
-                                        Textarea::make('description')->label('الوصف')->columnSpanFull(),
+                                        RichEditor::make('description')->label('الوصف')->columnSpanFull(),
                                     ])
                                     ->columns(2)
                                     ->defaultItems(2)
@@ -123,7 +123,7 @@ class CourseForm
                                     ->label('مميزات الحصة')
                                     ->schema([
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
-                                        Textarea::make('description')->label('الوصف')->columnSpan(1),
+                                        RichEditor::make('description')->label('الوصف')->columnSpan(1),
                                     ])
                                     ->columns(2)
                                     ->defaultItems(2)
@@ -146,7 +146,7 @@ class CourseForm
                                             ->columnSpan(1),
                                         TextInput::make('number')->label('الرقم')->maxLength(10)->columnSpan(1),
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
-                                        Textarea::make('description')->label('الوصف')->columnSpanFull(),
+                                        RichEditor::make('description')->label('الوصف')->columnSpanFull(),
                                     ])
                                     ->columns(3)
                                     ->defaultItems(5)
@@ -183,7 +183,7 @@ class CourseForm
                                     ->label('الأسئلة الشائعة')
                                     ->schema([
                                         TextInput::make('question')->label('السؤال')->required()->columnSpan(1),
-                                        Textarea::make('answer')->label('الإجابة')->required()->columnSpan(1),
+                                        RichEditor::make('answer')->label('الإجابة')->required()->columnSpan(1),
                                     ])
                                     ->columns(2)
                                     ->defaultItems(3)

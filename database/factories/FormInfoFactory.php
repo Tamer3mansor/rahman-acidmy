@@ -18,7 +18,7 @@ class FormInfoFactory extends Factory
     public function definition(): array
     {
         return [
-            'icon' => fake()->randomElement(['clock', 'shield', 'check', 'users']),
+            'icon' => fake()->randomElement(['⏰', '🛡️', '✅', '👥']),
             'label' => fake()->realText(20),
             'value' => fake()->realText(25),
             'is_active' => true,

@@ -135,7 +135,7 @@
                         <div class="curriculum-card">
                             <div class="icon">{{ $item['icon'] }}</div>
                             <h3>{{ $item['title'] }}</h3>
-                            <p>{{ $item['description'] }}</p>
+                             <p>{!! $item['description'] !!}</p>
                         </div>
                     @endforeach
                 </div>
@@ -151,7 +151,7 @@
                         @foreach ($course->session_features as $feature)
                             <div class="session-card">
                                 <div class="session-card-title">{{ $feature['title'] }}</div>
-                                <p>{{ $feature['description'] }}</p>
+                                 <p>{!! $feature['description'] !!}</p>
                             </div>
                         @endforeach
                     </div>
@@ -169,7 +169,7 @@
                         <div class="step-card">
                             <div class="journey-step-num {{ $step['htmlClass'] ?? 'gold' }}">{{ $step['number'] ?? $loop->iteration }}</div>
                             <h4>{{ $step['title'] }}</h4>
-                            <p>{{ $step['description'] }}</p>
+                             <p>{!! $step['description'] !!}</p>
                         </div>
                     @endforeach
                 </div>
@@ -189,9 +189,9 @@
                                 <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
                             </div>
                             <div class="faq-answer">
-                                <div class="faq-answer-inner">
-                                    {{ $faq['answer'] }}
-                                </div>
+                                 <div class="faq-answer-inner">
+                                     {!! $faq['answer'] !!}
+                                 </div>
                             </div>
                         </div>
                     @endforeach

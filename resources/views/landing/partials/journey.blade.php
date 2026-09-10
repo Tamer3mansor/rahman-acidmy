@@ -14,7 +14,7 @@
                     </div>
                     <p class="step-number">{{ str_pad($step->step_number, 2, '0', STR_PAD_LEFT) }}</p>
                     <p class="step-title">{{ $step->title }}</p>
-                    <p class="step-desc">{{ $step->description }}</p>
+                    <p class="step-desc">{!! $step->description !!}</p>
                 </div>
             @endforeach
         </div>

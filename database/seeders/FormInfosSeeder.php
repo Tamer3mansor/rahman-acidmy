@@ -13,10 +13,10 @@ class FormInfosSeeder extends Seeder
     public function run(): void
     {
         $infos = [
-            ['icon' => 'fa-solid fa-clock', 'label' => 'Temps de réponse', 'value' => 'Sous 24 heures'],
-            ['icon' => 'fa-solid fa-shield-halved', 'label' => 'Garantie', 'value' => 'Sans aucun engagement'],
-            ['icon' => 'fa-solid fa-circle-check', 'label' => 'Première séance', 'value' => 'Entièrement gratuite'],
-            ['icon' => 'fa-solid fa-users', 'label' => 'Nos enseignants', 'value' => 'Diplômés de l\'Al-Azhar'],
+            ['icon' => '⏰', 'label' => 'Temps de réponse', 'value' => 'Sous 24 heures'],
+            ['icon' => '🛡️', 'label' => 'Garantie', 'value' => 'Sans aucun engagement'],
+            ['icon' => '✅', 'label' => 'Première séance', 'value' => 'Entièrement gratuite'],
+            ['icon' => '👥', 'label' => 'Nos enseignants', 'value' => 'Diplômés de l\'Al-Azhar'],
         ];
 
         foreach ($infos as $sort => $info) {

@@ -19,7 +19,7 @@ class JourneyStepFactory extends Factory
     {
         return [
             'step_number' => fake()->numberBetween(1, 10),
-            'icon' => fake()->randomElement(['clipboard', 'document', 'video', 'chart', 'trend']),
+            'icon' => fake()->randomElement(['📋', '📝', '🎬', '📈', '🚀']),
             'title' => fake()->realText(25),
             'description' => fake()->realText(60),
             'is_active' => true,

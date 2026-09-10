@@ -13,11 +13,11 @@ class JourneyStepsSeeder extends Seeder
     public function run(): void
     {
         $steps = [
-            ['step_number' => 1, 'icon' => 'fa-solid fa-clipboard-list', 'title' => 'Évaluation du niveau', 'description' => 'Test gratuit pour déterminer votre niveau avec précision et identifier le point de départ optimal'],
-            ['step_number' => 2, 'icon' => 'fa-solid fa-file-lines', 'title' => 'Programme personnalisé', 'description' => 'Un parcours éducatif conçu spécialement pour votre niveau, vos objectifs et votre emploi du temps'],
-            ['step_number' => 3, 'icon' => 'fa-solid fa-circle-play', 'title' => 'Cours particuliers', 'description' => 'Séances en visio en face à face avec votre enseignant dédié, au moment qui vous convient'],
-            ['step_number' => 4, 'icon' => 'fa-solid fa-chart-line', 'title' => 'Suivi continu', 'description' => 'Un rapport détaillé après chaque cours, transmis directement aux parents via le tableau de bord'],
-            ['step_number' => 5, 'icon' => 'fa-solid fa-arrow-trend-up', 'title' => 'Progrès garanti', 'description' => 'Des objectifs clairs et mesurables. Vous constatez les progrès semaine après semaine'],
+            ['step_number' => 1, 'icon' => '📋', 'title' => 'Évaluation du niveau', 'description' => 'Test gratuit pour déterminer votre niveau avec précision et identifier le point de départ optimal'],
+            ['step_number' => 2, 'icon' => '📝', 'title' => 'Programme personnalisé', 'description' => 'Un parcours éducatif conçu spécialement pour votre niveau, vos objectifs et votre emploi du temps'],
+            ['step_number' => 3, 'icon' => '🎬', 'title' => 'Cours particuliers', 'description' => 'Séances en visio en face à face avec votre enseignant dédié, au moment qui vous convient'],
+            ['step_number' => 4, 'icon' => '📈', 'title' => 'Suivi continu', 'description' => 'Un rapport détaillé après chaque cours, transmis directement aux parents via le tableau de bord'],
+            ['step_number' => 5, 'icon' => '🚀', 'title' => 'Progrès garanti', 'description' => 'Des objectifs clairs et mesurables. Vous constatez les progrès semaine après semaine'],
         ];
 
         foreach ($steps as $sort => $step) {

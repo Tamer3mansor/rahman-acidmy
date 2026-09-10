@@ -18,7 +18,7 @@ class HeroTrustPillFactory extends Factory
     public function definition(): array
     {
         return [
-            'icon' => fake()->randomElement(['check', 'clock', 'shield']),
+            'icon' => fake()->randomElement(['✅', '⏰', '🛡️']),
             'text' => fake()->realText(30),
             'is_active' => true,
             'sort_order' => 0,
