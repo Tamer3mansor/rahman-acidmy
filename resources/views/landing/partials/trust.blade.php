@@ -60,24 +60,43 @@
 
             {{-- Center: Videos --}}
             <div class="trust-videos">
-                <div class="trust-video-card" style="aspect-ratio:16/9">
-                    <div class="trust-video-placeholder">
-                        <div class="play-sm">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                @forelse ($testimonials->filter(fn ($t) => $t->type->value === 'video') as $testimonial)
+                    @if ($testimonial->media_path)
+                        @php
+                            $videoExtension = strtolower(pathinfo($testimonial->media_path, PATHINFO_EXTENSION));
+                            $videoUrl = \Illuminate\Support\Str::startsWith($testimonial->media_path, ['http://', 'https://'])
+                                ? $testimonial->media_path
+                                : asset('storage/' . $testimonial->media_path);
+                        @endphp
+                        <div class="trust-video-card" style="aspect-ratio:16/9">
+                            <video controls muted playsinline loop preload="metadata">
+                                <source src="{{ $videoUrl }}" type="{{ $videoExtension === 'webm' ? 'video/webm' : 'video/mp4' }}">
+                            </video>
+                            @if ($testimonial->author_name)
+                                <div class="trust-label">{{ $testimonial->author_name }}{{ $testimonial->author_location ? ' · ' . $testimonial->author_location : '' }}</div>
+                            @endif
                         </div>
-                        <span>Test vidéo · Parents</span>
-                    </div>
-                    <div class="trust-label">Témoignages vidéo — Parents</div>
-                </div>
-                <div class="trust-video-card" style="aspect-ratio:16/9">
-                    <div class="trust-video-placeholder">
-                        <div class="play-sm">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    @endif
+                @empty
+                    <div class="trust-video-card" style="aspect-ratio:16/9">
+                        <div class="trust-video-placeholder">
+                            <div class="play-sm">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </div>
+                            <span>Test vidéo · Parents</span>
                         </div>
-                        <span>Messages vocaux des élèves</span>
+                        <div class="trust-label">Témoignages vidéo — Parents</div>
                     </div>
-                    <div class="trust-label">Messages vocaux — Élèves de l'académie</div>
-                </div>
+                    <div class="trust-video-card" style="aspect-ratio:16/9">
+                        <div class="trust-video-placeholder">
+                            <div class="play-sm">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </div>
+                            <span>Messages vocaux des élèves</span>
+                        </div>
+                        <div class="trust-label">Messages vocaux — Élèves de l'académie</div>
+                    </div>
+                @endforelse
             </div>
 
             {{-- Right column: DB testimonials (whatsapp + google) --}}
