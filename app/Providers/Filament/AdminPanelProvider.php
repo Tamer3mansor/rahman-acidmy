@@ -72,7 +72,6 @@ class AdminPanelProvider extends PanelProvider
                 'الدورات',
                 'الحصص المجانية',
                 'الأسعار',
-                'الطلبات',
                 'إعدادات الصفحة',
                 'النظام',
             ])
