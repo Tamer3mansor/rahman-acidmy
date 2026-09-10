@@ -56,7 +56,7 @@ class AudioPlugin implements HasToolbarButtons, RichContentPlugin
     public function getTipTapJsExtensions(): array
     {
         return [
-            asset('js/rich-editor-audio-extension.js'),
+            '/js/rich-editor-audio-extension.js',
         ];
     }
 

@@ -66,6 +66,16 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->navigationGroups([
+                'إدارة الصفحة الرئيسية',
+                'المدونة',
+                'الدورات',
+                'الحصص المجانية',
+                'الأسعار',
+                'الطلبات',
+                'إعدادات الصفحة',
+                'النظام',
+            ])
             ->widgets([
                 AccountWidget::class,
                 DashboardStatsWidget::class,

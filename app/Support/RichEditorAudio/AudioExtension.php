@@ -50,10 +50,9 @@ class AudioExtension extends Node
             'audio',
             HTML::mergeAttributes(
                 $this->options['HTMLAttributes'],
-                ['controls' => '', 'preload' => 'metadata'],
+                ['controls' => 'controls', 'preload' => 'metadata'],
                 $HTMLAttributes,
             ),
-            0,
         ];
     }
 }
