@@ -277,3 +277,55 @@
 .dark .fi-wi-stats-overview-stat-description {
     color: #AFC2B8;
 }
+
+/* ==================================
+   RICH EDITOR - inline audio node
+   ================================== */
+.fi-fo-rich-editor-audio {
+    margin-block: 0.75rem;
+    padding: 0.5rem;
+    border: 1px dashed var(--brand-border);
+    border-radius: 0.75rem;
+    background-color: var(--brand-cream);
+}
+
+.fi-fo-rich-editor-audio--selected {
+    border-color: var(--brand-green-mid);
+    border-style: solid;
+    box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.18);
+}
+
+.fi-fo-rich-editor-audio-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fi-fo-rich-editor-audio-inner audio {
+    width: 100%;
+    max-width: 560px;
+    height: 44px;
+    outline: none;
+}
+
+.fi-fo-rich-editor-audio-empty {
+    color: var(--brand-text-muted);
+    font-size: 0.8rem;
+}
+
+.dark .fi-fo-rich-editor-audio {
+    border-color: var(--brand-border);
+    background-color: #0F2017;
+}
+
+.dark .fi-fo-rich-editor-audio--selected {
+    border-color: var(--brand-green-light);
+}
+
+.dark .fi-fo-rich-editor-audio-empty {
+    color: #AFC2B8;
+}
+
+.dark .fi-fo-rich-editor-audio-inner audio {
+    filter: invert(1) hue-rotate(180deg);
+}

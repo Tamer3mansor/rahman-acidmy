@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\BlogPosts\Schemas;
 
+use App\Filament\Schemas\Components\AudioRichEditor;
+use App\Support\RichEditorAudio\AudioPlugin;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -50,8 +51,13 @@ class BlogPostForm
                                     ->label('الملخص')
                                     ->rows(2)
                                     ->columnSpanFull(),
-                                RichEditor::make('body')
+                                AudioRichEditor::make('body')
                                     ->label('محتوى المقال')
+                                    ->fileAttachmentsDisk('public')
+                                    ->fileAttachmentsDirectory('blog/attachments')
+                                    ->fileAttachmentsAcceptedFileTypes(AudioPlugin::ACCEPTED_FILE_TYPES)
+                                    ->fileAttachmentsMaxSize(AudioPlugin::MAX_FILE_SIZE_KB)
+                                    ->plugins([app(AudioPlugin::class)])
                                     ->required()
                                     ->columnSpanFull(),
                             ]),
