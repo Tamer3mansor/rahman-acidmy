@@ -300,3 +300,75 @@
 .dark .fi-fo-rich-editor .fi-prose audio {
     filter: invert(1) hue-rotate(180deg);
 }
+
+/* Rich editor: inline audio node (visible, selectable block) */
+.fi-fo-rich-editor .audio-node {
+    display: block;
+    max-width: 560px;
+    border: 1px dashed var(--brand-border);
+    border-radius: 0.75rem;
+    background-color: var(--brand-cream);
+    padding: 0.75rem;
+    margin-block: 0.75rem;
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+.fi-fo-rich-editor .audio-node.is-selected {
+    outline: 2px solid var(--brand-green-mid);
+    outline-offset: 2px;
+}
+
+.fi-fo-rich-editor .audio-node__player {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+}
+
+.fi-fo-rich-editor .audio-node__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--brand-text-muted);
+}
+
+.fi-fo-rich-editor .audio-node__src {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.fi-fo-rich-editor .audio-node__src.is-empty {
+    font-style: italic;
+}
+
+.fi-fo-rich-editor .audio-node__open {
+    color: var(--brand-green);
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.fi-fo-rich-editor .audio-node__open[aria-disabled='true'] {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.dark .fi-fo-rich-editor .audio-node {
+    border-color: var(--brand-border);
+    background-color: #0F2017;
+}
+
+.dark .fi-fo-rich-editor .audio-node__meta {
+    color: #AFC2B8;
+}
+
+.dark .fi-fo-rich-editor .audio-node__open {
+    color: var(--brand-gold-light);
+}
