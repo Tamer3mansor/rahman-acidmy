@@ -6,7 +6,9 @@ use App\Models\ErrorLog;
 use App\Models\User;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tests\TestCase;
 
@@ -38,6 +40,19 @@ class ErrorLoggingTest extends TestCase
         app(ExceptionHandler::class)->report(new NotFoundHttpException('missing'));
 
         $this->assertDatabaseCount('error_logs', 0);
+    }
+
+    public function test_server_error_through_http_request_is_recorded(): void
+    {
+        Route::get('/boom', fn (): never => abort(500, 'http boom'));
+
+        $this->get('/boom')->assertStatus(500);
+
+        $this->assertDatabaseHas('error_logs', [
+            'exception' => HttpException::class,
+            'message' => 'http boom',
+            'url' => url('/boom'),
+        ]);
     }
 
     public function test_error_log_resource_is_read_only_and_renders(): void
