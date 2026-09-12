@@ -1,8 +1,17 @@
 @extends('layouts.landing')
 
-@section('title', $pageSettings->meta_title ?: 'Cours de Coran pour enfants en ligne | Ar-Rahman Academy')
+@section('title', $pageSettings->meta_title ?: 'Cours de Coran pour enfants en ligne en France, Belgique et Canada | Ar-Rahman Academy')
 
-@section('description', $pageSettings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants de 4 à 16 ans. Mémorisation, Tajwid, langue arabe avec des enseignants spécialisés Al-Azhar.')
+@section('description', $pageSettings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants de 4 à 16 ans en France, Belgique et Canada. Mémorisation, Tajwid, langue arabe avec des enseignants spécialisés Al-Azhar.')
+
+@if ($pageSettings->og_image)
+    @php
+        $kidsOgImage = \Illuminate\Support\Str::startsWith($pageSettings->og_image, ['http://', 'https://'])
+            ? $pageSettings->og_image
+            : asset('storage/'.$pageSettings->og_image);
+    @endphp
+    @section('og_image', $kidsOgImage)
+@endif
 
 @section('bodyClass', '')
 

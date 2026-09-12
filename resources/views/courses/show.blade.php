@@ -14,6 +14,18 @@
 
 @section('description', $course->meta_description ?: $course->description)
 
+@php
+    $courseOgImage = trim((string) ($course->og_image ?: $pageSettings->og_image));
+@endphp
+@if ($courseOgImage !== '')
+    @php
+        $courseOgImageUrl = \Illuminate\Support\Str::startsWith($courseOgImage, ['http://', 'https://'])
+            ? $courseOgImage
+            : asset('storage/'.$courseOgImage);
+    @endphp
+    @section('og_image', $courseOgImageUrl)
+@endif
+
 @section('bodyClass', '')
 
 @section('styles')

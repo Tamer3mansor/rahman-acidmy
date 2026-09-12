@@ -23,7 +23,7 @@
     <meta property="og:title" content="@yield('title', 'Ar-Rahman Academy')">
     <meta property="og:description" content="@yield('description')">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset(config('seo.og_image')) }}">
+    <meta property="og:image" content="@yield('og_image', asset(config('seo.og_image')))">
     <meta property="og:site_name" content="Ar-Rahman Academy">
     <meta property="og:locale" content="fr_FR">
 
@@ -31,7 +31,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', 'Ar-Rahman Academy')">
     <meta name="twitter:description" content="@yield('description')">
-    <meta name="twitter:image" content="{{ asset(config('seo.og_image')) }}">
+    <meta name="twitter:image" content="@yield('og_image', asset(config('seo.og_image')))">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

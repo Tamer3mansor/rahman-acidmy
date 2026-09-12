@@ -2,7 +2,7 @@
 
 @section('title', 'Leçons gratuites - Exemples et explications | ' . $settings->footer_brand_name)
 
-@section('description', 'Leçons gratuites de Coran, Tajwid et langue arabe en ligne. Découvrez notre méthode d\'enseignement avec des exemples et explications simplifiés pour enfants et adultes.')
+@section('description', 'Leçons gratuites de Coran, Tajwid et langue arabe en ligne pour enfants et adultes en France, Belgique et Canada. Découvrez notre méthode d\'enseignement avec des exemples et explications simplifiés.')
 
 @section('bodyClass', 'pattern-bg')
 

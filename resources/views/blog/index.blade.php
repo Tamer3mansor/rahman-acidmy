@@ -2,7 +2,11 @@
 
 @section('title', 'Blog islamique - Coran, Tajwid et arabe | Ar-Rahman Academy')
 
-@section('description', 'Blog islamique | Ar-Rahman Academy. Articles sur l\'apprentissage du Coran, le Tajwid, la langue arabe et l\'éducation islamique.')
+@section('description', 'Blog islamique | Ar-Rahman Academy. Articles sur l\'apprentissage du Coran, le Tajwid, la langue arabe et l\'éducation islamique pour les familles en France, Belgique et Canada.')
+
+@if ($featured?->cover_image_url)
+    @section('og_image', $featured->cover_image_url)
+@endif
 
 @section('bodyClass', 'pattern-bg')
 

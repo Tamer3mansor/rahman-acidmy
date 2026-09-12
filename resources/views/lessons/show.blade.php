@@ -26,7 +26,7 @@
     {{-- Structured data (SEO) --}}
     @section('head')
         @if ($lesson->cover_image_url)
-            <meta property="og:image" content="{{ $lesson->cover_image_url }}">
+            @section('og_image', $lesson->cover_image_url)
         @endif
         <script type="application/ld+json">
         {

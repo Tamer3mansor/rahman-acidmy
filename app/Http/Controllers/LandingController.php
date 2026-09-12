@@ -6,6 +6,7 @@ use App\Enums\CompareItemType;
 use App\Http\Requests\ContactSubmissionRequest;
 use App\Models\CompareItem;
 use App\Models\ContactSubmission;
+use App\Models\Course;
 use App\Models\FormInfo;
 use App\Models\HeroTrustPill;
 use App\Models\JourneyStep;
@@ -62,6 +63,11 @@ class LandingController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $courses = Course::query()
+            ->active()
+            ->orderBy('sort_order')
+            ->get();
+
         return view('landing.index', [
             'settings' => $settings,
             'trustPills' => $trustPills,
@@ -72,6 +78,7 @@ class LandingController extends Controller
             'faqs' => $faqs,
             'formInfos' => $formInfos,
             'testimonials' => $testimonials,
+            'courses' => $courses,
             'isIndexed' => $settings->is_indexed,
         ]);
     }

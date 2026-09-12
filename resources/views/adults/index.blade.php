@@ -1,8 +1,17 @@
 @extends('layouts.landing')
 
-@section('title', $pageSettings->meta_title ?: 'Cours de Coran et Tajwid pour adultes en ligne | Ar-Rahman Academy')
+@section('title', $pageSettings->meta_title ?: 'Cours de Coran et Tajwid pour adultes en ligne en France, Belgique et Canada | Ar-Rahman Academy')
 
-@section('description', $pageSettings->meta_description ?: 'Cours de Coran, Tajwid et arabe pour adultes. Apprentissage personnalisé, horaires flexibles 7j/7, enseignants diplômés Al-Azhar avec Ijazah.')
+@section('description', $pageSettings->meta_description ?: 'Cours de Coran, Tajwid et arabe pour adultes en France, Belgique et Canada. Apprentissage personnalisé, horaires flexibles 7j/7, enseignants diplômés Al-Azhar avec Ijazah.')
+
+@if ($pageSettings->og_image)
+    @php
+        $adultsOgImage = \Illuminate\Support\Str::startsWith($pageSettings->og_image, ['http://', 'https://'])
+            ? $pageSettings->og_image
+            : asset('storage/'.$pageSettings->og_image);
+    @endphp
+    @section('og_image', $adultsOgImage)
+@endif
 
 @section('bodyClass', '')
 

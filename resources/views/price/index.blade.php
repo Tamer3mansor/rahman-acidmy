@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 
-@section('title', 'Tarifs des cours de Coran et arabe en ligne | Ar-Rahman Academy')
+@section('title', 'Tarifs des cours de Coran et arabe en ligne en France, Belgique et Canada | Ar-Rahman Academy')
 
-@section('description', 'Tarifs des cours de Coran et arabe en ligne. Cours particuliers à des tarifs clairs et sans engagement. Première séance gratuite.')
+@section('description', 'Tarifs des cours de Coran et arabe en ligne en France, Belgique et Canada. Cours particuliers à des tarifs clairs et sans engagement. Première séance gratuite.')
 
 @section('bodyClass', 'pattern-bg')
 
