@@ -83,4 +83,46 @@ class LandingTestimonialsTest extends TestCase
             ->assertOk()
             ->assertSee('Test vidéo · Parents', false);
     }
+
+    public function test_landing_page_shows_video_placeholder_when_video_testimonial_has_no_media(): void
+    {
+        LandingTestimonial::create([
+            'type' => TestimonialType::Video,
+            'author_name' => 'أم محمد',
+            'media_path' => null,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Test vidéo · Parents', false)
+            ->assertDontSee('storage/landing/testimonials', false);
+    }
+
+    public function test_landing_page_does_not_crash_with_invalid_type_value(): void
+    {
+        $record = LandingTestimonial::query()->updateOrCreate(
+            ['id' => 1],
+            [
+                'type' => TestimonialType::Whatsapp,
+                'author_name' => 'مثال',
+                'content' => '<p>بيانات</p>',
+                'is_active' => true,
+                'sort_order' => 1,
+            ]
+        );
+
+        $record->type = 'not-a-real-type';
+        $this->assertNull($record->type);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Test vidéo · Parents', false);
+    }
+
+    public function test_invalid_type_value_in_database_is_handled_gracefully(): void
+    {
+        $this->assertNull((new LandingTestimonial(['type' => '', 'author_name' => 'x']))->type);
+    }
 }

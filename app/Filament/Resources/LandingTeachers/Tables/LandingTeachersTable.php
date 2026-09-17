@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\LandingTeachers\Tables;
 
+use App\Models\LandingTeacher;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -18,7 +19,8 @@ class LandingTeachersTable
             ->columns([
                 ImageColumn::make('photo_path')
                     ->label('الصورة')
-                    ->circular(),
+                    ->circular()
+                    ->state(fn (LandingTeacher $record): ?string => $record->photo_url),
                 TextColumn::make('name')
                     ->label('الاسم')
                     ->searchable(),

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\MediaType;
+use App\Casts\MediaTypeCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -81,7 +81,7 @@ class LandingSettings extends Model
     ];
 
     protected $casts = [
-        'hero_media_type' => MediaType::class,
+        'hero_media_type' => MediaTypeCast::class,
         'hero_video_autoplay' => 'boolean',
         'hero_video_loop' => 'boolean',
         'is_indexed' => 'boolean',

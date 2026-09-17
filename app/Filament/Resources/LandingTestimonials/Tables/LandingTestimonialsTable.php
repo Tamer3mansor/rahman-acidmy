@@ -18,9 +18,9 @@ class LandingTestimonialsTable
             ->columns([
                 TextColumn::make('type')
                     ->label('النوع')
-                    ->formatStateUsing(fn (TestimonialType $state): string => $state->getLabel())
+                    ->formatStateUsing(fn (?TestimonialType $state): string => $state?->getLabel() ?? '—')
                     ->badge()
-                    ->color(fn (TestimonialType $state): string => $state->color()),
+                    ->color(fn (?TestimonialType $state): string => $state?->color() ?? 'gray'),
                 TextColumn::make('author_name')
                     ->label('الاسم')
                     ->searchable(),

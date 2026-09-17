@@ -149,4 +149,10 @@ class LandingPageSettingsTest extends TestCase
         $this->actingAs($user)->get('/admin/compare-items/1/edit')->assertOk();
         $this->actingAs($user)->get('/admin/contact-submissions/1/edit')->assertOk();
     }
+
+    public function test_invalid_hero_media_type_is_handled_gracefully(): void
+    {
+        $this->assertNull((new LandingSettings(['hero_media_type' => 'corrupt-value']))->hero_media_type);
+        $this->assertNull((new LandingSettings)->hero_media_type);
+    }
 }

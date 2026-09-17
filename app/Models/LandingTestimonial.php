@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\TestimonialType;
+use App\Casts\TestimonialTypeCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,7 @@ class LandingTestimonial extends Model
     ];
 
     protected $casts = [
-        'type' => TestimonialType::class,
+        'type' => TestimonialTypeCast::class,
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];

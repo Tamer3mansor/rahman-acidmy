@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\ErrorLogs\Tables;
 
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
+use Filament\Support\Enums\FontFamily;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -38,6 +41,8 @@ class ErrorLogsTable
             ])
             ->defaultSort('created_at', 'desc')
             ->recordActions([
+                DeleteAction::make()
+                    ->label('حذف'),
                 ViewAction::make()
                     ->label('عرض')
                     ->infolist([
@@ -70,12 +75,18 @@ class ErrorLogsTable
                                     ->label('السطر'),
                                 TextEntry::make('ip')
                                     ->label('العنوان'),
+                                TextEntry::make('trace_preview')
+                                    ->label('التتبع')
+                                    ->fontFamily(FontFamily::Mono)
+                                    ->copyable()
+                                    ->columnSpanFull(),
                             ]),
-                        CodeEntry::make('trace_preview')
-                            ->label('التتبع')
-                            ->columnSpanFull(),
                     ]),
             ])
-            ->toolbarActions([]);
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 }

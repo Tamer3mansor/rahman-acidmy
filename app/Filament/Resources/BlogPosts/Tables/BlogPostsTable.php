@@ -22,7 +22,6 @@ class BlogPostsTable
                     ->limit(50),
                 TextColumn::make('categories.name')
                     ->label('التصنيفات')
-                    ->sortable()
                     ->searchable()
                     ->separator(',')
                     ->limitList(2),

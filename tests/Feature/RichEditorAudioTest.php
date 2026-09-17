@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use App\Support\RichEditorAudio\AudioExtension;
 use App\Support\RichEditorAudio\AudioPlugin;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tiptap\Editor;
@@ -62,5 +65,29 @@ class RichEditorAudioTest extends TestCase
         $this->assertNotEmpty($plugin->getEditorActions());
         $this->assertContains('audio/mpeg', AudioPlugin::AUDIO_FILE_TYPES);
         $this->assertContains('image/jpeg', AudioPlugin::ACCEPTED_FILE_TYPES);
+    }
+
+    public function test_audio_toolbar_button_renders_a_well_formed_click_handler(): void
+    {
+        $html = $this->actingAs(User::factory()->create())
+            ->get('/admin/lessons/create')
+            ->assertOk()
+            ->getContent();
+
+        $document = new DOMDocument;
+        libxml_use_internal_errors(true);
+        $document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        libxml_clear_errors();
+
+        $buttons = (new DOMXPath($document))->query(
+            '//button[contains(@class, "fi-fo-rich-editor-tool") and @aria-label="إدراج ملف صوتي"]',
+        );
+
+        $this->assertGreaterThan(0, $buttons->length, 'The audio toolbar button was not rendered.');
+
+        $handler = $buttons->item(0)->getAttribute('x-on:click');
+
+        $this->assertStringContainsString('window.FilamentRichEditorAudio.insert', $handler);
+        $this->assertStringContainsString("'function'", $handler);
     }
 }
