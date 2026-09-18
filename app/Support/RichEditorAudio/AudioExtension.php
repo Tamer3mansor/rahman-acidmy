@@ -10,6 +10,8 @@ class AudioExtension extends Node
 {
     public static $name = 'audio';
 
+    public static $inline = true;
+
     public function addOptions()
     {
         return [
