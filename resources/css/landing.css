@@ -50,6 +50,7 @@ a { text-decoration: none; color: inherit; }
    SHARED COMPONENTS
    ============================================================ */
 .container {
+  width: 100%;
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 24px;
@@ -819,11 +820,20 @@ a { text-decoration: none; color: inherit; }
 @media (max-width:768px) {
   .nav-links { display:none; }
   .nav-actions .nav-wa { display:none; }
+  .nav-actions .nav-btn { display:none; }
   .hamburger { display:flex; }
+
+  .nav-inner { gap: 12px; }
+  .nav-logo { min-width: 0; }
+  .nav-logo-text { min-width: 0; }
+  .nav-logo-text .name,
+  .nav-logo-text .sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .hero-inner { grid-template-columns:1fr; gap:40px; text-align:center; }
   .hero-sub { margin-left:auto; margin-right:auto; }
   .hero-btns { justify-content:center; }
+  .hero-btns .btn-primary,
+  .hero-btns .btn-outline { white-space: normal; width: min(100%, 320px); justify-content: center; text-align: center; }
   .hero-trust { justify-content:center; }
   .hero-video-wrap { order:-1; }
   .video-card { aspect-ratio:16/9; }
@@ -842,6 +852,9 @@ a { text-decoration: none; color: inherit; }
   .form-row { grid-template-columns:1fr; }
   .schedule-grid { grid-template-columns:repeat(2,1fr); }
   .level-options { grid-template-columns:1fr 1fr; }
+  .mobile-menu .btn-primary { width: 100%; white-space: normal; justify-content: center; text-align: center; }
+  .form-info-text { min-width: 0; }
+  .form-info-text .val { overflow-wrap: anywhere; }
 
   .footer-inner { grid-template-columns:1fr; gap:32px; }
   .footer-bottom { flex-direction:column; gap:12px; text-align:center; }
@@ -850,6 +863,12 @@ a { text-decoration: none; color: inherit; }
   .form-card { padding:24px; }
 }
 @media (max-width:480px) {
+  .container { padding-left: 16px; padding-right: 16px; }
+  .nav-inner { height: 64px; }
+  .nav-logo-icon { width: 40px; height: 40px; }
+  .nav-logo-icon img { width: 28px; height: 28px; }
+  .nav-logo-text .name { font-size: 0.95rem; }
+  .nav-logo-text .sub { font-size: 0.62rem; }
   .steps-grid { grid-template-columns:1fr; gap:20px; }
   .step-item { padding:16px 0; }
   .step-num-wrap { width:56px; height:56px; margin-bottom:12px; font-size:1.1rem; }
