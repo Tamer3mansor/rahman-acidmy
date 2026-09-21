@@ -56,6 +56,10 @@ class CoursePageTest extends TestCase
             ],
         ]);
 
+        $this->assertTrue(\Illuminate\Support\Facades\Schema::hasColumn('course_page_settings', 'kids_curriculum_items'));
+        $this->assertCount(1, $settings->fresh()->kids_curriculum_items ?? []);
+        dump($settings->fresh()->kids_curriculum_title, $settings->fresh()->kids_curriculum_items);
+
         $this->get('/enfants')
             ->assertOk()
             ->assertSee('📚 Que va apprendre mon enfant ?')
@@ -72,6 +76,8 @@ class CoursePageTest extends TestCase
             ->assertSee('Que va apprendre mon enfant ?')
             ->assertDontSee('Récitation du Coran');
     }
+
+    public function test_adults_catalog_renders_adults_courses(): void
     {
         $this->seed([
             CourseSeeder::class,

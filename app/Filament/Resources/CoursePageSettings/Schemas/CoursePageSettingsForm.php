@@ -254,7 +254,7 @@ class CoursePageSettingsForm
                 ->columns(3),
 
             Section::make('قسم التوصيات (الشهادات)')
-                ->description('تظهر الشهادات هنا من صفحة «الشهادات» في لوحة التحكم، حسب خانة «ظهور إضافي على صفحات الدورات».')
+                ->description('تظهر الشهادات هنا من صفحة «اراء العملاء» في لوحة التحكم، حسب خانة «ظهور إضافي على صفحات الدورات».')
                 ->schema([
                     TextInput::make($audience.'_testimonials_title')->label('عنوان القسم')->columnSpan(3),
                     Textarea::make($audience.'_testimonials_subtitle')->label('وصف القسم')->rows(2)->columnSpan(3),
