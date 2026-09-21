@@ -93,7 +93,10 @@
     <section class="details-hero">
         <div class="container">
             <span class="section-label">
-                {{ $course->icon }} {{ $course->audience === \App\Enums\CourseAudience::Kids
+                @if ($course->icon)
+                    <img src="{{ asset('storage/'.$course->icon) }}" class="details-hero-icon" alt="">
+                @endif
+                {{ $course->audience === \App\Enums\CourseAudience::Kids
                     ? 'Programme dédié aux enfants et aux jeunes'
                     : 'Programme dédié aux adultes et aux grands' }}
             </span>
@@ -110,14 +113,6 @@
             </div>
         </div>
     </section>
-
-    <div class="container">
-        <nav class="breadcrumbs" aria-label="breadcrumb">
-            <a href="{{ route('home') }}">Accueil</a> /
-            <a href="{{ $backUrl }}">{{ $backLabel }}</a> /
-            <span aria-current="page">{{ $course->title }}</span>
-        </nav>
-    </div>
 
     <main class="container details-layout" style="padding: 56px 24px;">
 

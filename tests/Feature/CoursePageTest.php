@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 use App\Enums\CourseAudience;
+use App\Enums\TestimonialAudience;
+use App\Enums\TestimonialType;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
+use App\Models\LandingTestimonial;
 use App\Models\User;
 use Database\Seeders\CoursePageSettingsSeeder;
 use Database\Seeders\CourseSeeder;
@@ -107,14 +110,36 @@ class CoursePageTest extends TestCase
         );
     }
 
-    public function test_course_age_band_label(): void
+    public function test_course_min_age_label(): void
     {
         $course = Course::factory()->create([
             'age_band_min' => 5,
-            'age_band_max' => 8,
         ]);
 
-        $this->assertSame('5 - 8 ans', $course->ageBandLabel());
+        $this->assertSame('À partir de 5 ans', $course->minAgeLabel());
+
+        $course = Course::factory()->create([
+            'age_band_min' => null,
+        ]);
+
+        $this->assertNull($course->minAgeLabel());
+    }
+
+    public function test_course_session_range_label(): void
+    {
+        $course = Course::factory()->create([
+            'session_minutes_min' => 30,
+            'session_minutes_max' => 45,
+        ]);
+
+        $this->assertSame('30 à 45 min/séance', $course->sessionRangeLabel());
+
+        $course = Course::factory()->create([
+            'session_minutes_min' => 45,
+            'session_minutes_max' => 45,
+        ]);
+
+        $this->assertSame('45 min/séance', $course->sessionRangeLabel());
     }
 
     public function test_landing_nav_includes_kids_and_adults_links(): void
@@ -137,11 +162,76 @@ class CoursePageTest extends TestCase
         $this->assertSame('Cours pour enfants', $settings->kids_label);
     }
 
-    public function test_courses_admin_resources_render(): void
+    public function test_course_testimonials_render_on_the_right_page(): void
     {
         $this->seed([
             CourseSeeder::class,
             CoursePageSettingsSeeder::class,
+        ]);
+
+        LandingTestimonial::create([
+            'type' => TestimonialType::Google,
+            'page_audience' => TestimonialAudience::Kids,
+            'author_name' => 'Parent Avis Enfants',
+            'content' => 'Retour élève enfant.',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+        LandingTestimonial::create([
+            'type' => TestimonialType::Google,
+            'page_audience' => TestimonialAudience::Adults,
+            'author_name' => 'Parent Avis Adultes',
+            'content' => 'Retour élève adulte.',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+        LandingTestimonial::create([
+            'type' => TestimonialType::Whatsapp,
+            'page_audience' => TestimonialAudience::Both,
+            'author_name' => 'Avis Les Deux',
+            'content' => 'Disponible partout.',
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+        LandingTestimonial::create([
+            'type' => TestimonialType::Whatsapp,
+            'page_audience' => TestimonialAudience::LandingOnly,
+            'author_name' => 'Avis Accueil',
+            'content' => 'Réservé à la page d\'accueil.',
+            'is_active' => true,
+            'sort_order' => 3,
+        ]);
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('Parent Avis Enfants')
+            ->assertSee('Avis Les Deux')
+            ->assertDontSee('Parent Avis Adultes')
+            ->assertDontSee('Avis Accueil');
+
+        $this->get('/adultes')
+            ->assertOk()
+            ->assertSee('Parent Avis Adultes')
+            ->assertSee('Avis Les Deux')
+            ->assertDontSee('Parent Avis Enfants')
+            ->assertDontSee('Avis Accueil');
+    }
+
+    public function test_course_admin_resources_render(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        LandingTestimonial::create([
+            'type' => TestimonialType::Whatsapp,
+            'author_name' => 'Avis Admin',
+            'content' => 'Contenu.',
+            'is_active' => true,
+            'sort_order' => 0,
         ]);
 
         $user = User::factory()->create();
@@ -150,5 +240,7 @@ class CoursePageTest extends TestCase
         $this->actingAs($user)->get('/admin/courses/create')->assertOk();
         $this->actingAs($user)->get('/admin/courses/1/edit')->assertOk();
         $this->actingAs($user)->get('/admin/course-page-settings')->assertOk();
+        $this->actingAs($user)->get('/admin/landing-testimonials')->assertOk();
+        $this->actingAs($user)->get('/admin/landing-testimonials/1/edit')->assertOk();
     }
 }

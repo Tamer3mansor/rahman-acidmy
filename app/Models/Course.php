@@ -23,8 +23,8 @@ class Course extends Model
         'short_description',
         'description',
         'age_band_min',
-        'age_band_max',
-        'session_minutes',
+        'session_minutes_min',
+        'session_minutes_max',
         'level_label',
         'curriculum_items',
         'session_features',
@@ -43,8 +43,8 @@ class Course extends Model
     protected $casts = [
         'audience' => CourseAudience::class,
         'age_band_min' => 'integer',
-        'age_band_max' => 'integer',
-        'session_minutes' => 'integer',
+        'session_minutes_min' => 'integer',
+        'session_minutes_max' => 'integer',
         'curriculum_items' => 'array',
         'session_features' => 'array',
         'journey_steps' => 'array',
@@ -67,12 +67,30 @@ class Course extends Model
         return $query->where('audience', $audience->value);
     }
 
-    public function ageBandLabel(): ?string
+    public function minAgeLabel(): ?string
     {
-        if ($this->age_band_min === null && $this->age_band_max === null) {
+        if ($this->age_band_min === null) {
             return null;
         }
 
-        return $this->age_band_min.' - '.$this->age_band_max.' ans';
+        return 'À partir de '.$this->age_band_min.' ans';
+    }
+
+    public function sessionRangeLabel(): ?string
+    {
+        $min = $this->session_minutes_min;
+        $max = $this->session_minutes_max;
+
+        if ($min === null && $max === null) {
+            return null;
+        }
+
+        if ($min !== null && $max !== null && $min !== $max) {
+            return $min.' à '.$max.' min/séance';
+        }
+
+        $single = $max ?? $min;
+
+        return $single.' min/séance';
     }
 }

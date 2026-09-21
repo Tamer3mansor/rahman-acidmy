@@ -6,6 +6,7 @@ use App\Enums\CourseAudience;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
 use App\Models\LandingSettings;
+use App\Models\LandingTestimonial;
 
 class AdultsController extends Controller
 {
@@ -20,10 +21,15 @@ class AdultsController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $testimonials = LandingTestimonial::query()
+            ->forCoursePage(CourseAudience::Adults)
+            ->get();
+
         return view('adults.index', [
             'settings' => $settings,
             'pageSettings' => $pageSettings,
             'courses' => $courses,
+            'testimonials' => $testimonials,
             'whatsappPhone' => $this->resolveWhatsAppPhone($pageSettings->adults_wa_url),
             'isIndexed' => $pageSettings->is_indexed,
         ]);

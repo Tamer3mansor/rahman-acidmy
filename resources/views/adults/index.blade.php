@@ -44,30 +44,6 @@
 
 @section('content')
 
-    @php
-        $adultsFaqs = [
-            ['q' => 'Puis-je apprendre le Coran à mon rythme ?', 'a' => 'Oui. Après une évaluation initiale, l\'enseignant établit un plan d\'étude personnalisé, adapté à votre niveau, vos objectifs et votre emploi du temps.'],
-            ['q' => 'Les cours pour adultes sont-ils individuels ?', 'a' => 'Oui, les cours sont 100% particuliers : vous travaillez seul avec un enseignant (homme) ou une enseignante (femme), selon votre préférence.'],
-            ['q' => 'Y a-t-il un engagement ou un contrat ?', 'a' => 'Non. Sans contrat ni frais d\'annulation : vous pouvez modifier ou annuler vos cours à tout moment.'],
-            ['q' => 'Comment se déroule la correction de la récitation (Tajwid) ?', 'a' => 'L\'enseignant écoute votre récitation, corrige les erreurs lettre par lettre et applique les règles de Tajwid de façon progressive et pratique.'],
-            ['q' => 'Quelles sont les qualifications des enseignants ?', 'a' => 'Tous nos enseignants sont diplômés de l\'Al-Azhar et titulaires d\'Ijazah certifiées en Tajwid, avec une expérience confirmée dans l\'enseignement des adultes.'],
-        ];
-
-        $adultsWhyUs = [
-            ['icon' => '👨‍🏫', 'title' => 'Enseignants Al-Azhar', 'description' => 'Diplômés de l\'Al-Azhar et titulaires d\'Ijazah, avec une expérience confirmée dans l\'enseignement des adultes.'],
-            ['icon' => '🕰️', 'title' => 'Horaires flexibles', 'description' => 'Cours disponibles 7 jours sur 7, de 7h à 22h, avec la possibilité de les déplacer gratuitement à tout moment.'],
-            ['icon' => '🎯', 'title' => 'Plan personnalisé', 'description' => 'Un programme d\'étude sur mesure, établi après évaluation de votre niveau, pour progresser efficacement vers votre objectif.'],
-            ['icon' => '📊', 'title' => 'Suivi continu', 'description' => 'Une évaluation régulière de votre progression avec des objectifs clairs à chaque étape de votre parcours.'],
-        ];
-
-        $adultsSteps = [
-            ['title' => 'Réservez votre essai', 'description' => 'Une séance d\'essai gratuite pour découvrir la méthode et rencontrer votre enseignant.'],
-            ['title' => 'Évaluation du niveau', 'description' => 'L\'enseignant évalue votre récitation, votre niveau en arabe et vos objectifs.'],
-            ['title' => 'Plan d\'étude', 'description' => 'Un programme personnalisé est défini : matière, durée, horaires et fréquence des séances.'],
-            ['title' => 'Progression suivie', 'description' => 'Des cours réguliers avec un suivi détaillé de vos acquis et de vos points de progression.'],
-        ];
-    @endphp
-
     @include('landing.partials.nav', [
         'activePage' => 'adults',
         'homeUrl' => route('home'),
@@ -96,19 +72,16 @@
             </div>
 
             <div class="hero-showcase">
-                <div class="emojis">{{ $pageSettings->adults_showcase_emoji ?? '📖' }}</div>
+                @if ($pageSettings->adults_showcase_image)
+                    <img src="{{ asset('storage/'.$pageSettings->adults_showcase_image) }}" class="hero-showcase-img" alt="">
+                @elseif ($pageSettings->adults_showcase_emoji)
+                    <div class="emojis">{{ $pageSettings->adults_showcase_emoji }}</div>
+                @endif
                 <div class="hero-showcase-title">{{ $pageSettings->adults_showcase_title ?? 'Flexibilité et maîtrise pour les adultes' }}</div>
                 <div class="hero-showcase-sub">{{ $pageSettings->adults_showcase_subtitle ?? "Des plans d'étude adaptés à votre emploi du temps, avec un enseignant pour les hommes et une enseignante pour les femmes." }}</div>
             </div>
         </div>
     </section>
-
-    <div class="container">
-        <nav class="breadcrumbs" aria-label="breadcrumb">
-            <a href="{{ route('home') }}">Accueil</a> /
-            <span aria-current="page">Cours adultes</span>
-        </nav>
-    </div>
 
     <section class="section" id="catalog">
         <div class="container">
@@ -123,19 +96,23 @@
                     @foreach ($courses as $course)
                         <article class="course-card">
                             <div class="course-card-head theme-{{ $course->card_theme }}">
-                                <span class="icon">{{ $course->icon }}</span>
+                                @if ($course->icon)
+                                    <img src="{{ asset('storage/'.$course->icon) }}" class="course-card-icon" alt="">
+                                @endif
                                 <h3>{{ $course->title }}</h3>
                             </div>
                             <div class="course-card-body">
                                 <div class="course-meta">
                                     <span class="meta-badge">
-                                        @if ($course->level_label)
+                                        @if ($course->minAgeLabel())
+                                            <i class="fa-solid fa-child"></i> Âge : {{ $course->minAgeLabel() }}
+                                        @elseif ($course->level_label)
                                             <i class="fa-solid fa-gauge-high"></i> Niveau : {{ $course->level_label }}
-                                        @elseif ($course->ageBandLabel())
-                                            <i class="fa-solid fa-child"></i> Âge : {{ $course->ageBandLabel() }}
                                         @endif
                                     </span>
-                                    <span class="meta-time"><i class="fa-regular fa-clock"></i> {{ $course->session_minutes }} min/séance</span>
+                                    @if ($course->sessionRangeLabel())
+                                        <span class="meta-time"><i class="fa-regular fa-clock"></i> {{ $course->sessionRangeLabel() }}</span>
+                                    @endif
                                 </div>
                                 <p class="course-desc">{{ $course->short_description }}</p>
                                 <a href="{{ route('courses.show', $course->slug) }}" class="course-cta">
@@ -151,37 +128,50 @@
         </div>
     </section>
 
-    <section class="section section-white">
-        <div class="container">
-            <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                <span class="section-label">Pourquoi Ar-Rahman Academy</span>
-                <h2 class="section-title">🎯 Pourquoi nous choisir pour apprendre le Coran ?</h2>
-                <p class="section-sub">Une méthode éprouvée, des enseignants qualifiés et une flexibilité totale pour les adultes.</p>
+    @if ($testimonials->count())
+        <section class="section section-white">
+            <div class="container">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    <span class="section-label">Témoignages</span>
+                    <h2 class="section-title">{{ $pageSettings->adults_testimonials_title ?: 'Ils nous font confiance' }}</h2>
+                    @if ($pageSettings->adults_testimonials_subtitle)
+                        <p class="section-sub">{{ $pageSettings->adults_testimonials_subtitle }}</p>
+                    @endif
+                </div>
+                <div class="testimonials-row">
+                    @foreach ($testimonials->take(3) as $testimonial)
+                        @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
+                    @endforeach
+                </div>
             </div>
-            <div class="suitability-grid">
-                @foreach ($adultsWhyUs as $feature)
-                    <div class="suitability-item">
-                        <span class="check"><span style="font-size: 1rem;">{{ $feature['icon'] }}</span></span>
-                        <p><strong style="color: var(--green);">{{ $feature['title'] }}.</strong> {{ $feature['description'] }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
     <section class="section">
         <div class="container">
             <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                <span class="section-label">Comment ça marche</span>
-                <h2 class="section-title">🚀 Comment se déroule votre parcours</h2>
-                <p class="section-sub">Quatre étapes simples entre vous et votre objectif d'apprentissage du Coran.</p>
+                <span class="section-label">{{ $pageSettings->adults_about_label ?: 'À propos des cours' }}</span>
+                <h2 class="section-title">{{ $pageSettings->adults_about_title ?: 'À propos des cours' }}</h2>
+                @if ($pageSettings->adults_about_subtitle)
+                    <p class="section-sub">{{ $pageSettings->adults_about_subtitle }}</p>
+                @endif
             </div>
-            <div class="journey-steps">
-                @foreach ($adultsSteps as $step)
-                    <div class="step-card">
-                        <div class="journey-step-num {{ $loop->iteration % 2 === 0 ? 'dark-green' : 'gold' }}">{{ $loop->iteration }}</div>
-                        <h4>{{ $step['title'] }}</h4>
-                        <p>{{ $step['description'] }}</p>
+            <div class="suitability-grid">
+                @foreach ($pageSettings->adults_about_items ?? [] as $feature)
+                    <div class="suitability-item">
+                        <span class="check">
+                            @if (! empty($feature['icon']))
+                                <span style="font-size: 1rem;">{{ $feature['icon'] }}</span>
+                            @else
+                                <i class="fa-solid fa-check"></i>
+                            @endif
+                        </span>
+                        <p>
+                            @if (! empty($feature['title']))
+                                <strong style="color: var(--green);">{{ $feature['title'] }}.</strong>
+                            @endif
+                            {{ $feature['description'] ?? '' }}
+                        </p>
                     </div>
                 @endforeach
             </div>
@@ -190,48 +180,97 @@
 
     <section class="section section-white">
         <div class="container">
-            <div class="catalog-head section-center">
-                <span class="section-label">Questions fréquentes</span>
-                <h2 class="section-title">❓ Questions fréquentes — Cours adultes</h2>
-                <p class="section-sub">Toutes les réponses aux questions des adultes avant de commencer leur apprentissage.</p>
+            <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                <span class="section-label">{{ $pageSettings->adults_journey_label ?: 'Comment ça marche' }}</span>
+                <h2 class="section-title">{{ $pageSettings->adults_journey_title ?: '🚀 Comment se déroule votre parcours' }}</h2>
+                @if ($pageSettings->adults_journey_subtitle)
+                    <p class="section-sub">{{ $pageSettings->adults_journey_subtitle }}</p>
+                @endif
             </div>
-
-            <div class="faq-list" style="margin: 0 auto;">
-                @foreach ($adultsFaqs as $faq)
-                    <div class="faq-item">
-                        <div class="faq-question" data-faq-toggle>
-                            <span>{{ $faq['q'] }}</span>
-                            <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                {{ $faq['a'] }}
-                            </div>
-                        </div>
+            <div class="journey-steps">
+                @foreach ($pageSettings->adults_journey_items ?? [] as $step)
+                    <div class="step-card">
+                        <div class="journey-step-num {{ $loop->iteration % 2 === 0 ? 'dark-green' : 'gold' }}">{{ $loop->iteration }}</div>
+                        <h4>{{ $step['title'] ?? '' }}</h4>
+                        <p>{!! $step['description'] ?? '' !!}</p>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
 
-    <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            @foreach ($adultsFaqs as $faq)
-            {
-                "@type": "Question",
-                "name": @json($faq['q']),
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": @json($faq['a'])
-                }
-            }@if (! $loop->last),@endif
-            @endforeach
-        ]
-    }
-    </script>
+    <section class="section section-white">
+        <div class="container">
+            <div class="faq-contact-grid">
+                <div>
+                    <span class="section-label">{{ $pageSettings->adults_faq_label ?: 'Questions fréquentes' }}</span>
+                    <h2 class="section-title">{{ $pageSettings->adults_faq_title ?: '❓ Questions fréquentes — Cours adultes' }}</h2>
+                    @if ($pageSettings->adults_faq_subtitle)
+                        <p class="section-sub">{{ $pageSettings->adults_faq_subtitle }}</p>
+                    @endif
+
+                    <div class="faq-list">
+                        @foreach ($pageSettings->adults_faq_items ?? [] as $faq)
+                            <div class="faq-item">
+                                <div class="faq-question" data-faq-toggle>
+                                    <span>{{ $faq['question'] ?? '' }}</span>
+                                    <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                                </div>
+                                <div class="faq-answer">
+                                    <div class="faq-answer-inner">
+                                        {!! $faq['answer'] ?? '' !!}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    @if ($pageSettings->adults_faq_cta1_text || $pageSettings->adults_faq_cta2_text)
+                        <div class="faq-ctas">
+                            @if ($pageSettings->adults_faq_cta1_text)
+                                <a href="{{ $pageSettings->adults_faq_cta1_url ?: '#' }}" class="btn-primary" @if ($pageSettings->adults_faq_cta1_url) target="_blank" rel="noopener" @endif>
+                                    {{ $pageSettings->adults_faq_cta1_text }}
+                                </a>
+                            @endif
+                            @if ($pageSettings->adults_faq_cta2_text)
+                                <a href="{{ $pageSettings->adults_faq_cta2_url ?: '#' }}" class="btn-outline" @if ($pageSettings->adults_faq_cta2_url) target="_blank" rel="noopener" @endif>
+                                    {{ $pageSettings->adults_faq_cta2_text }}
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
+                <div>
+                    @include('landing.partials.contact-card', [
+                        'title' => $pageSettings->adults_form_title ?: 'Contactez-nous',
+                        'subtitle' => $pageSettings->adults_form_subtitle,
+                    ])
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @if (count($pageSettings->adults_faq_items ?? []))
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                @foreach ($pageSettings->adults_faq_items as $faq)
+                {
+                    "@type": "Question",
+                    "name": @json($faq['question'] ?? ''),
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": @json(strip_tags((string) ($faq['answer'] ?? '')))
+                    }
+                }@if (! $loop->last),@endif
+                @endforeach
+            ]
+        }
+        </script>
+    @endif
 
     <section class="section" style="padding-top: 0;">
         <div class="container">

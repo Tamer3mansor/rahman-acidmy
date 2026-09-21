@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\CoursePageSettings\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -41,11 +43,21 @@ class CoursePageSettingsForm
 
                                 Section::make('بطاقة العرض الرئيسية')
                                     ->schema([
-                                        TextInput::make('kids_showcase_emoji')->label('إيموجي البطاقة')->default('📖 ✨')->columnSpan(2),
+                                        FileUpload::make('kids_showcase_image')
+                                            ->label('صورة البطاقة')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('images/course-hero')
+                                            ->columnSpan(2),
+                                        TextInput::make('kids_showcase_emoji')
+                                            ->label('إيموجي احتياطي (اختياري)')
+                                            ->helperText('يُعرض فقط عندما لا تكون هناك صورة مرفوعة.')
+                                            ->default('📖 ✨')
+                                            ->columnSpan(2),
                                         TextInput::make('kids_showcase_title')->label('عنوان البطاقة')->columnSpan(2),
                                         Textarea::make('kids_showcase_subtitle')->label('وصف البطاقة')->rows(2)->columnSpanFull(),
                                     ])
-                                    ->columns(2),
+                                    ->columns(4),
                             ]),
                         Tab::make('صفحة الكبار')
                             ->schema([
@@ -68,12 +80,26 @@ class CoursePageSettingsForm
 
                                 Section::make('بطاقة العرض الرئيسية')
                                     ->schema([
-                                        TextInput::make('adults_showcase_emoji')->label('إيموجي البطاقة')->default('📖')->columnSpan(2),
+                                        FileUpload::make('adults_showcase_image')
+                                            ->label('صورة البطاقة')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('images/course-hero')
+                                            ->columnSpan(2),
+                                        TextInput::make('adults_showcase_emoji')
+                                            ->label('إيموجي احتياطي (اختياري)')
+                                            ->helperText('يُعرض فقط عندما لا تكون هناك صورة مرفوعة.')
+                                            ->default('📖')
+                                            ->columnSpan(2),
                                         TextInput::make('adults_showcase_title')->label('عنوان البطاقة')->columnSpan(2),
                                         Textarea::make('adults_showcase_subtitle')->label('وصف البطاقة')->rows(2)->columnSpanFull(),
                                     ])
-                                    ->columns(2),
+                                    ->columns(4),
                             ]),
+                        Tab::make('محتوى الأقسام (أطفال)')
+                            ->schema(self::audienceContentSections('kids')),
+                        Tab::make('محتوى الأقسام (كبار)')
+                            ->schema(self::audienceContentSections('adults')),
                         Tab::make('صفحة تفاصيل الدورة')
                             ->schema([
                                 Section::make('نصوص الحجز والاستمارة')
@@ -130,5 +156,110 @@ class CoursePageSettingsForm
                     ])
                     ->columns(1),
             ]);
+    }
+
+    /**
+     * Content sections shared between the kids and adults tabs.
+     *
+     * @return array<int, Section>
+     */
+    private static function audienceContentSections(string $audience): array
+    {
+        return [
+            ...($audience === 'kids' ? [Section::make('قسم منهج التعلم (Que va apprendre mon enfant ?)')
+                ->description('عنوان القسم وقائمة المواضيع التي سيتعلمها الطفل.')
+                ->schema([
+                    TextInput::make('kids_curriculum_label')->label('التسمية')->columnSpan(2),
+                    TextInput::make('kids_curriculum_title')->label('العنوان')->columnSpan(2),
+                    Textarea::make('kids_curriculum_subtitle')->label('الوصف')->rows(2)->columnSpan(2),
+                    Repeater::make('kids_curriculum_items')
+                        ->label('المواضيع')
+                        ->schema([
+                            TextInput::make('icon')->label('الأيقونة')->columnSpan(1),
+                            TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
+                            Textarea::make('description')->label('الوصف')->rows(2)->columnSpanFull(),
+                        ])
+                        ->columns(2)
+                        ->defaultItems(0)
+                        ->addActionLabel('إضافة موضوع')
+                        ->reorderableWithButtons()
+                        ->collapsible(),
+                ])
+                ->columns(3)] : []),
+            Section::make('قسم حول الدورة (À propos des cours)')
+                ->description('نصوص وعناصر القسم الذي يُعرَض أسفل قائمة الدورات.')
+                ->schema([
+                    TextInput::make($audience.'_about_label')->label('التسمية')->columnSpan(2),
+                    TextInput::make($audience.'_about_title')->label('العنوان')->columnSpan(2),
+                    Textarea::make($audience.'_about_subtitle')->label('الوصف')->rows(2)->columnSpan(2),
+                    Repeater::make($audience.'_about_items')
+                        ->label('العناصر')
+                        ->schema([
+                            TextInput::make('icon')->label('الأيقونة')->columnSpan(1),
+                            TextInput::make('title')->label('العنوان')->columnSpan(1),
+                            Textarea::make('description')->label('الوصف')->rows(2)->columnSpanFull(),
+                        ])
+                        ->columns(2)
+                        ->defaultItems(0)
+                        ->addActionLabel('إضافة عنصر')
+                        ->reorderableWithButtons()
+                        ->collapsible(),
+                ])
+                ->columns(3),
+
+            Section::make('قسم المسار (Comment se déroule votre parcours)')
+                ->schema([
+                    TextInput::make($audience.'_journey_label')->label('التسمية')->columnSpan(2),
+                    TextInput::make($audience.'_journey_title')->label('العنوان')->columnSpan(2),
+                    Textarea::make($audience.'_journey_subtitle')->label('الوصف')->rows(2)->columnSpan(2),
+                    Repeater::make($audience.'_journey_items')
+                        ->label('الخطوات')
+                        ->schema([
+                            TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
+                            Textarea::make('description')->label('الوصف')->rows(2)->columnSpan(1),
+                        ])
+                        ->columns(2)
+                        ->defaultItems(0)
+                        ->addActionLabel('إضافة خطوة')
+                        ->reorderableWithButtons()
+                        ->collapsible(),
+                ])
+                ->columns(3),
+
+            Section::make('قسم الأسئلة الشائعة والنموذج')
+                ->schema([
+                    TextInput::make($audience.'_faq_label')->label('تسمية الأسئلة')->columnSpan(3),
+                    TextInput::make($audience.'_faq_title')->label('عنوان الأسئلة')->columnSpan(3),
+                    Textarea::make($audience.'_faq_subtitle')->label('وصف الأسئلة')->rows(2)->columnSpan(2),
+                    Repeater::make($audience.'_faq_items')
+                        ->label('الأسئلة')
+                        ->schema([
+                            TextInput::make('question')->label('السؤال')->required()->columnSpan(1),
+                            RichEditor::make('answer')->label('الإجابة')->columnSpan(1),
+                        ])
+                        ->columns(2)
+                        ->defaultItems(0)
+                        ->addActionLabel('إضافة سؤال')
+                        ->reorderableWithButtons()
+                        ->collapsible(),
+
+                    TextInput::make($audience.'_faq_cta1_text')->label('نص زر CTA 1')->columnSpan(1),
+                    TextInput::make($audience.'_faq_cta1_url')->label('رابط زر CTA 1')->url()->columnSpan(1),
+                    TextInput::make($audience.'_faq_cta2_text')->label('نص زر CTA 2')->columnSpan(1),
+                    TextInput::make($audience.'_faq_cta2_url')->label('رابط زر CTA 2')->url()->columnSpan(1),
+
+                    TextInput::make($audience.'_form_title')->label('عنوان نموذج التواصل')->columnSpan(1),
+                    Textarea::make($audience.'_form_subtitle')->label('وصف نموذج التواصل')->rows(2)->columnSpan(1),
+                ])
+                ->columns(3),
+
+            Section::make('قسم التوصيات (الشهادات)')
+                ->description('تظهر الشهادات هنا من صفحة «الشهادات» في لوحة التحكم، حسب خانة «ظهور إضافي على صفحات الدورات».')
+                ->schema([
+                    TextInput::make($audience.'_testimonials_title')->label('عنوان القسم')->columnSpan(3),
+                    Textarea::make($audience.'_testimonials_subtitle')->label('وصف القسم')->rows(2)->columnSpan(3),
+                ])
+                ->columns(3),
+        ];
     }
 }

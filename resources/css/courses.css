@@ -314,6 +314,108 @@
 .breadcrumbs span { font-weight: 600; color: var(--text-mid); }
 
 /* ============================================================
+   COURSE PAGE 2026 UPDATES
+   ============================================================ */
+
+/* Hero showcase image */
+.hero-showcase-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: var(--r-lg);
+  margin-bottom: 16px;
+}
+
+/* Course card image */
+.course-card-head .course-card-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 12px;
+  border: 3px solid rgba(255,255,255,0.85);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+
+/* Details hero label image */
+.details-hero-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* Testimonials row (2-3 landing-style cards horizontal) */
+.testimonials-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  align-items: stretch;
+}
+.testimonials-row > * {
+  flex: 1 1 300px;
+  max-width: 380px;
+}
+.testimonials-row .screenshot-card,
+.testimonials-row .trust-video-card {
+  height: 100%;
+}
+.testimonials-row .wa-bubble,
+.testimonials-row .review-text {
+  font-size: 0.85rem;
+}
+.testimonials-row .review-stars {
+  font-size: 1.05rem;
+}
+.testimonials-row .trust-video-card {
+  aspect-ratio: 4/3;
+}
+
+/* FAQ + contact two-column layout */
+.faq-contact-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.faq-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+  justify-content: flex-start;
+}
+.faq-ctas .btn-primary,
+.faq-ctas .btn-outline {
+  min-width: 220px;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+}
+
+/* Contact card */
+.contact-card {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--r-xl);
+  padding: 32px;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 992px) {
+  .faq-contact-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 640px) {
+  .testimonials-row { flex-direction: column; align-items: center; }
+  .testimonials-row > * { max-width: 100%; }
+  .contact-card { padding: 24px; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {

@@ -125,4 +125,14 @@ class LandingTestimonialsTest extends TestCase
     {
         $this->assertNull((new LandingTestimonial(['type' => '', 'author_name' => 'x']))->type);
     }
+
+    public function test_admin_form_includes_course_page_audience_select(): void
+    {
+        $admin = User::factory()->create();
+
+        $this->actingAs($admin);
+
+        Livewire::test(CreateLandingTestimonial::class)
+            ->assertFormFieldExists('page_audience');
+    }
 }

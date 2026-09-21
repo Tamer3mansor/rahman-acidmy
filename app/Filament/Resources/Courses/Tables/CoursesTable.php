@@ -25,12 +25,14 @@ class CoursesTable
                     ->label('الفئة')
                     ->badge()
                     ->sortable(),
-                TextColumn::make('session_minutes')
+                TextColumn::make('session_minutes_min')
                     ->label('المدة (دقيقة)')
-                    ->sortable(),
+                    ->formatStateUsing(fn ($record): string => $record->sessionRangeLabel() ?? '—')
+                    ->sortable()
+                    ->placeholder('—'),
                 TextColumn::make('age_band_min')
                     ->label('العمر')
-                    ->formatStateUsing(fn ($record): string => $record->ageBandLabel() ?? '—')
+                    ->formatStateUsing(fn ($record): string => $record->minAgeLabel() ?? '—')
                     ->sortable()
                     ->placeholder('—'),
                 TextColumn::make('level_label')

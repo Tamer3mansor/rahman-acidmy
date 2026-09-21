@@ -44,34 +44,6 @@
 
 @section('content')
 
-    @php
-        $kidsFaqs = [
-            ['q' => 'Les cours de Coran pour enfants sont-ils individuels ?', 'a' => 'Oui, les cours sont 100% particuliers : votre enfant travaille seul avec son enseignant, sans groupe ni distraction.'],
-            ['q' => 'Comment l\'enseignant est-il choisi ?', 'a' => 'Nous choisissons l\'enseignant en fonction de l\'âge, du niveau et des objectifs de votre enfant. Enseignant pour les garçons et enseignante pour les filles, selon votre préférence.'],
-            ['q' => 'Peut-on changer l\'horaire des cours ?', 'a' => 'Oui, sans frais et sans engagement. Nous sommes disponibles 7 jours sur 7, de 7h à 22h, et vous pouvez modifier vos créneaux à tout moment.'],
-            ['q' => 'Comment suivre les progrès de mon enfant ?', 'a' => 'Après chaque séance, l\'enseignant envoie un rapport périodique aux parents avec l\'évaluation de la séance, les acquis et les points à travailler.'],
-            ['q' => 'La séance d\'essai est-elle gratuite ?', 'a' => 'Oui, la première séance est entièrement gratuite et sans engagement. Vous pourrez évaluer la méthode et l\'enseignant avant de vous inscrire.'],
-            ['q' => 'Quelles sont les qualifications des enseignants ?', 'a' => 'Tous nos enseignants sont diplômés de l\'Al-Azhar et titulaires d\'Ijazah certifiées en Tajwid, avec une expérience confirmée dans l\'enseignement des enfants.'],
-        ];
-
-        $kidsSubjects = [
-            ['icon' => '📖', 'title' => 'Récitation du Coran', 'description' => 'Une lecture correcte, fluide et appliquée, lettre par lettre, dès le premier jour.'],
-            ['icon' => '🎵', 'title' => 'Tajwid', 'description' => 'Les règles de récitation enseignées de façon ludique et progressive, adaptées à chaque âge.'],
-            ['icon' => '🧠', 'title' => 'Mémorisation', 'description' => 'Un programme de mémorisation (Hifz) structuré avec révision continue des sourates apprises.'],
-            ['icon' => '🗣️', 'title' => 'Langue arabe', 'description' => 'Le vocabulaire, la lecture et la conversation en arabe avec une méthode simple et interactive.'],
-            ['icon' => '🤲', 'title' => 'Invocations', 'description' => 'Les invocations quotidiennes et adhkar du matin et du soir mémorisés avec leur signification.'],
-            ['icon' => '🌿', 'title' => 'Valeurs islamiques', 'description' => 'Les bonnes manières, le respect des parents et les valeurs de l\'Islam enseignées avec bienveillance.'],
-        ];
-
-        $kidsSessionFeatures = [
-            ['title' => '👨‍🏫 Enseignant dédié', 'description' => 'Un même enseignant suit votre enfant toute l\'année pour assurer une continuité et une relation de confiance.'],
-            ['title' => '💻 Séance interactive', 'description' => 'Une plateforme en ligne sûre, avec partage d\'écran, exercices visuels et outils pédagogiques.'],
-            ['title' => '🏠 Sans déplacement', 'description' => 'Votre enfant apprend depuis la maison, à un horaire choisi selon votre emploi du temps familial.'],
-            ['title' => '📝 Suivi parental', 'description' => 'Un rapport après chaque séance pour suivre la progression, les points forts et les points à améliorer.'],
-            ['title' => '⏰ Horaires flexibles', 'description' => 'Disponibilité 7 jours sur 7, de 7h à 22h, avec possibilité de modifier les créneaux à tout moment.'],
-        ];
-    @endphp
-
     @include('landing.partials.nav', [
         'activePage' => 'kids',
         'homeUrl' => route('home'),
@@ -100,19 +72,16 @@
             </div>
 
             <div class="hero-showcase">
-                <div class="emojis">{{ $pageSettings->kids_showcase_emoji ?? '📖 ✨' }}</div>
+                @if ($pageSettings->kids_showcase_image)
+                    <img src="{{ asset('storage/'.$pageSettings->kids_showcase_image) }}" class="hero-showcase-img" alt="">
+                @elseif ($pageSettings->kids_showcase_emoji)
+                    <div class="emojis">{{ $pageSettings->kids_showcase_emoji }}</div>
+                @endif
                 <div class="hero-showcase-title">{{ $pageSettings->kids_showcase_title ?? "Un environnement d'apprentissage joyeux, conçu pour l'enfant" }}</div>
                 <div class="hero-showcase-sub">{{ $pageSettings->kids_showcase_subtitle ?? 'Suivi précis avec des rapports périodiques pour les parents après chaque séance.' }}</div>
             </div>
         </div>
     </section>
-
-    <div class="container">
-        <nav class="breadcrumbs" aria-label="breadcrumb">
-            <a href="{{ route('home') }}">Accueil</a> /
-            <span aria-current="page">Cours enfants</span>
-        </nav>
-    </div>
 
     <section class="section" id="catalog">
         <div class="container">
@@ -127,19 +96,23 @@
                     @foreach ($courses as $course)
                         <article class="course-card">
                             <div class="course-card-head theme-{{ $course->card_theme }}">
-                                <span class="icon">{{ $course->icon }}</span>
+                                @if ($course->icon)
+                                    <img src="{{ asset('storage/'.$course->icon) }}" class="course-card-icon" alt="">
+                                @endif
                                 <h3>{{ $course->title }}</h3>
                             </div>
                             <div class="course-card-body">
                                 <div class="course-meta">
                                     <span class="meta-badge">
-                                        @if ($course->ageBandLabel())
-                                            <i class="fa-solid fa-child"></i> Âge : {{ $course->ageBandLabel() }}
+                                        @if ($course->minAgeLabel())
+                                            <i class="fa-solid fa-child"></i> Âge : {{ $course->minAgeLabel() }}
                                         @elseif ($course->level_label)
                                             <i class="fa-solid fa-gauge-high"></i> {{ $course->level_label }}
                                         @endif
                                     </span>
-                                    <span class="meta-time"><i class="fa-regular fa-clock"></i> {{ $course->session_minutes }} min/séance</span>
+                                    @if ($course->sessionRangeLabel())
+                                        <span class="meta-time"><i class="fa-regular fa-clock"></i> {{ $course->sessionRangeLabel() }}</span>
+                                    @endif
                                 </div>
                                 <p class="course-desc">{{ $course->short_description }}</p>
                                 <a href="{{ route('courses.show', $course->slug) }}" class="course-cta">
@@ -155,56 +128,93 @@
         </div>
     </section>
 
-    <section class="section section-white">
-        <div class="container">
-            <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                <span class="section-label">Pour les parents</span>
-                <h2 class="section-title">🎯 Ce cours convient-il à mon enfant ?</h2>
-                <p class="section-sub">Nos programmes sont conçus pour répondre aux besoins spécifiques des enfants et des familles.</p>
+    @if ($testimonials->count())
+        <section class="section section-white">
+            <div class="container">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    <span class="section-label">Témoignages</span>
+                    <h2 class="section-title">{{ $pageSettings->kids_testimonials_title ?: 'Ils nous font confiance' }}</h2>
+                    @if ($pageSettings->kids_testimonials_subtitle)
+                        <p class="section-sub">{{ $pageSettings->kids_testimonials_subtitle }}</p>
+                    @endif
+                </div>
+                <div class="testimonials-row">
+                    @foreach ($testimonials->take(3) as $testimonial)
+                        @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
+                    @endforeach
+                </div>
             </div>
-            <div class="suitability-grid">
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Apprentissage 100% en ligne, sans déplacement ni perte de temps</p></div>
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Enseignant dédié qui s'adapte à la personnalité et au rythme de votre enfant</p></div>
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Méthode ludique, positive et bienveillante qui motive l'enfant</p></div>
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Rapports périodiques aux parents pour suivre chaque séance</p></div>
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Horaires flexibles compatibles avec l'école et les activités familiales</p></div>
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Enseignant pour les garçons et enseignante pour les filles, selon votre préférence</p></div>
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Programme personnalisé selon l'âge, le niveau et les objectifs de l'enfant</p></div>
-                <div class="suitability-item"><span class="check"><i class="fa-solid fa-check"></i></span><p>Première séance d'essai gratuite et sans engagement</p></div>
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
     <section class="section">
         <div class="container">
             <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                <span class="section-label">Le programme</span>
-                <h2 class="section-title">📚 Que va apprendre mon enfant ?</h2>
-                <p class="section-sub">Un programme complet qui couvre le Coran, la langue arabe et l'éducation islamique.</p>
+                <span class="section-label">{{ $pageSettings->kids_about_label ?: 'À propos des cours' }}</span>
+                <h2 class="section-title">{{ $pageSettings->kids_about_title ?: 'À propos des cours' }}</h2>
+                @if ($pageSettings->kids_about_subtitle)
+                    <p class="section-sub">{{ $pageSettings->kids_about_subtitle }}</p>
+                @endif
             </div>
-            <div class="curriculum-grid">
-                @foreach ($kidsSubjects as $subject)
-                    <div class="curriculum-card">
-                        <div class="icon">{{ $subject['icon'] }}</div>
-                        <h3>{{ $subject['title'] }}</h3>
-                        <p>{{ $subject['description'] }}</p>
+            <div class="suitability-grid">
+                @foreach ($pageSettings->kids_about_items ?? [] as $feature)
+                    <div class="suitability-item">
+                        <span class="check">
+                            @if (! empty($feature['icon']))
+                                <span style="font-size: 1rem;">{{ $feature['icon'] }}</span>
+                            @else
+                                <i class="fa-solid fa-check"></i>
+                            @endif
+                        </span>
+                        <p>
+                            @if (! empty($feature['title']))
+                                <strong style="color: var(--green);">{{ $feature['title'] }}.</strong>
+                            @endif
+                            {{ $feature['description'] ?? '' }}
+                        </p>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
 
+    @if (filled($pageSettings->kids_curriculum_items))
+        <section class="section">
+            <div class="container">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    <span class="section-label">{{ $pageSettings->kids_curriculum_label ?: 'Le programme' }}</span>
+                    <h2 class="section-title">{{ $pageSettings->kids_curriculum_title ?: '📚 Que va apprendre mon enfant ?' }}</h2>
+                    @if ($pageSettings->kids_curriculum_subtitle)
+                        <p class="section-sub">{{ $pageSettings->kids_curriculum_subtitle }}</p>
+                    @endif
+                </div>
+                <div class="curriculum-grid">
+                    @foreach ($pageSettings->kids_curriculum_items as $subject)
+                        <div class="curriculum-card">
+                            <div class="icon">{{ $subject['icon'] ?? '' }}</div>
+                            <h3>{{ $subject['title'] }}</h3>
+                            <p>{{ $subject['description'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <section class="section section-white">
         <div class="container">
             <div class="detail-section" style="margin-bottom: 0;">
                 <div class="session-features">
-                    <h2>💡 😊 Comment se déroule la séance ?</h2>
-                    <p>Nous garantissons une expérience interactive, sûre et motivante à chaque séance :</p>
+                    <span class="section-label">{{ $pageSettings->kids_journey_label ?: 'Comment ça marche' }}</span>
+                    <h2>{{ $pageSettings->kids_journey_title ?: '💡 😊 Comment se déroule la séance ?' }}</h2>
+                    @if ($pageSettings->kids_journey_subtitle)
+                        <p>{{ $pageSettings->kids_journey_subtitle }}</p>
+                    @endif
                     <div class="session-grid">
-                        @foreach ($kidsSessionFeatures as $feature)
+                        @foreach ($pageSettings->kids_journey_items ?? [] as $feature)
                             <div class="session-card">
-                                <div class="session-card-title">{{ $feature['title'] }}</div>
-                                <p>{{ $feature['description'] }}</p>
+                                <div class="session-card-title">{{ $feature['title'] ?? '' }}</div>
+                                <p>{!! $feature['description'] ?? '' !!}</p>
                             </div>
                         @endforeach
                     </div>
@@ -213,50 +223,78 @@
         </div>
     </section>
 
-    <section class="section">
+    <section class="section section-white">
         <div class="container">
-            <div class="catalog-head section-center">
-                <span class="section-label">Questions fréquentes</span>
-                <h2 class="section-title">❓ Questions fréquentes — Cours enfants</h2>
-                <p class="section-sub">Toutes les réponses aux questions que se posent les parents avant de commencer.</p>
-            </div>
+            <div class="faq-contact-grid">
+                <div>
+                    <span class="section-label">{{ $pageSettings->kids_faq_label ?: 'Questions fréquentes' }}</span>
+                    <h2 class="section-title">{{ $pageSettings->kids_faq_title ?: '❓ Questions fréquentes — Cours enfants' }}</h2>
+                    @if ($pageSettings->kids_faq_subtitle)
+                        <p class="section-sub">{{ $pageSettings->kids_faq_subtitle }}</p>
+                    @endif
 
-            <div class="faq-list" style="margin: 0 auto;">
-                @foreach ($kidsFaqs as $faq)
-                    <div class="faq-item">
-                        <div class="faq-question" data-faq-toggle>
-                            <span>{{ $faq['q'] }}</span>
-                            <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                {{ $faq['a'] }}
+                    <div class="faq-list">
+                        @foreach ($pageSettings->kids_faq_items ?? [] as $faq)
+                            <div class="faq-item">
+                                <div class="faq-question" data-faq-toggle>
+                                    <span>{{ $faq['question'] ?? '' }}</span>
+                                    <div class="faq-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                                </div>
+                                <div class="faq-answer">
+                                    <div class="faq-answer-inner">
+                                        {!! $faq['answer'] ?? '' !!}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+
+                    @if ($pageSettings->kids_faq_cta1_text || $pageSettings->kids_faq_cta2_text)
+                        <div class="faq-ctas">
+                            @if ($pageSettings->kids_faq_cta1_text)
+                                <a href="{{ $pageSettings->kids_faq_cta1_url ?: '#' }}" class="btn-primary" @if ($pageSettings->kids_faq_cta1_url) target="_blank" rel="noopener" @endif>
+                                    {{ $pageSettings->kids_faq_cta1_text }}
+                                </a>
+                            @endif
+                            @if ($pageSettings->kids_faq_cta2_text)
+                                <a href="{{ $pageSettings->kids_faq_cta2_url ?: '#' }}" class="btn-outline" @if ($pageSettings->kids_faq_cta2_url) target="_blank" rel="noopener" @endif>
+                                    {{ $pageSettings->kids_faq_cta2_text }}
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
+                <div>
+                    @include('landing.partials.contact-card', [
+                        'title' => $pageSettings->kids_form_title ?: 'Contactez-nous',
+                        'subtitle' => $pageSettings->kids_form_subtitle,
+                    ])
+                </div>
             </div>
         </div>
     </section>
 
-    <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            @foreach ($kidsFaqs as $faq)
-            {
-                "@type": "Question",
-                "name": @json($faq['q']),
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": @json($faq['a'])
-                }
-            }@if (! $loop->last),@endif
-            @endforeach
-        ]
-    }
-    </script>
+    @if (count($pageSettings->kids_faq_items ?? []))
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                @foreach ($pageSettings->kids_faq_items as $faq)
+                {
+                    "@type": "Question",
+                    "name": @json($faq['question'] ?? ''),
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": @json(strip_tags((string) ($faq['answer'] ?? '')))
+                    }
+                }@if (! $loop->last),@endif
+                @endforeach
+            ]
+        }
+        </script>
+    @endif
 
     <section class="section" style="padding-top: 0;">
         <div class="container">
