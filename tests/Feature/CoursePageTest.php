@@ -39,7 +39,39 @@ class CoursePageTest extends TestCase
             ->assertSee('build/assets/courses-', false);
     }
 
-    public function test_adults_catalog_renders_adults_courses(): void
+    public function test_kids_curriculum_section_renders_from_settings(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $settings = CoursePageSettings::singleton();
+        $settings->update([
+            'kids_curriculum_label' => 'Le programme',
+            'kids_curriculum_title' => '📚 Que va apprendre mon enfant ?',
+            'kids_curriculum_subtitle' => 'Un programme complet pour votre enfant.',
+            'kids_curriculum_items' => [
+                ['icon' => '📖', 'title' => 'Récitation du Coran', 'description' => 'Une lecture correcte et fluide.'],
+            ],
+        ]);
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('📚 Que va apprendre mon enfant ?')
+            ->assertSee('Récitation du Coran')
+            ->assertSee('Une lecture correcte et fluide.');
+
+        $settings->update([
+            'kids_curriculum_title' => null,
+            'kids_curriculum_items' => [],
+        ]);
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('Que va apprendre mon enfant ?')
+            ->assertDontSee('Récitation du Coran');
+    }
     {
         $this->seed([
             CourseSeeder::class,
