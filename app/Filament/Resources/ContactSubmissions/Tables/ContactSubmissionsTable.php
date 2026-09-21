@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ContactSubmissions\Tables;
 
-use App\Enums\StudentLevel;
 use App\Enums\SubmissionStatus;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -31,8 +30,13 @@ class ContactSubmissionsTable
                     ->searchable(),
                 TextColumn::make('level')
                     ->label('المستوى')
-                    ->formatStateUsing(fn (StudentLevel $state): string => $state->getLabel())
+                    ->placeholder('—')
                     ->badge(),
+                TextColumn::make('schedule')
+                    ->label('الجدول')
+                    ->formatStateUsing(fn (mixed $state): string => implode('، ', (array) $state))
+                    ->placeholder('—')
+                    ->limit(30),
                 TextColumn::make('status')
                     ->label('الحالة')
                     ->formatStateUsing(fn (SubmissionStatus $state): string => $state->getLabel())

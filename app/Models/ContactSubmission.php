@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\StudentLevel;
 use App\Enums\SubmissionStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +24,6 @@ class ContactSubmission extends Model
     ];
 
     protected $casts = [
-        'level' => StudentLevel::class,
         'status' => SubmissionStatus::class,
         'schedule' => 'array',
         'student_age' => 'integer',

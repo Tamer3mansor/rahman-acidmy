@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ContactSubmissions\Schemas;
 
-use App\Enums\StudentLevel;
 use App\Enums\SubmissionStatus;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -30,11 +29,8 @@ class ContactSubmissionForm
                             ->label('عمر الطالب')
                             ->numeric()
                             ->disabled(),
-                        Select::make('level')
+                        TextInput::make('level')
                             ->label('المستوى')
-                            ->options(collect(StudentLevel::cases())->mapWithKeys(
-                                fn (StudentLevel $level): array => [$level->value => $level->getLabel()]
-                            )->all())
                             ->disabled(),
                     ])
                     ->columns(2),
@@ -49,6 +45,11 @@ class ContactSubmissionForm
                             ->label('البريد الإلكتروني')
                             ->email()
                             ->disabled(),
+                        Textarea::make('schedule')
+                            ->label('الجدول الزمني')
+                            ->disabled()
+                            ->columnSpanFull()
+                            ->formatStateUsing(fn (?array $state): string => implode('، ', $state ?? [])),
                         Textarea::make('message')
                             ->label('الرسالة')
                             ->disabled()

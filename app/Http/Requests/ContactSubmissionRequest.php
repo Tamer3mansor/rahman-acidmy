@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\StudentLevel;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class ContactSubmissionRequest extends FormRequest
 {
@@ -23,9 +21,9 @@ class ContactSubmissionRequest extends FormRequest
             'parent_name' => ['required', 'string', 'max:255'],
             'student_age' => ['required', 'integer', 'min:3', 'max:80'],
             'phone' => ['required', 'string', 'max:60'],
-            'email' => ['required', 'email', 'max:255'],
-            'level' => ['required', Rule::enum(StudentLevel::class)],
-            'schedule' => ['array'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'level' => ['nullable', 'string', 'max:255'],
+            'schedule' => ['nullable', 'array'],
             'schedule.*' => ['string'],
             'message' => ['nullable', 'string', 'max:2000'],
         ];

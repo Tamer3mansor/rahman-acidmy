@@ -22,11 +22,32 @@ document.addEventListener('click', (e) => {
         return;
     }
 
+    /* Dropdown toggle (Nos cours / Ressources) */
+    if (e.target.closest('.nav-toggle')) {
+        const item = e.target.closest('.nav-item');
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.nav-item.open').forEach((i) => {
+            i.classList.remove('open');
+            i.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+            item.classList.add('open');
+            item.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'true');
+        }
+
+        return;
+    }
+
     /* Mobile menu toggle */
     if (e.target.closest('#hamburger')) {
         toggleMenu();
 
         return;
+    }
+
+    /* Close dropdowns when clicking outside */
+    if (!e.target.closest('.nav-item') && !e.target.closest('#hamburger')) {
+        document.querySelectorAll('.nav-item.open').forEach((i) => i.classList.remove('open'));
     }
 
     /* Scroll to top */
@@ -92,8 +113,8 @@ contactForm?.addEventListener('submit', async (e) => {
     btn.disabled = true;
     btn.innerHTML = spinnerHtml('Envoi en cours...');
 
-    const schedule = [];
-    document.querySelectorAll('.sched-option input:checked').forEach((cb) => schedule.push(cb.value));
+    const scheduleText = document.getElementById('schedule').value.trim();
+    const schedule = scheduleText ? [scheduleText] : [];
 
     const payload = {
         student_name: document.getElementById('studentName').value,
@@ -101,7 +122,7 @@ contactForm?.addEventListener('submit', async (e) => {
         student_age: document.getElementById('studentAge').value,
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
-        level: document.querySelector('input[name="level"]:checked')?.value || '',
+        level: document.getElementById('level').value,
         schedule,
         message: document.getElementById('message').value,
     };

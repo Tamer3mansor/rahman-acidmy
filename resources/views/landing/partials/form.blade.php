@@ -1,23 +1,3 @@
-@php
-    $levels = [
-        \App\Enums\StudentLevel::Debutant->value => 'Débutant',
-        \App\Enums\StudentLevel::Intermediaire->value => 'Intermédiaire',
-        \App\Enums\StudentLevel::Avance->value => 'Avancé',
-        \App\Enums\StudentLevel::JeNeSaisPas->value => 'Je ne sais pas',
-    ];
-
-    $scheduleDays = [
-        'Lundi',
-        'Mardi',
-        'Mercredi',
-        'Jeudi',
-        'Vendredi',
-        'Samedi',
-        'Dimanche',
-        'N\'importe quel moment',
-    ];
-@endphp
-
 <section class="form-section" id="trial-form">
     <div class="container">
         <div class="form-inner">
@@ -66,37 +46,23 @@
                             <input type="number" id="studentAge" name="student_age" placeholder="Ex: 8" min="3" max="80" required>
                         </div>
                         <div class="form-group">
-                            <label for="phone">Numéro de téléphone *</label>
+                            <label for="phone">Numéro WhatsApp *</label>
                             <input type="tel" id="phone" name="phone" placeholder="+33 6 00 00 00 00" required>
                         </div>
                     </div>
                     <div class="form-group">
-                            <label for="email">Adresse e-mail *</label>
-                        <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                            <label for="email">Adresse e-mail</label>
+                        <input type="email" id="email" name="email" placeholder="example@email.com">
                     </div>
 
                     <div class="form-group">
-                        <label>Niveau actuel de l'élève *</label>
-                        <div class="level-options">
-                            @foreach ($levels as $value => $label)
-                                <div class="level-option">
-                                    <input type="radio" name="level" id="lvl{{ $loop->index + 1 }}" value="{{ $value }}" required>
-                                    <label for="lvl{{ $loop->index + 1 }}"><span class="radio-dot"></span>{{ $label }}</label>
-                                </div>
-                            @endforeach
-                        </div>
+                        <label for="level">Niveau de l'élève (optionnel)</label>
+                        <input type="text" id="level" name="level" placeholder="Ex: Débutant, Intermédiaire, Avancé...">
                     </div>
 
                     <div class="form-group">
-                        <label>Créneaux disponibles dans la semaine</label>
-                        <div class="schedule-grid">
-                            @foreach ($scheduleDays as $index => $day)
-                                <div class="sched-option">
-                                    <input type="checkbox" id="sched{{ $index + 1 }}" value="{{ $day }}">
-                                    <label for="sched{{ $index + 1 }}">{{ $day }}</label>
-                                </div>
-                            @endforeach
-                        </div>
+                        <label for="schedule">Créneaux souhaités (optionnel)</label>
+                        <input type="text" id="schedule" name="schedule" placeholder="Ex: Jours de semaine après 17h, week-end...">
                     </div>
 
                     <div class="form-group">

@@ -70,11 +70,11 @@ class LandingPageTest extends TestCase
 
         $submission = ContactSubmission::query()->firstOrFail();
 
-        $this->assertSame(StudentLevel::Intermediaire, $submission->level);
+        $this->assertSame(StudentLevel::Intermediaire->value, $submission->level);
         $this->assertSame(['الإثنين', 'الجمعة'], $submission->schedule);
     }
 
-    public function test_contact_submission_rejects_invalid_level(): void
+    public function test_contact_submission_accepts_optional_fields_without_email_level_schedule(): void
     {
         $this->seed(DatabaseSeeder::class);
 
@@ -83,15 +83,44 @@ class LandingPageTest extends TestCase
             'parent_name' => 'محمد',
             'student_age' => 8,
             'phone' => '+33600000000',
-            'email' => 'parent@example.com',
-            'level' => 'not-a-valid-level',
         ];
 
         $this->postJson('/contact-submission', $payload)
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('level');
+            ->assertOk()
+            ->assertJson(['ok' => true]);
 
-        $this->assertDatabaseCount('contact_submissions', 0);
+        $this->assertDatabaseHas('contact_submissions', [
+            'student_name' => 'أحمد',
+            'parent_name' => 'محمد',
+            'student_age' => 8,
+            'phone' => '+33600000000',
+            'email' => null,
+            'level' => null,
+        ]);
+    }
+
+    public function test_contact_submission_accepts_free_text_level_and_schedule(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $payload = [
+            'student_name' => 'أحمد',
+            'parent_name' => 'محمد',
+            'student_age' => 8,
+            'phone' => '+33600000000',
+            'level' => 'Débutant renforcé',
+            'schedule' => ['Les après-midis'],
+            'message' => 'مرحباً، أود حجز حصة تجريبية',
+        ];
+
+        $this->postJson('/contact-submission', $payload)
+            ->assertOk()
+            ->assertJson(['ok' => true]);
+
+        $submission = ContactSubmission::query()->firstOrFail();
+
+        $this->assertSame('Débutant renforcé', $submission->level);
+        $this->assertSame(['Les après-midis'], $submission->schedule);
     }
 
     public function test_teachers_and_faqs_seed_and_render(): void

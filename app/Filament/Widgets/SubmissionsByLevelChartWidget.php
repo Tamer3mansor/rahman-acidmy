@@ -23,17 +23,20 @@ class SubmissionsByLevelChartWidget extends ChartWidget
 
     protected function getData(): array
     {
+        $levelValues = array_column(StudentLevel::cases(), 'value');
+
         $counts = collect(StudentLevel::cases())
             ->mapWithKeys(fn (StudentLevel $level) => [
-                $level->getLabel() => ContactSubmission::where('level', $level)->count(),
-            ]);
+                $level->getLabel() => ContactSubmission::where('level', $level->value)->count(),
+            ])
+            ->put('أخرى', ContactSubmission::whereNotIn('level', $levelValues)->count());
 
         return [
             'datasets' => [
                 [
                     'label' => 'الطلبات',
                     'data' => $counts->values()->toArray(),
-                    'backgroundColor' => ['#ef4444', '#f59e0b', '#22c55e', '#6b7280'],
+                    'backgroundColor' => ['#ef4444', '#f59e0b', '#22c55e', '#6b7280', '#3b82f6'],
                     'borderRadius' => 8,
                     'borderSkipped' => false,
                 ],

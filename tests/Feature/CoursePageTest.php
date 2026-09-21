@@ -123,8 +123,8 @@ class CoursePageTest extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('Cours enfants')
-            ->assertSee('Cours adultes');
+            ->assertSee('Cours pour enfants')
+            ->assertSee('Cours pour adultes');
     }
 
     public function test_course_page_settings_singleton(): void
