@@ -16,18 +16,18 @@
                     <div class="faq-answer">
                         <div class="faq-answer-inner">
                             {!! $faq->answer !!}
-                            @if ($faq->show_cta && $faq->cta_url)
-                                @if (str_starts_with($faq->cta_url, '#'))
-                                    <span class="faq-cta-inline" data-scroll-to-form>
-                                        {{ $faq->cta_text }}
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                                    </span>
-                                @else
-                                    <a href="{{ $faq->cta_url }}" class="faq-cta-inline" target="_blank" rel="noopener">
-                                        {{ $faq->cta_text }}
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                                    </a>
-                                @endif
+                            @php
+                                $faqCtas = collect([
+                                    $faq->show_cta && $faq->cta_url
+                                        ? ['text' => $faq->cta_text, 'url' => $faq->cta_url]
+                                        : null,
+                                    $faq->show_cta2 && $faq->cta2_url
+                                        ? ['text' => $faq->cta2_text, 'url' => $faq->cta2_url]
+                                        : null,
+                                ])->filter()->values();
+                            @endphp
+                            @if ($faqCtas->isNotEmpty())
+                                @include('landing.partials.faq-cta-row', ['ctas' => $faqCtas])
                             @endif
                         </div>
                     </div>

@@ -13,6 +13,7 @@ use Database\Seeders\CoursePageSettingsSeeder;
 use Database\Seeders\CourseSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class CoursePageTest extends TestCase
@@ -56,9 +57,8 @@ class CoursePageTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue(\Illuminate\Support\Facades\Schema::hasColumn('course_page_settings', 'kids_curriculum_items'));
+        $this->assertTrue(Schema::hasColumn('course_page_settings', 'kids_curriculum_items'));
         $this->assertCount(1, $settings->fresh()->kids_curriculum_items ?? []);
-        dump($settings->fresh()->kids_curriculum_title, $settings->fresh()->kids_curriculum_items);
 
         $this->get('/enfants')
             ->assertOk()
@@ -75,6 +75,43 @@ class CoursePageTest extends TestCase
             ->assertOk()
             ->assertSee('Que va apprendre mon enfant ?')
             ->assertDontSee('Récitation du Coran');
+    }
+
+    public function test_adults_curriculum_section_renders_from_settings(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $settings = CoursePageSettings::singleton();
+        $settings->update([
+            'adults_curriculum_label' => 'Le programme',
+            'adults_curriculum_title' => '📚 Que vas-tu apprendre ?',
+            'adults_curriculum_subtitle' => 'Un programme structuré pour vous.',
+            'adults_curriculum_items' => [
+                ['icon' => '📖', 'title' => 'Correction de la récitation', 'description' => 'Lettres et makharij appliqués.'],
+            ],
+        ]);
+
+        $this->assertTrue(Schema::hasColumn('course_page_settings', 'adults_curriculum_items'));
+        $this->assertCount(1, $settings->fresh()->adults_curriculum_items ?? []);
+
+        $this->get('/adultes')
+            ->assertOk()
+            ->assertSee('📚 Que vas-tu apprendre ?')
+            ->assertSee('Correction de la récitation')
+            ->assertSee('Lettres et makharij appliqués.');
+
+        $settings->update([
+            'adults_curriculum_title' => null,
+            'adults_curriculum_items' => [],
+        ]);
+
+        $this->get('/adultes')
+            ->assertOk()
+            ->assertSee('Que vas-tu apprendre ?')
+            ->assertDontSee('Lettres et makharij appliqués.');
     }
 
     public function test_adults_catalog_renders_adults_courses(): void
@@ -280,5 +317,63 @@ class CoursePageTest extends TestCase
         $this->actingAs($user)->get('/admin/course-page-settings')->assertOk();
         $this->actingAs($user)->get('/admin/landing-testimonials')->assertOk();
         $this->actingAs($user)->get('/admin/landing-testimonials/1/edit')->assertOk();
+    }
+
+    public function test_kids_faq_items_render_per_question_ctas(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $settings = CoursePageSettings::singleton();
+        $settings->update([
+            'kids_faq_items' => [
+                [
+                    'question' => 'Question Enfant A ?',
+                    'answer' => '<p>Réponse enfant A.</p>',
+                    'cta1_text' => 'CTA Un Enfant',
+                    'cta1_url' => 'https://example.com',
+                    'cta2_text' => 'CTA Deux Enfant',
+                    'cta2_url' => '#',
+                ],
+            ],
+        ]);
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('Question Enfant A ?')
+            ->assertSee('CTA Un Enfant')
+            ->assertSee('CTA Deux Enfant')
+            ->assertSee('faq-cta-row', false);
+    }
+
+    public function test_adults_faq_items_render_per_question_ctas(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $settings = CoursePageSettings::singleton();
+        $settings->update([
+            'adults_faq_items' => [
+                [
+                    'question' => 'Question Adulte A ?',
+                    'answer' => '<p>Réponse adulte A.</p>',
+                    'cta1_text' => 'CTA Un Adulte',
+                    'cta1_url' => '#',
+                    'cta2_text' => 'CTA Deux Adulte',
+                    'cta2_url' => 'https://example.com',
+                ],
+            ],
+        ]);
+
+        $this->get('/adultes')
+            ->assertOk()
+            ->assertSee('Question Adulte A ?')
+            ->assertSee('CTA Un Adulte')
+            ->assertSee('CTA Deux Adulte')
+            ->assertSee('faq-cta-row', false);
     }
 }

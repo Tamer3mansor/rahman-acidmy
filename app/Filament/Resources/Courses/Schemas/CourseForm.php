@@ -186,9 +186,14 @@ class CourseForm
                             ->schema([
                                 Repeater::make('faqs')
                                     ->label('الأسئلة الشائعة')
+                                    ->helperText('لكل سؤال سطرا CTA يظهران أسفل الإجابة — نص ورابط لكل زر.')
                                     ->schema([
-                                        TextInput::make('question')->label('السؤال')->required()->columnSpan(1),
-                                        RichEditor::make('answer')->label('الإجابة')->required()->columnSpan(1),
+                                        TextInput::make('question')->label('السؤال')->required()->columnSpanFull(),
+                                        RichEditor::make('answer')->label('الإجابة')->required()->columnSpanFull(),
+                                        TextInput::make('cta1_text')->label('نص الزر الأول')->placeholder('مثال: احجز جلسة تجريبية')->columnSpan(1),
+                                        TextInput::make('cta1_url')->label('رابط الزر الأول')->url()->placeholder('# أو https://...')->columnSpan(1),
+                                        TextInput::make('cta2_text')->label('نص الزر الثاني')->placeholder('مثال: تواصل عبر واتساب')->columnSpan(1),
+                                        TextInput::make('cta2_url')->label('رابط الزر الثاني')->url()->placeholder('# أو https://...')->columnSpan(1),
                                     ])
                                     ->columns(2)
                                     ->defaultItems(3)

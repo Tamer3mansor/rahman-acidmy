@@ -108,6 +108,17 @@ class CoursePageSettingsSeeder extends Seeder
                     ['icon' => '📊', 'title' => 'Suivi continu', 'description' => 'Une évaluation régulière de votre progression avec des objectifs clairs à chaque étape de votre parcours.'],
                 ],
 
+                'adults_curriculum_label' => 'Le programme',
+                'adults_curriculum_title' => '📚 Que vas-tu apprendre ?',
+                'adults_curriculum_subtitle' => 'Un programme structuré pour maîtriser la lecture, le Tajwid et la langue arabe, adapté à votre niveau.',
+                'adults_curriculum_items' => [
+                    ['icon' => '📖', 'title' => 'Correction de la récitation', 'description' => 'La lecture est corrigée lettre par lettre, avec les règles essentielles de prononciation (Makharij).'],
+                    ['icon' => '🎶', 'title' => 'Règles du Tajwid', 'description' => 'Les règles de récitation appliquées progressivement, de façon pratique durant chaque séance.'],
+                    ['icon' => '🧠', 'title' => 'Mémorisation (Hifz)', 'description' => 'Un programme de mémorisation structuré avec révision continue et suivi de votre progression.'],
+                    ['icon' => '🗣️', 'title' => 'Langue arabe', 'description' => 'Vocabulaire, lecture et conversation utiles pour comprendre le Coran et pratiquer l\'arabe.'],
+                    ['icon' => '🤲', 'title' => 'Adhkar et invocations', 'description' => 'Les invocations du quotidien avec leur signification et leur bonne prononciation.'],
+                ],
+
                 'adults_journey_label' => 'Comment ça marche',
                 'adults_journey_title' => '🚀 Comment se déroule votre parcours',
                 'adults_journey_subtitle' => 'Quatre étapes simples entre vous et votre objectif d\'apprentissage du Coran.',

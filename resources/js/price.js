@@ -10,7 +10,7 @@ const price = (() => {
         const packName = card.dataset.packName;
         const classesCount = card.dataset.classes;
         const totalPrice = card.dataset.price;
-        const phone = grid.dataset.waPhone || '';
+        const phone = card.dataset.waPhone || grid.dataset.waPhone || '';
 
         if (!phone) {
             return;

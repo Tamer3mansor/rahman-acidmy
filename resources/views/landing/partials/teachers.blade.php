@@ -17,6 +17,12 @@
                         @else
                             <div class="teacher-avatar">{{ $teacher->emoji }}</div>
                         @endif
+                        @if ($teacher->is_featured)
+                            <span class="teacher-featured">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.6 7.1L22 9.3l-5.9 4.6 1.9 7.4L12 16.9 6 21.3l1.9-7.4L2 9.3l7.4-.2L12 2z"/></svg>
+                                {{ $teacher->featured_label ?: __('Membre distingué') }}
+                            </span>
+                        @endif
                     </div>
                     <div class="teacher-body">
                         <div class="teacher-name">{{ $teacher->name }}</div>

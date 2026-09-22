@@ -16,12 +16,15 @@ class LandingTeacher extends Model
         'photo_path',
         'emoji',
         'badges',
+        'is_featured',
+        'featured_label',
         'is_active',
         'sort_order',
     ];
 
     protected $casts = [
         'badges' => 'array',
+        'is_featured' => 'boolean',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];

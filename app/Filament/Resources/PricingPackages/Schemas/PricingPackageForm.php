@@ -122,6 +122,22 @@ class PricingPackageForm
                     ])
                     ->columns(3),
 
+                Section::make('زر واتساب')
+                    ->description('نص الزر ورقم الواتساب الذي يفتحه عند النقر. إذا تُرك الرقم فارغاً يُستخدم الرقم الافتراضي العام.')
+                    ->schema([
+                        TextInput::make('button_label')
+                            ->label('اسم الزر')
+                            ->helperText('الافتراضي: Ce pack me convient')
+                            ->maxLength(100)
+                            ->placeholder('Ce pack me convient'),
+                        TextInput::make('whatsapp_url')
+                            ->label('رابط واتساب')
+                            ->helperText('مثال: https://wa.me/201028268553')
+                            ->url()
+                            ->placeholder('https://wa.me/20201028268553'),
+                    ])
+                    ->columns(2),
+
                 Section::make('الحالة')
                     ->schema([
                         Toggle::make('is_featured')

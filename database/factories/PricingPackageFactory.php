@@ -23,6 +23,8 @@ class PricingPackageFactory extends Factory
             'hours' => $pricingType === PricingPackage::TYPE_PER_HOUR ? fake()->randomFloat(1, 1, 50) : null,
             'price' => $pricingType === PricingPackage::TYPE_SPECIAL ? fake()->randomFloat(2, 20, 500) : 0,
             'features' => fake()->sentences(3),
+            'button_label' => 'Ce pack me convient',
+            'whatsapp_url' => null,
             'is_featured' => false,
             'is_active' => true,
             'sort_order' => 0,

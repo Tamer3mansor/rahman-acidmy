@@ -30,7 +30,7 @@ class PricingPageTest extends TestCase
             ->assertSee('Pack Découverte')
             ->assertSee('Pack Argent')
             ->assertSee('Le plus demandé')
-            ->assertSee('essai gratuite')
+            ->assertSee('essai gratuit')
             ->assertSee('build/assets/price-', false)
             ->assertDontSee('data-scroll-to-form');
     }
@@ -49,6 +49,63 @@ class PricingPageTest extends TestCase
         $this->get('/price')
             ->assertOk()
             ->assertSee("data-price=\"{$expected}\"", false);
+    }
+
+    public function test_price_contents_section_renders_from_settings(): void
+    {
+        $this->seed([
+            PricingSettingsSeeder::class,
+            PricingPackageSeeder::class,
+        ]);
+
+        $settings = PricingSettings::singleton();
+        $settings->update([
+            'contents_label' => 'Tout inclus',
+            'contents_title' => 'Ce qui est inclus dans chaque pack',
+            'contents_subtitle' => 'Une description courte.',
+            'contents_items' => [
+                ['icon' => '🕌', 'title' => 'Cours particuliers', 'description' => 'Des séances en tête-à-tête.'],
+                ['icon' => '📋', 'title' => 'Suivi personnalisé', 'description' => 'Rapports réguliers.'],
+            ],
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('Ce qui est inclus dans chaque pack')
+            ->assertSee('Cours particuliers')
+            ->assertSee('Suivi personnalisé')
+            ->assertSee('Des séances en tête-à-tête.');
+    }
+
+    public function test_package_cta_button_uses_custom_label_and_whatsapp_number(): void
+    {
+        $this->seed([
+            PricingSettingsSeeder::class,
+            PricingPackageSeeder::class,
+        ]);
+
+        $pack = PricingPackage::query()->where('name', 'Pack Découverte')->firstOrFail();
+        $pack->update([
+            'button_label' => 'Choisir ce pack',
+            'whatsapp_url' => 'https://wa.me/3312345678',
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('Choisir ce pack')
+            ->assertSee('data-wa-phone="3312345678"', false);
+
+        $this->assertSame('3312345678', $pack->whatsappPhone());
+    }
+
+    public function test_package_cta_falls_back_to_default_label_and_phone(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('Ce pack me convient')
+            ->assertSee('data-wa-phone="201028268553"', false);
     }
 
     public function test_page_embeds_whatsapp_phone_from_settings(): void
@@ -109,7 +166,7 @@ class PricingPageTest extends TestCase
 
         $user = User::factory()->create();
 
-        foreach (['/admin/pricing-packages', '/admin/pricing-packages/create'] as $url) {
+        foreach (['/admin/pricing-packages', '/admin/pricing-packages/create', '/admin/pricing-settings'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
 
@@ -118,5 +175,11 @@ class PricingPageTest extends TestCase
             ->assertOk()
             ->assertSee('السعر العام للساعة')
             ->assertSee('تعديل السعر العام');
+
+        $this->actingAs($user)
+            ->get('/admin/pricing-settings')
+            ->assertOk()
+            ->assertSee('إعدادات محتويات الباقات')
+            ->assertSee('قسم محتويات الباقات');
     }
 }

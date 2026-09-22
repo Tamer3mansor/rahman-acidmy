@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LandingSettings;
 use App\Models\PricingPackage;
+use App\Models\PricingSettings;
 
 class PricingController extends Controller
 {
@@ -18,8 +19,9 @@ class PricingController extends Controller
 
         return view('price.index', [
             'settings' => $settings,
+            'pricing' => PricingSettings::singleton(),
             'packages' => $packages,
-            'whatsappPhone' => $this->resolveWhatsAppPhone($settings->header_btn1_url),
+            'defaultWaPhone' => $this->resolveWhatsAppPhone($settings->header_btn1_url),
         ]);
     }
 

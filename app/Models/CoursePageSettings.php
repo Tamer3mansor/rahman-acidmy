@@ -60,6 +60,10 @@ class CoursePageSettings extends Model
         'adults_about_title',
         'adults_about_subtitle',
         'adults_about_items',
+        'adults_curriculum_label',
+        'adults_curriculum_title',
+        'adults_curriculum_subtitle',
+        'adults_curriculum_items',
         'adults_journey_label',
         'adults_journey_title',
         'adults_journey_subtitle',
@@ -98,6 +102,7 @@ class CoursePageSettings extends Model
         'kids_curriculum_items' => 'array',
         'kids_faq_items' => 'array',
         'adults_about_items' => 'array',
+        'adults_curriculum_items' => 'array',
         'adults_journey_items' => 'array',
         'adults_faq_items' => 'array',
     ];

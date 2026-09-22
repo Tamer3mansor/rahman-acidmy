@@ -136,4 +136,93 @@ class LandingPageTest extends TestCase
 
         $this->assertStringContainsString('Réservez votre essai gratuit', $page->getContent());
     }
+
+    public function test_featured_teacher_renders_golden_badge_on_card(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        LandingTeacher::create([
+            'name' => 'Cheikh Test Distingué',
+            'specialty' => 'Spécialiste du Tajwid et des lectures',
+            'emoji' => '👨‍🏫',
+            'badges' => ['Al-Azhar'],
+            'is_featured' => true,
+            'is_active' => true,
+            'sort_order' => 99,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Cheikh Test Distingué')
+            ->assertSee('teacher-featured', false)
+            ->assertSee('Membre distingué');
+    }
+
+    public function test_featured_teacher_uses_custom_badge_label(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        LandingTeacher::create([
+            'name' => 'Cheikh Test Label',
+            'specialty' => 'Récitation du Coran',
+            'emoji' => '👨‍🏫',
+            'badges' => [],
+            'is_featured' => true,
+            'featured_label' => 'مدرس مميز',
+            'is_active' => true,
+            'sort_order' => 99,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Cheikh Test Label')
+            ->assertSee('teacher-featured', false)
+            ->assertSee('مدرس مميز');
+    }
+
+    public function test_non_featured_teacher_has_no_badge(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        LandingTeacher::create([
+            'name' => 'Cheikh Test Normal',
+            'specialty' => 'Langue arabe',
+            'emoji' => '👨‍🏫',
+            'badges' => [],
+            'is_featured' => false,
+            'is_active' => true,
+            'sort_order' => 98,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Cheikh Test Normal')
+            ->assertDontSee('Membre distingué');
+    }
+
+    public function test_faq_renders_two_admin_controlled_ctas(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        LandingFaq::create([
+            'question' => 'Question CTA Test ?',
+            'answer' => '<p>Réponse de test.</p>',
+            'show_cta' => true,
+            'cta_text' => 'Bouton Un',
+            'cta_url' => '#',
+            'show_cta2' => true,
+            'cta2_text' => 'Bouton Deux',
+            'cta2_url' => 'https://example.com',
+            'is_active' => true,
+            'sort_order' => 99,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Question CTA Test ?')
+            ->assertSee('Bouton Un')
+            ->assertSee('Bouton Deux')
+            ->assertSee('faq-cta-row', false)
+            ->assertSee('https://example.com', false);
+    }
 }

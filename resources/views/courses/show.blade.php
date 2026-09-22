@@ -6,6 +6,18 @@
         ? 'Cours des enfants'
         : 'Cours des adultes';
     $activePage = $course->audience === \App\Enums\CourseAudience::Kids ? 'kids' : 'adults';
+    $faqCta1Text = $course->audience === \App\Enums\CourseAudience::Kids
+        ? $pageSettings->kids_faq_cta1_text
+        : $pageSettings->adults_faq_cta1_text;
+    $faqCta1Url = $course->audience === \App\Enums\CourseAudience::Kids
+        ? $pageSettings->kids_faq_cta1_url
+        : $pageSettings->adults_faq_cta1_url;
+    $faqCta2Text = $course->audience === \App\Enums\CourseAudience::Kids
+        ? $pageSettings->kids_faq_cta2_text
+        : $pageSettings->adults_faq_cta2_text;
+    $faqCta2Url = $course->audience === \App\Enums\CourseAudience::Kids
+        ? $pageSettings->kids_faq_cta2_url
+        : $pageSettings->adults_faq_cta2_url;
 @endphp
 
 @extends('layouts.landing')
@@ -198,11 +210,39 @@
                             <div class="faq-answer">
                                  <div class="faq-answer-inner">
                                      {!! $faq['answer'] !!}
+                                     @php
+                                         $faqCtas = collect([
+                                             ! empty($faq['cta1_text']) && ! empty($faq['cta1_url'])
+                                                 ? ['text' => $faq['cta1_text'], 'url' => $faq['cta1_url']]
+                                                 : null,
+                                             ! empty($faq['cta2_text']) && ! empty($faq['cta2_url'])
+                                                 ? ['text' => $faq['cta2_text'], 'url' => $faq['cta2_url']]
+                                                 : null,
+                                         ])->filter()->values();
+                                     @endphp
+                                     @if ($faqCtas->isNotEmpty())
+                                         @include('landing.partials.faq-cta-row', ['ctas' => $faqCtas])
+                                     @endif
                                  </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
+
+                @if ($faqCta1Text || $faqCta2Text)
+                    <div class="faq-ctas">
+                        @if ($faqCta1Text)
+                            <a href="{{ $faqCta1Url ?: '#' }}" class="btn-primary" @if ($faqCta1Url) target="_blank" rel="noopener" @endif>
+                                {{ $faqCta1Text }}
+                            </a>
+                        @endif
+                        @if ($faqCta2Text)
+                            <a href="{{ $faqCta2Url ?: '#' }}" class="btn-outline" @if ($faqCta2Url) target="_blank" rel="noopener" @endif>
+                                {{ $faqCta2Text }}
+                            </a>
+                        @endif
+                    </div>
+                @endif
             </section>
 
             <script type="application/ld+json">

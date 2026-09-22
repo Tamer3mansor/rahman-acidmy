@@ -31,14 +31,16 @@
 
         {{-- Packages grid --}}
         <div class="container">
-            <div class="packages-grid" id="packagesGrid" data-wa-phone="{{ $whatsappPhone }}">
+            <div class="packages-grid" id="packagesGrid" data-wa-phone="{{ $defaultWaPhone }}">
                 @foreach ($packages as $package)
                     @php($total = $package->effectivePrice())
                     @php($perLesson = $package->ratePerLesson())
+                    @php($packageWaPhone = $package->whatsappPhone() ?: $defaultWaPhone)
                     <article class="package-card {{ $package->is_featured ? 'featured' : '' }}"
                              data-pack-name="{{ $package->name }}"
                              data-classes="{{ $package->classes_count }}"
-                             data-price="{{ number_format($total, 2) }}">
+                             data-price="{{ number_format($total, 2) }}"
+                             data-wa-phone="{{ $packageWaPhone }}">
 
                         @if ($package->is_featured)
                             <span class="featured-tag"><i class="fa-solid fa-star"></i> Le plus demandé</span>
@@ -70,13 +72,43 @@
                         </ul>
 
                         <button type="button" class="{{ $package->is_featured ? 'btn-primary' : 'btn-outline' }} select-package-btn" data-select-package>
-                            <i class="fa-brands fa-whatsapp"></i> Ce pack me convient
+                            <i class="fa-brands fa-whatsapp"></i> {{ $package->button_label ?: 'Ce pack me convient' }}
                         </button>
                     </article>
                 @endforeach
             </div>
         </div>
     </section>
+
+    @if (filled($pricing->contents_title) || filled($pricing->contents_subtitle) || filled($pricing->contents_items))
+        <section class="section section-included">
+            <div class="container">
+                <div class="section-center">
+                    @if (filled($pricing->contents_label))
+                        <span class="section-label">{{ $pricing->contents_label }}</span>
+                    @endif
+                    @if (filled($pricing->contents_title))
+                        <h2 class="section-title">{{ $pricing->contents_title }}</h2>
+                    @endif
+                    @if (filled($pricing->contents_subtitle))
+                        <p class="section-sub">{{ $pricing->contents_subtitle }}</p>
+                    @endif
+                </div>
+
+                <div class="included-grid">
+                    @foreach ($pricing->contents_items ?? [] as $item)
+                        <div class="included-card">
+                            @if (filled($item['icon'] ?? null))
+                                <div class="included-icon">{{ $item['icon'] }}</div>
+                            @endif
+                            <h3 class="included-title">{{ $item['title'] ?? '' }}</h3>
+                            <p class="included-desc">{{ $item['description'] ?? '' }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 
     {{-- Final CTA banner --}}
     <section class="section">

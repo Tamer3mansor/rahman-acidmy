@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LandingFaqs\Schemas;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -27,22 +28,43 @@ class LandingFaqForm
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('زر الدعوة للإجراء (CTA)')
+                Section::make('أزرار الدعوة للإجراء (CTA)')
+                    ->description('لكل سؤال زرّا دعوة يتحكم بهما المشرف. الرابط «#» يُمرّر المستخدم لنموذج التواصل.')
                     ->schema([
-                        Toggle::make('show_cta')
-                            ->label('إظهار زر CTA')
-                            ->live()
-                            ->default(false),
-                        TextInput::make('cta_text')
-                            ->label('نص الزر')
-                            ->maxLength(255)
-                            ->hidden(fn ($get) => ! $get('show_cta')),
-                        TextInput::make('cta_url')
-                            ->label('رابط الزر')
-                            ->url()
-                            ->hidden(fn ($get) => ! $get('show_cta')),
-                    ])
-                    ->columns(2),
+                        Grid::make(2)
+                            ->schema([
+                                Toggle::make('show_cta')
+                                    ->label('إظهار الزر الأول')
+                                    ->live()
+                                    ->default(false),
+                                Toggle::make('show_cta2')
+                                    ->label('إظهار الزر الثاني')
+                                    ->live()
+                                    ->default(false),
+                                TextInput::make('cta_text')
+                                    ->label('نص الزر الأول')
+                                    ->maxLength(255)
+                                    ->placeholder('مثال: احجز جلسة تجريبية مجانية')
+                                    ->disabled(fn ($get) => ! $get('show_cta')),
+                                TextInput::make('cta2_text')
+                                    ->label('نص الزر الثاني')
+                                    ->maxLength(255)
+                                    ->placeholder('مثال: تواصل عبر واتساب')
+                                    ->disabled(fn ($get) => ! $get('show_cta2')),
+                                TextInput::make('cta_url')
+                                    ->label('رابط الزر الأول')
+                                    ->url()
+                                    ->placeholder('# أو https://...')
+                                    ->helperText('«#» للتمرير لنموذج التواصل.')
+                                    ->disabled(fn ($get) => ! $get('show_cta')),
+                                TextInput::make('cta2_url')
+                                    ->label('رابط الزر الثاني')
+                                    ->url()
+                                    ->placeholder('# أو https://...')
+                                    ->helperText('«#» للتمرير لنموذج التواصل.')
+                                    ->disabled(fn ($get) => ! $get('show_cta2')),
+                            ]),
+                    ]),
 
                 Section::make('الحالة')
                     ->schema([

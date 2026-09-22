@@ -15,12 +15,16 @@ class LandingFaq extends Model
         'show_cta',
         'cta_text',
         'cta_url',
+        'show_cta2',
+        'cta2_text',
+        'cta2_url',
         'is_active',
         'sort_order',
     ];
 
     protected $casts = [
         'show_cta' => 'boolean',
+        'show_cta2' => 'boolean',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];

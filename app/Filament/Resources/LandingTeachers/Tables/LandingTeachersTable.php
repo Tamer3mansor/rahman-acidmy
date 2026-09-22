@@ -26,10 +26,20 @@ class LandingTeachersTable
                     ->searchable(),
                 TextColumn::make('specialty')
                     ->label('التخصص')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(50),
                 TextColumn::make('emoji')
                     ->label('الأيقونة')
                     ->searchable(),
+                IconColumn::make('is_featured')
+                    ->label('مميز')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-star')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->colors([
+                        'warning' => fn ($state): bool => (bool) $state,
+                        'gray' => fn ($state): bool => ! (bool) $state,
+                    ]),
                 IconColumn::make('is_active')
                     ->label('نشط')
                     ->boolean(),

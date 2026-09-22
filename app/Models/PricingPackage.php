@@ -30,6 +30,8 @@ class PricingPackage extends Model
         'hours',
         'price',
         'features',
+        'button_label',
+        'whatsapp_url',
         'is_featured',
         'is_active',
         'sort_order',
@@ -62,5 +64,12 @@ class PricingPackage extends Model
         }
 
         return round($this->effectivePrice() / $this->classes_count, 2);
+    }
+
+    public function whatsappPhone(): string
+    {
+        $phone = trim((string) parse_url((string) $this->whatsapp_url, PHP_URL_PATH), '/');
+
+        return $phone !== '' && preg_match('/^\d+$/', $phone) ? $phone : '';
     }
 }

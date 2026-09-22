@@ -24,7 +24,7 @@
   background: var(--white);
   border: 1px solid var(--cream-dark);
   border-radius: var(--r-xl);
-  padding: 28px 22px;
+  padding: 22px 20px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -68,48 +68,48 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .pack-title {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   color: var(--green);
   font-weight: 700;
 }
 
 .pack-desc {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-light);
-  min-height: 40px;
-  margin-bottom: 15px;
+  min-height: 32px;
+  margin-bottom: 12px;
 }
 
 .pack-classes-box {
   background: var(--cream);
   border-radius: var(--r-md);
-  padding: 12px;
+  padding: 10px;
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .pack-classes-count {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: var(--green);
   line-height: 1;
 }
 
 .pack-classes-sub {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-mid);
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 /* Pricing display */
 .pack-price-box {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   border-bottom: 1px solid var(--cream-dark);
-  padding-bottom: 18px;
+  padding-bottom: 12px;
 }
 
 .price-main {
@@ -120,47 +120,47 @@
 }
 
 .price-amount {
-  font-size: 2.2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: var(--text-dark);
 }
 
 .price-currency {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--gold);
 }
 
 .price-per-lesson {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--green-mid);
   font-weight: 600;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 /* Checklist items */
 .pack-features {
   list-style: none;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   flex-grow: 1;
 }
 
 .pack-features li {
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   color: var(--text-mid);
-  margin-bottom: 10px;
+  margin-bottom: 7px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .pack-features li i {
   color: var(--green-light);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   flex-shrink: 0;
 }
 
-.select-package-btn { width: 100%; }
+.select-package-btn { width: 100%; font-size: 0.92rem; padding: 11px 20px; }
 
 .btn-whatsapp {
   background: #25D366;

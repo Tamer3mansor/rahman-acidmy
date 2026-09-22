@@ -95,14 +95,14 @@
                 <div class="courses-grid">
                     @foreach ($courses as $course)
                         <article class="course-card">
-                            <div class="course-card-head theme-{{ $course->card_theme }}">
-                                @if ($course->icon)
-                                    <img src="{{ asset('storage/'.$course->icon) }}" class="course-card-icon" alt="">
-                                @endif
-                                <h3>{{ $course->title }}</h3>
-                            </div>
-                            <div class="course-card-body">
-                                <div class="course-meta">
+                        <div class="course-card-head theme-{{ $course->card_theme }}">
+                            @if ($course->icon)
+                                <img src="{{ asset('storage/'.$course->icon) }}" class="course-card-cover" alt="{{ $course->title }}">
+                            @endif
+                        </div>
+                        <div class="course-card-body">
+                            <h3 class="course-card-title">{{ $course->title }}</h3>
+                            <div class="course-meta">
                                     <span class="meta-badge">
                                         @if ($course->minAgeLabel())
                                             <i class="fa-solid fa-child"></i> Âge : {{ $course->minAgeLabel() }}
@@ -178,6 +178,29 @@
         </div>
     </section>
 
+    @if (filled($pageSettings->adults_curriculum_items) || filled($pageSettings->adults_curriculum_label) || filled($pageSettings->adults_curriculum_title) || filled($pageSettings->adults_curriculum_subtitle))
+        <section class="section">
+            <div class="container">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    <span class="section-label">{{ $pageSettings->adults_curriculum_label ?: 'Le programme' }}</span>
+                    <h2 class="section-title">{{ $pageSettings->adults_curriculum_title ?: '📚 Que vas-tu apprendre ?' }}</h2>
+                    @if ($pageSettings->adults_curriculum_subtitle)
+                        <p class="section-sub">{{ $pageSettings->adults_curriculum_subtitle }}</p>
+                    @endif
+                </div>
+                <div class="curriculum-grid">
+                    @foreach ($pageSettings->adults_curriculum_items as $subject)
+                        <div class="curriculum-card">
+                            <div class="icon">{{ $subject['icon'] ?? '' }}</div>
+                            <h3>{{ $subject['title'] }}</h3>
+                            <p>{{ $subject['description'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <section class="section section-white">
         <div class="container">
             <div class="catalog-head section-center" style="margin-bottom: 32px;">
@@ -219,6 +242,19 @@
                                 <div class="faq-answer">
                                     <div class="faq-answer-inner">
                                         {!! $faq['answer'] ?? '' !!}
+                                        @php
+                                            $faqCtas = collect([
+                                                ! empty($faq['cta1_text']) && ! empty($faq['cta1_url'])
+                                                    ? ['text' => $faq['cta1_text'], 'url' => $faq['cta1_url']]
+                                                    : null,
+                                                ! empty($faq['cta2_text']) && ! empty($faq['cta2_url'])
+                                                    ? ['text' => $faq['cta2_text'], 'url' => $faq['cta2_url']]
+                                                    : null,
+                                            ])->filter()->values();
+                                        @endphp
+                                        @if ($faqCtas->isNotEmpty())
+                                            @include('landing.partials.faq-cta-row', ['ctas' => $faqCtas])
+                                        @endif
                                     </div>
                                 </div>
                             </div>

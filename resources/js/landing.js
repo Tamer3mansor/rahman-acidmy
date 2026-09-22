@@ -214,28 +214,45 @@ function initTeachersCarousel() {
 
     if (!carousel || !track || !pagination || cards.length < 2) return;
 
+    const AUTOPLAY_MS = 4500;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     let activePage = 0;
+    let pages = 1;
+    let step = 0;
+    let autoTimer = null;
+    let isPaused = false;
 
     const perPage = () => window.matchMedia('(max-width: 768px)').matches ? 1 : window.matchMedia('(max-width: 1024px)').matches ? 2 : 3;
-    const render = () => {
-        const visibleCards = perPage();
-        const pages = Math.ceil(cards.length / visibleCards);
+
+    const measure = () => {
+        const first = cards[0].getBoundingClientRect();
+        const second = cards[1]?.getBoundingClientRect();
+        step = second ? second.left - first.left : first.width;
+        pages = Math.max(1, Math.ceil(cards.length / perPage()));
         activePage = Math.min(activePage, pages - 1);
+    };
+
+    const render = () => {
+        measure();
         carousel.classList.toggle('is-ready', pages > 1);
         pagination.replaceChildren();
 
-        if (pages === 1) {
+        if (pages < 2) {
             track.style.transform = '';
+            stopAuto();
 
             return;
         }
+
+        const visible = perPage();
 
         for (let page = 0; page < pages; page += 1) {
             const bullet = document.createElement('button');
             const distance = Math.abs(page - activePage);
             bullet.type = 'button';
             bullet.className = `teachers-pagination-bullet${page === activePage ? ' is-active' : ''}${distance === 1 ? ' is-near' : ''}`;
-            bullet.setAttribute('aria-label', `Afficher les professeurs ${page * visibleCards + 1} à ${Math.min((page + 1) * visibleCards, cards.length)}`);
+            bullet.setAttribute('aria-label', `Afficher les professeurs ${page * visible + 1} à ${Math.min((page + 1) * visible, cards.length)}`);
             bullet.setAttribute('aria-current', page === activePage ? 'true' : 'false');
             bullet.addEventListener('click', () => {
                 activePage = page;
@@ -244,12 +261,39 @@ function initTeachersCarousel() {
             pagination.append(bullet);
         }
 
-        track.style.transform = `translateX(-${cards[activePage * visibleCards].offsetLeft}px)`;
+        track.style.transform = `translateX(-${activePage * step}px)`;
+        startAuto();
     };
+
+    const startAuto = () => {
+        if (prefersReducedMotion || pages < 2 || autoTimer) return;
+        autoTimer = window.setInterval(() => {
+            if (isPaused) return;
+            activePage = (activePage + 1) % pages;
+            render();
+        }, AUTOPLAY_MS);
+    };
+
+    const stopAuto = () => {
+        if (autoTimer) {
+            window.clearInterval(autoTimer);
+            autoTimer = null;
+        }
+    };
+
+    carousel.addEventListener('mouseenter', () => { isPaused = true; });
+    carousel.addEventListener('mouseleave', () => { isPaused = false; });
+    carousel.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
+    carousel.addEventListener('touchend', () => { isPaused = false; });
+    carousel.addEventListener('focusin', () => { isPaused = true; });
+    carousel.addEventListener('focusout', () => { isPaused = false; });
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopAuto(); else startAuto();
+    });
 
     carousel.classList.add('is-ready');
     render();
-    window.addEventListener('resize', render, { passive:true });
+    window.addEventListener('resize', () => { activePage = 0; render(); }, { passive: true });
 }
 
 initTeachersCarousel();

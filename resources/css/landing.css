@@ -684,6 +684,17 @@ a { text-decoration: none; color: inherit; }
   overflow:hidden;
 }
 .teacher-photo img { width:100%; height:100%; object-fit:cover; }
+.teacher-featured {
+  position:absolute; top:14px; left:14px; z-index:3;
+  display:inline-flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  color:var(--white);
+  font-size:0.72rem; font-weight:800; letter-spacing:0.02em;
+  padding:7px 14px; border-radius:100px;
+  border:1px solid rgba(255,255,255,0.4);
+  box-shadow:0 4px 14px rgba(201,150,58,0.45);
+  pointer-events:none; white-space:nowrap;
+}
 .teacher-avatar {
   width:96px; height:96px; border-radius:50%;
   background:rgba(255,255,255,0.15);
@@ -693,7 +704,7 @@ a { text-decoration: none; color: inherit; }
 }
 .teacher-body { padding:24px; }
 .teacher-name { font-size:1.1rem; font-weight:800; color:var(--green); margin-bottom:4px; }
-.teacher-specialty { font-size:0.85rem; color:var(--text-mid); margin-bottom:16px; }
+.teacher-specialty { font-size:0.85rem; color:var(--text-mid); margin-bottom:16px; line-height:1.7; }
 .teacher-badges { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
 .badge {
   display:inline-flex; align-items:center; gap:5px;
@@ -746,12 +757,25 @@ a { text-decoration: none; color: inherit; }
 }
 .faq-item.open .faq-answer { max-height:400px; padding:0 28px 22px; }
 .faq-answer-inner { font-size:0.92rem; color:var(--text-mid); line-height:1.8; }
+.faq-cta-row {
+  display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;
+}
 .faq-cta-inline {
   display:inline-flex; align-items:center; gap:7px;
-  margin-top:14px; color:var(--gold); font-weight:700; font-size:0.88rem;
-  cursor:pointer; transition:color 0.2s;
+  padding:9px 18px; border-radius:100px;
+  border:1.5px solid rgba(27,67,50,0.25);
+  background:var(--white);
+  color:var(--green); font-size:0.8rem; font-weight:700; line-height:1.4;
+  cursor:pointer; text-decoration:none;
+  transition:background 0.2s, color 0.2s, border-color 0.2s;
 }
-.faq-cta-inline:hover { color:var(--gold-light); }
+.faq-cta-inline svg { flex-shrink:0; }
+.faq-cta-inline:hover { background:var(--green); color:var(--white); border-color:var(--green); }
+.faq-cta-inline.is-primary {
+  background:var(--gold); color:var(--white); border-color:var(--gold);
+  box-shadow:var(--shadow-btn);
+}
+.faq-cta-inline.is-primary:hover { background:var(--gold-light); border-color:var(--gold-light); color:var(--white); }
 
 .faq-bottom-cta { text-align:center; margin-top:48px; }
 
@@ -937,6 +961,7 @@ a { text-decoration: none; color: inherit; }
   .compare-grid { grid-template-columns:1fr; }
 
   .teachers-grid { grid-template-columns:1fr; }
+  .teachers-carousel.is-ready .teachers-grid { gap:0; }
   .teachers-carousel.is-ready .teacher-card { flex-basis:100%; }
 
   .form-inner { grid-template-columns:1fr; }

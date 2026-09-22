@@ -50,26 +50,27 @@
 .hero-showcase-title { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px; }
 .hero-showcase-sub { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; }
 
-/* Kids variant */
-.catalog-hero.kids {
-  background: linear-gradient(to bottom, #E6F4F1 0%, rgba(201,150,58,0.08) 55%, var(--cream) 100%);
-}
-.catalog-hero.kids .hero-showcase { border-top: 4px solid var(--green-light); }
-
-/* Adults variant */
+/* Shared green catalog hero (kids + adults unified) */
+.catalog-hero.kids,
 .catalog-hero.adults {
   background: linear-gradient(135deg, #122A22 0%, var(--green) 100%);
 }
+.catalog-hero.kids .catalog-hero-title,
 .catalog-hero.adults .catalog-hero-title { color: var(--white); }
+.catalog-hero.kids .catalog-hero-title .accent,
 .catalog-hero.adults .catalog-hero-title .accent { color: var(--gold-light); }
+.catalog-hero.kids .catalog-hero-sub,
 .catalog-hero.adults .catalog-hero-sub { color: rgba(255,255,255,0.75); }
+.catalog-hero.kids .hero-showcase,
 .catalog-hero.adults .hero-showcase {
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.15);
   box-shadow: none;
   backdrop-filter: blur(8px);
 }
+.catalog-hero.kids .hero-showcase-title,
 .catalog-hero.adults .hero-showcase-title { color: var(--gold-light); }
+.catalog-hero.kids .hero-showcase-sub,
 .catalog-hero.adults .hero-showcase-sub { color: rgba(255,255,255,0.7); }
 
 /* ============================================================
@@ -96,12 +97,16 @@
 .course-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(27,67,50,0.15); }
 
 .course-card-head {
-  padding: 30px 20px;
-  color: var(--white);
-  text-align: center;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
 }
-.course-card-head .icon { font-size: 2.4rem; display: block; margin-bottom: 10px; }
-.course-card-head h3 { font-size: 1.15rem; font-weight: 800; line-height: 1.4; }
+.course-card-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 .theme-teal { background: #0D9488; }
 .theme-amber { background: var(--gold); }
@@ -111,6 +116,13 @@
 .theme-green { background: var(--green); }
 
 .course-card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+.course-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
 .course-meta {
   display: flex;
   align-items: center;
@@ -326,17 +338,8 @@
   margin-bottom: 16px;
 }
 
-/* Course card image */
-.course-card-head .course-card-icon {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto 12px;
-  border: 3px solid rgba(255,255,255,0.85);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
-}
+/* Course card image (full-width cover like teacher cards) */
+/* (styled via .course-card-head/.course-card-cover above) */
 
 /* Details hero label image */
 .details-hero-icon {

@@ -20,7 +20,10 @@ class LandingFaqsTable
                     ->limit(50)
                     ->searchable(),
                 IconColumn::make('show_cta')
-                    ->label('زر CTA')
+                    ->label('الزر الأول')
+                    ->boolean(),
+                IconColumn::make('show_cta2')
+                    ->label('الزر الثاني')
                     ->boolean(),
                 IconColumn::make('is_active')
                     ->label('نشط')
