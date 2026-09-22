@@ -3,7 +3,7 @@
         <div class="section-center">
             <span class="section-label">{{ $settings->journey_label }}</span>
             <h2 class="section-title">{{ $settings->journey_title }}</h2>
-            <p class="section-sub" style="color:rgba(255,255,255,0.7);">{!! $settings->journey_subtitle !!}</p>
+            <p class="section-sub">{!! $settings->journey_subtitle !!}</p>
         </div>
 
         <div class="steps-grid">

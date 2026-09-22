@@ -164,11 +164,9 @@ a { text-decoration: none; color: inherit; }
 }
 .nav-logo-icon {
   width: 44px; height: 44px;
-  background: var(--green);
-  border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
 }
-.nav-logo-icon img { width: 32px; height: 32px; object-fit: contain; }
+.nav-logo-icon img { width: 44px; height: 44px; object-fit: contain; }
 .nav-logo-text { line-height: 1.1; }
 .nav-logo-text .name { font-size: 1.05rem; font-weight: 900; color: var(--green); }
 .nav-logo-text .sub  { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.06em; font-weight: 600; }
@@ -503,6 +501,14 @@ a { text-decoration: none; color: inherit; }
 }
 /* screenshot columns */
 .trust-screenshots { display:flex; flex-direction:column; gap:14px; }
+.trust-marquee { height:500px; overflow:hidden; }
+.trust-marquee-track { display:flex; flex-direction:column; gap:14px; animation:trust-marquee-up 24s linear infinite; }
+.trust-marquee[data-direction="down"] .trust-marquee-track { animation-name:trust-marquee-down; }
+.trust-marquee--static .trust-marquee-track { animation:none; }
+.trust-marquee-group { display:flex; flex-direction:column; gap:14px; }
+.trust-marquee:hover .trust-marquee-track { animation-play-state:paused; }
+@keyframes trust-marquee-up { to { transform:translateY(calc(-50% - 7px)); } }
+@keyframes trust-marquee-down { from { transform:translateY(calc(-50% - 7px)); } to { transform:translateY(0); } }
 .screenshot-card {
   border-radius:var(--r-md);
   overflow:hidden;
@@ -558,7 +564,7 @@ a { text-decoration: none; color: inherit; }
 }
 .journey-section .section-label { background:rgba(201,150,58,0.2); color:var(--gold-light); border-color:rgba(201,150,58,0.3); }
 .journey-section .section-title { color:var(--white); }
-.journey-section .section-sub { color:rgba(255,255,255,0.7); }
+.journey-section .section-sub { color:rgba(255,255,255,0.9); font-size:1.15rem; font-weight:500; }
 
 .steps-grid {
   display:grid;
@@ -652,6 +658,15 @@ a { text-decoration: none; color: inherit; }
   gap:24px;
   margin-top:56px;
 }
+.teachers-viewport { overflow:hidden; }
+.teachers-pagination { display:flex; justify-content:center; align-items:center; gap:7px; margin-top:28px; }
+.teachers-pagination:empty { display:none; }
+.teachers-pagination-bullet { width:8px; height:8px; padding:0; border:0; border-radius:999px; background:rgba(27,67,50,0.25); cursor:pointer; transition:width 0.25s ease, background 0.25s ease; }
+.teachers-pagination-bullet.is-near { width:12px; }
+.teachers-pagination-bullet.is-active { width:26px; background:var(--gold); }
+.teachers-pagination-bullet:hover { background:var(--green); }
+.teachers-carousel.is-ready .teachers-grid { display:flex; gap:24px; margin-top:0; transition:transform 0.45s ease; }
+.teachers-carousel.is-ready .teacher-card { flex:0 0 calc((100% - 48px) / 3); }
 .teacher-card {
   background:var(--cream);
   border-radius:var(--r-xl);
@@ -885,6 +900,7 @@ a { text-decoration: none; color: inherit; }
    ============================================================ */
 @media (max-width:1024px) {
   .teachers-grid { grid-template-columns:repeat(2,1fr); }
+  .teachers-carousel.is-ready .teacher-card { flex-basis:calc((100% - 24px) / 2); }
   .steps-grid { grid-template-columns:repeat(3,1fr); gap:24px; }
   .steps-grid::before { display:none; }
 }
@@ -921,6 +937,7 @@ a { text-decoration: none; color: inherit; }
   .compare-grid { grid-template-columns:1fr; }
 
   .teachers-grid { grid-template-columns:1fr; }
+  .teachers-carousel.is-ready .teacher-card { flex-basis:100%; }
 
   .form-inner { grid-template-columns:1fr; }
   .form-info-list { display:none; }
@@ -941,7 +958,7 @@ a { text-decoration: none; color: inherit; }
   .container { padding-left: 16px; padding-right: 16px; }
   .nav-inner { height: 64px; }
   .nav-logo-icon { width: 40px; height: 40px; }
-  .nav-logo-icon img { width: 28px; height: 28px; }
+  .nav-logo-icon img { width: 40px; height: 40px; }
   .nav-logo-text .name { font-size: 0.95rem; }
   .nav-logo-text .sub { font-size: 0.62rem; }
   .steps-grid { grid-template-columns:1fr; gap:20px; }
@@ -969,3 +986,7 @@ a { text-decoration: none; color: inherit; }
    EXTRAS
    ============================================================ */
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .trust-marquee-track, .teachers-carousel.is-ready .teachers-grid, .teachers-pagination-bullet { animation:none; transition:none; }
+}

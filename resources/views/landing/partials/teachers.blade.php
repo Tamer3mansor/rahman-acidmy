@@ -6,7 +6,9 @@
             <p class="section-sub">{!! $settings->teachers_subtitle !!}</p>
         </div>
 
-        <div class="teachers-grid" id="teachersGrid">
+        <div class="teachers-carousel" id="teachersCarousel">
+            <div class="teachers-viewport">
+                <div class="teachers-grid" id="teachersGrid">
             @foreach ($teachers as $teacher)
                 <div class="teacher-card">
                     <div class="teacher-photo">
@@ -30,7 +32,10 @@
                         </button>
                     </div>
                 </div>
-            @endforeach
+                @endforeach
+                </div>
+            </div>
+            <div class="teachers-pagination" aria-label="Navigation des professeurs"></div>
         </div>
 
         <div class="trust-cta-wrap">

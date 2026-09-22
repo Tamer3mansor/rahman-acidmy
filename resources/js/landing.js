@@ -205,3 +205,51 @@ function showToast(msg) {
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 4000);
 }
+
+function initTeachersCarousel() {
+    const carousel = document.getElementById('teachersCarousel');
+    const track = document.getElementById('teachersGrid');
+    const pagination = carousel?.querySelector('.teachers-pagination');
+    const cards = track ? [...track.querySelectorAll('.teacher-card')] : [];
+
+    if (!carousel || !track || !pagination || cards.length < 2) return;
+
+    let activePage = 0;
+
+    const perPage = () => window.matchMedia('(max-width: 768px)').matches ? 1 : window.matchMedia('(max-width: 1024px)').matches ? 2 : 3;
+    const render = () => {
+        const visibleCards = perPage();
+        const pages = Math.ceil(cards.length / visibleCards);
+        activePage = Math.min(activePage, pages - 1);
+        carousel.classList.toggle('is-ready', pages > 1);
+        pagination.replaceChildren();
+
+        if (pages === 1) {
+            track.style.transform = '';
+
+            return;
+        }
+
+        for (let page = 0; page < pages; page += 1) {
+            const bullet = document.createElement('button');
+            const distance = Math.abs(page - activePage);
+            bullet.type = 'button';
+            bullet.className = `teachers-pagination-bullet${page === activePage ? ' is-active' : ''}${distance === 1 ? ' is-near' : ''}`;
+            bullet.setAttribute('aria-label', `Afficher les professeurs ${page * visibleCards + 1} à ${Math.min((page + 1) * visibleCards, cards.length)}`);
+            bullet.setAttribute('aria-current', page === activePage ? 'true' : 'false');
+            bullet.addEventListener('click', () => {
+                activePage = page;
+                render();
+            });
+            pagination.append(bullet);
+        }
+
+        track.style.transform = `translateX(-${cards[activePage * visibleCards].offsetLeft}px)`;
+    };
+
+    carousel.classList.add('is-ready');
+    render();
+    window.addEventListener('resize', render, { passive:true });
+}
+
+initTeachersCarousel();
