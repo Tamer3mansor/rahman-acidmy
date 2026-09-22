@@ -26,7 +26,24 @@
         <div class="container section-center">
             <span class="section-label"><i class="fa-solid fa-gift"></i> Première séance gratuite</span>
             <h1 class="section-title">Des offres claires pour apprendre en toute sérénité</h1>
-            <p class="section-sub">Un tarif transparent calculé au taux horaire. Choisissez le pack qui convient à votre enfant et commencez dès maintenant.</p>
+            <p class="section-sub">Un tarif transparent calculé au taux horaire. Choisissez la durée de vos cours, puis le pack qui convient à votre enfant.</p>
+        </div>
+
+        {{-- Lesson duration filter --}}
+        <div class="container">
+            <div class="duration-filter" id="durationFilter">
+                <span class="duration-filter-label">Durée du cours :</span>
+                <div class="duration-filter-options">
+                    @foreach (\App\Models\PricingPackage::DURATIONS as $minutes => $factor)
+                        <button type="button"
+                                class="duration-option {{ $minutes === 60 ? 'active' : '' }}"
+                                data-duration="{{ $minutes }}"
+                                data-factor="{{ $factor }}">
+                            {{ $minutes }} min
+                        </button>
+                    @endforeach
+                </div>
+            </div>
         </div>
 
         {{-- Packages grid --}}
@@ -36,14 +53,21 @@
                     @php($total = $package->effectivePrice())
                     @php($perLesson = $package->ratePerLesson())
                     @php($packageWaPhone = $package->whatsappPhone() ?: $defaultWaPhone)
-                    <article class="package-card {{ $package->is_featured ? 'featured' : '' }}"
+                    <article class="package-card {{ $package->is_featured ? 'featured' : '' }} {{ $package->isOffer() ? 'offer' : '' }}"
                              data-pack-name="{{ $package->name }}"
                              data-classes="{{ $package->classes_count }}"
-                             data-price="{{ number_format($total, 2) }}"
+                             data-rate="{{ $package->hourlyRate() }}"
+                             data-general-rate="{{ number_format((float) $pricing->per_hour_price, 2, '.', '') }}"
+                             data-offer="{{ $package->isOffer() ? 1 : 0 }}"
+                             data-price="{{ number_format($total, 2, '.', '') }}"
                              data-wa-phone="{{ $packageWaPhone }}">
 
                         @if ($package->is_featured)
                             <span class="featured-tag"><i class="fa-solid fa-star"></i> Le plus demandé</span>
+                        @endif
+
+                        @if ($package->isOffer())
+                            <span class="offer-tag"><i class="fa-solid fa-tags"></i> Offre spéciale</span>
                         @endif
 
                         <div class="pack-header">
@@ -58,11 +82,16 @@
                         </div>
 
                         <div class="pack-price-box">
+                            @if ($package->isOffer())
+                                <div class="price-compare">
+                                    Valeur normale : <del class="price-general">{{ number_format($package->generalPrice(), 2, '.', '') }}€</del>
+                                </div>
+                            @endif
                             <div class="price-main">
-                                <span class="price-amount inter-font">{{ number_format($total, 2) }}</span>
+                                <span class="price-amount inter-font">{{ number_format($total, 2, '.', '') }}</span>
                                 <span class="price-currency">€</span>
                             </div>
-                            <div class="price-per-lesson">soit <span class="per-lesson-val inter-font">{{ number_format($perLesson, 2) }}</span>€ / cours</div>
+                            <div class="price-per-lesson">soit <span class="per-lesson-val inter-font">{{ number_format($perLesson, 2, '.', '') }}</span>€ / cours</div>
                         </div>
 
                         <ul class="pack-features">

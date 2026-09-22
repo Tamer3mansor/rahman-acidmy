@@ -53,44 +53,29 @@ class PricingPackageForm
                     ->columns(3),
 
                 Section::make('التسعير')
-                    ->description('اختر نوع التسعير: السعر/ساعة يُحسب تلقائياً من السعر العام، أو سعر خاص ثابت.')
+                    ->description('اختر نوع التسعير: تسعير عام يُحسب من السعر العام للساعة، أو تسعير خاص بسعر ساعة مخفّض يظهر كعرض على البطاقة. السعر الكلي = عدد الحصص × مدة الدرس (30/45/60 دقيقة) × السعر.')
                     ->schema([
                         Radio::make('pricing_type')
                             ->label('نوع التسعير')
                             ->options(PricingPackage::PRICING_TYPES)
-                            ->default(PricingPackage::TYPE_SPECIAL)
+                            ->default(PricingPackage::TYPE_PER_HOUR)
                             ->required()
                             ->live()
                             ->columnSpanFull()
-                            ->afterStateUpdated(function (Set $set, ?string $state): void {
+                            ->afterStateUpdated(function (Get $get, Set $set, ?string $state): void {
                                 if ($state === PricingPackage::TYPE_PER_HOUR) {
                                     $set('price', null);
                                 }
                             }),
-                        TextInput::make('hours')
-                            ->label('عدد الساعات')
-                            ->helperText('يُحسب السعر تلقائياً: عدد الساعات × السعر العام للساعة')
-                            ->numeric()
-                            ->minValue(0.25)
-                            ->step(0.25)
-                            ->live()
-                            ->required(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_PER_HOUR)
-                            ->afterStateUpdated(function (Set $set, ?string $state): void {
-                                $perHour = PricingSettings::singleton()->per_hour_price;
-
-                                $set('price', $state !== null && $state !== '' ? round((float) $state * $perHour, 2) : null);
-                            })
-                            ->hint(fn (Get $get): string => match ($get('pricing_type')) {
-                                PricingPackage::TYPE_PER_HOUR => 'السعر المحسوب: '.number_format(round((float) ($get('hours') ?? 0) * PricingSettings::singleton()->per_hour_price, 2), 2).' €',
-                                default => '',
-                            })
-                            ->visible(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_PER_HOUR),
                         TextInput::make('price')
-                            ->label('السعر (€)')
-                            ->helperText('سعر ثابت يُعتمد كما هو.')
+                            ->label('السعر الخاص (€/ساعة)')
+                            ->helperText(fn (Get $get): string => $get('pricing_type') === PricingPackage::TYPE_SPECIAL
+                                ? 'سعر الساعة الخاص بهذه الباقة. يُحسب السعر الكلي: عدد الحصص × مدة الدرس × هذا السعر.'
+                                : 'يُعتمد السعر العام للساعة ('.\number_format(PricingSettings::singleton()->per_hour_price, 2).' €) عند التسعير العام.')
                             ->numeric()
-                            ->minValue(0)
-                            ->suffix('€')
+                            ->minValue(0.5)
+                            ->step(0.5)
+                            ->suffix('€/ساعة')
                             ->default(0)
                             ->dehydrated()
                             ->required(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_SPECIAL)

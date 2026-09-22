@@ -162,6 +162,89 @@
 
 .select-package-btn { width: 100%; font-size: 0.92rem; padding: 11px 20px; }
 
+/* ============================================================
+   LESSON DURATION FILTER
+   ============================================================ */
+.duration-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.duration-filter-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+.duration-filter-options {
+  display: flex;
+  gap: 8px;
+  background: var(--cream);
+  border-radius: var(--r-md);
+  padding: 5px;
+}
+
+.duration-option {
+  border: none;
+  background: transparent;
+  color: var(--text-mid);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.duration-option:hover {
+  color: var(--green);
+}
+
+.duration-option.active {
+  background: var(--green);
+  color: var(--white);
+  box-shadow: 0 2px 8px rgba(27, 67, 50, 0.25);
+}
+
+/* ============================================================
+   OFFER (special pricing) TAG
+   ============================================================ */
+.offer-tag {
+  position: absolute;
+  top: -14px;
+  right: 14px;
+  background: var(--green-light);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(64, 145, 108, 0.4);
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.package-card.offer .featured-tag {
+  left: 14px;
+  transform: none;
+}
+
+.price-compare {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-bottom: 2px;
+}
+
+.price-general {
+  color: var(--text-mid);
+  font-weight: 600;
+}
+
 .btn-whatsapp {
   background: #25D366;
   color: #FFF;

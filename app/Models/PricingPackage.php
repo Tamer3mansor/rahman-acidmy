@@ -15,9 +15,16 @@ class PricingPackage extends Model
 
     public const TYPE_SPECIAL = 'special';
 
+    /** Duration in minutes → multiplier of the hourly rate. */
+    public const DURATIONS = [
+        30 => 0.5,
+        45 => 0.75,
+        60 => 1.0,
+    ];
+
     public const PRICING_TYPES = [
-        self::TYPE_PER_HOUR => 'السعر/ساعة',
-        self::TYPE_SPECIAL => 'سعر خاص',
+        self::TYPE_PER_HOUR => 'تسعير عام',
+        self::TYPE_SPECIAL => 'تسعير خاص',
     ];
 
     protected $fillable = [
@@ -27,7 +34,6 @@ class PricingPackage extends Model
         'description',
         'classes_count',
         'pricing_type',
-        'hours',
         'price',
         'features',
         'button_label',
@@ -40,7 +46,6 @@ class PricingPackage extends Model
     protected $casts = [
         'classes_count' => 'integer',
         'pricing_type' => 'string',
-        'hours' => 'float',
         'price' => 'float',
         'features' => 'array',
         'is_featured' => 'boolean',
@@ -48,22 +53,49 @@ class PricingPackage extends Model
         'sort_order' => 'integer',
     ];
 
-    public function effectivePrice(): float
+    /**
+     * The hourly rate used to price this package:
+     * the global hourly rate for general pricing, or the package's special rate.
+     */
+    public function hourlyRate(): float
     {
-        if ($this->pricing_type === static::TYPE_PER_HOUR && $this->hours !== null) {
-            return round($this->hours * PricingSettings::singleton()->per_hour_price, 2);
+        if ($this->pricing_type === static::TYPE_SPECIAL) {
+            return round((float) $this->price, 2);
         }
 
-        return round((float) $this->price, 2);
+        return round(PricingSettings::singleton()->per_hour_price, 2);
     }
 
-    public function ratePerLesson(): float
+    /**
+     * Total price for the given lesson duration (in hours).
+     * Defaults to a 60-minute lesson (full hourly rate).
+     */
+    public function effectivePrice(float $durationHours = 1.0): float
+    {
+        return round($this->classes_count * $durationHours * $this->hourlyRate(), 2);
+    }
+
+    public function ratePerLesson(float $durationHours = 1.0): float
     {
         if ($this->classes_count < 1) {
-            return $this->effectivePrice();
+            return $this->effectivePrice($durationHours);
         }
 
-        return round($this->effectivePrice() / $this->classes_count, 2);
+        return round($this->effectivePrice($durationHours) / $this->classes_count, 2);
+    }
+
+    /**
+     * What this package would cost at the general hourly rate — used to
+     * strike through the regular price on offer (special) packages.
+     */
+    public function generalPrice(float $durationHours = 1.0): float
+    {
+        return round($this->classes_count * $durationHours * PricingSettings::singleton()->per_hour_price, 2);
+    }
+
+    public function isOffer(): bool
+    {
+        return $this->pricing_type === static::TYPE_SPECIAL;
     }
 
     public function whatsappPhone(): string

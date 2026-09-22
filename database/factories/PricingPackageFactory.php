@@ -20,8 +20,7 @@ class PricingPackageFactory extends Factory
             'description' => fake()->sentence(8),
             'classes_count' => fake()->randomElement([4, 8, 12, 16, 24, 48, 100]),
             'pricing_type' => $pricingType,
-            'hours' => $pricingType === PricingPackage::TYPE_PER_HOUR ? fake()->randomFloat(1, 1, 50) : null,
-            'price' => $pricingType === PricingPackage::TYPE_SPECIAL ? fake()->randomFloat(2, 20, 500) : 0,
+            'price' => $pricingType === PricingPackage::TYPE_SPECIAL ? fake()->randomFloat(2, 4, 8) : 0,
             'features' => fake()->sentences(3),
             'button_label' => 'Ce pack me convient',
             'whatsapp_url' => null,
@@ -40,7 +39,6 @@ class PricingPackageFactory extends Factory
     {
         return $this->state(fn () => [
             'pricing_type' => PricingPackage::TYPE_PER_HOUR,
-            'hours' => fake()->randomFloat(1, 1, 50),
             'price' => 0,
         ]);
     }
@@ -49,8 +47,7 @@ class PricingPackageFactory extends Factory
     {
         return $this->state(fn () => [
             'pricing_type' => PricingPackage::TYPE_SPECIAL,
-            'hours' => null,
-            'price' => fake()->randomFloat(2, 20, 500),
+            'price' => fake()->randomFloat(2, 4, 8),
         ]);
     }
 }

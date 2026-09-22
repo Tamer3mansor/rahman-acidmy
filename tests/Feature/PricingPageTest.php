@@ -123,11 +123,14 @@ class PricingPageTest extends TestCase
 
         $package = PricingPackage::factory()->special()->create([
             'classes_count' => 24,
-            'price' => 160.00,
+            'price' => 6.00,
         ]);
 
-        $this->assertSame(160.00, $package->effectivePrice());
-        $this->assertSame(6.67, $package->ratePerLesson());
+        $this->assertTrue($package->isOffer());
+        $this->assertSame(6.00, $package->hourlyRate());
+        $this->assertSame(144.00, $package->effectivePrice());
+        $this->assertSame(6.00, $package->ratePerLesson());
+        $this->assertSame(192.00, $package->generalPrice());
     }
 
     public function test_per_hour_price_package_tracks_global_rate(): void
@@ -136,9 +139,10 @@ class PricingPageTest extends TestCase
 
         $package = PricingPackage::factory()->perHour()->create([
             'classes_count' => 4,
-            'hours' => 4,
         ]);
 
+        $this->assertFalse($package->isOffer());
+        $this->assertSame(8.00, $package->hourlyRate());
         $this->assertSame(32.00, $package->effectivePrice());
         $this->assertSame(8.00, $package->ratePerLesson());
 
@@ -146,6 +150,58 @@ class PricingPageTest extends TestCase
         $settings->update(['per_hour_price' => 9.00]);
 
         $this->assertSame(36.00, $package->effectivePrice());
+    }
+
+    public function test_effective_price_follows_lesson_duration(): void
+    {
+        PricingSettings::query()->create(['per_hour_price' => 8.00]);
+
+        $general = PricingPackage::factory()->perHour()->create(['classes_count' => 4]);
+        $special = PricingPackage::factory()->special()->create(['classes_count' => 4, 'price' => 6.00]);
+
+        $this->assertSame(16.00, $general->effectivePrice(0.5));
+        $this->assertSame(24.00, $general->effectivePrice(0.75));
+        $this->assertSame(32.00, $general->effectivePrice(1.0));
+
+        $this->assertSame(12.00, $special->effectivePrice(0.5));
+        $this->assertSame(18.00, $special->effectivePrice(0.75));
+        $this->assertSame(24.00, $special->effectivePrice(1.0));
+        $this->assertSame(32.00, $special->generalPrice(1.0));
+    }
+
+    public function test_price_page_renders_duration_filter(): void
+    {
+        $this->seed([
+            PricingSettingsSeeder::class,
+            PricingPackageSeeder::class,
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('duration-filter', false)
+            ->assertSee('30 min')
+            ->assertSee('45 min')
+            ->assertSee('60 min');
+    }
+
+    public function test_special_package_displays_offer_badge_and_general_price(): void
+    {
+        $this->seed(PricingSettingsSeeder::class);
+
+        PricingPackage::factory()->special()->create([
+            'name' => 'Pack Offre Test',
+            'classes_count' => 8,
+            'price' => 6.00,
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('Pack Offre Test')
+            ->assertSee('Offre spéciale')
+            ->assertSee('Valeur normale')
+            ->assertSee('data-offer="1"', false)
+            ->assertSee('>64.00€</del>', false)
+            ->assertSee('>48.00', false);
     }
 
     public function test_landing_nav_includes_price_link(): void
