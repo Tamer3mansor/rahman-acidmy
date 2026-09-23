@@ -1,3 +1,5 @@
+@import './_tokens.css';
+
 /* ============================================================
    PRICE — page-specific styles (loaded AFTER landing.css)
    Only components unique to the pricing page live here; design
@@ -9,6 +11,38 @@
 .section { padding: 60px 0; }
 
 .section-white { background-color: var(--white); }
+
+/* ============================================================
+   PRICE HERO (green band: title + duration filter + packages)
+   ============================================================ */
+.price-hero {
+  background: linear-gradient(135deg, #122A22 0%, var(--green) 100%);
+  padding: 148px 0 72px;
+  position: relative;
+  overflow: hidden;
+}
+.price-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23C9963A' fill-opacity='0.07'%3E%3Cpath d='M40 0 L80 20 L80 60 L40 80 L0 60 L0 20 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.price-hero > .container { position: relative; }
+.price-hero .section-label {
+  background: rgba(201,150,58,0.2);
+  color: var(--gold-light);
+  border-color: rgba(201,150,58,0.3);
+}
+.price-hero .section-title { color: var(--white); }
+.price-hero .section-sub { color: rgba(255,255,255,0.75); }
+.price-hero .duration-filter-label { color: rgba(255,255,255,0.8); }
+.price-hero .duration-filter-options {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.price-hero .duration-option { color: rgba(255,255,255,0.8); }
+.price-hero .duration-option:hover { color: var(--white); }
+.price-hero .duration-option.active { background: var(--gold); color: var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
 /* ============================================================
    PACKAGES GRID & CARDS
@@ -362,6 +396,7 @@
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
+  .price-hero { padding: 120px 0 56px; }
   .section-title { font-size: 1.8rem; }
   .packages-grid { grid-template-columns: 1fr; }
   .cta-banner { padding: 35px 20px; }

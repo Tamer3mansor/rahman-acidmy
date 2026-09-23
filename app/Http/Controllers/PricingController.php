@@ -19,8 +19,9 @@ class PricingController extends Controller
 
         return view('price.index', [
             'settings' => $settings,
-            'pricing' => PricingSettings::singleton(),
+            'pricing' => $pricing = PricingSettings::singleton(),
             'packages' => $packages,
+            'isIndexed' => $pricing->is_indexed,
             'defaultWaPhone' => $this->resolveWhatsAppPhone($settings->header_btn1_url),
         ]);
     }

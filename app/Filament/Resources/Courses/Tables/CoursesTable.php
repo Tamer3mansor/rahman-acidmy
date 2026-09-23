@@ -44,6 +44,7 @@ class CoursesTable
                     ->boolean(),
             ])
             ->defaultSort('sort_order')
+            ->reorderable('sort_order')
             ->filters([
                 SelectFilter::make('audience')
                     ->label('الفئة')

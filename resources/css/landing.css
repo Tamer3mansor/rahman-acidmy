@@ -1,28 +1,8 @@
+@import './_tokens.css';
+
 /* ============================================================
-   TOKENS
+   TOKENS — shared design tokens live in ./_tokens.css
    ============================================================ */
-:root {
-  --green:       #1B4332;
-  --green-mid:   #2D6A4F;
-  --green-light: #40916C;
-  --gold:        #C9963A;
-  --gold-light:  #E8B84B;
-  --cream:       #F8F5EE;
-  --cream-dark:  #EDE9DF;
-  --white:       #FFFFFF;
-  --text-dark:   #1A1A1A;
-  --text-mid:    #4A4A4A;
-  --text-light:  #7A7A7A;
-  --red-soft:    #E05252;
-
-  --r-sm: 8px;
-  --r-md: 16px;
-  --r-lg: 24px;
-  --r-xl: 32px;
-
-  --shadow-card: 0 2px 20px rgba(27,67,50,0.08);
-  --shadow-btn:  0 4px 16px rgba(201,150,58,0.35);
-}
 
 /* ============================================================
    RESET & BASE
@@ -564,7 +544,9 @@ a { text-decoration: none; color: inherit; }
 }
 .journey-section .section-label { background:rgba(201,150,58,0.2); color:var(--gold-light); border-color:rgba(201,150,58,0.3); }
 .journey-section .section-title { color:var(--white); }
-.journey-section .section-sub { color:rgba(255,255,255,0.9); font-size:1.15rem; font-weight:500; }
+.journey-section .section-sub { color:var(--white); font-size:1.35rem; font-weight:500; }
+.journey-section .section-sub p { color:inherit; margin:0; }
+.journey-section .section-sub p + p { margin-top:8px; }
 
 .steps-grid {
   display:grid;

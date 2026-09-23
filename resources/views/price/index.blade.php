@@ -1,8 +1,20 @@
 @extends('layouts.landing')
 
-@section('title', 'Tarifs des cours de Coran et arabe en ligne en France, Belgique et Canada | Ar-Rahman Academy')
+@section('title', $pricing->meta_title ?: 'Tarifs des cours de Coran et arabe en ligne en France, Belgique et Canada | Ar-Rahman Academy')
 
-@section('description', 'Tarifs des cours de Coran et arabe en ligne en France, Belgique et Canada. Cours particuliers à des tarifs clairs et sans engagement. Première séance gratuite.')
+@section('description', $pricing->meta_description ?: 'Tarifs des cours de Coran et arabe en ligne en France, Belgique et Canada. Cours particuliers à des tarifs clairs et sans engagement. Première séance gratuite.')
+
+@php
+    $priceOgImage = trim((string) $pricing->og_image);
+@endphp
+@if ($priceOgImage !== '')
+    @php
+        $priceOgImageUrl = \Illuminate\Support\Str::startsWith($priceOgImage, ['http://', 'https://'])
+            ? $priceOgImage
+            : asset('storage/'.$priceOgImage);
+    @endphp
+    @section('og_image', $priceOgImageUrl)
+@endif
 
 @section('bodyClass', 'pattern-bg')
 
@@ -22,7 +34,7 @@
     ])
 
     {{-- Hero --}}
-    <section class="section">
+    <section class="section price-hero">
         <div class="container section-center">
             <span class="section-label"><i class="fa-solid fa-gift"></i> Première séance gratuite</span>
             <h1 class="section-title">Des offres claires pour apprendre en toute sérénité</h1>

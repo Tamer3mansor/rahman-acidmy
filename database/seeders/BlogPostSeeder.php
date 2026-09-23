@@ -85,8 +85,8 @@ class BlogPostSeeder extends Seeder
             ],
         ];
 
-        foreach ($posts as $sort => $post) {
-            BlogPost::query()->updateOrCreate(
+        foreach ($posts as $post) {
+            $model = BlogPost::query()->updateOrCreate(
                 ['slug' => $post['slug']],
                 [
                     'category_id' => $categories[$post['category_slug']],
@@ -102,6 +102,8 @@ class BlogPostSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
+
+            $model->categories()->sync([$categories[$post['category_slug']]]);
         }
     }
 }

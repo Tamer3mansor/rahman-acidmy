@@ -1,16 +1,19 @@
 @extends('layouts.landing')
 
-@section('title', $pageSettings->meta_title ?: 'Cours de Coran et Tajwid pour adultes en ligne en France, Belgique et Canada | Ar-Rahman Academy')
+@section('title', $pageSettings->adults_meta_title ?: $pageSettings->meta_title ?: 'Cours de Coran et Tajwid pour adultes en ligne en France, Belgique et Canada | Ar-Rahman Academy')
 
-@section('description', $pageSettings->meta_description ?: 'Cours de Coran, Tajwid et arabe pour adultes en France, Belgique et Canada. Apprentissage personnalisé, horaires flexibles 7j/7, enseignants diplômés Al-Azhar avec Ijazah.')
+@section('description', $pageSettings->adults_meta_description ?: $pageSettings->meta_description ?: 'Cours de Coran, Tajwid et arabe pour adultes en France, Belgique et Canada. Apprentissage personnalisé, horaires flexibles 7j/7, enseignants diplômés Al-Azhar avec Ijazah.')
 
-@if ($pageSettings->og_image)
+@php
+    $adultsOgImage = trim((string) ($pageSettings->adults_og_image ?: $pageSettings->og_image));
+@endphp
+@if ($adultsOgImage !== '')
     @php
-        $adultsOgImage = \Illuminate\Support\Str::startsWith($pageSettings->og_image, ['http://', 'https://'])
-            ? $pageSettings->og_image
-            : asset('storage/'.$pageSettings->og_image);
+        $adultsOgImageUrl = \Illuminate\Support\Str::startsWith($adultsOgImage, ['http://', 'https://'])
+            ? $adultsOgImage
+            : asset('storage/'.$adultsOgImage);
     @endphp
-    @section('og_image', $adultsOgImage)
+    @section('og_image', $adultsOgImageUrl)
 @endif
 
 @section('bodyClass', '')

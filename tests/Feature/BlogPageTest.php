@@ -55,6 +55,10 @@ class BlogPageTest extends TestCase
             BlogPostSeeder::class,
         ]);
 
+        $parentTips = BlogCategory::query()->where('slug', 'parent-tips')->firstOrFail();
+        BlogPost::query()->where('slug', 'tajweed-rules-for-beginners')->firstOrFail()
+            ->categories()->sync([$parentTips->id]);
+
         $response = $this->get('/blog/how-to-make-kids-love-quran');
 
         $response->assertOk()

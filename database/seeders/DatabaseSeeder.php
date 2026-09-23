@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             CoursePageSettingsSeeder::class,
             LessonSeeder::class,
+            SeoSettingsSeeder::class,
         ]);
     }
 }

@@ -92,6 +92,12 @@ class CoursePageSettings extends Model
         'meta_description',
         'og_image',
         'is_indexed',
+        'kids_meta_title',
+        'kids_meta_description',
+        'kids_og_image',
+        'adults_meta_title',
+        'adults_meta_description',
+        'adults_og_image',
     ];
 
     protected $casts = [

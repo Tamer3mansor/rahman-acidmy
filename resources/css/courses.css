@@ -1,3 +1,5 @@
+@import './_tokens.css';
+
 /* ============================================================
    COURSES — page-specific styles (loaded AFTER landing.css)
    Shared by the kids catalog, adults catalog and course details
@@ -166,29 +168,65 @@
    DETAILS PAGE
    ============================================================ */
 .details-hero {
-  padding: 132px 0 56px;
+  padding: 132px 0 64px;
   text-align: center;
-  background: linear-gradient(to bottom, #EDE9DF 0%, var(--cream) 100%);
+  background: linear-gradient(135deg, #122A22 0%, var(--green) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.details-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23C9963A' fill-opacity='0.07'%3E%3Cpath d='M40 0 L80 20 L80 60 L40 80 L0 60 L0 20 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.details-hero .container { position: relative; }
+.details-hero .section-label {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.25);
+  color: var(--gold-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(6px);
 }
 .details-hero-title {
   font-size: clamp(1.8rem, 3.8vw, 2.8rem);
   font-weight: 900;
-  color: var(--green);
+  color: var(--white);
   line-height: 1.25;
   max-width: 800px;
   margin: 0 auto 16px;
 }
 .details-hero-sub {
   font-size: 1.05rem;
-  color: var(--text-mid);
+  color: rgba(255,255,255,0.75);
   max-width: 640px;
   margin: 0 auto 28px;
   line-height: 1.8;
 }
 .details-hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.details-hero-btns .btn-outline { color: var(--white); border-color: rgba(255,255,255,0.55); }
+.details-hero-btns .btn-outline:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.8); }
 
 .details-layout { max-width: 880px; margin: 0 auto; }
 .detail-section { margin-bottom: 56px; }
+
+.detail-section .catalog-head h2 { position: relative; padding-bottom: 16px; }
+.detail-section .catalog-head h2::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
 
 .suitability-grid {
   display: grid;
@@ -202,7 +240,9 @@
   background: var(--cream);
   border-radius: var(--r-lg);
   padding: 18px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+.suitability-item:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(27,67,50,0.1); }
 .suitability-item .check {
   width: 24px; height: 24px;
   border-radius: 50%;
@@ -216,21 +256,43 @@
 .suitability-item p { font-size: 0.92rem; color: var(--text-mid); line-height: 1.7; }
 
 .curriculum-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
   gap: 20px;
   margin-top: 28px;
 }
 .curriculum-card {
+  flex: 1 1 240px;
+  max-width: 275px;
   background: var(--white);
   border: 1px solid var(--cream-dark);
   border-radius: var(--r-lg);
   padding: 24px;
   box-shadow: var(--shadow-card);
   transition: transform 0.2s, border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.curriculum-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green-mid), var(--gold-light));
 }
 .curriculum-card:hover { transform: translateY(-4px); border-color: var(--green-light); }
-.curriculum-card .icon { font-size: 1.9rem; margin-bottom: 12px; }
+.curriculum-card .icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(45,106,79,0.1);
+  border-radius: var(--r-md);
+  font-size: 1.5rem;
+  margin-bottom: 14px;
+}
 .curriculum-card h3 { font-size: 1.02rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
 .curriculum-card p { font-size: 0.86rem; color: var(--text-mid); line-height: 1.7; }
 
@@ -343,12 +405,12 @@
 
 /* Details hero label image */
 .details-hero-icon {
-  width: 22px;
-  height: 22px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  vertical-align: middle;
-  margin-right: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(201,150,58,0.4);
 }
 
 /* Testimonials row (2-3 landing-style cards horizontal) */
@@ -423,7 +485,6 @@
    ============================================================ */
 @media (max-width: 1024px) {
   .courses-grid { grid-template-columns: repeat(2, 1fr); }
-  .curriculum-grid { grid-template-columns: repeat(2, 1fr); }
   .session-grid { grid-template-columns: repeat(2, 1fr); }
   .journey-steps { grid-template-columns: repeat(3, 1fr); }
 }
@@ -434,7 +495,8 @@
   .catalog-hero-btns, .details-hero-btns { justify-content: center; }
   .courses-grid { grid-template-columns: 1fr; }
   .suitability-grid { grid-template-columns: 1fr; }
-  .curriculum-grid { grid-template-columns: 1fr; }
+  .curriculum-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .curriculum-card { max-width: none; }
   .session-grid { grid-template-columns: 1fr; }
   .session-features { padding: 32px 24px; }
   .journey-steps { grid-template-columns: 1fr; }

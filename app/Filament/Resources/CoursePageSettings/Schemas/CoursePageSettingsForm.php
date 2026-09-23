@@ -114,7 +114,66 @@ class CoursePageSettingsForm
                             ]),
                         Tab::make('تحسين محركات البحث (SEO)')
                             ->schema([
-                                Section::make('إعدادات SEO العامة لصفحات الكورسات')
+                                Section::make('إعدادات SEO صفحة الأطفال')
+                                    ->description('العنوان والوصف الخاصين بصفحة /enfants فقط.')
+                                    ->schema([
+                                        TextInput::make('kids_meta_title')
+                                            ->label('عنوان الميتا (Meta Title)')
+                                            ->helperText('يُوصى بألا يتجاوز 60 حرفاً')
+                                            ->maxLength(60)
+                                            ->live()
+                                            ->hint(fn (?string $state): string => mb_strlen((string) $state).'/60')
+                                            ->columnSpan(1),
+                                        Textarea::make('kids_meta_description')
+                                            ->label('وصف الميتا (Meta Description)')
+                                            ->helperText('يُوصى بألا يتجاوز 160 حرفاً')
+                                            ->maxLength(160)
+                                            ->rows(3)
+                                            ->live()
+                                            ->hint(fn (?string $state): string => mb_strlen((string) $state).'/160')
+                                            ->columnSpan(1),
+                                        FileUpload::make('kids_og_image')
+                                            ->label('صورة المشاركة (Open Graph)')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('images/og')
+                                            ->imageResizeMode('contain')
+                                            ->imageResizeTargetWidth('1200')
+                                            ->imageResizeTargetHeight('630')
+                                            ->columnSpan(2),
+                                    ])
+                                    ->columns(2),
+                                Section::make('إعدادات SEO صفحة الكبار')
+                                    ->description('العنوان والوصف الخاصين بصفحة /adultes فقط.')
+                                    ->schema([
+                                        TextInput::make('adults_meta_title')
+                                            ->label('عنوان الميتا (Meta Title)')
+                                            ->helperText('يُوصى بألا يتجاوز 60 حرفاً')
+                                            ->maxLength(60)
+                                            ->live()
+                                            ->hint(fn (?string $state): string => mb_strlen((string) $state).'/60')
+                                            ->columnSpan(1),
+                                        Textarea::make('adults_meta_description')
+                                            ->label('وصف الميتا (Meta Description)')
+                                            ->helperText('يُوصى بألا يتجاوز 160 حرفاً')
+                                            ->maxLength(160)
+                                            ->rows(3)
+                                            ->live()
+                                            ->hint(fn (?string $state): string => mb_strlen((string) $state).'/160')
+                                            ->columnSpan(1),
+                                        FileUpload::make('adults_og_image')
+                                            ->label('صورة المشاركة (Open Graph)')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('images/og')
+                                            ->imageResizeMode('contain')
+                                            ->imageResizeTargetWidth('1200')
+                                            ->imageResizeTargetHeight('630')
+                                            ->columnSpan(2),
+                                    ])
+                                    ->columns(2),
+                                Section::make('إعدادات SEO العامة (احتياطي)')
+                                    ->description('تُستخدم هذه القيم كاحتياطي إذا تُركت حقول الصفحة المخصصة فارغة.')
                                     ->schema([
                                         TextInput::make('meta_title')
                                             ->label('عنوان الميتا (Meta Title)')

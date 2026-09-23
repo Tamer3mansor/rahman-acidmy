@@ -1,16 +1,19 @@
 @extends('layouts.landing')
 
-@section('title', $pageSettings->meta_title ?: 'Cours de Coran pour enfants en ligne en France, Belgique et Canada | Ar-Rahman Academy')
+@section('title', $pageSettings->kids_meta_title ?: $pageSettings->meta_title ?: 'Cours de Coran pour enfants en ligne en France, Belgique et Canada | Ar-Rahman Academy')
 
-@section('description', $pageSettings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants de 4 à 16 ans en France, Belgique et Canada. Mémorisation, Tajwid, langue arabe avec des enseignants spécialisés Al-Azhar.')
+@section('description', $pageSettings->kids_meta_description ?: $pageSettings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants de 4 à 16 ans en France, Belgique et Canada. Mémorisation, Tajwid, langue arabe avec des enseignants spécialisés Al-Azhar.')
 
-@if ($pageSettings->og_image)
+@php
+    $kidsOgImage = trim((string) ($pageSettings->kids_og_image ?: $pageSettings->og_image));
+@endphp
+@if ($kidsOgImage !== '')
     @php
-        $kidsOgImage = \Illuminate\Support\Str::startsWith($pageSettings->og_image, ['http://', 'https://'])
-            ? $pageSettings->og_image
-            : asset('storage/'.$pageSettings->og_image);
+        $kidsOgImageUrl = \Illuminate\Support\Str::startsWith($kidsOgImage, ['http://', 'https://'])
+            ? $kidsOgImage
+            : asset('storage/'.$kidsOgImage);
     @endphp
-    @section('og_image', $kidsOgImage)
+    @section('og_image', $kidsOgImageUrl)
 @endif
 
 @section('bodyClass', '')
