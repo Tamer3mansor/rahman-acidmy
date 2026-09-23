@@ -234,12 +234,13 @@ a { text-decoration: none; color: inherit; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.nav-actions { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
 .nav-wa {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 40px; height: 40px;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
   color: var(--text-mid);
   border-radius: var(--r-sm);
   transition: color 0.2s, background 0.2s;
@@ -247,6 +248,7 @@ a { text-decoration: none; color: inherit; }
 }
 .nav-wa:hover { color: #25D366; background: var(--cream-dark); }
 .nav-wa svg { flex-shrink: 0; }
+.nav-wa-text { font-size: 0.82rem; line-height: 1; white-space: nowrap; }
 
 .nav-btn {
   display: inline-flex;
