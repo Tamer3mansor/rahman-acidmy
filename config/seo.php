@@ -2,7 +2,7 @@
 
 return [
 
-    'url' => env('SEO_URL', 'https://el-rahman.looptech.cloud'),
+    'url' => env('SEO_URL', 'https://ar-rahman.fr'),
 
     'lang' => env('SEO_LANG', 'fr'),
 
@@ -23,8 +23,8 @@ return [
     'organization' => [
         'name' => env('SEO_ORG_NAME', 'Ar-Rahman Academy'),
         'alternateName' => env('SEO_ORG_ALT_NAME', 'Académie Ar-Rahman'),
-        'url' => env('SEO_URL', 'https://el-rahman.looptech.cloud'),
-        'logo' => env('SEO_ORG_LOGO', 'https://el-rahman.looptech.cloud/images/logo.png'),
+        'url' => env('SEO_URL', 'https://ar-rahman.fr'),
+        'logo' => env('SEO_ORG_LOGO', 'https://ar-rahman.fr/images/logo.png'),
         'description' => 'Cours de Coran et de langue arabe en ligne pour enfants et adultes. Enseignants diplômés d\'Al-Azhar et titulaires d\'Ijazah.',
         'telephone' => env('SEO_ORG_PHONE', '+201028268553'),
         'whatsapp' => env('SEO_WHATSAPP', 'https://wa.me/201028268553'),

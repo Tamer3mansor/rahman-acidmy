@@ -19,7 +19,7 @@ class LandingSettingsSeeder extends Seeder
                 'header_brand_name' => 'Ar-Rahman',
                 'header_brand_sub' => 'ACADEMY',
                 'header_logo_path' => null,
-                'header_btn1_title' => 'WhatsApp',
+                'header_btn1_title' => 'poser une question',
                 'header_btn1_url' => 'https://wa.me/201028268553',
                 'header_btn2_title' => 'Réservez votre essai gratuit',
                 'header_btn2_url' => '#trial-form',

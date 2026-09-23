@@ -169,6 +169,25 @@ class SystemSettingsTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_website_renders_favicon_from_system_settings(): void
+    {
+        SystemSettings::singleton()->update([
+            'favicon_path' => 'system/favicon.png',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('<link rel="icon" href="', false)
+            ->assertSee('/storage/system/favicon.png', false);
+    }
+
+    public function test_website_omits_favicon_link_when_unset(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('<link rel="icon"', false);
+    }
+
     public function test_profile_page_renders(): void
     {
         $admin = User::factory()->create();

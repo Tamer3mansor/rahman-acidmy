@@ -55,7 +55,7 @@
         "provider": {
             "@type": "EducationalOrganization",
             "name": "Ar-Rahman Academy",
-            "url": "https://el-rahman.looptech.cloud"
+            "url": "https://ar-rahman.fr"
         },
         "educationalLevel": @json($course->level_label),
         "inLanguage": ["fr", "ar"],

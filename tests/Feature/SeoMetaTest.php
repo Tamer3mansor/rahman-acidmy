@@ -83,12 +83,12 @@ class SeoMetaTest extends TestCase
         $this->get('/sitemap.xml')
             ->assertOk()
             ->assertSee('<?xml', false)
-            ->assertSee('<loc>https://el-rahman.looptech.cloud/</loc>', false)
-            ->assertSee('<loc>https://el-rahman.looptech.cloud/enfants</loc>', false)
-            ->assertSee('<loc>https://el-rahman.looptech.cloud/adultes</loc>', false)
-            ->assertSee('<loc>https://el-rahman.looptech.cloud/price</loc>', false)
-            ->assertSee('<loc>https://el-rahman.looptech.cloud/blog</loc>', false)
-            ->assertSee('<loc>https://el-rahman.looptech.cloud/lecons-gratuites</loc>', false);
+            ->assertSee('<loc>https://ar-rahman.fr/</loc>', false)
+            ->assertSee('<loc>https://ar-rahman.fr/enfants</loc>', false)
+            ->assertSee('<loc>https://ar-rahman.fr/adultes</loc>', false)
+            ->assertSee('<loc>https://ar-rahman.fr/price</loc>', false)
+            ->assertSee('<loc>https://ar-rahman.fr/blog</loc>', false)
+            ->assertSee('<loc>https://ar-rahman.fr/lecons-gratuites</loc>', false);
     }
 
     public function test_sitemap_contains_individual_content_urls(): void

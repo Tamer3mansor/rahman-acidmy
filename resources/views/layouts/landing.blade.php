@@ -6,6 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    @if ($faviconUrl = \App\Models\SystemSettings::singleton()->faviconUrl())
+        <link rel="icon" href="{{ $faviconUrl }}">
+        <link rel="apple-touch-icon" href="{{ $faviconUrl }}">
+    @endif
+
     @if (config('seo.google_verification'))
         <meta name="google-site-verification" content="{{ config('seo.google_verification') }}">
     @endif

@@ -41,7 +41,7 @@ class LandingPageSettingsTest extends TestCase
         $this->assertNotNull($settings);
         $this->assertSame('Ar-Rahman', $settings->header_brand_name);
         $this->assertSame('ACADEMY', $settings->header_brand_sub);
-        $this->assertSame('WhatsApp', $settings->header_btn1_title);
+        $this->assertSame('poser une question', $settings->header_btn1_title);
         $this->assertSame('https://wa.me/201028268553', $settings->header_btn1_url);
         $this->assertSame('Réservez votre essai gratuit', $settings->header_btn2_title);
         $this->assertSame('#trial-form', $settings->header_btn2_url);
@@ -91,6 +91,45 @@ class LandingPageSettingsTest extends TestCase
         $this->actingAs($user)
             ->get('/admin/hero-trust-pills')
             ->assertOk();
+    }
+
+    public function test_hero_renders_trust_pill_icon_and_text_from_database(): void
+    {
+        HeroTrustPill::query()->create([
+            'icon' => '✅',
+            'text' => 'Garantie satisfaction',
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        HeroTrustPill::query()->create([
+            'icon' => '⏰',
+            'text' => 'Réponse sous 24h',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('trust-pill', false)
+            ->assertSee('Garantie satisfaction')
+            ->assertSee('Réponse sous 24h')
+            ->assertSee('✅')
+            ->assertSee('⏰');
+    }
+
+    public function test_hero_hides_inactive_trust_pills(): void
+    {
+        HeroTrustPill::query()->create([
+            'icon' => '✅',
+            'text' => 'شارة مخفية',
+            'is_active' => false,
+            'sort_order' => 0,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('شارة مخفية');
     }
 
     public function test_hero_media_accepts_image_type_and_hides_video_options(): void
