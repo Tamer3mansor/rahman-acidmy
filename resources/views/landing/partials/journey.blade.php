@@ -3,7 +3,7 @@
         <div class="section-center">
             <span class="section-label">{{ $settings->journey_label }}</span>
             <h2 class="section-title">{{ $settings->journey_title }}</h2>
-            <p class="section-sub">{!! $settings->journey_subtitle !!}</p>
+            <div class="section-sub">{!! $settings->journey_subtitle !!}</div>
         </div>
 
         <div class="steps-grid">
@@ -14,7 +14,7 @@
                     </div>
                     <p class="step-number">{{ str_pad($step->step_number, 2, '0', STR_PAD_LEFT) }}</p>
                     <p class="step-title">{{ $step->title }}</p>
-                    <p class="step-desc">{!! $step->description !!}</p>
+                    <div class="step-desc">{!! $step->description !!}</div>
                 </div>
             @endforeach
         </div>

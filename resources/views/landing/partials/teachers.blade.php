@@ -3,7 +3,7 @@
         <div class="section-center">
             <span class="section-label">{{ $settings->teachers_label }}</span>
             <h2 class="section-title">{{ $settings->teachers_title }}</h2>
-            <p class="section-sub">{!! $settings->teachers_subtitle !!}</p>
+            <div class="section-sub">{!! $settings->teachers_subtitle !!}</div>
         </div>
 
         <div class="teachers-carousel" id="teachersCarousel">

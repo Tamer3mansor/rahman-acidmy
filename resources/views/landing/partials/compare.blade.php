@@ -3,7 +3,7 @@
         <div class="section-center">
             <span class="section-label">{{ $settings->compare_label }}</span>
             <h2 class="section-title">{{ $settings->compare_title }}</h2>
-            <p class="section-sub">{!! $settings->compare_subtitle !!}</p>
+            <div class="section-sub">{!! $settings->compare_subtitle !!}</div>
         </div>
 
         <div class="compare-grid">

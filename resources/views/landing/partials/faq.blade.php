@@ -3,7 +3,7 @@
         <div class="section-center">
             <span class="section-label">{{ $settings->faq_label }}</span>
             <h2 class="section-title">{{ $settings->faq_title }}</h2>
-            <p class="section-sub">{!! $settings->faq_subtitle !!}</p>
+            <div class="section-sub">{!! $settings->faq_subtitle !!}</div>
         </div>
 
         <div class="faq-list">

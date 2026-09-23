@@ -113,6 +113,8 @@ a { text-decoration: none; color: inherit; }
   max-width: 580px;
   margin: 0 auto 48px;
 }
+.section-sub p { color: inherit; margin: 0; }
+.section-sub p + p { margin-top: 8px; }
 .section-center { text-align: center; }
 .section-center .section-sub { text-align: center; }
 
@@ -581,6 +583,8 @@ a { text-decoration: none; color: inherit; }
 .step-number { font-size:0.72rem; font-weight:700; color:rgba(201,150,58,0.6); margin-bottom:8px; }
 .step-title { font-size:0.95rem; font-weight:700; color:var(--white); margin-bottom:8px; }
 .step-desc { font-size:0.82rem; color:rgba(255,255,255,0.65); line-height:1.6; }
+.step-desc p { color:inherit; margin:0; }
+.step-desc p + p { margin-top:8px; }
 
 .journey-cta-wrap { text-align:center; margin-top:60px; }
 
