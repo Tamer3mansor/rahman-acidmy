@@ -77,24 +77,17 @@ class CourseForm
                     ->columns(3)
                     ->collapsible(),
 
-                Section::make('معلومات الحصة والمستوى')
+                Section::make('المستوى والبادج')
                     ->schema([
                         TextInput::make('age_band_min')
                             ->label('الحد الأدنى للعمر')
                             ->numeric()
                             ->minValue(0)
                             ->columnSpan(1),
-                        TextInput::make('session_minutes_min')
-                            ->label('مدة الحصة من (دقائق)')
-                            ->numeric()
-                            ->minValue(0)
-                            ->default(30)
-                            ->columnSpan(1),
-                        TextInput::make('session_minutes_max')
-                            ->label('مدة الحصة إلى (دقائق)')
-                            ->numeric()
-                            ->minValue(0)
-                            ->default(60)
+                        TextInput::make('badge_text')
+                            ->label('نص البادج')
+                            ->helperText('نص حر يظهر على بطاقة الدورة — اختياري')
+                            ->maxLength(100)
                             ->columnSpan(1),
                         TextInput::make('level_label')
                             ->label('المستوى')

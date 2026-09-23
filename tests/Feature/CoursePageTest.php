@@ -200,21 +200,19 @@ class CoursePageTest extends TestCase
         $this->assertNull($course->minAgeLabel());
     }
 
-    public function test_course_session_range_label(): void
+    public function test_course_badge_text(): void
     {
         $course = Course::factory()->create([
-            'session_minutes_min' => 30,
-            'session_minutes_max' => 45,
+            'badge_text' => '30 à 45 min/séance',
         ]);
 
-        $this->assertSame('30 à 45 min/séance', $course->sessionRangeLabel());
+        $this->assertSame('30 à 45 min/séance', $course->badge_text);
 
         $course = Course::factory()->create([
-            'session_minutes_min' => 45,
-            'session_minutes_max' => 45,
+            'badge_text' => null,
         ]);
 
-        $this->assertSame('45 min/séance', $course->sessionRangeLabel());
+        $this->assertNull($course->badge_text);
     }
 
     public function test_landing_nav_includes_kids_and_adults_links(): void

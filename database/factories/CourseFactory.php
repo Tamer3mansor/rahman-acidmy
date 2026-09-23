@@ -27,8 +27,7 @@ class CourseFactory extends Factory
             'short_description' => fake()->sentence(8),
             'description' => '<p>'.fake()->paragraphs(3, true).'</p>',
             'age_band_min' => 5,
-            'session_minutes_min' => 30,
-            'session_minutes_max' => 45,
+            'badge_text' => fake()->optional()->sentence(4),
             'level_label' => 'Débutant',
             'curriculum_items' => [
                 ['icon' => '📖', 'title' => 'Lecture du Coran', 'description' => fake()->sentence(6)],

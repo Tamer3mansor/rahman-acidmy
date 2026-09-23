@@ -113,8 +113,8 @@
                                             <i class="fa-solid fa-gauge-high"></i> {{ $course->level_label }}
                                         @endif
                                     </span>
-                                    @if ($course->sessionRangeLabel())
-                                        <span class="meta-time"><i class="fa-regular fa-clock"></i> {{ $course->sessionRangeLabel() }}</span>
+                                    @if ($course->badge_text)
+                                        <span class="meta-time">{{ $course->badge_text }}</span>
                                     @endif
                                 </div>
                                 <p class="course-desc">{{ $course->short_description }}</p>
