@@ -52,24 +52,29 @@
     {{-- Organization Schema --}}
     @php
         $org = config('seo.organization');
-        $orgSchema = [
-            '@context' => 'https://schema.org',
-            '@type' => 'EducationalOrganization',
-            'name' => $org['name'],
-            'alternateName' => $org['alternateName'],
-            'url' => $org['url'],
-            'logo' => $org['logo'],
-            'description' => $org['description'],
-            'telephone' => $org['telephone'],
-            'email' => $org['email'],
-            'foundingDate' => $org['foundingDate'],
-            'priceRange' => $org['priceRange'],
-            'areaServed' => $org['areaServed'],
-            'availableLanguage' => $org['availableLanguage'],
-            'sameAs' => array_values(array_filter([$org['whatsapp']])),
-        ];
+        $orgSchema = null;
+        if (is_array($org)) {
+            $orgSchema = [
+                '@context' => 'https://schema.org',
+                '@type' => 'EducationalOrganization',
+                'name' => $org['name'] ?? config('app.name'),
+                'alternateName' => $org['alternateName'] ?? '',
+                'url' => $org['url'] ?? url()->to('/'),
+                'logo' => $org['logo'] ?? asset(config('seo.og_image')),
+                'description' => $org['description'] ?? '',
+                'telephone' => $org['telephone'] ?? '',
+                'email' => $org['email'] ?? '',
+                'foundingDate' => $org['foundingDate'] ?? '',
+                'priceRange' => $org['priceRange'] ?? '',
+                'areaServed' => $org['areaServed'] ?? [],
+                'availableLanguage' => $org['availableLanguage'] ?? [],
+                'sameAs' => array_values(array_filter($org['sameAs'] ?? [$org['whatsapp'] ?? ''])),
+            ];
+        }
     @endphp
-    <script type="application/ld+json">{!! json_encode($orgSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    @if ($orgSchema)
+        <script type="application/ld+json">{!! json_encode($orgSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    @endif
 </head>
 <body class="@yield('bodyClass')">
 
