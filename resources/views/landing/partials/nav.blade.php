@@ -17,8 +17,8 @@
                     @endif
                 </div>
                 <div class="nav-logo-text">
-                    <div class="name">{{ $settings->header_brand_name }}</div>
                     <div class="sub">{{ $settings->header_brand_sub }}</div>
+                    <div class="name">{{ $settings->header_brand_name }}</div>
                 </div>
             </a>
 
