@@ -593,3 +593,161 @@
   .booking-cta { padding: 32px 24px; }
   .related-courses-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   COURSE DETAILS — 2026 REDESIGN (scoped to detail page only)
+   ============================================================ */
+
+/* Hide emojis in headings without removing the element */
+.heading-emoji { display: none; }
+
+/* 1 — Hero: two columns (text left / image right) */
+.details-hero {
+  background: #1e4a2e;
+  text-align: left;
+}
+.details-hero .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  text-align: left;
+}
+.details-hero-content .section-label { justify-content: flex-start; }
+.details-hero-title {
+  color: #EF9F27;
+  margin: 0 0 16px;
+  max-width: 520px;
+}
+.details-hero-title::first-line { color: var(--white); }
+.details-hero-sub { margin: 0 0 28px; max-width: 520px; }
+.details-hero-btns { justify-content: flex-start; }
+.details-hero-media-img {
+  width: 100%;
+  border-radius: 12px;
+  display: block;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+}
+
+/* 3 — Page grid + sticky sidebar */
+.details-layout {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 32px;
+  align-items: start;
+}
+.details-sidebar {
+  position: sticky;
+  top: 80px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.details-sidebar-section { margin-bottom: 0; text-align: center; }
+.details-sidebar-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green);
+}
+.details-sidebar .related-courses-grid {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.details-sidebar .related-course-body { padding: 14px; }
+.sidebar-cta-card {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--r-lg);
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.sidebar-cta-card p {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--green);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.sidebar-cta-card .btn-primary {
+  width: 100%;
+  white-space: normal;
+  justify-content: center;
+  text-align: center;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* 4 — Color rhythm (detail page only) */
+.details-main .detail-section {
+  background: #f5f0e8;
+  border-radius: var(--r-xl);
+  padding: 40px 28px;
+}
+.details-main .detail-section:has(.curriculum-grid) {
+  background: #f0ebe0;
+  border-top: 3px solid #EF9F27;
+  border-bottom: 3px solid #EF9F27;
+}
+.details-main .detail-section:has(.session-features) {
+  background: transparent;
+  padding: 0;
+}
+.details-main .session-features { background: #1e4a2e; }
+.details-layout .booking-cta { background: #2d5a3d; margin-bottom: 0; }
+
+/* 6 — FAQ gap */
+.details-main .faq-list { gap: 8px; margin-top: 28px; max-width: 100%; }
+
+/* 5 — Testimonials section */
+.testimonials-section {
+  background: #f5f0e8;
+  border-top: 2px solid #EF9F27;
+  margin-bottom: 56px;
+}
+.testimonials-title {
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: var(--green);
+  text-align: center;
+  margin-bottom: 28px;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.testimonials-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px;
+  border: 0.5px solid #e0d8c8;
+}
+.testimonials-stars { color: #EF9F27; font-size: 1rem; margin-bottom: 8px; letter-spacing: 1px; }
+.testimonials-text { font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; }
+.testimonials-text p { margin: 0 0 8px; }
+.testimonials-text p:last-child { margin-bottom: 0; }
+.testimonials-author {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--green);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.testimonials-author span { color: var(--text-light); font-weight: 600; }
+
+/* Responsive for the redesigned detail page */
+@media (max-width: 992px) {
+  .details-layout { grid-template-columns: 1fr; }
+  .details-sidebar { position: static; }
+  .details-hero .container { grid-template-columns: 1fr; gap: 32px; }
+  .details-hero-media-img { max-width: 480px; margin: 0 auto; }
+}
+@media (max-width: 640px) {
+  .details-main .detail-section { padding: 32px 18px; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+}

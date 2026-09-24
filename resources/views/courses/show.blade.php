@@ -104,34 +104,44 @@
 
     <section class="details-hero">
         <div class="container">
-            <span class="section-label">
-                @if ($course->icon)
-                    <img src="{{ asset('storage/'.$course->icon) }}" class="details-hero-icon" alt="">
-                @endif
-                {{ $course->audience === \App\Enums\CourseAudience::Kids
-                    ? 'Programme dédié aux enfants et aux jeunes'
-                    : 'Programme dédié aux adultes et aux grands' }}
-            </span>
-            <h1 class="details-hero-title">{{ $course->title }}</h1>
-            <p class="details-hero-sub">{{ $course->short_description }}</p>
+            <div class="details-hero-content">
+                <span class="section-label">
+                    @if ($course->icon)
+                        <img src="{{ asset('storage/'.$course->icon) }}" class="details-hero-icon" alt="">
+                    @endif
+                    {{ $course->audience === \App\Enums\CourseAudience::Kids
+                        ? 'Programme dédié aux enfants et aux jeunes'
+                        : 'Programme dédié aux adultes et aux grands' }}
+                </span>
+                <h1 class="details-hero-title">{{ $course->title }}</h1>
+                <p class="details-hero-sub">{{ $course->short_description }}</p>
 
-            <div class="details-hero-btns">
-                <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">
-                    <i class="fa-solid fa-calendar-check"></i> Réserver une séance d'essai
-                </a>
-                <a href="{{ $settings->header_btn1_url }}" class="btn-outline" target="_blank" rel="noopener">
-                    <i class="fa-brands fa-whatsapp"></i> Discuter avec nous sur WhatsApp
-                </a>
+                <div class="details-hero-btns">
+                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">
+                        <i class="fa-solid fa-calendar-check"></i> Réserver une séance d'essai
+                    </a>
+                    <a href="{{ $settings->header_btn1_url }}" class="btn-outline" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-whatsapp"></i> Discuter avec nous sur WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <div class="details-hero-media">
+                @if ($course->icon)
+                    <img src="{{ asset('storage/'.$course->icon) }}" class="details-hero-media-img" alt="">
+                @endif
             </div>
         </div>
     </section>
 
     <main class="container details-layout" style="padding: 56px 24px;">
 
+        <div class="details-main">
+
         @if (!empty($course->suitability_checks))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;">🎯 Ce cours est-il fait pour vous ?</h2>
+                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">🎯</span> Ce cours est-il fait pour vous ?</h2>
                 </div>
                 <div class="suitability-grid">
                     @foreach ($course->suitability_checks as $suitability)
@@ -147,7 +157,7 @@
         @if (!empty($course->curriculum_items))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;">📚 Que vas-tu apprendre dans ce programme ?</h2>
+                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">📚</span> Que vas-tu apprendre dans ce programme ?</h2>
                 </div>
                 <div class="curriculum-grid">
                     @foreach ($course->curriculum_items as $item)
@@ -164,7 +174,7 @@
         @if (!empty($course->session_features))
             <section class="detail-section">
                 <div class="session-features">
-                    <h2>💡 😊 Comment se déroule le cours ?</h2>
+                    <h2><span class="heading-emoji" aria-hidden="true">💡</span> <span class="heading-emoji" aria-hidden="true">😊</span> Comment se déroule le cours ?</h2>
                     <p>Nous garantissons une expérience interactive, sûre et motivante à chaque séance :</p>
                     <div class="session-grid">
                         @foreach ($course->session_features as $feature)
@@ -178,10 +188,30 @@
             </section>
         @endif
 
+        @if ($testimonials->count())
+            <section class="testimonials-section detail-section">
+                <h2 class="testimonials-title">Ce que disent les parents</h2>
+                <div class="testimonials-grid">
+                    @foreach ($testimonials as $testimonial)
+                        <article class="testimonials-card">
+                            <div class="testimonials-stars">{{ str_repeat('★', min($testimonial->rating ?? 5, 5)) }}{{ str_repeat('☆', max(5 - min($testimonial->rating ?? 5, 5), 0)) }}</div>
+                            <div class="testimonials-text">{!! $testimonial->content !!}</div>
+                            @if ($testimonial->author_name || $testimonial->author_location)
+                                <div class="testimonials-author">
+                                    {{ $testimonial->author_name }}
+                                    @if ($testimonial->author_location)<span>{{ $testimonial->author_location }}</span>@endif
+                                </div>
+                            @endif
+                        </article>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         @if (!empty($course->journey_steps))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;">🚀 Votre parcours et votre progression</h2>
+                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">🚀</span> Votre parcours et votre progression</h2>
                 </div>
                 <div class="journey-steps">
                     @foreach ($course->journey_steps as $step)
@@ -198,7 +228,7 @@
         @if (!empty($course->faqs))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;">❓ Questions fréquentes</h2>
+                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">❓</span> Questions fréquentes</h2>
                 </div>
                 <div class="faq-list" style="margin: 0 auto;">
                     @foreach ($course->faqs as $faq)
@@ -265,6 +295,21 @@
             </script>
         @endif
 
+        <section class="booking-cta" id="bookingForm">
+            <h2>{{ $pageSettings->details_booking_title }}</h2>
+            <p>{{ $pageSettings->details_booking_subtitle }}</p>
+            @if ($pageSettings->details_booking_note)
+                <p class="note">{{ $pageSettings->details_booking_note }}</p>
+            @endif
+            <div class="booking-btn">
+                <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">{{ $pageSettings->details_cta_title }}</a>
+            </div>
+        </section>
+
+        </div>
+
+        <aside class="details-sidebar">
+
         @php
             $relatedCourses = $course->relatedCourses
                 ->where('id', '!=', $course->id)
@@ -273,9 +318,9 @@
         @endphp
 
         @if ($relatedCourses->isNotEmpty())
-            <section class="detail-section">
-                <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;">🎓 Autres cours similaires</h2>
+            <section class="detail-section details-sidebar-section">
+                <div class="catalog-head section-center" style="margin-bottom: 24px;">
+                    <h3 class="details-sidebar-title"><span class="heading-emoji" aria-hidden="true">🎓</span> Autres cours similaires</h3>
                 </div>
                 <div class="related-courses-grid">
                     @foreach ($relatedCourses as $related)
@@ -287,7 +332,7 @@
                                     @endif
                                 </div>
                                 <div class="related-course-body">
-                                    <h3 class="related-course-title">{{ $related->title }}</h3>
+                                    <h4 class="related-course-title">{{ $related->title }}</h4>
                                     @if ($related->badge_text)
                                         <span class="related-course-badge">{{ $related->badge_text }}</span>
                                     @endif
@@ -302,16 +347,14 @@
             </section>
         @endif
 
-        <section class="booking-cta" id="bookingForm">
-            <h2>{{ $pageSettings->details_booking_title }}</h2>
-            <p>{{ $pageSettings->details_booking_subtitle }}</p>
-            @if ($pageSettings->details_booking_note)
-                <p class="note">{{ $pageSettings->details_booking_note }}</p>
-            @endif
-            <div class="booking-btn">
-                <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">{{ $pageSettings->details_cta_title }}</a>
-            </div>
-        </section>
+        <div class="sidebar-cta-card">
+            <p>{{ $pageSettings->details_cta_title }}</p>
+            <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">
+                Réserver une séance d'essai <i class="fa-solid fa-calendar-check"></i>
+            </a>
+        </div>
+
+        </aside>
 
     </main>
 

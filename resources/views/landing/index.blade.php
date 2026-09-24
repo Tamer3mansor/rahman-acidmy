@@ -1,5 +1,7 @@
 @extends('layouts.landing')
 
+@section('bodyClass', 'lp')
+
 @section('title', $settings->meta_title ?: 'Cours de Coran et arabe en ligne en France, Belgique et Canada | Ar-Rahman Academy')
 
 @section('description', $settings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants et adultes en France, Belgique et Canada. Enseignants diplômés Al-Azhar, cours particuliers 7j/7. Séance d\'essai gratuite sans engagement.')
