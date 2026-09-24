@@ -193,6 +193,7 @@
                 <h2 class="testimonials-title">Ce que disent les parents</h2>
                 <div class="testimonials-grid">
                     @foreach ($testimonials as $testimonial)
+                        @if (!empty($testimonial->content))
                         <article class="testimonials-card">
                             <div class="testimonials-stars">{{ str_repeat('★', min($testimonial->rating ?? 5, 5)) }}{{ str_repeat('☆', max(5 - min($testimonial->rating ?? 5, 5), 0)) }}</div>
                             <div class="testimonials-text">{!! $testimonial->content !!}</div>
@@ -203,6 +204,7 @@
                                 </div>
                             @endif
                         </article>
+                        @endif
                     @endforeach
                 </div>
             </section>

@@ -622,11 +622,18 @@
 .details-hero-title::first-line { color: var(--white); }
 .details-hero-sub { margin: 0 0 28px; max-width: 520px; }
 .details-hero-btns { justify-content: flex-start; }
+.details-hero-media {
+  max-height: 420px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+}
 .details-hero-media-img {
   width: 100%;
-  border-radius: 12px;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
   display: block;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
 }
 
 /* 3 — Page grid + sticky sidebar */
@@ -684,7 +691,8 @@
 .details-main .detail-section {
   background: #f5f0e8;
   border-radius: var(--r-xl);
-  padding: 40px 28px;
+  padding: 48px 28px;
+  margin-bottom: 32px;
 }
 .details-main .detail-section:has(.curriculum-grid) {
   background: #f0ebe0;
@@ -694,12 +702,19 @@
 .details-main .detail-section:has(.session-features) {
   background: transparent;
   padding: 0;
+  margin-bottom: 32px;
 }
-.details-main .session-features { background: #1e4a2e; }
+.details-main .session-features {
+  background: #1e4a2e;
+  padding-bottom: 48px;
+  overflow: visible;
+  height: auto;
+}
 .details-layout .booking-cta { background: #2d5a3d; margin-bottom: 0; }
 
 /* 6 — FAQ gap */
-.details-main .faq-list { gap: 8px; margin-top: 28px; max-width: 100%; }
+.details-main .faq-list { gap: 0; margin-top: 28px; max-width: 100%; }
+.details-main .faq-item { margin-bottom: 8px; }
 
 /* 5 — Testimonials section */
 .testimonials-section {
@@ -740,12 +755,38 @@
 }
 .testimonials-author span { color: var(--text-light); font-weight: 600; }
 
+/* Problem 3 — Compact sections so each fits on screen (detail page only) */
+.details-main section,
+.details-sidebar section {
+  padding-top: 48px;
+  padding-bottom: 48px;
+  min-height: auto;
+}
+.details-main section h1,
+.details-main section h2,
+.details-sidebar section h1,
+.details-sidebar section h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  margin-bottom: 16px;
+}
+.details-main section .grid,
+.details-main section [class*="grid"],
+.details-sidebar section .grid,
+.details-sidebar section [class*="grid"] {
+  gap: 16px;
+}
+.details-main section .card,
+.details-main section [class*="card"] {
+  padding: 16px;
+}
+
 /* Responsive for the redesigned detail page */
 @media (max-width: 992px) {
   .details-layout { grid-template-columns: 1fr; }
   .details-sidebar { position: static; }
   .details-hero .container { grid-template-columns: 1fr; gap: 32px; }
-  .details-hero-media-img { max-width: 480px; margin: 0 auto; }
+  .details-hero-media { max-width: 480px; margin: 0 auto; border-radius: 12px; }
+  .details-hero-media-img { height: auto; }
 }
 @media (max-width: 640px) {
   .details-main .detail-section { padding: 32px 18px; }
