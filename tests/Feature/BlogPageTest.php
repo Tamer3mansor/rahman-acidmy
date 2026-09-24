@@ -118,5 +118,9 @@ class BlogPageTest extends TestCase
         foreach (['/admin/blog-posts', '/admin/blog-categories'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
+
+        $this->actingAs($user)
+            ->get('/admin/blog-posts')
+            ->assertSee('toggleTableReordering', false);
     }
 }

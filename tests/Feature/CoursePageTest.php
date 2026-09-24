@@ -309,7 +309,9 @@ class CoursePageTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)->get('/admin/courses')->assertOk();
+        $this->actingAs($user)->get('/admin/courses')
+            ->assertOk()
+            ->assertSee('toggleTableReordering', false);
         $this->actingAs($user)->get('/admin/courses/create')->assertOk();
         $this->actingAs($user)->get('/admin/courses/1/edit')->assertOk();
         $this->actingAs($user)->get('/admin/course-page-settings')->assertOk();
@@ -373,5 +375,157 @@ class CoursePageTest extends TestCase
             ->assertSee('CTA Un Adulte')
             ->assertSee('CTA Deux Adulte')
             ->assertSee('faq-cta-row', false);
+    }
+
+    public function test_kids_course_inherits_kids_catalog_content_when_its_blocks_are_empty(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $response = $this->get('/cours/initiation-baraaim-quran');
+
+        $response->assertOk()
+            ->assertSee('Récitation du Coran')
+            ->assertSee('Invocations')
+            ->assertSee('Séance interactive')
+            ->assertSee('Méthode ludique, positive et bienveillante')
+            ->assertSee('Les cours de Coran pour enfants sont-ils individuels ?');
+    }
+
+    public function test_adults_course_inherits_adults_catalog_content_when_its_blocks_are_empty(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $response = $this->get('/cours/correction-recitation-tajwid');
+
+        $response->assertOk()
+            ->assertSee('Correction de la récitation')
+            ->assertSee('Règles du Tajwid')
+            ->assertSee('Réservez votre essai')
+            ->assertSee('Enseignants Al-Azhar — Diplômés')
+            ->assertSee('Puis-je apprendre le Coran à mon rythme ?')
+            ->assertDontSee('Séance interactive');
+    }
+
+    public function test_course_stored_content_overrides_catalog_content(): void
+    {
+        $this->seed(CoursePageSettingsSeeder::class);
+
+        $course = Course::factory()->kids()->create([
+            'curriculum_items' => [
+                ['icon' => '📖', 'title' => 'Programme propre à la formation', 'description' => '<p>Contenu dédié.</p>'],
+            ],
+            'journey_steps' => [
+                ['htmlClass' => 'gold', 'number' => '01', 'title' => 'Étape propre à la formation', 'description' => '<p>Étape dédiée.</p>'],
+            ],
+            'suitability_checks' => ['Convient à des profils spécifiques'],
+            'faqs' => [
+                ['question' => 'Question propre à la formation ?', 'answer' => '<p>Réponse dédiée.</p>'],
+            ],
+        ]);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertSee('Programme propre à la formation')
+            ->assertSee('Étape propre à la formation')
+            ->assertSee('Convient à des profils spécifiques')
+            ->assertSee('Question propre à la formation ?')
+            ->assertDontSee('Les cours de Coran pour enfants sont-ils individuels ?')
+            ->assertDontSee('Séance interactive');
+    }
+
+    public function test_empty_catalog_blocks_hide_inherited_course_sections_gracefully(): void
+    {
+        $this->seed(CoursePageSettingsSeeder::class);
+        CoursePageSettings::singleton()->update([
+            'kids_curriculum_items' => null,
+            'kids_journey_items' => null,
+            'kids_about_items' => null,
+            'kids_faq_items' => null,
+        ]);
+
+        $course = Course::factory()->kids()->create([
+            'curriculum_items' => null,
+            'journey_steps' => null,
+            'suitability_checks' => null,
+            'faqs' => null,
+        ]);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertSee($course->title)
+            ->assertDontSee('Que vas-tu apprendre dans ce programme ?')
+            ->assertSee('Comment se déroule le cours ?');
+    }
+
+    public function test_related_courses_render_on_course_detail_page(): void
+    {
+        $this->seed(CoursePageSettingsSeeder::class);
+
+        $parent = Course::factory()->kids()->create();
+        $relatedOne = Course::factory()->kids()->create();
+        $relatedTwo = Course::factory()->adults()->create();
+        $unrelated = Course::factory()->kids()->create();
+
+        $parent->relatedCourses()->attach([$relatedOne->id, $relatedTwo->id]);
+
+        $this->get('/cours/'.$parent->slug)
+            ->assertOk()
+            ->assertSee('Autres cours similaires')
+            ->assertSee($relatedOne->title)
+            ->assertSee($relatedTwo->title)
+            ->assertDontSee($unrelated->title);
+    }
+
+    public function test_inactive_related_courses_are_hidden_from_course_page(): void
+    {
+        $this->seed(CoursePageSettingsSeeder::class);
+
+        $parent = Course::factory()->kids()->create();
+        $inactive = Course::factory()->kids()->create(['is_active' => false]);
+        $active = Course::factory()->kids()->create();
+
+        $parent->relatedCourses()->attach([$inactive->id, $active->id]);
+
+        $this->get('/cours/'.$parent->slug)
+            ->assertOk()
+            ->assertSee('Autres cours similaires')
+            ->assertDontSee($inactive->title)
+            ->assertSee($active->title);
+    }
+
+    public function test_related_courses_admin_form_renders_relationship_select(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $user = User::factory()->create();
+        $course = Course::query()->first();
+
+        $this->actingAs($user)
+            ->get('/admin/courses/'.$course->id.'/edit')
+            ->assertOk()
+            ->assertSee('دورات مرتبطة');
+    }
+
+    public function test_course_related_courses_belongs_to_many_returns_linked_courses(): void
+    {
+        $course = Course::factory()->kids()->create();
+        $related = Course::factory()->kids()->create();
+
+        $course->relatedCourses()->attach([$related->id]);
+
+        $this->assertDatabaseHas('course_related_course', [
+            'course_id' => $course->id,
+            'related_course_id' => $related->id,
+        ]);
+        $this->assertTrue($course->relatedCourses()->pluck('courses.id')->contains($related->id));
     }
 }

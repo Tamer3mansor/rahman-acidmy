@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LandingSettings;
 use App\Models\PricingPackage;
 use App\Models\PricingSettings;
+use App\Models\SystemSettings;
 
 class PricingController extends Controller
 {
@@ -22,8 +23,19 @@ class PricingController extends Controller
             'pricing' => $pricing = PricingSettings::singleton(),
             'packages' => $packages,
             'isIndexed' => $pricing->is_indexed,
-            'defaultWaPhone' => $this->resolveWhatsAppPhone($settings->header_btn1_url),
+            'defaultWaPhone' => $this->resolveDefaultWhatsAppPhone(),
         ]);
+    }
+
+    private function resolveDefaultWhatsAppPhone(): string
+    {
+        $number = SystemSettings::singleton()->whatsappNumberDigits();
+
+        if ($number !== '') {
+            return $number;
+        }
+
+        return $this->resolveWhatsAppPhone(LandingSettings::singleton()->header_btn1_url);
     }
 
     private function resolveWhatsAppPhone(?string $url): string

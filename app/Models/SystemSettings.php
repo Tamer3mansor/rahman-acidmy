@@ -13,6 +13,8 @@ class SystemSettings extends Model
         'description',
         'logo_path',
         'favicon_path',
+        'whatsapp_number',
+        'email',
     ];
 
     protected static function booted(): void
@@ -53,5 +55,15 @@ class SystemSettings extends Model
         }
 
         return Storage::disk('public')->url($this->favicon_path);
+    }
+
+    public function whatsappNumberDigits(): string
+    {
+        return preg_replace('/\D+/', '', (string) $this->whatsapp_number);
+    }
+
+    public function contactEmail(): string
+    {
+        return $this->email ?: 'contact@arrahman-academy.com';
     }
 }

@@ -49,6 +49,20 @@ class SystemSettingsTest extends TestCase
         $this->assertSame('إدارة المحتوى والإعدادات', SystemSettings::singleton()->description);
     }
 
+    public function test_contact_email_uses_system_setting(): void
+    {
+        SystemSettings::singleton()->update(['email' => 'contact@academy-test.fr']);
+
+        $this->assertSame('contact@academy-test.fr', SystemSettings::singleton()->contactEmail());
+    }
+
+    public function test_contact_email_falls_back_to_default(): void
+    {
+        SystemSettings::singleton()->update(['email' => null]);
+
+        $this->assertSame('contact@arrahman-academy.com', SystemSettings::singleton()->contactEmail());
+    }
+
     public function test_panel_uses_configured_branding(): void
     {
         SystemSettings::singleton()->update([

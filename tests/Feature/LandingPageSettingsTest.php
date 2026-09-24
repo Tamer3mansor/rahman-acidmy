@@ -181,9 +181,13 @@ class LandingPageSettingsTest extends TestCase
 
         $user = User::factory()->create();
 
-        foreach (['/admin/compare-items', '/admin/journey-steps', '/admin/form-infos', '/admin/contact-submissions', '/admin/landing-teachers'] as $url) {
+        foreach (['/admin/compare-items', '/admin/journey-steps', '/admin/form-infos', '/admin/contact-submissions', '/admin/landing-teachers', '/admin/landing-faqs'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
+
+        $this->actingAs($user)
+            ->get('/admin/landing-faqs')
+            ->assertSee('toggleTableReordering', false);
 
         $this->actingAs($user)->get('/admin/compare-items/1/edit')->assertOk();
         $this->actingAs($user)->get('/admin/contact-submissions/1/edit')->assertOk();

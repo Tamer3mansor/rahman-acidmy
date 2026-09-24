@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
 use App\Models\LandingSettings;
+use App\Support\CourseContentResolver;
 
 class CourseController extends Controller
 {
@@ -14,6 +15,10 @@ class CourseController extends Controller
 
         $settings = LandingSettings::singleton();
         $pageSettings = CoursePageSettings::singleton();
+
+        CourseContentResolver::resolve($course, $pageSettings);
+
+        $course->load('relatedCourses');
 
         return view('courses.show', [
             'settings' => $settings,

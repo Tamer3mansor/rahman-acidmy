@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Lessons\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -41,6 +42,14 @@ class LessonsTable
                     ->boolean(),
             ])
             ->defaultSort('sort_order')
+            ->reorderable('sort_order')
+            ->reorderRecordsTriggerAction(function (Action $action): Action {
+                return $action
+                    ->label('ترتيب الحصص')
+                    ->iconButton()
+                    ->tooltip('اضغط ثم اسحب الصفوف لتغيير الترتيب')
+                    ->color('gray');
+            })
             ->filters([
                 SelectFilter::make('course')
                     ->label('الدورة المرتبطة')

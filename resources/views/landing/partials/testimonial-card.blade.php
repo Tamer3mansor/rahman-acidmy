@@ -45,12 +45,25 @@
                     ? $testimonial->media_path
                     : asset('storage/'.$testimonial->media_path);
             @endphp
-            <video controls muted playsinline loop preload="metadata">
-                <source src="{{ $videoUrl }}" type="{{ $videoExtension === 'webm' ? 'video/webm' : 'video/mp4' }}">
-            </video>
-            @if ($author)
-                <div class="trust-label">{{ $author }}</div>
-            @endif
+            <div class="tv-player" data-tv-player>
+                <video class="tv-video" data-tv-video playsinline loop preload="metadata">
+                    <source src="{{ $videoUrl }}" type="{{ $videoExtension === 'webm' ? 'video/webm' : 'video/mp4' }}">
+                </video>
+                <button class="tv-play" data-tv-play type="button" aria-label="تشغيل الفيديو">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </button>
+                <div class="tv-controls" data-tv-controls>
+                    <button class="tv-btn" data-tv-toggle type="button" aria-label="تشغيل">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-pause hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-play><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                    </button>
+                    <button class="tv-btn" data-tv-mute type="button" aria-label="كتم الصوت">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-vol-on><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-vol-off hidden><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/><path d="M18.5 4.68 23 9.18 21.4 10.8 17.22 6.6 18.5 4.68zm0 0L23 14.82 21.4 13.2l-4.18-4.2L18.5 4.68z" transform="rotate(0)"/></svg>
+                    </button>
+                    <input class="tv-volume" data-tv-volume type="range" min="0" max="1" step="0.05" value="1" aria-label="مستوى الصوت">
+                </div>
+            </div>
         @else
             <div class="trust-video-placeholder">
                 <div class="play-sm">

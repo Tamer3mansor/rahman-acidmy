@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/css/landing.css',
                 'resources/js/landing.js',
+                'resources/js/testimonials.js',
                 'resources/css/blog.css',
                 'resources/css/lessons.css',
                 'resources/css/price.css',

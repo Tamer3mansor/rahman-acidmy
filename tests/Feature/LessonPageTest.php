@@ -231,7 +231,10 @@ class LessonPageTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)->get('/admin/lessons')->assertOk();
+        $this->actingAs($user)
+            ->get('/admin/lessons')
+            ->assertOk()
+            ->assertSee('toggleTableReordering', false);
         $this->actingAs($user)->get('/admin/lessons/create')->assertOk();
         $this->actingAs($user)->get('/admin/lessons/1/edit')->assertOk();
     }

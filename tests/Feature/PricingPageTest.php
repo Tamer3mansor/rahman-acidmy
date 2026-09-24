@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\PricingPackage;
 use App\Models\PricingSettings;
+use App\Models\SystemSettings;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\PricingPackageSeeder;
@@ -115,6 +116,31 @@ class PricingPageTest extends TestCase
         $this->get('/price')
             ->assertOk()
             ->assertSee('data-wa-phone="201028268553"', false);
+    }
+
+    public function test_packages_fallback_to_system_settings_whatsapp_number(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        SystemSettings::singleton()->update(['whatsapp_number' => '2021987654']);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('data-wa-phone="2021987654"', false);
+    }
+
+    public function test_package_whatsapp_url_overrides_system_settings_default(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        SystemSettings::singleton()->update(['whatsapp_number' => '2021987654']);
+
+        $pack = PricingPackage::query()->where('name', 'Pack Découverte')->firstOrFail();
+        $pack->update(['whatsapp_url' => 'https://wa.me/3312345678']);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('data-wa-phone="3312345678"', false);
     }
 
     public function test_special_price_package_uses_stored_price(): void
@@ -230,7 +256,8 @@ class PricingPageTest extends TestCase
             ->get('/admin/pricing-packages')
             ->assertOk()
             ->assertSee('السعر العام للساعة')
-            ->assertSee('تعديل السعر العام');
+            ->assertSee('تعديل السعر العام')
+            ->assertSee('toggleTableReordering', false);
 
         $this->actingAs($user)
             ->get('/admin/pricing-settings')

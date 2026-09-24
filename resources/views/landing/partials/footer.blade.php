@@ -24,7 +24,7 @@
                         <li><a href="{{ $settings->header_btn1_url }}" target="_blank" rel="noopener">WhatsApp</a></li>
                     @endif
                     <li><a href="{{ $homeUrl }}#trial-form">Réservez un essai</a></li>
-                    <li><a href="mailto:contact@arrahman-academy.com">E-mail</a></li>
+                    <li><a href="mailto:{{ \App\Models\SystemSettings::singleton()->contactEmail() }}">E-mail</a></li>
                 </ul>
             </div>
         </div>

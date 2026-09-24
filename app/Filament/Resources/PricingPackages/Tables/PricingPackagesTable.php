@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PricingPackages\Tables;
 
 use App\Models\PricingPackage;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -50,6 +51,13 @@ class PricingPackagesTable
             ])
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
+            ->reorderRecordsTriggerAction(function (Action $action): Action {
+                return $action
+                    ->label('ترتيب الباقات')
+                    ->iconButton()
+                    ->tooltip('اضغط ثم اسحب الصفوف لتغيير الترتيب')
+                    ->color('gray');
+            })
             ->recordActions([
                 EditAction::make(),
             ])

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model
 {
@@ -62,6 +63,16 @@ class Course extends Model
     protected function forAudience(Builder $query, CourseAudience $audience): Builder
     {
         return $query->where('audience', $audience->value);
+    }
+
+    public function relatedCourses(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Course::class,
+            'course_related_course',
+            'course_id',
+            'related_course_id',
+        )->withTimestamps();
     }
 
     public function minAgeLabel(): ?string

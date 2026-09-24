@@ -28,4 +28,8 @@
   /* Shadows */
   --shadow-card: 0 2px 20px rgba(27,67,50,0.08);
   --shadow-btn:  0 4px 16px rgba(201,150,58,0.35);
+
+  /* Layout */
+  --navbar-height: 72px;
+  --hero-py: 80px;
 }

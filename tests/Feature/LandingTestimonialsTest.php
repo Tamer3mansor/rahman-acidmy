@@ -39,7 +39,7 @@ class LandingTestimonialsTest extends TestCase
             ->assertFormFieldVisible('content');
     }
 
-    public function test_admin_form_shows_media_upload_for_google_type(): void
+    public function test_admin_form_hides_media_upload_for_google_type(): void
     {
         $admin = User::factory()->create();
 
@@ -47,7 +47,7 @@ class LandingTestimonialsTest extends TestCase
 
         Livewire::test(CreateLandingTestimonial::class)
             ->fillForm(['type' => TestimonialType::Google->value])
-            ->assertFormFieldVisible('media_path')
+            ->assertFormFieldHidden('media_path')
             ->assertFormFieldVisible('rating');
     }
 
@@ -66,7 +66,42 @@ class LandingTestimonialsTest extends TestCase
 
         $response->assertOk()
             ->assertSee('storage/landing/testimonials/temoignage.mp4', false)
-            ->assertSee('أم محمد', false);
+            ->assertSee('data-tv-video', false)
+            ->assertDontSee('trust-label', false);
+    }
+
+    public function test_trust_layout_orders_whatsapp_left_video_center_google_right(): void
+    {
+        LandingTestimonial::create([
+            'type' => TestimonialType::Whatsapp,
+            'author_name' => 'متصل واتساب',
+            'content' => '<p>شهادة واتساب</p>',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+        LandingTestimonial::create([
+            'type' => TestimonialType::Video,
+            'author_name' => 'صاحب فيديو',
+            'media_path' => 'landing/testimonials/center.mp4',
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+        LandingTestimonial::create([
+            'type' => TestimonialType::Google,
+            'author_name' => 'مقيم جوجل',
+            'content' => '<p>تقييم جوجل مكتوب هنا</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 3,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSeeInOrder([
+                'شهادة واتساب',
+                'storage/landing/testimonials/center.mp4',
+                'تقييم جوجل مكتوب هنا',
+            ], false);
     }
 
     public function test_landing_page_shows_video_placeholder_when_no_video_testimonials(): void

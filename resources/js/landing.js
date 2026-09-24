@@ -214,13 +214,15 @@ function initTeachersCarousel() {
 
     if (!carousel || !track || !pagination || cards.length < 2) return;
 
-    const AUTOPLAY_MS = 4500;
+    const AUTOPLAY_MS = 3000;
+    const TICK_LEAD_MS = 1000;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let activePage = 0;
     let pages = 1;
     let step = 0;
     let autoTimer = null;
+    let firstTimer = null;
     let isPaused = false;
 
     const perPage = () => window.matchMedia('(max-width: 768px)').matches ? 1 : window.matchMedia('(max-width: 1024px)').matches ? 2 : 3;
@@ -265,20 +267,37 @@ function initTeachersCarousel() {
         startAuto();
     };
 
+    const tick = () => {
+        if (isPaused) return;
+        activePage = (activePage + 1) % pages;
+        render();
+    };
+
     const startAuto = () => {
-        if (prefersReducedMotion || pages < 2 || autoTimer) return;
-        autoTimer = window.setInterval(() => {
-            if (isPaused) return;
-            activePage = (activePage + 1) % pages;
-            render();
-        }, AUTOPLAY_MS);
+        if (prefersReducedMotion || pages < 2 || autoTimer || firstTimer) return;
+
+        firstTimer = window.setTimeout(() => {
+            firstTimer = null;
+            tick();
+            autoTimer = window.setInterval(tick, AUTOPLAY_MS);
+        }, TICK_LEAD_MS);
     };
 
     const stopAuto = () => {
+        if (firstTimer) {
+            window.clearTimeout(firstTimer);
+            firstTimer = null;
+        }
         if (autoTimer) {
             window.clearInterval(autoTimer);
             autoTimer = null;
         }
+    };
+
+    const ensureRunning = () => {
+        if (autoTimer || firstTimer) return;
+        measure();
+        if (pages >= 2 && !prefersReducedMotion) render();
     };
 
     carousel.addEventListener('mouseenter', () => { isPaused = true; });
@@ -293,6 +312,8 @@ function initTeachersCarousel() {
 
     carousel.classList.add('is-ready');
     render();
+    window.addEventListener('load', ensureRunning, { once: true });
+    window.setTimeout(ensureRunning, 800);
     window.addEventListener('resize', () => { activePage = 0; render(); }, { passive: true });
 }
 

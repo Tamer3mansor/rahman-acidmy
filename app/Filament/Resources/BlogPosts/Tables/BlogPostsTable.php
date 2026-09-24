@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\BlogPosts\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -40,7 +41,15 @@ class BlogPostsTable
                     ->label('نشط')
                     ->boolean(),
             ])
-            ->defaultSort('published_at', 'desc')
+            ->defaultSort('sort_order')
+            ->reorderable('sort_order')
+            ->reorderRecordsTriggerAction(function (Action $action): Action {
+                return $action
+                    ->label('ترتيب المقالات')
+                    ->iconButton()
+                    ->tooltip('اضغط ثم اسحب الصفوف لتغيير الترتيب')
+                    ->color('gray');
+            })
             ->filters([
                 SelectFilter::make('categories')
                     ->label('التصنيفات')

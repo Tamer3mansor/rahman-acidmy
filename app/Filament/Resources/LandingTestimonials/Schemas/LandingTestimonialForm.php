@@ -48,18 +48,14 @@ class LandingTestimonialForm
                             ->columnSpanFull()
                             ->hidden(fn ($get) => $get('type') !== TestimonialType::Google && $get('type') !== TestimonialType::Whatsapp),
                         FileUpload::make('media_path')
-                            ->label('ملف الفيديو / صورة المحادثة')
+                            ->label('ملف الفيديو')
                             ->disk('public')
                             ->directory('landing/testimonials')
-                            ->acceptedFileTypes(fn ($get) => $get('type') === TestimonialType::Video
-                                ? ['video/mp4', 'video/webm']
-                                : ['image/jpeg', 'image/png', 'image/webp'])
-                            ->maxSize(fn ($get) => $get('type') === TestimonialType::Video ? 51200 : 10240)
-                            ->helperText(fn ($get) => $get('type') === TestimonialType::Video
-                                ? 'ارفع الفيديو (MP4، WebM). الحد الأقصى 50 ميجابايت.'
-                                : 'ارفع صورة للمحادثة (JPG، PNG، WebP). الحد الأقصى 10 ميجابايت.')
+                            ->acceptedFileTypes(['video/mp4', 'video/webm'])
+                            ->maxSize(1000000)
+                            ->helperText('ارفع الفيديو (MP4، WebM). الحد الأقصى 1 جيجابايت.')
                             ->columnSpanFull()
-                            ->hidden(fn ($get) => $get('type') !== TestimonialType::Google && $get('type') !== TestimonialType::Video),
+                            ->hidden(fn ($get) => $get('type') !== TestimonialType::Video),
                         TextInput::make('rating')
                             ->label('التقييم (من 5)')
                             ->numeric()

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Courses\Tables;
 
 use App\Enums\CourseAudience;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -44,6 +45,13 @@ class CoursesTable
             ])
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
+            ->reorderRecordsTriggerAction(function (Action $action): Action {
+                return $action
+                    ->label('ترتيب الدورات')
+                    ->iconButton()
+                    ->tooltip('اضغط ثم اسحب الصفوف لتغيير الترتيب')
+                    ->color('gray');
+            })
             ->filters([
                 SelectFilter::make('audience')
                     ->label('الفئة')

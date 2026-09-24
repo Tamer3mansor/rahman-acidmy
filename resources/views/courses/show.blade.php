@@ -265,6 +265,43 @@
             </script>
         @endif
 
+        @php
+            $relatedCourses = $course->relatedCourses
+                ->where('id', '!=', $course->id)
+                ->where('is_active', true)
+                ->take(3);
+        @endphp
+
+        @if ($relatedCourses->isNotEmpty())
+            <section class="detail-section">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    <h2 class="section-title" style="font-size: 1.7rem;">🎓 Autres cours similaires</h2>
+                </div>
+                <div class="related-courses-grid">
+                    @foreach ($relatedCourses as $related)
+                        <article class="related-course-card">
+                            <a href="{{ route('courses.show', $related->slug) }}" class="related-course-link">
+                                <div class="related-course-head theme-{{ $related->card_theme }}">
+                                    @if ($related->icon)
+                                        <img src="{{ asset('storage/'.$related->icon) }}" class="related-course-cover" alt="{{ $related->title }}">
+                                    @endif
+                                </div>
+                                <div class="related-course-body">
+                                    <h3 class="related-course-title">{{ $related->title }}</h3>
+                                    @if ($related->badge_text)
+                                        <span class="related-course-badge">{{ $related->badge_text }}</span>
+                                    @endif
+                                    <span class="related-course-cta">
+                                        Voir les détails <i class="fa-solid fa-arrow-right"></i>
+                                    </span>
+                                </div>
+                            </a>
+                        </article>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         <section class="booking-cta" id="bookingForm">
             <h2>{{ $pageSettings->details_booking_title }}</h2>
             <p>{{ $pageSettings->details_booking_subtitle }}</p>

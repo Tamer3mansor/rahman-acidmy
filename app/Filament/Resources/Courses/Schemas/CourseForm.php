@@ -104,13 +104,14 @@ class CourseForm
                             ->schema([
                                 Repeater::make('curriculum_items')
                                     ->label('نقاط التعلم')
+                                    ->helperText('اتركه فارغًا ليُعرض محتوى «ماذا سيتعلم» الخاص بصفحة أطفال/كبار تلقائيًا — املأه فقط إذا أردت محتوى خاصًا بهذه الدورة.')
                                     ->schema([
                                         TextInput::make('icon')->label('الأيقونة')->maxLength(10)->columnSpan(1),
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
                                         RichEditor::make('description')->label('الوصف')->columnSpanFull(),
                                     ])
                                     ->columns(2)
-                                    ->defaultItems(2)
+                                    ->defaultItems(0)
                                     ->addActionLabel('إضافة نقطة')
                                     ->reorderableWithButtons()
                                     ->collapsible(),
@@ -119,6 +120,7 @@ class CourseForm
                             ->schema([
                                 Repeater::make('session_features')
                                     ->label('مميزات الحصة')
+                                    ->helperText('قسم يدوي لكل دورة — لا يوجد إعداد افتراضي له في صفحة أطفال/كبار.')
                                     ->schema([
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
                                         RichEditor::make('description')->label('الوصف')->columnSpan(1),
@@ -133,6 +135,7 @@ class CourseForm
                             ->schema([
                                 Repeater::make('journey_steps')
                                     ->label('خطوات الرحلة')
+                                    ->helperText('اتركه فارغًا ليُعرض محتوى «مراحل الكورس» الخاص بصفحة أطفال/كبار تلقائيًا — املأه فقط إذا أردت محتوى خاصًا بهذه الدورة.')
                                     ->schema([
                                         Select::make('htmlClass')
                                             ->label('النمط')
@@ -147,7 +150,7 @@ class CourseForm
                                         RichEditor::make('description')->label('الوصف')->columnSpanFull(),
                                     ])
                                     ->columns(3)
-                                    ->defaultItems(5)
+                                    ->defaultItems(0)
                                     ->addActionLabel('إضافة خطوة')
                                     ->reorderableWithButtons()
                                     ->collapsible(),
@@ -156,10 +159,11 @@ class CourseForm
                             ->schema([
                                 Repeater::make('suitability_checks')
                                     ->label('نقاط الملاءمة')
+                                    ->helperText('اتركه فارغًا ليُعرض محتوى «مناسب لـ» الخاص بصفحة أطفال/كبار تلقائيًا — املأه فقط إذا أردت محتوى خاصًا بهذه الدورة.')
                                     ->schema([
                                         TextInput::make('text')->label('نقطة الملاءمة')->required(),
                                     ])
-                                    ->defaultItems(1)
+                                    ->defaultItems(0)
                                     ->addActionLabel('إضافة نقطة')
                                     ->reorderableWithButtons()
                                     ->collapsible()
@@ -179,7 +183,7 @@ class CourseForm
                             ->schema([
                                 Repeater::make('faqs')
                                     ->label('الأسئلة الشائعة')
-                                    ->helperText('لكل سؤال سطرا CTA يظهران أسفل الإجابة — نص ورابط لكل زر.')
+                                    ->helperText('اتركه فارغًا لتظهر أسئلة «الأسئلة الشائعة» الخاصة بصفحة أطفال/كبار تلقائيًا. لكل سؤال سطرا CTA يظهران أسفل الإجابة — نص ورابط لكل زر.')
                                     ->schema([
                                         TextInput::make('question')->label('السؤال')->required()->columnSpanFull(),
                                         RichEditor::make('answer')->label('الإجابة')->required()->columnSpanFull(),
@@ -189,10 +193,20 @@ class CourseForm
                                         TextInput::make('cta2_url')->label('رابط الزر الثاني')->url()->placeholder('# أو https://...')->columnSpan(1),
                                     ])
                                     ->columns(2)
-                                    ->defaultItems(3)
+                                    ->defaultItems(0)
                                     ->addActionLabel('إضافة سؤال')
                                     ->reorderableWithButtons()
                                     ->collapsible(),
+                            ]),
+                        Tab::make('الدورات المرتبطة')
+                            ->schema([
+                                Select::make('relatedCourses')
+                                    ->label('دورات مرتبطة')
+                                    ->helperText('اختر دورات أخرى مماثلة لتظهر في صفحة تفاصيل هذه الدورة — يمكن الاختيار من أي فئة.')
+                                    ->relationship('relatedCourses', 'title', ignoreRecord: true)
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload(),
                             ]),
                         Tab::make('تحسين محركات البحث (SEO)')
                             ->schema([

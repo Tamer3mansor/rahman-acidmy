@@ -6,28 +6,29 @@
         </div>
 
         @php
-            $textTestimonials = $testimonials
-                ->filter(fn ($testimonial) => in_array($testimonial->type?->value, ['whatsapp', 'google'], true))
+            $whatsappTestimonials = $testimonials
+                ->filter(fn ($testimonial) => $testimonial->type?->value === 'whatsapp')
                 ->values();
-            $leftTestimonials = $textTestimonials->take((int) ceil($textTestimonials->count() / 2));
-            $rightTestimonials = $textTestimonials->skip($leftTestimonials->count())->values();
+            $googleTestimonials = $testimonials
+                ->filter(fn ($testimonial) => $testimonial->type?->value === 'google')
+                ->values();
             $videoTestimonials = $testimonials
                 ->filter(fn ($testimonial) => $testimonial->type?->value === 'video' && filled($testimonial->media_path))
                 ->values();
         @endphp
 
         <div class="trust-grid">
-            <div class="trust-screenshots trust-marquee {{ $leftTestimonials->count() < 2 ? 'trust-marquee--static' : '' }}" data-direction="up">
-                @if ($leftTestimonials->isNotEmpty())
+            <div class="trust-screenshots trust-marquee {{ $whatsappTestimonials->count() < 2 ? 'trust-marquee--static' : '' }}" data-direction="up">
+                @if ($whatsappTestimonials->isNotEmpty())
                     <div class="trust-marquee-track">
                         <div class="trust-marquee-group">
-                            @foreach ($leftTestimonials as $testimonial)
+                            @foreach ($whatsappTestimonials as $testimonial)
                                 @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                             @endforeach
                         </div>
-                        @if ($leftTestimonials->count() > 1)
+                        @if ($whatsappTestimonials->count() > 1)
                             <div class="trust-marquee-group" aria-hidden="true">
-                                @foreach ($leftTestimonials as $testimonial)
+                                @foreach ($whatsappTestimonials as $testimonial)
                                     @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                                 @endforeach
                             </div>
@@ -45,23 +46,23 @@
                             <div class="play-sm">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                             </div>
-                            <span>Témoignage vidéo</span>
+                            <span>Test vidéo · Parents</span>
                         </div>
                     </div>
                 @endforelse
             </div>
 
-            <div class="trust-screenshots trust-marquee {{ $rightTestimonials->count() < 2 ? 'trust-marquee--static' : '' }}" data-direction="down">
-                @if ($rightTestimonials->isNotEmpty())
+            <div class="trust-screenshots trust-marquee {{ $googleTestimonials->count() < 2 ? 'trust-marquee--static' : '' }}" data-direction="down">
+                @if ($googleTestimonials->isNotEmpty())
                     <div class="trust-marquee-track">
                         <div class="trust-marquee-group">
-                            @foreach ($rightTestimonials as $testimonial)
+                            @foreach ($googleTestimonials as $testimonial)
                                 @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                             @endforeach
                         </div>
-                        @if ($rightTestimonials->count() > 1)
+                        @if ($googleTestimonials->count() > 1)
                             <div class="trust-marquee-group" aria-hidden="true">
-                                @foreach ($rightTestimonials as $testimonial)
+                                @foreach ($googleTestimonials as $testimonial)
                                     @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                                 @endforeach
                             </div>

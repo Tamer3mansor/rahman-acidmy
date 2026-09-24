@@ -16,14 +16,6 @@ class CourseSeeder extends Seeder
      */
     public function run(): void
     {
-        $journeySteps = [
-            ['htmlClass' => 'gold', 'number' => '01', 'title' => 'Évaluation du niveau', 'description' => 'Un cours d\'essai pour déterminer le niveau et les besoins.'],
-            ['htmlClass' => 'dark-green', 'number' => '02', 'title' => 'Programme adapté', 'description' => 'Un plan d\'apprentissage personnalisé selon votre emploi du temps.'],
-            ['htmlClass' => 'dark-green', 'number' => '03', 'title' => 'Cours réguliers', 'description' => 'Des rendez-vous hebdomadaires fixes et des sessions interactives.'],
-            ['htmlClass' => 'dark-green', 'number' => '04', 'title' => 'Suivi précis', 'description' => 'Rapports et tests courts continus.'],
-            ['htmlClass' => 'dark-green', 'number' => '05', 'title' => 'Progression et maîtrise', 'description' => 'Passer aux niveaux et aux sections suivants.'],
-        ];
-
         $sessionFeatures = [
             ['title' => 'Cours particulier en ligne', 'description' => 'Concentration totale de l\'enseignant sur l\'élève (1-1) sans aucune distraction.'],
             ['title' => 'Interaction adaptée à l\'âge', 'description' => 'Utilisation de jeux, d\'énigmes et de moyens visuels attrayants.'],
@@ -47,10 +39,6 @@ class CourseSeeder extends Seeder
                 'age_band_min' => 5,
                 'badge_text' => '30 à 45 min/séance',
                 'level_label' => 'Débutant',
-                'curriculum_items' => [
-                    ['icon' => '📖', 'title' => 'Lecture du Coran', 'description' => 'Correction de la prononciation et apprentissage des lettres.'],
-                    ['icon' => '🌱', 'title' => 'Mémorisation facilitée', 'description' => 'Plan de mémorisation progressif adapté à l\'énergie de l\'enfant.'],
-                ],
             ],
             [
                 'audience' => CourseAudience::Kids,
@@ -63,10 +51,6 @@ class CourseSeeder extends Seeder
                 'age_band_min' => 8,
                 'badge_text' => '45 min/séance',
                 'level_label' => 'Intermédiaire',
-                'curriculum_items' => [
-                    ['icon' => '✨', 'title' => 'Règles du Tajwid', 'description' => 'Application des règles fondamentales de manière pratique et accessible.'],
-                    ['icon' => '🧠', 'title' => 'Mémorisation facilitée', 'description' => 'Un plan de mémorisation progressif adapté à l\'âge de l\'enfant.'],
-                ],
             ],
             [
                 'audience' => CourseAudience::Kids,
@@ -79,10 +63,6 @@ class CourseSeeder extends Seeder
                 'age_band_min' => 6,
                 'badge_text' => '45 min/séance',
                 'level_label' => 'Intermédiaire',
-                'curriculum_items' => [
-                    ['icon' => '🗣️', 'title' => 'Langue arabe', 'description' => 'Conversation, lecture et écriture en arabe moderne.'],
-                    ['icon' => '🤲', 'title' => 'Adhkar et valeurs', 'description' => 'Apprentissage des invocations quotidiennes et des bonnes valeurs.'],
-                ],
             ],
 
             // ============================================================
@@ -99,10 +79,6 @@ class CourseSeeder extends Seeder
                 'age_band_min' => null,
                 'badge_text' => '45 à 60 min/séance',
                 'level_label' => 'Débutant / Intermédiaire',
-                'curriculum_items' => [
-                    ['icon' => '✨', 'title' => 'Makharij des lettres', 'description' => 'Correction de la prononciation et des points d\'articulation.'],
-                    ['icon' => '📖', 'title' => 'Tajwid appliqué', 'description' => 'Application pratique des règles lors de la lecture directe.'],
-                ],
             ],
             [
                 'audience' => CourseAudience::Adults,
@@ -115,10 +91,6 @@ class CourseSeeder extends Seeder
                 'age_band_min' => null,
                 'badge_text' => '45 à 60 min/séance',
                 'level_label' => 'Tous niveaux',
-                'curriculum_items' => [
-                    ['icon' => '🧠', 'title' => 'Mémorisation', 'description' => 'Un plan personnalisé adapté à votre rythme de vie.'],
-                    ['icon' => '🔄', 'title' => 'Révision', 'description' => 'Une méthodologie de révision pour consolider et ne pas oublier.'],
-                ],
             ],
             [
                 'audience' => CourseAudience::Adults,
@@ -131,10 +103,6 @@ class CourseSeeder extends Seeder
                 'age_band_min' => null,
                 'badge_text' => '45 à 60 min/séance',
                 'level_label' => 'Avancé / Général',
-                'curriculum_items' => [
-                    ['icon' => '📚', 'title' => 'Grammaire arabe', 'description' => 'Étude des règles de grammaire de manière scientifique et simplifiée.'],
-                    ['icon' => '🕌', 'title' => 'Études islamiques', 'description' => 'Compréhension des sens du Coran et de l\'exégèse des sourates.'],
-                ],
             ],
         ];
 
@@ -151,53 +119,35 @@ class CourseSeeder extends Seeder
                     'age_band_min' => $course['age_band_min'],
                     'badge_text' => $course['badge_text'],
                     'level_label' => $course['level_label'],
-                    'curriculum_items' => $course['curriculum_items'],
                     'session_features' => $sessionFeatures,
-                    'journey_steps' => $journeySteps,
-                    'suitability_checks' => $this->suitabilityChecksFor($course['audience']),
-                    'faqs' => $this->faqsFor($course['audience']),
                     'is_active' => true,
                     'sort_order' => $sort,
                 ]
             );
         }
-    }
 
-    /**
-     * @return array<int, string>
-     */
-    private function suitabilityChecksFor(CourseAudience $audience): array
-    {
-        $kids = [
-            'Enfants de 5 à 15 ans souhaitant commencer la mémorisation du Coran et des fondations solides.',
-            'Ceux qui recherchent la correction de la récitation et l\'application du Tajwid simplifié.',
-            'Ceux qui souhaitent apprendre les bases de la langue arabe et la lecture.',
-            'Les parents qui privilégient l\'enseignement en ligne interactif individuel (1-1).',
+        $relatedBySlug = [
+            'initiation-baraaim-quran' => ['memo-coran-tajwid-enfants', 'arabe-valeurs-islamiques-enfants'],
+            'memo-coran-tajwid-enfants' => ['initiation-baraaim-quran', 'arabe-valeurs-islamiques-enfants'],
+            'arabe-valeurs-islamiques-enfants' => ['initiation-baraaim-quran', 'memo-coran-tajwid-enfants'],
+            'correction-recitation-tajwid' => ['memo-coran-consolidation', 'arabe-etudes-islamiques'],
+            'memo-coran-consolidation' => ['correction-recitation-tajwid', 'arabe-etudes-islamiques'],
+            'arabe-etudes-islamiques' => ['correction-recitation-tajwid', 'memo-coran-consolidation'],
         ];
 
-        $adults = [
-            'Adultes souhaitent débuter ou poursuivre la mémorisation du Coran à leur rythme.',
-            'Ceux qui recherchent la correction de la récitation et l\'application du Tajwid.',
-            'Ceux qui souhaitent apprendre la langue arabe et les études islamiques.',
-            'Les personnes actives qui privilégient des horaires flexibles en ligne.',
-        ];
+        foreach ($relatedBySlug as $slug => $relatedSlugs) {
+            $course = Course::query()->where('slug', $slug)->first();
 
-        return $audience === CourseAudience::Kids ? $kids : $adults;
-    }
+            if ($course === null) {
+                continue;
+            }
 
-    /**
-     * @return array<int, array{question: string, answer: string}>
-     */
-    private function faqsFor(CourseAudience $audience): array
-    {
-        $base = [
-            ['question' => 'Les cours sont-ils individuels ou en groupe ?', 'answer' => 'Tous nos cours sont entièrement individuels (1-1) pour une concentration totale de l\'enseignant sur l\'élève et un rendement maximum.'],
-            ['question' => 'Comment l\'enseignant adapté est-il choisi ?', 'answer' => 'La sélection se fait selon l\'âge, le sexe et le niveau actuel de l\'élève, avec un soin particulier pour confier les enfants à des enseignants certifiés et expérimentés.'],
-            ['question' => 'Peut-on modifier ou déplacer le créneau du cours ?', 'answer' => 'Oui, une flexibilité de reprogrammation est disponible avant le cours suffisamment à l\'avance en coordination avec notre service client.'],
-            ['question' => 'Comment suivre la progression ?', 'answer' => 'Vous recevez un rapport périodique après les cours indiquant ce qui a été mémorisé, lu, les remarques de l\'enseignant et les points à améliorer.'],
-            ['question' => 'Le cours d\'essai est-il gratuit ou payant ?', 'answer' => 'Nous offrons un cours d\'essai d\'évaluation pour que l\'élève découvre l\'enseignant et que nous déterminions le niveau et le programme avant l\'inscription officielle.'],
-        ];
-
-        return $base;
+            $course->relatedCourses()->sync(
+                Course::query()
+                    ->whereIn('slug', $relatedSlugs)
+                    ->pluck('id')
+                    ->all()
+            );
+        }
     }
 }

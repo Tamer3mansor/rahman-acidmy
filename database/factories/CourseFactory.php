@@ -29,22 +29,8 @@ class CourseFactory extends Factory
             'age_band_min' => 5,
             'badge_text' => fake()->optional()->sentence(4),
             'level_label' => 'Débutant',
-            'curriculum_items' => [
-                ['icon' => '📖', 'title' => 'Lecture du Coran', 'description' => fake()->sentence(6)],
-                ['icon' => '✨', 'title' => 'Tajwid', 'description' => fake()->sentence(6)],
-            ],
             'session_features' => [
                 ['title' => 'Cours particulier en ligne', 'description' => fake()->sentence(6)],
-            ],
-            'journey_steps' => [
-                ['number' => 1, 'title' => 'Évaluation du niveau', 'description' => fake()->sentence(6)],
-            ],
-            'suitability_checks' => [
-                'Enfants et jeunes de 5 à 15 ans',
-                'Recherche de correction de la récitation',
-            ],
-            'faqs' => [
-                ['question' => 'Les cours sont-ils individuels ?', 'answer' => 'Oui, tous nos cours sont individuels.'],
             ],
             'is_active' => true,
             'sort_order' => 0,

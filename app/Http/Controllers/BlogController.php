@@ -31,6 +31,7 @@ class BlogController extends Controller
                     $q->whereHas('categories', fn ($cq) => $cq->where('blog_categories.id', $category->id));
                 }
             })
+            ->orderBy('sort_order')
             ->latest('published_at')
             ->paginate(9);
 

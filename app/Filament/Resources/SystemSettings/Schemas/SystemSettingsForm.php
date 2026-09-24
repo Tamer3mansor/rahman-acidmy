@@ -47,6 +47,22 @@ class SystemSettingsForm
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
+                Section::make('بيانات التواصل')
+                    ->description('يُستخدم رقم واتساب افتراضيًا في أزرار الباقات عندما لا تُحدد الباقة رابطًا خاصًا بها، ويظهر البريد الإلكتروني في تذييل الموقع.')
+                    ->schema([
+                        TextInput::make('whatsapp_number')
+                            ->label('رقم واتساب الافتراضي')
+                            ->tel()
+                            ->placeholder('201028268553')
+                            ->helperText('أدخل الرقم بدون + (مثال: 201028268553). إذا كانت الباقة لها رابط واتساب خاص يتم استخدام رابطها.')
+                            ->columnSpanFull(),
+                        TextInput::make('email')
+                            ->label('البريد الإلكتروني')
+                            ->email()
+                            ->placeholder('contact@arrahman-academy.com')
+                            ->helperText('يظهر في رابط البريد الإلكتروني أسفل الموقع (الفوتر).')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }
