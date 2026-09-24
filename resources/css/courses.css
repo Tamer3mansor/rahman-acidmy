@@ -698,6 +698,18 @@
   background: #f0ebe0;
   border-top: 3px solid #EF9F27;
   border-bottom: 3px solid #EF9F27;
+  overflow: visible;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.details-main .curriculum-grid {
+  overflow: visible;
+  padding: 8px;
+}
+.details-main .curriculum-card {
+  overflow: visible;
+  min-width: 0;
+  width: 100%;
 }
 .details-main .detail-section:has(.session-features) {
   background: transparent;
