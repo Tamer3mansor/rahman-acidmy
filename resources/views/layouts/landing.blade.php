@@ -49,6 +49,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
 
+    {{-- Applies the stored theme before first paint so a dark-mode visitor never
+         sees a white flash. Must stay inline and blocking, above the stylesheet. --}}
+    <script>
+        (function () {
+            var stored = null;
+            try {
+                stored = window.localStorage.getItem('theme');
+            } catch (error) {
+                stored = null;
+            }
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var theme = stored === 'light' || stored === 'dark'
+                ? stored
+                : (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
     @vite(['resources/css/landing.css', 'resources/js/landing.js', 'resources/js/testimonials.js'])
 
     @yield('styles')

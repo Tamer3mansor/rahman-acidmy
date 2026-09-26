@@ -55,6 +55,33 @@ class CourseContentResolver
     }
 
     /**
+     * Classify a curriculum item icon before it reaches the 52px badge.
+     * The Filament field is a free text input, so editors sometimes type a
+     * word instead of an emoji, which renders as unreadable text inside the
+     * badge. Letters and digits therefore mean "label", not "icon".
+     *
+     * @return array{kind: 'emoji'|'fa'|'text'|'fallback', value: string}
+     */
+    public static function curriculumIcon(mixed $icon): array
+    {
+        $value = trim((string) $icon);
+
+        if ($value === '') {
+            return ['kind' => 'fallback', 'value' => 'fa-solid fa-book-open'];
+        }
+
+        if (str_starts_with($value, 'fa-')) {
+            return ['kind' => 'fa', 'value' => $value];
+        }
+
+        if (preg_match('/[\p{L}\p{N}]/u', $value) === 1) {
+            return ['kind' => 'text', 'value' => $value];
+        }
+
+        return ['kind' => 'emoji', 'value' => $value];
+    }
+
+    /**
      * Flatten catalog "about" items, which carry an icon, title and
      * description, into the plain-text suitability_checks shape.
      *

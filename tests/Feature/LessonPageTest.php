@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\LessonCategory;
 use App\Models\Lesson;
 use App\Models\User;
 use Database\Seeders\CourseSeeder;
@@ -47,6 +48,53 @@ class LessonPageTest extends TestCase
             ->assertSee('Règles de la nun sakina et du tanwin — l\'izhar')
             ->assertDontSee('Comment prononcer les trois lettres de madd facilement avec votre enfant ?')
             ->assertDontSee('Les adhkar du matin et du soir pour les enfants simplifiés');
+    }
+
+    public function test_lessons_index_paginates_and_keeps_filters_in_page_links(): void
+    {
+        Lesson::factory()->count(11)->create([
+            'category' => LessonCategory::Tajwid->value,
+        ]);
+
+        $response = $this->get('/lecons-gratuites?k=tajwid');
+
+        $response->assertOk()
+            ->assertSee('k=tajwid&amp;page=2', false)
+            ->assertSee('aria-label="Page suivante"', false)
+            ->assertSee('<strong>11</strong> leçons trouvées', false);
+
+        $response = $this->get('/lecons-gratuites?k=tajwid&page=2');
+
+        $response->assertOk()
+            ->assertSee('rel="prev"', false)
+            ->assertSee('page-link is-disabled', false);
+
+        $this->get('/lecons-gratuites?k=tajwid&page=99')->assertOk();
+    }
+
+    public function test_lessons_index_searches_lessons_and_keeps_search_in_page_links(): void
+    {
+        Lesson::factory()->create([
+            'title' => 'Comprendre la règle de la nun sakina',
+            'excerpt' => 'Une leçon sur la prononciation.',
+        ]);
+
+        Lesson::factory()->create([
+            'title' => 'Les lettres de l\'alphabet arabe',
+            'excerpt' => 'Une autre leçon sans rapport.',
+        ]);
+
+        $response = $this->get('/lecons-gratuites?q=sakina');
+
+        $response->assertOk()
+            ->assertSee('Comprendre la règle de la nun sakina')
+            ->assertSee('<strong>1</strong> leçon trouvée', false)
+            ->assertSee('value="sakina"', false)
+            ->assertDontSee('Les lettres de l\'alphabet arabe');
+
+        $this->get('/lecons-gratuites?q=zzzznothing')
+            ->assertOk()
+            ->assertSee('Aucune leçon ne correspond à votre recherche');
     }
 
     public function test_lesson_show_renders_full_details(): void

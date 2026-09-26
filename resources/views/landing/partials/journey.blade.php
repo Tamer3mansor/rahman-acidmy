@@ -9,10 +9,9 @@
         <div class="steps-grid">
             @foreach ($journeySteps as $step)
                 <div class="step-item">
-                    <div class="step-num-wrap {{ $loop->odd ? 'gold' : 'dark-green' }}">
-                        {{ $step->icon }}
+                    <div class="step-num-wrap">
+                        {{ str_pad($step->step_number, 2, '0', STR_PAD_LEFT) }}
                     </div>
-                    <p class="step-number">{{ str_pad($step->step_number, 2, '0', STR_PAD_LEFT) }}</p>
                     <p class="step-title">{{ $step->title }}</p>
                     <div class="step-desc">{!! $step->description !!}</div>
                 </div>

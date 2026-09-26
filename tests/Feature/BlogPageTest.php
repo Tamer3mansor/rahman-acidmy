@@ -48,6 +48,57 @@ class BlogPageTest extends TestCase
             ->assertDontSee('Comment faire aimer la mémorisation du Coran à votre enfant sans contrainte ?');
     }
 
+    public function test_blog_index_paginates_and_keeps_filters_in_page_links(): void
+    {
+        $category = BlogCategory::factory()->create(['name' => 'Tajweed', 'slug' => 'tajweed']);
+
+        BlogPost::factory()->count(11)->create()->each(
+            fn (BlogPost $post) => $post->categories()->sync([$category->id])
+        );
+
+        $response = $this->get('/blog?k=tajweed');
+
+        $response->assertOk()
+            ->assertSee('k=tajweed&amp;page=2', false)
+            ->assertSee('aria-label="Page suivante"', false)
+            ->assertSee('<strong>11</strong> articles trouvés', false);
+
+        $response = $this->get('/blog?k=tajweed&page=2');
+
+        $response->assertOk()
+            ->assertSee('rel="prev"', false)
+            ->assertSee('page-link is-disabled', false);
+
+        $this->get('/blog?k=tajweed&page=99')->assertOk();
+    }
+
+    public function test_blog_index_searches_posts_and_keeps_search_in_page_links(): void
+    {
+        $matching = BlogPost::factory()->create([
+            'title' => 'Comprendre la règle de la nun sakina',
+            'excerpt' => 'Un article sur la prononciation.',
+        ]);
+
+        BlogPost::factory()->create([
+            'title' => 'Méthodes modernes pour enseigner la langue arabe',
+            'excerpt' => 'Un autre article sans rapport.',
+        ]);
+
+        $response = $this->get('/blog?q=sakina');
+
+        $response->assertOk()
+            ->assertSee('Comprendre la règle de la nun sakina')
+            ->assertSee('<strong>1</strong> article trouvé', false)
+            ->assertSee('value="sakina"', false)
+            ->assertDontSee('Méthodes modernes pour enseigner la langue arabe');
+
+        $this->assertTrue($matching->exists);
+
+        $this->get('/blog?q=zzzznothing')
+            ->assertOk()
+            ->assertSee('Aucun article ne correspond à votre recherche');
+    }
+
     public function test_blog_show_renders_article_with_toc_and_related(): void
     {
         $this->seed([

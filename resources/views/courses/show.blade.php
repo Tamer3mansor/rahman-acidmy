@@ -141,7 +141,8 @@
         @if (!empty($course->suitability_checks))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">🎯</span> Ce cours est-il fait pour vous ?</h2>
+                    <span class="section-label">Pour qui ?</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">Ce cours est-il fait pour vous ?</h2>
                 </div>
                 <div class="suitability-grid">
                     @foreach ($course->suitability_checks as $suitability)
@@ -157,12 +158,20 @@
         @if (!empty($course->curriculum_items))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">📚</span> Que vas-tu apprendre dans ce programme ?</h2>
+                    <span class="section-label">Le programme</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">Que vas-tu apprendre dans ce programme ?</h2>
                 </div>
                 <div class="curriculum-grid">
                     @foreach ($course->curriculum_items as $item)
                         <div class="curriculum-card">
-                            <div class="icon">{{ $item['icon'] }}</div>
+                            @php $icon = \App\Support\CourseContentResolver::curriculumIcon($item['icon'] ?? null); @endphp
+                            <div class="icon {{ $icon['kind'] === 'text' ? 'icon-text' : '' }}">
+                                @if ($icon['kind'] === 'emoji' || $icon['kind'] === 'text')
+                                    {{ $icon['value'] }}
+                                @else
+                                    <i class="{{ $icon['value'] }}"></i>
+                                @endif
+                            </div>
                             <h3>{{ $item['title'] }}</h3>
                              <p>{!! $item['description'] !!}</p>
                         </div>
@@ -174,7 +183,8 @@
         @if (!empty($course->session_features))
             <section class="detail-section">
                 <div class="session-features">
-                    <h2><span class="heading-emoji" aria-hidden="true">💡</span> <span class="heading-emoji" aria-hidden="true">😊</span> Comment se déroule le cours ?</h2>
+                    <span class="section-label">Comment ça marche</span>
+                    <h2>Comment se déroule le cours ?</h2>
                     <p>Nous garantissons une expérience interactive, sûre et motivante à chaque séance :</p>
                     <div class="session-grid">
                         @foreach ($course->session_features as $feature)
@@ -190,7 +200,10 @@
 
         @if ($testimonials->count())
             <section class="testimonials-section detail-section">
-                <h2 class="testimonials-title">Ce que disent les parents</h2>
+                <div class="section-center">
+                    <span class="section-label">Témoignages</span>
+                    <h2 class="testimonials-title">Ce que disent les parents</h2>
+                </div>
                 <div class="testimonials-grid">
                     @foreach ($testimonials as $testimonial)
                         @if (!empty($testimonial->content))
@@ -213,7 +226,8 @@
         @if (!empty($course->journey_steps))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">🚀</span> Votre parcours et votre progression</h2>
+                    <span class="section-label">Progression</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">Votre parcours et votre progression</h2>
                 </div>
                 <div class="journey-steps">
                     @foreach ($course->journey_steps as $step)
@@ -230,7 +244,8 @@
         @if (!empty($course->faqs))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <h2 class="section-title" style="font-size: 1.7rem;"><span class="heading-emoji" aria-hidden="true">❓</span> Questions fréquentes</h2>
+                    <span class="section-label">FAQ</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">Questions fréquentes</h2>
                 </div>
                 <div class="faq-list" style="margin: 0 auto;">
                     @foreach ($course->faqs as $faq)
@@ -312,17 +327,10 @@
 
         <aside class="details-sidebar">
 
-        @php
-            $relatedCourses = $course->relatedCourses
-                ->where('id', '!=', $course->id)
-                ->where('is_active', true)
-                ->take(3);
-        @endphp
-
         @if ($relatedCourses->isNotEmpty())
             <section class="detail-section details-sidebar-section">
                 <div class="catalog-head section-center" style="margin-bottom: 24px;">
-                    <h3 class="details-sidebar-title"><span class="heading-emoji" aria-hidden="true">🎓</span> Autres cours similaires</h3>
+                    <h3 class="details-sidebar-title">Autres cours similaires</h3>
                 </div>
                 <div class="related-courses-grid">
                     @foreach ($relatedCourses as $related)

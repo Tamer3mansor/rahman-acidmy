@@ -19,7 +19,7 @@ class LandingTeacherResource extends Resource
 {
     protected static ?string $model = LandingTeacher::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إدارة الصفحة الرئيسية';
+    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'المعلمين';
 
@@ -28,6 +28,8 @@ class LandingTeacherResource extends Resource
     protected static ?string $pluralModelLabel = 'المعلمين';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+
+    protected static ?int $navigationSort = 7;
 
     public static function form(Schema $schema): Schema
     {

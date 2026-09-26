@@ -45,6 +45,13 @@ document.addEventListener('click', (e) => {
         return;
     }
 
+    /* Theme toggle */
+    if (e.target.closest('[data-theme-toggle]')) {
+        toggleTheme();
+
+        return;
+    }
+
     /* Close dropdowns when clicking outside */
     if (!e.target.closest('.nav-item') && !e.target.closest('#hamburger')) {
         document.querySelectorAll('.nav-item.open').forEach((i) => i.classList.remove('open'));
@@ -61,6 +68,47 @@ document.addEventListener('click', (e) => {
     if (!e.target.closest('.mobile-menu a')) return;
 
     document.getElementById('mobileMenu').classList.remove('open');
+});
+
+/* ============================================================
+   THEME
+   The initial theme is set by the inline bootstrap script in
+   layouts/landing.blade.php so it is applied before first paint; this
+   only handles toggling and persistence.
+   ============================================================ */
+const THEME_STORAGE_KEY = 'theme';
+
+function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+
+    try {
+        window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch (error) {
+        /* Storage unavailable (private mode): the theme still applies for this page. */
+    }
+}
+
+function toggleTheme() {
+    applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+}
+
+/* Follow the system preference until the visitor picks a theme themselves. */
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+    let stored = null;
+
+    try {
+        stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    } catch (error) {
+        stored = null;
+    }
+
+    if (stored === 'light' || stored === 'dark') return;
+
+    document.documentElement.setAttribute('data-theme', event.matches ? 'dark' : 'light');
 });
 
 /* ============================================================
@@ -317,4 +365,24 @@ function initTeachersCarousel() {
     window.addEventListener('resize', () => { activePage = 0; render(); }, { passive: true });
 }
 
+function initTrustVideosColumn() {
+    const column = document.querySelector('[data-trust-videos]');
+    const wrap = column?.closest('.trust-videos-wrap');
+
+    if (!column || !wrap) return;
+
+    const update = () => {
+        const atBottom = column.scrollTop + column.clientHeight >= column.scrollHeight - 8;
+        wrap.classList.toggle('has-more', column.scrollHeight > column.clientHeight + 4 && !atBottom);
+    };
+
+    column.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    window.addEventListener('load', update, { once: true });
+    window.setTimeout(update, 800);
+
+    update();
+}
+
 initTeachersCarousel();
+initTrustVideosColumn();

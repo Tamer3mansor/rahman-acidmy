@@ -21,22 +21,30 @@
         'homeUrl' => route('home'),
     ])
 
-    <section class="section">
+    <section class="section page-hero">
         <div class="container section-center">
             <span class="section-label">Blog éducatif</span>
             <h1 class="section-title">Derniers articles et conseils éducatifs</h1>
             <p class="section-sub">Votre guide complet pour la mémorisation du Coran et l'apprentissage de la langue arabe pour enfants et adultes avec des méthodes modernes.</p>
 
+            @include('landing.partials.search-form', [
+                'searchAction' => route('blog.index'),
+                'searchTerm' => $search,
+                'searchHidden' => array_filter(['k' => $activeCategorySlug]),
+                'searchClearUrl' => route('blog.index', ['k' => $activeCategorySlug]),
+                'searchPlaceholder' => 'Rechercher un article…',
+            ])
+
             <div class="filter-bar">
-                <a href="{{ route('blog.index') }}" class="filter-btn {{ $activeCategorySlug === null ? 'active' : '' }}">Tous</a>
+                <a href="{{ route('blog.index', ['q' => $search]) }}" class="filter-btn {{ $activeCategorySlug === null ? 'active' : '' }}">Tous</a>
                 @foreach ($categories as $category)
-                    <a href="{{ route('blog.index', ['k' => $category->slug]) }}" class="filter-btn {{ $activeCategorySlug === $category->slug ? 'active' : '' }}">{{ $category->name }}</a>
+                    <a href="{{ route('blog.index', ['k' => $category->slug, 'q' => $search]) }}" class="filter-btn {{ $activeCategorySlug === $category->slug ? 'active' : '' }}">{{ $category->name }}</a>
                 @endforeach
             </div>
         </div>
 
         <div class="container">
-            @if ($featured && $activeCategorySlug === null)
+            @if ($featured)
                 <div class="featured-card shadow-card">
                     <img src="{{ $featured->cover_image_url ?? 'https://images.unsplash.com/photo-1584286595398-a59f21d313f5?q=80&w=800&auto=format&fit=crop' }}" alt="{{ $featured->title }}" class="featured-img">
                     <div class="featured-content">
@@ -57,6 +65,16 @@
                         </div>
                     </div>
                 </div>
+            @endif
+
+            @if ($posts->total())
+                <p class="results-count">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <span><strong>{{ $posts->total() }}</strong> {{ $posts->total() > 1 ? 'articles trouvés' : 'article trouvé' }}</span>
+                    @if ($search !== null)
+                        <span class="results-count-term">« {{ $search }} »</span>
+                    @endif
+                </p>
             @endif
 
             @if ($posts->count())
@@ -84,27 +102,15 @@
                     @endforeach
                 </div>
 
-                @if ($posts->hasPages())
-                    <div class="pagination">
-                        @if ($posts->onFirstPage())
-                            <span class="page-link"><i class="fa-solid fa-angle-right"></i></span>
-                        @else
-                            <a href="{{ $posts->previousPageUrl() }}" class="page-link" rel="prev"><i class="fa-solid fa-angle-right"></i></a>
-                        @endif
-
-                        @foreach ($posts->getUrlRange(1, $posts->lastPage()) as $page => $url)
-                            <a href="{{ $url }}" class="page-link {{ $page === $posts->currentPage() ? 'active' : '' }}">{{ $page }}</a>
-                        @endforeach
-
-                        @if ($posts->hasMorePages())
-                            <a href="{{ $posts->nextPageUrl() }}" class="page-link" rel="next"><i class="fa-solid fa-angle-left"></i></a>
-                        @else
-                            <span class="page-link"><i class="fa-solid fa-angle-left"></i></span>
-                        @endif
-                    </div>
-                @endif
+                @include('landing.partials.pagination', ['paginator' => $posts])
             @else
-                <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">Aucun article dans cette catégorie pour le moment.</p>
+                <p class="empty-state">
+                    @if ($search !== null)
+                        Aucun article ne correspond à votre recherche.
+                    @else
+                        Aucun article dans cette catégorie pour le moment.
+                    @endif
+                </p>
             @endif
         </div>
     </section>

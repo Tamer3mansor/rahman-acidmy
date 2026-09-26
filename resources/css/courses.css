@@ -1,12 +1,16 @@
 @import './_tokens.css';
 
 /* ============================================================
-   COURSES — page-specific styles (loaded AFTER landing.css)
+   COURSES â€” page-specific styles (loaded AFTER landing.css)
    Shared by the kids catalog, adults catalog and course details
    pages. Tokens & shared components come from landing.css.
    ============================================================ */
 
-.section { padding: 80px 0; }
+/* Alternating bands. Cards in this file are white with a cream-dark
+   border, so the "white" band stays a deeper cream instead of pure
+   white â€” otherwise the cards lose their edge. */
+.section { padding: 80px 0; background: var(--bg-page); }
+.section-white { background: var(--bg-band-alt); }
 
 /* ============================================================
    CATALOG HERO
@@ -34,23 +38,23 @@
 .catalog-hero-title .accent { color: var(--gold); }
 .catalog-hero-sub {
   font-size: 1.05rem;
-  color: var(--text-mid);
+  color: var(--text-body);
   margin-bottom: 32px;
   line-height: 1.8;
 }
 .catalog-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
 
 .hero-showcase {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-xl);
   padding: 32px;
   text-align: center;
   box-shadow: var(--shadow-card);
 }
 .hero-showcase .emojis { font-size: 3rem; margin-bottom: 14px; }
-.hero-showcase-title { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px; }
-.hero-showcase-sub { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; }
+.hero-showcase-title { font-size: 1.2rem; font-weight: 800; color: var(--text-strong); margin-bottom: 8px; }
+.hero-showcase-sub { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
 
 /* Shared green catalog hero (kids + adults unified) */
 .catalog-hero.kids,
@@ -87,8 +91,8 @@
 }
 
 .course-card {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-xl);
   overflow: hidden;
   box-shadow: var(--shadow-card);
@@ -134,7 +138,7 @@
   margin-bottom: 14px;
 }
 .meta-badge {
-  background: var(--cream-dark);
+  background: var(--surface-inset);
   color: var(--green);
   font-size: 0.75rem;
   font-weight: 700;
@@ -157,13 +161,13 @@
   overflow-wrap: anywhere;
 }
 
-.course-desc { font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 22px; flex-grow: 1; }
+.course-desc { font-size: 0.9rem; color: var(--text-body); line-height: 1.7; margin-bottom: 22px; flex-grow: 1; }
 
 .course-cta {
   display: block;
   width: 100%;
   text-align: center;
-  background: var(--cream);
+  background: var(--surface-alt);
   color: var(--green);
   font-family: 'Inter', sans-serif;
   font-weight: 700;
@@ -225,7 +229,7 @@
 .details-hero-btns .btn-outline { color: var(--white); border-color: rgba(255,255,255,0.55); }
 .details-hero-btns .btn-outline:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.8); }
 
-.details-layout { max-width: 880px; margin: 0 auto; }
+.details-layout { max-width: 1180px; margin: 0 auto; }
 .detail-section { margin-bottom: 56px; }
 
 .detail-section .catalog-head h2 { position: relative; padding-bottom: 16px; }
@@ -250,7 +254,8 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: var(--cream);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-lg);
   padding: 18px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -266,7 +271,7 @@
   flex-shrink: 0;
   margin-top: 2px;
 }
-.suitability-item p { font-size: 0.92rem; color: var(--text-mid); line-height: 1.7; }
+.suitability-item p { font-size: 0.92rem; color: var(--text-body); line-height: 1.7; }
 
 .curriculum-grid {
   display: flex;
@@ -279,8 +284,8 @@
 .curriculum-card {
   flex: 1 1 240px;
   max-width: 275px;
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-lg);
   padding: 24px;
   box-shadow: var(--shadow-card);
@@ -306,8 +311,26 @@
   font-size: 1.5rem;
   margin-bottom: 14px;
 }
+.curriculum-card .icon i { color: var(--green); font-size: 1.25rem; }
+/* Editors sometimes type a word in the icon field. Render it as a label
+   pill instead of cramming text into the 52px badge. */
+.curriculum-card .icon.icon-text {
+  width: auto;
+  min-width: 52px;
+  max-width: 100%;
+  height: auto;
+  min-height: 28px;
+  padding: 5px 12px;
+  background: rgba(201,150,58,0.16);
+  color: var(--green);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
 .curriculum-card h3 { font-size: 1.02rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
-.curriculum-card p { font-size: 0.86rem; color: var(--text-mid); line-height: 1.7; }
+.curriculum-card p { font-size: 0.86rem; color: var(--text-body); line-height: 1.7; }
 
 .session-features {
   background: var(--green);
@@ -323,10 +346,24 @@
   pointer-events: none;
 }
 .session-features h2, .session-features p { position: relative; }
+/* The label sits above the decorative pattern overlay like the other
+   children of this band. */
+.session-features .section-label { position: relative; margin-bottom: 14px; }
 .session-features h2 { color: var(--gold-light); margin-bottom: 8px; }
 .session-features > p { color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-bottom: 32px; }
-.session-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; position: relative; }
+/* Flex instead of a 3-column grid: the item basis is locked to a third of
+   the row, so a 5-item list always wraps as 3 + 2 with the short row
+   centred instead of hugging the left edge. */
+.session-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+}
 .session-card {
+  flex: 0 1 calc((100% - 32px) / 3);
+  max-width: 320px;
   background: rgba(45,106,79,0.45);
   border: 1px solid rgba(201,150,58,0.2);
   border-radius: var(--r-lg);
@@ -335,16 +372,20 @@
 .session-card-title { font-weight: 800; color: var(--gold-light); font-size: 0.95rem; margin-bottom: 8px; }
 .session-card p { color: rgba(255,255,255,0.75); font-size: 0.82rem; line-height: 1.65; }
 
-/* Stepper */
+/* Stepper â€” flex instead of a fixed 5-column grid so a shorter list
+   (4 steps on the adults page) stays centred in the row. */
 .journey-steps {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
   margin-top: 28px;
 }
 .step-card {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  flex: 1 1 200px;
+  max-width: 230px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-lg);
   padding: 20px 14px;
   text-align: center;
@@ -358,9 +399,9 @@
   font-size: 0.85rem; font-weight: 800;
 }
 .journey-step-num.gold { background: var(--gold); color: var(--white); }
-.journey-step-num.dark-green { background: var(--cream-dark); color: var(--green); }
+.journey-step-num.dark-green { background: var(--green); color: var(--white); }
 .step-card h4 { font-size: 0.92rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
-.step-card p { font-size: 0.8rem; color: var(--text-light); line-height: 1.6; }
+.step-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
 
 /* Booking CTA band */
 .booking-cta {
@@ -382,7 +423,7 @@
 }
 .booking-cta > * { position: relative; }
 .booking-cta h2 { font-size: 2rem; color: var(--gold-light); margin-bottom: 12px; }
-.booking-cta p { color: var(--cream); font-size: 1rem; max-width: 620px; margin: 0 auto; line-height: 1.7; }
+.booking-cta p { color: var(--text-on-dark); font-size: 1rem; max-width: 620px; margin: 0 auto; line-height: 1.7; }
 .booking-cta .note { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 16px; }
 .booking-cta .booking-btn { margin-top: 28px; }
 
@@ -393,12 +434,12 @@
   gap: 8px;
   align-items: center;
   font-size: 0.85rem;
-  color: var(--text-light);
+  color: var(--text-muted);
   margin: 28px 0 0;
 }
 .breadcrumbs a { color: var(--green); font-weight: 600; }
 .breadcrumbs a:hover { color: var(--gold); }
-.breadcrumbs span { font-weight: 600; color: var(--text-mid); }
+.breadcrumbs span { font-weight: 600; color: var(--text-body); }
 
 /* ============================================================
    COURSE PAGE 2026 UPDATES
@@ -510,8 +551,8 @@
 
 /* Contact card */
 .contact-card {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-xl);
   padding: 32px;
   box-shadow: var(--shadow-card);
@@ -535,8 +576,8 @@
   gap: 20px;
 }
 .related-course-card {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
@@ -553,7 +594,7 @@
 .related-course-title { font-size: 0.98rem; font-weight: 800; color: var(--green); line-height: 1.4; }
 .related-course-badge {
   align-self: flex-start;
-  background: var(--cream-dark);
+  background: var(--surface-inset);
   color: var(--green);
   font-size: 0.72rem;
   font-weight: 700;
@@ -574,8 +615,10 @@
    ============================================================ */
 @media (max-width: 1024px) {
   .courses-grid { grid-template-columns: repeat(2, 1fr); }
-  .session-grid { grid-template-columns: repeat(2, 1fr); }
-  .journey-steps { grid-template-columns: repeat(3, 1fr); }
+  .session-grid { gap: 12px; }
+  .session-card { flex: 0 1 calc((100% - 12px) / 2); }
+  .journey-steps { gap: 10px; }
+  .step-card { max-width: 240px; }
   .related-courses-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
@@ -587,21 +630,18 @@
   .suitability-grid { grid-template-columns: 1fr; }
   .curriculum-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
   .curriculum-card { max-width: none; }
-  .session-grid { grid-template-columns: 1fr; }
+  .session-card { flex: 0 1 100%; max-width: 100%; }
   .session-features { padding: 32px 24px; }
-  .journey-steps { grid-template-columns: 1fr; }
+  .step-card { max-width: 100%; }
   .booking-cta { padding: 32px 24px; }
   .related-courses-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
-   COURSE DETAILS — 2026 REDESIGN (scoped to detail page only)
+   COURSE DETAILS â€” 2026 REDESIGN (scoped to detail page only)
    ============================================================ */
 
-/* Hide emojis in headings without removing the element */
-.heading-emoji { display: none; }
-
-/* 1 — Hero: two columns (text left / image right) */
+/* 1 â€” Hero: two columns (text left / image right) */
 .details-hero {
   background: #1e4a2e;
   text-align: left;
@@ -636,10 +676,10 @@
   display: block;
 }
 
-/* 3 — Page grid + sticky sidebar */
+/* 3 â€” Page grid + sticky sidebar */
 .details-layout {
   display: grid;
-  grid-template-columns: 1fr 220px;
+  grid-template-columns: 1fr 280px;
   gap: 32px;
   align-items: start;
 }
@@ -663,8 +703,8 @@
 }
 .details-sidebar .related-course-body { padding: 14px; }
 .sidebar-cta-card {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-lg);
   padding: 20px 16px;
   text-align: center;
@@ -687,15 +727,15 @@
   line-height: 1.4;
 }
 
-/* 4 — Color rhythm (detail page only) */
+/* 4 â€” Color rhythm (detail page only) */
 .details-main .detail-section {
-  background: #f5f0e8;
+  background: var(--surface-alt);
   border-radius: var(--r-xl);
   padding: 48px 28px;
   margin-bottom: 32px;
 }
 .details-main .detail-section:has(.curriculum-grid) {
-  background: #f0ebe0;
+  background: var(--bg-page);
   border-top: 3px solid #EF9F27;
   border-bottom: 3px solid #EF9F27;
   overflow: visible;
@@ -703,11 +743,9 @@
   padding-right: 24px;
 }
 .details-main .curriculum-grid {
-  overflow: visible;
   padding: 8px;
 }
 .details-main .curriculum-card {
-  overflow: visible;
   min-width: 0;
   width: 100%;
 }
@@ -724,13 +762,13 @@
 }
 .details-layout .booking-cta { background: #2d5a3d; margin-bottom: 0; }
 
-/* 6 — FAQ gap */
+/* 6 â€” FAQ gap */
 .details-main .faq-list { gap: 0; margin-top: 28px; max-width: 100%; }
 .details-main .faq-item { margin-bottom: 8px; }
 
-/* 5 — Testimonials section */
+/* 5 â€” Testimonials section */
 .testimonials-section {
-  background: #f5f0e8;
+  background: var(--surface-alt);
   border-top: 2px solid #EF9F27;
   margin-bottom: 56px;
 }
@@ -747,13 +785,13 @@
   gap: 16px;
 }
 .testimonials-card {
-  background: var(--white);
+  background: var(--surface-card);
   border-radius: 12px;
   padding: 16px;
-  border: 0.5px solid #e0d8c8;
+  border: 0.5px solid var(--border-subtle);
 }
 .testimonials-stars { color: #EF9F27; font-size: 1rem; margin-bottom: 8px; letter-spacing: 1px; }
-.testimonials-text { font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; }
+.testimonials-text { font-size: 0.9rem; color: var(--text-body); line-height: 1.7; }
 .testimonials-text p { margin: 0 0 8px; }
 .testimonials-text p:last-child { margin-bottom: 0; }
 .testimonials-author {
@@ -765,9 +803,9 @@
   flex-wrap: wrap;
   gap: 6px;
 }
-.testimonials-author span { color: var(--text-light); font-weight: 600; }
+.testimonials-author span { color: var(--text-muted); font-weight: 600; }
 
-/* Problem 3 — Compact sections so each fits on screen (detail page only) */
+/* Problem 3 â€” Compact sections so each fits on screen (detail page only) */
 .details-main section,
 .details-sidebar section {
   padding-top: 48px;

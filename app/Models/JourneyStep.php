@@ -15,7 +15,6 @@ class JourneyStep extends Model
 
     protected $fillable = [
         'step_number',
-        'icon',
         'title',
         'description',
         'is_active',

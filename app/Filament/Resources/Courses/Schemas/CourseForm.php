@@ -106,7 +106,12 @@ class CourseForm
                                     ->label('نقاط التعلم')
                                     ->helperText('اتركه فارغًا ليُعرض محتوى «ماذا سيتعلم» الخاص بصفحة أطفال/كبار تلقائيًا — املأه فقط إذا أردت محتوى خاصًا بهذه الدورة.')
                                     ->schema([
-                                        TextInput::make('icon')->label('الأيقونة')->maxLength(10)->columnSpan(1),
+                                        TextInput::make('icon')
+                                            ->label('الأيقونة (إيموجي)')
+                                            ->helperText('إيموجي واحد فقط، مثال 📖 — لو سايبها فاضية هتظهر أيقونة افتراضية.')
+                                            ->default('📚')
+                                            ->maxLength(8)
+                                            ->columnSpan(1),
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
                                         RichEditor::make('description')->label('الوصف')->columnSpanFull(),
                                     ])

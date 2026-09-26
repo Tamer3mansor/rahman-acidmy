@@ -32,13 +32,14 @@ class LandingTestimonialForm
                     ->schema([
                         TextInput::make('author_name')
                             ->label('الاسم')
-                            ->required()
+                            ->required(fn ($get): bool => $get('type') !== TestimonialType::Video)
                             ->maxLength(255),
                         TextInput::make('author_location')
                             ->label('الموقع / البلد')
                             ->maxLength(255),
                     ])
-                    ->columns(2),
+                    ->columns(2)
+                    ->hidden(fn ($get): bool => $get('type') === TestimonialType::Video),
 
                 Section::make('المحتوى')
                     ->schema([

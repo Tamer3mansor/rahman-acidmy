@@ -17,21 +17,39 @@
         'homeUrl' => route('home'),
     ])
 
-    <section class="section lessons-hero">
+    <section class="section page-hero lessons-hero">
         <div class="container section-center">
             <span class="section-label">Exemples et explications gratuits</span>
             <h1 class="section-title">Découvrez par vous-même notre méthode et la qualité de l'enseignement</h1>
             <p class="section-sub">Un ensemble d'exemples et de mini-leçons qui expliquent le tajwid, la lecture et la langue arabe d'une façon simplifiée, soutenue par l'audio et les visuels.</p>
+
+            @include('landing.partials.search-form', [
+                'searchAction' => route('lessons.index'),
+                'searchTerm' => $search,
+                'searchHidden' => array_filter(['k' => $activeCategory?->value]),
+                'searchClearUrl' => route('lessons.index', ['k' => $activeCategory?->value]),
+                'searchPlaceholder' => 'Rechercher une leçon…',
+            ])
         </div>
     </section>
 
     <div class="container">
         <div class="filter-bar">
-            <a href="{{ route('lessons.index') }}" class="filter-btn {{ $activeCategory === null ? 'active' : '' }}">Tous</a>
+            <a href="{{ route('lessons.index', ['q' => $search]) }}" class="filter-btn {{ $activeCategory === null ? 'active' : '' }}">Tous</a>
             @foreach ($categories as $category)
-                <a href="{{ route('lessons.index', ['k' => $category->value]) }}" class="filter-btn {{ $activeCategory?->value === $category->value ? 'active' : '' }}">{{ $category->getLabel() }}</a>
+                <a href="{{ route('lessons.index', ['k' => $category->value, 'q' => $search]) }}" class="filter-btn {{ $activeCategory?->value === $category->value ? 'active' : '' }}">{{ $category->getLabel() }}</a>
             @endforeach
         </div>
+
+        @if ($lessons->total())
+            <p class="results-count">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <span><strong>{{ $lessons->total() }}</strong> {{ $lessons->total() > 1 ? 'leçons trouvées' : 'leçon trouvée' }}</span>
+                @if ($search !== null)
+                    <span class="results-count-term">« {{ $search }} »</span>
+                @endif
+            </p>
+        @endif
 
         @if ($lessons->count())
             <div class="lessons-grid">
@@ -58,8 +76,16 @@
                     </article>
                 @endforeach
             </div>
+
+            @include('landing.partials.pagination', ['paginator' => $lessons])
         @else
-            <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">Aucune leçon dans cette catégorie pour le moment.</p>
+            <p class="empty-state">
+                @if ($search !== null)
+                    Aucune leçon ne correspond à votre recherche.
+                @else
+                    Aucune leçon dans cette catégorie pour le moment.
+                @endif
+            </p>
         @endif
     </div>
 

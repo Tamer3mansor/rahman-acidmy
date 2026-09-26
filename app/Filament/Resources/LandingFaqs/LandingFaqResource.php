@@ -19,7 +19,7 @@ class LandingFaqResource extends Resource
 {
     protected static ?string $model = LandingFaq::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إدارة الصفحة الرئيسية';
+    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'الأسئلة الشائعة';
 
@@ -28,6 +28,8 @@ class LandingFaqResource extends Resource
     protected static ?string $pluralModelLabel = 'الأسئلة الشائعة';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQuestionMarkCircle;
+
+    protected static ?int $navigationSort = 6;
 
     public static function form(Schema $schema): Schema
     {

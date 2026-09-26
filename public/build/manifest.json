@@ -28,7 +28,7 @@
     "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-gOSCGOj5.css",
+    "file": "assets/app-DGlOknUH.css",
     "name": "app",
     "names": [
       "app.css"
@@ -37,7 +37,7 @@
     "isEntry": true
   },
   "resources/css/blog.css": {
-    "file": "assets/blog-xS8Uxmxo.css",
+    "file": "assets/blog-BFem4e3f.css",
     "name": "blog",
     "names": [
       "blog.css"
@@ -46,7 +46,7 @@
     "isEntry": true
   },
   "resources/css/courses.css": {
-    "file": "assets/courses-BFYDaBUv.css",
+    "file": "assets/courses-ddECxTl9.css",
     "name": "courses",
     "names": [
       "courses.css"
@@ -64,7 +64,7 @@
     "isEntry": true
   },
   "resources/css/landing.css": {
-    "file": "assets/landing-DMZKMkDx.css",
+    "file": "assets/landing-BHgHuC7T.css",
     "name": "landing",
     "names": [
       "landing.css"
@@ -73,7 +73,7 @@
     "isEntry": true
   },
   "resources/css/lessons.css": {
-    "file": "assets/lessons-C422e13Z.css",
+    "file": "assets/lessons-DSDQlkQX.css",
     "name": "lessons",
     "names": [
       "lessons.css"
@@ -82,7 +82,7 @@
     "isEntry": true
   },
   "resources/css/price.css": {
-    "file": "assets/price-Du6PKXRq.css",
+    "file": "assets/price-BFfY-EJ3.css",
     "name": "price",
     "names": [
       "price.css"
@@ -97,7 +97,7 @@
     "isEntry": true
   },
   "resources/js/landing.js": {
-    "file": "assets/landing-CPyuqSHl.js",
+    "file": "assets/landing-BEE9x2V0.js",
     "name": "landing",
     "src": "resources/js/landing.js",
     "isEntry": true

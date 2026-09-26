@@ -1,7 +1,7 @@
 @import './_tokens.css';
 
 /* ============================================================
-   PRICE — page-specific styles (loaded AFTER landing.css)
+   PRICE â€” page-specific styles (loaded AFTER landing.css)
    Only components unique to the pricing page live here; design
    tokens and shared components come from landing.css.
    ============================================================ */
@@ -10,7 +10,7 @@
 
 .section { padding: 60px 0; }
 
-.section-white { background-color: var(--white); }
+.section-white { background-color: var(--bg-band); }
 
 /* ============================================================
    PRICE HERO (green band: title + duration filter + packages)
@@ -55,8 +55,8 @@
 }
 
 .package-card {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-xl);
   padding: 22px 20px;
   display: flex;
@@ -74,7 +74,7 @@
 /* Featured pack highlight */
 .package-card.featured {
   border: 2px solid var(--gold);
-  background: #FFFDF9;
+  background: var(--surface-card);
   box-shadow: 0 8px 30px rgba(201, 150, 58, 0.15);
 }
 
@@ -113,13 +113,13 @@
 
 .pack-desc {
   font-size: 0.82rem;
-  color: var(--text-light);
+  color: var(--text-muted);
   min-height: 32px;
   margin-bottom: 12px;
 }
 
 .pack-classes-box {
-  background: var(--cream);
+  background: var(--surface-alt);
   border-radius: var(--r-md);
   padding: 10px;
   text-align: center;
@@ -135,14 +135,14 @@
 
 .pack-classes-sub {
   font-size: 0.75rem;
-  color: var(--text-mid);
+  color: var(--text-body);
   margin-top: 3px;
 }
 
 /* Pricing display */
 .pack-price-box {
   margin-bottom: 14px;
-  border-bottom: 1px solid var(--cream-dark);
+  border-bottom: 1px solid var(--border-subtle);
   padding-bottom: 12px;
 }
 
@@ -156,7 +156,7 @@
 .price-amount {
   font-size: 1.85rem;
   font-weight: 800;
-  color: var(--text-dark);
+  color: var(--text-strong);
 }
 
 .price-currency {
@@ -181,7 +181,7 @@
 
 .pack-features li {
   font-size: 0.84rem;
-  color: var(--text-mid);
+  color: var(--text-body);
   margin-bottom: 7px;
   display: flex;
   align-items: center;
@@ -211,13 +211,13 @@
 .duration-filter-label {
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--text-mid);
+  color: var(--text-body);
 }
 
 .duration-filter-options {
   display: flex;
   gap: 8px;
-  background: var(--cream);
+  background: var(--surface-alt);
   border-radius: var(--r-md);
   padding: 5px;
 }
@@ -225,7 +225,7 @@
 .duration-option {
   border: none;
   background: transparent;
-  color: var(--text-mid);
+  color: var(--text-body);
   font-family: inherit;
   font-size: 0.9rem;
   font-weight: 600;
@@ -270,12 +270,12 @@
 
 .price-compare {
   font-size: 0.72rem;
-  color: var(--text-light);
+  color: var(--text-muted);
   margin-bottom: 2px;
 }
 
 .price-general {
-  color: var(--text-mid);
+  color: var(--text-body);
   font-weight: 600;
 }
 
@@ -308,8 +308,8 @@
 }
 
 .included-card {
-  background: var(--white);
-  border: 1px solid var(--cream-dark);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-lg);
   padding: 24px 18px;
   text-align: center;
@@ -324,7 +324,7 @@
 .included-icon {
   width: 50px;
   height: 50px;
-  background: var(--cream);
+  background: var(--surface-alt);
   color: var(--gold);
   border-radius: 50%;
   display: flex;
@@ -343,7 +343,7 @@
 
 .included-desc {
   font-size: 0.82rem;
-  color: var(--text-mid);
+  color: var(--text-body);
 }
 
 /* ============================================================
@@ -374,7 +374,7 @@
 }
 
 .cta-banner-sub {
-  color: var(--cream);
+  color: var(--text-on-dark);
   font-size: 1.05rem;
   max-width: 650px;
   margin: 0 auto 30px;

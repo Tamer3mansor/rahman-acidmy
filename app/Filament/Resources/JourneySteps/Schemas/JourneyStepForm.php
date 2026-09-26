@@ -20,10 +20,6 @@ class JourneyStepForm
                             ->label('رقم الخطوة')
                             ->required()
                             ->numeric(),
-                        TextInput::make('icon')
-                            ->label('الأيقونة (إيموجي)')
-                            ->maxLength(50)
-                            ->placeholder('أدخل إيموجي أو رمزاً نصياً'),
                         TextInput::make('title')
                             ->label('العنوان')
                             ->required()

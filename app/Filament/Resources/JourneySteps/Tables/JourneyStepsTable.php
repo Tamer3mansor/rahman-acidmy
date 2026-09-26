@@ -19,9 +19,6 @@ class JourneyStepsTable
                     ->label('الرقم')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('icon')
-                    ->label('الأيقونة')
-                    ->searchable(),
                 TextColumn::make('title')
                     ->label('العنوان')
                     ->searchable(),

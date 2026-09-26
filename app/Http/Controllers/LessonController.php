@@ -5,29 +5,41 @@ namespace App\Http\Controllers;
 use App\Enums\LessonCategory;
 use App\Models\LandingSettings;
 use App\Models\Lesson;
+use Illuminate\Http\Request;
 
 class LessonController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $settings = LandingSettings::singleton();
 
-        $activeCategory = request()->has('k') && LessonCategory::tryFrom(request()->input('k')) !== null
-            ? LessonCategory::from(request()->input('k'))
+        $activeCategory = $request->has('k') && LessonCategory::tryFrom($request->input('k')) !== null
+            ? LessonCategory::from($request->input('k'))
             : null;
+
+        $search = $this->normalizeSearch($request->input('q'));
 
         $lessons = Lesson::query()
             ->active()
             ->when($activeCategory !== null, fn ($q) => $q->where('category', $activeCategory->value))
+            ->when($search, fn ($q, $term) => $q->where(function ($sq) use ($term) {
+                $like = '%'.$term.'%';
+                $sq->where('title', 'like', $like)
+                    ->orWhere('excerpt', 'like', $like)
+                    ->orWhere('body', 'like', $like);
+            }))
             ->with('course')
             ->orderBy('sort_order')
-            ->get();
+            ->paginate(9)
+            ->withQueryString();
 
         return view('lessons.index', [
             'settings' => $settings,
             'lessons' => $lessons,
             'activeCategory' => $activeCategory,
+            'search' => $search,
             'categories' => LessonCategory::cases(),
+            'isIndexed' => $search === null && $lessons->currentPage() === 1,
         ]);
     }
 
@@ -47,6 +59,20 @@ class LessonController extends Controller
             'bodyHtml' => $bodyHtml,
             'toc' => $toc,
         ]);
+    }
+
+    /**
+     * Collapse whitespace and cap the length of a user supplied search term.
+     */
+    private function normalizeSearch(?string $term): ?string
+    {
+        $term = trim((string) preg_replace('/\s+/u', ' ', (string) $term));
+
+        if ($term === '') {
+            return null;
+        }
+
+        return mb_substr($term, 0, 100);
     }
 
     /**

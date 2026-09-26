@@ -46,7 +46,7 @@
                     : asset('storage/'.$testimonial->media_path);
             @endphp
             <div class="tv-player" data-tv-player>
-                <video class="tv-video" data-tv-video playsinline loop preload="metadata">
+                <video class="tv-video" data-tv-video playsinline loop preload="{{ $videoPreload ?? 'metadata' }}">
                     <source src="{{ $videoUrl }}" type="{{ $videoExtension === 'webm' ? 'video/webm' : 'video/mp4' }}">
                 </video>
                 <button class="tv-play" data-tv-play type="button" aria-label="تشغيل الفيديو">

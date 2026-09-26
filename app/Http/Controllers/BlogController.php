@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\LandingSettings;
+use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $settings = LandingSettings::singleton();
 
@@ -17,13 +18,15 @@ class BlogController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        $activeCategorySlug = request()->input('k');
+        $activeCategorySlug = $request->input('k');
+        $search = $this->normalizeSearch($request->input('q'));
 
-        $featured = $activeCategorySlug === null
+        $featured = $activeCategorySlug === null && $search === null
             ? BlogPost::published()->where('is_featured', true)->latest('published_at')->first()
             : null;
 
         $posts = BlogPost::published()
+            ->with('categories')
             ->when($featured !== null, fn ($q) => $q->where('id', '!=', $featured->id))
             ->when($activeCategorySlug, function ($q, $slug) use ($categories) {
                 $category = $categories->firstWhere('slug', $slug);
@@ -31,16 +34,25 @@ class BlogController extends Controller
                     $q->whereHas('categories', fn ($cq) => $cq->where('blog_categories.id', $category->id));
                 }
             })
+            ->when($search, fn ($q, $term) => $q->where(function ($sq) use ($term) {
+                $like = '%'.$term.'%';
+                $sq->where('title', 'like', $like)
+                    ->orWhere('excerpt', 'like', $like)
+                    ->orWhere('body', 'like', $like);
+            }))
             ->orderBy('sort_order')
             ->latest('published_at')
-            ->paginate(9);
+            ->paginate(9)
+            ->withQueryString();
 
         return view('blog.index', [
             'settings' => $settings,
             'categories' => $categories,
             'activeCategorySlug' => $activeCategorySlug,
+            'search' => $search,
             'featured' => $featured,
             'posts' => $posts,
+            'isIndexed' => $search === null && $posts->currentPage() === 1,
         ]);
     }
 
@@ -68,6 +80,20 @@ class BlogController extends Controller
             'bodyHtml' => $bodyHtml,
             'toc' => $toc,
         ]);
+    }
+
+    /**
+     * Collapse whitespace and cap the length of a user supplied search term.
+     */
+    private function normalizeSearch(?string $term): ?string
+    {
+        $term = trim((string) preg_replace('/\s+/u', ' ', (string) $term));
+
+        if ($term === '') {
+            return null;
+        }
+
+        return mb_substr($term, 0, 100);
     }
 
     /**

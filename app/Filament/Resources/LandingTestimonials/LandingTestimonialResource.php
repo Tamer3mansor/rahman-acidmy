@@ -19,7 +19,7 @@ class LandingTestimonialResource extends Resource
 {
     protected static ?string $model = LandingTestimonial::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إدارة الصفحة الرئيسية';
+    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'آراء العملاء';
 
@@ -28,6 +28,8 @@ class LandingTestimonialResource extends Resource
     protected static ?string $pluralModelLabel = 'آراء العملاء';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
+
+    protected static ?int $navigationSort = 8;
 
     public static function form(Schema $schema): Schema
     {

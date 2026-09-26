@@ -37,19 +37,24 @@
                 @endif
             </div>
 
-            <div class="trust-videos">
-                @forelse ($videoTestimonials as $testimonial)
-                    @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
-                @empty
-                    <div class="trust-video-card" style="aspect-ratio:16/9">
-                        <div class="trust-video-placeholder">
-                            <div class="play-sm">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <div class="trust-videos-wrap">
+                <div class="trust-videos" data-trust-videos>
+                    @forelse ($videoTestimonials as $index => $testimonial)
+                        @include('landing.partials.testimonial-card', [
+                            'testimonial' => $testimonial,
+                            'videoPreload' => $index === 0 ? 'metadata' : 'none',
+                        ])
+                    @empty
+                        <div class="trust-video-card" style="aspect-ratio:16/9">
+                            <div class="trust-video-placeholder">
+                                <div class="play-sm">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                </div>
+                                <span>Test vidéo · Parents</span>
                             </div>
-                            <span>Test vidéo · Parents</span>
                         </div>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
 
             <div class="trust-screenshots trust-marquee {{ $googleTestimonials->count() < 2 ? 'trust-marquee--static' : '' }}" data-direction="down">

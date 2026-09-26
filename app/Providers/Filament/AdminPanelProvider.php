@@ -67,12 +67,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->navigationGroups([
-                'إدارة الصفحة الرئيسية',
+                'صفحات الدورات',
+                'إعدادات الصفحة الرئيسية',
                 'المدونة',
-                'الدورات',
                 'الحصص المجانية',
                 'الأسعار',
-                'إعدادات الصفحة',
                 'النظام',
             ])
             ->widgets([

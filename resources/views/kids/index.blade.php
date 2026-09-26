@@ -182,7 +182,7 @@
     </section>
 
     @if (filled($pageSettings->kids_curriculum_items) || filled($pageSettings->kids_curriculum_label) || filled($pageSettings->kids_curriculum_title) || filled($pageSettings->kids_curriculum_subtitle))
-        <section class="section">
+        <section class="section section-white">
             <div class="container">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
                     <span class="section-label">{{ $pageSettings->kids_curriculum_label ?: 'Le programme' }}</span>
@@ -194,7 +194,14 @@
                 <div class="curriculum-grid">
                     @foreach ($pageSettings->kids_curriculum_items as $subject)
                         <div class="curriculum-card">
-                            <div class="icon">{{ $subject['icon'] ?? '' }}</div>
+                            @php $icon = \App\Support\CourseContentResolver::curriculumIcon($subject['icon'] ?? null); @endphp
+                            <div class="icon {{ $icon['kind'] === 'text' ? 'icon-text' : '' }}">
+                                @if ($icon['kind'] === 'emoji' || $icon['kind'] === 'text')
+                                    {{ $icon['value'] }}
+                                @else
+                                    <i class="{{ $icon['value'] }}"></i>
+                                @endif
+                            </div>
                             <h3>{{ $subject['title'] }}</h3>
                             <p>{{ $subject['description'] }}</p>
                         </div>
@@ -204,7 +211,7 @@
         </section>
     @endif
 
-    <section class="section section-white">
+    <section class="section">
         <div class="container">
             <div class="catalog-head section-center" style="margin-bottom: 32px;">
                 <span class="section-label">{{ $pageSettings->kids_journey_label ?: 'Comment ça marche' }}</span>

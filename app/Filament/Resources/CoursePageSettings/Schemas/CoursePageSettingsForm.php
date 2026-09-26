@@ -234,7 +234,12 @@ class CoursePageSettingsForm
                     Repeater::make($audience.'_curriculum_items')
                         ->label('المواضيع')
                         ->schema([
-                            TextInput::make('icon')->label('الأيقونة')->columnSpan(1),
+                            TextInput::make('icon')
+                                ->label('الأيقونة (إيموجي)')
+                                ->helperText('إيموجي واحد فقط، مثال 📖 — لو سايبها فاضية هتظهر أيقونة افتراضية.')
+                                ->default('📚')
+                                ->maxLength(8)
+                                ->columnSpan(1),
                             TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
                             Textarea::make('description')->label('الوصف')->rows(2)->columnSpanFull(),
                         ])
@@ -254,8 +259,13 @@ class CoursePageSettingsForm
                     Repeater::make($audience.'_about_items')
                         ->label('العناصر')
                         ->schema([
-                            TextInput::make('icon')->label('الأيقونة')->columnSpan(1),
-                            TextInput::make('title')->label('العنوان')->columnSpan(1),
+                            TextInput::make('icon')
+                                ->label('الأيقونة (إيموجي)')
+                                ->helperText('إيموجي واحد فقط، مثال 📖 — لو سايبها فاضية هتظهر أيقونة افتراضية.')
+                                ->default('📚')
+                                ->maxLength(8)
+                                ->columnSpan(1),
+                            TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
                             Textarea::make('description')->label('الوصف')->rows(2)->columnSpanFull(),
                         ])
                         ->columns(2)

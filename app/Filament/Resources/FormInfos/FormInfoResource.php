@@ -19,7 +19,7 @@ class FormInfoResource extends Resource
 {
     protected static ?string $model = FormInfo::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة';
+    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'نقاط نموذج التواصل';
 
