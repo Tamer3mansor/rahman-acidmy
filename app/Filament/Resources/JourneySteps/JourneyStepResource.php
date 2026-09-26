@@ -19,7 +19,7 @@ class JourneyStepResource extends Resource
 {
     protected static ?string $model = JourneyStep::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
+    protected static UnitEnum|string|null $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'خطوات الرحلة';
 

@@ -19,6 +19,9 @@
     --brand-text: #1A2E27;
     --brand-text-muted: #4A5A52;
     --brand-border: #D8E2DC;
+    /* inline chips (code, path badges) inside documentation pages */
+    --brand-chip-bg: #E7F2EC;
+    --brand-chip-text: #2D6A4F;
 }
 
 /* ==============================
@@ -190,6 +193,8 @@
     --brand-text-muted: #AFC2B8;
     --brand-border: #2C4A3C;
     --brand-cream: #0E1B15;
+    --brand-chip-bg: #1B3A2C;
+    --brand-chip-text: #8FD3B0;
 }
 
 .dark .fi-body {

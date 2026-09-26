@@ -384,5 +384,85 @@ function initTrustVideosColumn() {
     update();
 }
 
+function initHeroVideo() {
+    const video = document.querySelector('[data-hero-video]');
+
+    if (!video) return;
+
+    const muteBtn = document.querySelector('[data-hero-mute]');
+    const icoSound = muteBtn?.querySelector('[data-hero-ico-sound]');
+    const icoMuted = muteBtn?.querySelector('[data-hero-ico-muted]');
+    const soundLabel = muteBtn?.querySelector('[data-hero-sound-label]');
+
+    let visitorChose = false;
+
+    const play = () => {
+        const attempt = video.play();
+
+        if (attempt !== undefined && typeof attempt.catch === 'function') {
+            attempt.catch(() => { /* blocked until the visitor interacts */ });
+        }
+    };
+
+    const setSound = (on) => {
+        video.muted = !on;
+
+        if (!muteBtn) return;
+
+        muteBtn.classList.toggle('is-muted', !on);
+        muteBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        muteBtn.setAttribute('aria-label', on ? 'كتم الصوت' : 'تشغيل الصوت');
+        if (icoSound) icoSound.hidden = !on;
+        if (icoMuted) icoMuted.hidden = on;
+        if (soundLabel) soundLabel.textContent = on ? 'كتم الصوت' : 'تشغيل الصوت';
+    };
+
+    const enableSound = () => {
+        if (visitorChose) return;
+
+        setSound(true);
+        play();
+    };
+
+    muteBtn?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        visitorChose = true;
+        setSound(video.muted);
+        if (video.paused) play();
+    });
+
+    video.addEventListener('click', () => {
+        visitorChose = true;
+        if (video.paused) {
+            setSound(true);
+            play();
+        } else {
+            video.pause();
+        }
+    });
+
+    ['pointerdown', 'touchstart', 'keydown', 'wheel'].forEach((evt) => {
+        window.addEventListener(evt, enableSound, { once: true, passive: true });
+    });
+
+    setSound(false);
+
+    if (!video.hasAttribute('autoplay')) return;
+
+    video.muted = false;
+    const attempt = video.play();
+
+    if (attempt === undefined || typeof attempt.then !== 'function') return;
+
+    attempt
+        .then(() => { if (!visitorChose) setSound(true); })
+        .catch(() => {
+            if (visitorChose) return;
+            setSound(false);
+            play();
+        });
+}
+
 initTeachersCarousel();
 initTrustVideosColumn();
+initHeroVideo();

@@ -19,7 +19,7 @@ class BlogCategoryResource extends Resource
 {
     protected static ?string $model = BlogCategory::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'المدونة';
+    protected static UnitEnum|string|null $navigationGroup = 'المدونة';
 
     protected static ?string $navigationLabel = 'التصنيفات';
 

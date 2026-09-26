@@ -19,7 +19,7 @@ class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'صفحات الدورات';
+    protected static UnitEnum|string|null $navigationGroup = 'صفحات الدورات';
 
     protected static ?string $navigationLabel = 'الدورات';
 

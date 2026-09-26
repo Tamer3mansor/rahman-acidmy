@@ -19,7 +19,7 @@ class HeroTrustPillResource extends Resource
 {
     protected static ?string $model = HeroTrustPill::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
+    protected static UnitEnum|string|null $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'شارات الثقة بالهيرو';
 

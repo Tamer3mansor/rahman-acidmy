@@ -19,7 +19,7 @@ class BlogPostResource extends Resource
 {
     protected static ?string $model = BlogPost::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'المدونة';
+    protected static UnitEnum|string|null $navigationGroup = 'المدونة';
 
     protected static ?string $navigationLabel = 'المقالات';
 

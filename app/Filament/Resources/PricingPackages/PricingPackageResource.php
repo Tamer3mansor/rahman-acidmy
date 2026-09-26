@@ -19,7 +19,7 @@ class PricingPackageResource extends Resource
 {
     protected static ?string $model = PricingPackage::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'الأسعار';
+    protected static UnitEnum|string|null $navigationGroup = 'الأسعار';
 
     protected static ?string $navigationLabel = 'باقات الأسعار';
 

@@ -18,7 +18,7 @@ class LandingSettingsResource extends Resource
 {
     protected static ?string $model = LandingSettings::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
+    protected static UnitEnum|string|null $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'إعدادات الصفحة';
 

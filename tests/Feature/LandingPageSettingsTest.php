@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\CompareItemType;
+use App\Enums\MediaType;
 use App\Filament\Resources\LandingSettings\Pages\EditLandingSettings;
 use App\Models\CompareItem;
 use App\Models\ContactSubmission;
@@ -163,6 +164,94 @@ class LandingPageSettingsTest extends TestCase
         $this->assertNotNull(LandingSettings::singleton()->hero_video_path);
     }
 
+    public function test_hero_video_renders_a_sound_toggle(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        $settings = LandingSettings::singleton();
+        $settings->update([
+            'hero_media_type' => MediaType::Video,
+            'hero_video_path' => 'hero-media/hero.mp4',
+            'hero_video_autoplay' => true,
+            'hero_video_loop' => true,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('data-hero-video', false)
+            ->assertSee('data-hero-mute', false)
+            ->assertSee('type="video/mp4"', false)
+            ->assertSee('autoplay', false)
+            ->assertSee('loop', false);
+    }
+
+    public function test_hero_sound_toggle_is_hidden_for_image_media(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update([
+            'hero_media_type' => MediaType::Image,
+            'hero_video_path' => 'hero-media/hero.jpg',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('data-hero-mute', false);
+    }
+
+    public function test_seo_guide_page_renders_its_section_headings(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/admin/seo-guide')
+            ->assertOk()
+            ->assertSee('مقدمة في السيو (SEO) للموقع')
+            ->assertSee('1. عنوان الصفحة (Meta Title)')
+            ->assertSee('2. وصف الصفحة (Meta Description)')
+            ->assertSee('3. صورة المشاركة (OG Image)');
+    }
+
+    public function test_dashboard_guide_lists_the_real_sidebar_labels(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/admin/dashboard-guide');
+
+        $response->assertOk()
+            ->assertSee('دليل التحكم في عناصر الموقع')
+            ->assertSee('دليل خريطة التحكم في عناصر الموقع')
+            ->assertSee('طلبات التواصل');
+
+        foreach ([
+            'إعدادات الصفحة',
+            'شارات الثقة بالهيرو',
+            'آراء العملاء',
+            'المعلمين',
+            'الأسئلة الشائعة',
+            'خطوات الرحلة',
+            'بنود المقارنة',
+            'نقاط نموذج التواصل',
+            'الدورات',
+            'إعدادات الدورات',
+            'الحصص المجانية',
+            'باقات الأسعار',
+            'إعدادات محتويات الباقات',
+            'المقالات',
+            'التصنيفات',
+            'إعدادات النظام',
+            'المستخدمون',
+            'سجل الأخطاء',
+            'دليل السيو (SEO)',
+        ] as $label) {
+            $response->assertSee($label);
+        }
+
+        $response->assertDontSee('Landing Settings')
+            ->assertDontSee('Contact Submissions')
+            ->assertDontSee('heroicon-o-map');
+    }
+
     public function test_admin_enum_tables_and_forms_render(): void
     {
         $this->seed([CompareItemsSeeder::class, JourneyStepsSeeder::class, FormInfosSeeder::class]);
@@ -181,7 +270,7 @@ class LandingPageSettingsTest extends TestCase
 
         $user = User::factory()->create();
 
-        foreach (['/admin/compare-items', '/admin/journey-steps', '/admin/form-infos', '/admin/contact-submissions', '/admin/landing-teachers', '/admin/landing-faqs'] as $url) {
+        foreach (['/admin/compare-items', '/admin/journey-steps', '/admin/form-infos', '/admin/contact-submissions', '/admin/landing-teachers', '/admin/landing-faqs', '/admin/seo-guide', '/admin/dashboard-guide'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
 

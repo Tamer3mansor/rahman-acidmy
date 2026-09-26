@@ -15,7 +15,7 @@ class ErrorLogResource extends Resource
 {
     protected static ?string $model = ErrorLog::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'النظام';
+    protected static UnitEnum|string|null $navigationGroup = 'النظام';
 
     protected static ?string $navigationLabel = 'سجل الأخطاء';
 

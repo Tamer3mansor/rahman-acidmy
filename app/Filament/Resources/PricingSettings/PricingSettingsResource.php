@@ -18,7 +18,7 @@ class PricingSettingsResource extends Resource
 {
     protected static ?string $model = PricingSettings::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'الأسعار';
+    protected static UnitEnum|string|null $navigationGroup = 'الأسعار';
 
     protected static ?string $navigationLabel = 'إعدادات محتويات الباقات';
 

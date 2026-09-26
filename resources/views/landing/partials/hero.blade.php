@@ -45,9 +45,22 @@
                     @if ($settings->hero_media_type === \App\Enums\MediaType::Image && $settings->hero_video_path)
                         <img src="{{ \Illuminate\Support\Str::startsWith($settings->hero_video_path, ['http://', 'https://']) ? $settings->hero_video_path : asset('storage/' . $settings->hero_video_path) }}" alt="{{ $settings->hero_badge }}">
                     @elseif ($settings->hero_media_type === \App\Enums\MediaType::Video && $settings->hero_video_path)
-                        <video id="heroVideo" {{ $settings->hero_video_autoplay ? 'autoplay' : '' }} {{ $settings->hero_video_loop ? 'loop' : '' }} muted playsinline poster="">
-                            <source src="{{ \Illuminate\Support\Str::startsWith($settings->hero_video_path, ['http://', 'https://']) ? $settings->hero_video_path : asset('storage/' . $settings->hero_video_path) }}" type="video/mp4">
+                        @php
+                            $heroVideoExtension = strtolower(pathinfo($settings->hero_video_path, PATHINFO_EXTENSION));
+                            $heroVideoType = match ($heroVideoExtension) {
+                                'webm' => 'video/webm',
+                                'ogv', 'ogg' => 'video/ogg',
+                                default => 'video/mp4',
+                            };
+                        @endphp
+                        <video id="heroVideo" data-hero-video {{ $settings->hero_video_autoplay ? 'autoplay' : '' }} {{ $settings->hero_video_loop ? 'loop' : '' }} muted playsinline preload="auto">
+                            <source src="{{ \Illuminate\Support\Str::startsWith($settings->hero_video_path, ['http://', 'https://']) ? $settings->hero_video_path : asset('storage/' . $settings->hero_video_path) }}" type="{{ $heroVideoType }}">
                         </video>
+                        <button class="hero-sound is-muted" type="button" data-hero-mute aria-pressed="false" aria-label="تشغيل الصوت">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-hero-ico-sound hidden><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-hero-ico-muted><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/><path d="M18.5 4.68 23 9.18 21.4 10.8 17.22 6.6 18.5 4.68zm0 0L23 14.82 21.4 13.2l-4.18-4.2L18.5 4.68z"/></svg>
+                            <span data-hero-sound-label>تشغيل الصوت</span>
+                        </button>
                     @else
                         <div class="video-placeholder" id="heroPlaceholder">
                             <div class="play-icon">

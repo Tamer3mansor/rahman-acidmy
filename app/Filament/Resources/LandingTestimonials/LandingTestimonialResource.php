@@ -19,7 +19,7 @@ class LandingTestimonialResource extends Resource
 {
     protected static ?string $model = LandingTestimonial::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
+    protected static UnitEnum|string|null $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'آراء العملاء';
 

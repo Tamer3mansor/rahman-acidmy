@@ -18,7 +18,7 @@ class ContactSubmissionResource extends Resource
 {
     protected static ?string $model = ContactSubmission::class;
 
-    protected static null|string|UnitEnum $navigationGroup = null;
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
 

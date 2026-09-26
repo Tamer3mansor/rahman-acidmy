@@ -19,7 +19,7 @@ class LessonResource extends Resource
 {
     protected static ?string $model = Lesson::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'الحصص المجانية';
+    protected static UnitEnum|string|null $navigationGroup = 'الحصص المجانية';
 
     protected static ?string $navigationLabel = 'الحصص المجانية';
 

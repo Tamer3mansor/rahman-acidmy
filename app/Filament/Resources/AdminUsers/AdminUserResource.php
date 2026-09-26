@@ -19,7 +19,7 @@ class AdminUserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'النظام';
+    protected static UnitEnum|string|null $navigationGroup = 'النظام';
 
     protected static ?string $navigationLabel = 'المستخدمون';
 

@@ -18,7 +18,7 @@ class SystemSettingsResource extends Resource
 {
     protected static ?string $model = SystemSettings::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'النظام';
+    protected static UnitEnum|string|null $navigationGroup = 'النظام';
 
     protected static ?string $navigationLabel = 'إعدادات النظام';
 

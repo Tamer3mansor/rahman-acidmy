@@ -19,7 +19,7 @@ class CompareItemResource extends Resource
 {
     protected static ?string $model = CompareItem::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'إعدادات الصفحة الرئيسية';
+    protected static UnitEnum|string|null $navigationGroup = 'إعدادات الصفحة الرئيسية';
 
     protected static ?string $navigationLabel = 'بنود المقارنة';
 

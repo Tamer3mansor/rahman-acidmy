@@ -18,7 +18,7 @@ class CoursePageSettingsResource extends Resource
 {
     protected static ?string $model = CoursePageSettings::class;
 
-    protected static null|string|UnitEnum $navigationGroup = 'صفحات الدورات';
+    protected static UnitEnum|string|null $navigationGroup = 'صفحات الدورات';
 
     protected static ?string $navigationLabel = 'إعدادات الدورات';
 
