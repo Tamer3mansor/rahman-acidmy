@@ -11,38 +11,55 @@ use Illuminate\Support\Facades\Schema;
  *     course.{block}  →  {audience}_shared_{block}_items  →  {audience}_{block}_items
  *
  * All fields are nullable so production gains the tier without losing data.
+ *
+ * Columns are guarded by `hasColumn` so a re-run after an aborted ALTER TABLE
+ * skips what is already there instead of failing on a duplicate column.
  */
 return new class extends Migration
 {
+    /** @var array<int, string> */
+    private array $added = [];
+
     public function up(): void
     {
-        Schema::table('course_page_settings', function (Blueprint $table) {
-            foreach (['kids', 'adults'] as $audience) {
-                $table->json($audience.'_shared_curriculum_items')->nullable()->after($audience.'_form_subtitle');
-                $table->json($audience.'_shared_about_items')->nullable()->after($audience.'_shared_curriculum_items');
-                $table->json($audience.'_shared_session_items')->nullable()->after($audience.'_shared_about_items');
-                $table->json($audience.'_shared_journey_items')->nullable()->after($audience.'_shared_session_items');
-                $table->json($audience.'_shared_faq_items')->nullable()->after($audience.'_shared_journey_items');
+        foreach (['kids', 'adults'] as $audience) {
+            $blocks = [
+                'curriculum' => $audience.'_form_subtitle',
+                'about' => $audience.'_shared_curriculum_items',
+                'session' => $audience.'_shared_about_items',
+                'journey' => $audience.'_shared_session_items',
+                'faq' => $audience.'_shared_journey_items',
+            ];
+
+            foreach ($blocks as $block => $after) {
+                $this->addJson($audience.'_shared_'.$block.'_items', $after);
             }
-        });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('course_page_settings', function (Blueprint $table) {
-            $columns = [];
+        $columns = $this->added;
 
-            foreach (['kids', 'adults'] as $audience) {
-                $columns = array_merge($columns, [
-                    $audience.'_shared_curriculum_items',
-                    $audience.'_shared_about_items',
-                    $audience.'_shared_session_items',
-                    $audience.'_shared_journey_items',
-                    $audience.'_shared_faq_items',
-                ]);
-            }
+        if ($columns === []) {
+            return;
+        }
 
+        Schema::table('course_page_settings', function (Blueprint $table) use ($columns) {
             $table->dropColumn($columns);
         });
+    }
+
+    private function addJson(string $column, ?string $after = null): void
+    {
+        if (Schema::hasColumn('course_page_settings', $column)) {
+            return;
+        }
+
+        Schema::table('course_page_settings', function (Blueprint $table) use ($column, $after) {
+            $table->json($column)->nullable()->after($after);
+        });
+
+        $this->added[] = $column;
     }
 };
