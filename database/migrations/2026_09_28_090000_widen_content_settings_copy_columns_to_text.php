@@ -92,8 +92,8 @@ return new class extends Migration
             $collation = (string) $column->COLLATION_NAME;
 
             $definitions[] = $charset === ''
-                ? sprintf('MODIFY COLUMN `%s` TEXT %s', $name, $nullability)
-                : sprintf('MODIFY COLUMN `%s` TEXT CHARACTER SET `%s` COLLATE `%s` %s', $name, $charset, $collation, $nullability);
+                ? sprintf('COLUMN `%s` TEXT %s', $name, $nullability)
+                : sprintf('COLUMN `%s` TEXT CHARACTER SET `%s` COLLATE `%s` %s', $name, $charset, $collation, $nullability);
         }
 
         DB::statement(sprintf(
