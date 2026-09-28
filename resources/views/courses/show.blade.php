@@ -2,9 +2,10 @@
     $backUrl = $course->audience === \App\Enums\CourseAudience::Kids
         ? route('kids.index')
         : route('adults.index');
-    $backLabel = $course->audience === \App\Enums\CourseAudience::Kids
-        ? 'Cours des enfants'
-        : 'Cours des adultes';
+    $backLabel = $pageSettings->{'details_'.$course->audience->value.'_back_label'}
+        ?: ($course->audience === \App\Enums\CourseAudience::Kids
+            ? 'Cours des enfants'
+            : 'Cours des adultes');
     $activePage = $course->audience === \App\Enums\CourseAudience::Kids ? 'kids' : 'adults';
     $faqCta1Text = $course->audience === \App\Enums\CourseAudience::Kids
         ? $pageSettings->kids_faq_cta1_text
@@ -49,7 +50,7 @@
     <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
-        "@type": "Course",
+        "@type": @json($course->schema_type ?: 'Course'),
         "name": @json($course->title),
         "description": @json($course->description),
         "provider": {
@@ -97,6 +98,10 @@
 
 @section('content')
 
+    @php
+        $copy = $pageSettings->detailsCopy($course->audience);
+    @endphp
+
     @include('landing.partials.nav', [
         'activePage' => $activePage,
         'homeUrl' => route('home'),
@@ -109,19 +114,19 @@
                     @if ($course->icon)
                         <img src="{{ asset('storage/'.$course->icon) }}" class="details-hero-icon" alt="">
                     @endif
-                    {{ $course->audience === \App\Enums\CourseAudience::Kids
+                    {{ $copy['hero_label'] ?? ($course->audience === \App\Enums\CourseAudience::Kids
                         ? 'Programme dédié aux enfants et aux jeunes'
-                        : 'Programme dédié aux adultes et aux grands' }}
+                        : 'Programme dédié aux adultes et aux grands') }}
                 </span>
                 <h1 class="details-hero-title">{{ $course->title }}</h1>
                 <p class="details-hero-sub">{{ $course->short_description }}</p>
 
                 <div class="details-hero-btns">
-                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">
-                        <i class="fa-solid fa-calendar-check"></i> Réserver une séance d'essai
+                    <a href="{{ $copy['trial_url'] ?: route('home').'#trial-form' }}" class="btn-primary">
+                        <i class="fa-solid fa-calendar-check"></i> {{ $copy['trial_btn_text'] ?: 'Réserver une séance d\'essai' }}
                     </a>
                     <a href="{{ $settings->header_btn1_url }}" class="btn-outline" target="_blank" rel="noopener">
-                        <i class="fa-brands fa-whatsapp"></i> Discuter avec nous sur WhatsApp
+                        <i class="fa-brands fa-whatsapp"></i> {{ $copy['whatsapp_btn_text'] ?: 'Discuter avec nous sur WhatsApp' }}
                     </a>
                 </div>
             </div>
@@ -141,8 +146,8 @@
         @if (!empty($course->suitability_checks))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <span class="section-label">Pour qui ?</span>
-                    <h2 class="section-title" style="font-size: 1.7rem;">Ce cours est-il fait pour vous ?</h2>
+                    <span class="section-label">{{ $copy['suitability_label'] ?: 'Pour qui ?' }}</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">{{ $copy['suitability_title'] ?: 'Ce cours est-il fait pour vous ?' }}</h2>
                 </div>
                 <div class="suitability-grid">
                     @foreach ($course->suitability_checks as $suitability)
@@ -158,8 +163,8 @@
         @if (!empty($course->curriculum_items))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <span class="section-label">Le programme</span>
-                    <h2 class="section-title" style="font-size: 1.7rem;">Que vas-tu apprendre dans ce programme ?</h2>
+                    <span class="section-label">{{ $copy['curriculum_label'] ?: 'Le programme' }}</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">{{ $copy['curriculum_title'] ?: 'Que vas-tu apprendre dans ce programme ?' }}</h2>
                 </div>
                 <div class="curriculum-grid">
                     @foreach ($course->curriculum_items as $item)
@@ -183,9 +188,9 @@
         @if (!empty($course->session_features))
             <section class="detail-section">
                 <div class="session-features">
-                    <span class="section-label">Comment ça marche</span>
-                    <h2>Comment se déroule le cours ?</h2>
-                    <p>Nous garantissons une expérience interactive, sûre et motivante à chaque séance :</p>
+                    <span class="section-label">{{ $copy['session_label'] ?: 'Comment ça marche' }}</span>
+                    <h2>{{ $copy['session_title'] ?: 'Comment se déroule le cours ?' }}</h2>
+                    <p>{{ $copy['session_subtitle'] ?: 'Nous garantissons une expérience interactive, sûre et motivante à chaque séance :' }}</p>
                     <div class="session-grid">
                         @foreach ($course->session_features as $feature)
                             <div class="session-card">
@@ -198,11 +203,54 @@
             </section>
         @endif
 
+        @if (!empty($course->journey_steps))
+            <section class="detail-section">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    <span class="section-label">{{ $copy['journey_label'] ?: 'Progression' }}</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">{{ $copy['journey_title'] ?: 'Votre parcours et votre progression' }}</h2>
+                </div>
+                <div class="journey-steps">
+                    @foreach ($course->journey_steps as $step)
+                        <div class="step-card">
+                            <div class="journey-step-num {{ $step['htmlClass'] ?? 'gold' }}">{{ $step['number'] ?? $loop->iteration }}</div>
+                            <h4>{{ $step['title'] }}</h4>
+                             <p>{!! $step['description'] !!}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @if (!empty($course->why_items))
+            <section class="detail-section">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    <span class="section-label">{{ $copy['why_label'] ?: 'Madrasat Ar-Rahman' }}</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">{{ $copy['why_title'] ?: 'Pourquoi choisir Madrassat Ar-Rahman ?' }}</h2>
+                </div>
+                <div class="curriculum-grid">
+                    @foreach ($course->why_items as $item)
+                        <div class="curriculum-card">
+                            @php $icon = \App\Support\CourseContentResolver::curriculumIcon($item['icon'] ?? null); @endphp
+                            <div class="icon {{ $icon['kind'] === 'text' ? 'icon-text' : '' }}">
+                                @if ($icon['kind'] === 'emoji' || $icon['kind'] === 'text')
+                                    {{ $icon['value'] }}
+                                @else
+                                    <i class="{{ $icon['value'] }}"></i>
+                                @endif
+                            </div>
+                            <h3>{{ $item['title'] }}</h3>
+                            <p>{!! $item['description'] !!}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         @if ($testimonials->count())
             <section class="testimonials-section detail-section">
                 <div class="section-center">
-                    <span class="section-label">Témoignages</span>
-                    <h2 class="testimonials-title">Ce que disent les parents</h2>
+                    <span class="section-label">{{ $copy['testimonials_label'] ?: 'Témoignages' }}</span>
+                    <h2 class="testimonials-title">{{ $copy['testimonials_title'] ?: 'Ce que disent les parents' }}</h2>
                 </div>
                 <div class="testimonials-grid">
                     @foreach ($testimonials as $testimonial)
@@ -223,29 +271,11 @@
             </section>
         @endif
 
-        @if (!empty($course->journey_steps))
-            <section class="detail-section">
-                <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <span class="section-label">Progression</span>
-                    <h2 class="section-title" style="font-size: 1.7rem;">Votre parcours et votre progression</h2>
-                </div>
-                <div class="journey-steps">
-                    @foreach ($course->journey_steps as $step)
-                        <div class="step-card">
-                            <div class="journey-step-num {{ $step['htmlClass'] ?? 'gold' }}">{{ $step['number'] ?? $loop->iteration }}</div>
-                            <h4>{{ $step['title'] }}</h4>
-                             <p>{!! $step['description'] !!}</p>
-                        </div>
-                    @endforeach
-                </div>
-            </section>
-        @endif
-
         @if (!empty($course->faqs))
             <section class="detail-section">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <span class="section-label">FAQ</span>
-                    <h2 class="section-title" style="font-size: 1.7rem;">Questions fréquentes</h2>
+                    <span class="section-label">{{ $copy['faq_label'] ?: 'FAQ' }}</span>
+                    <h2 class="section-title" style="font-size: 1.7rem;">{{ $copy['faq_title'] ?: 'Questions fréquentes' }}</h2>
                 </div>
                 <div class="faq-list" style="margin: 0 auto;">
                     @foreach ($course->faqs as $faq)
@@ -313,13 +343,13 @@
         @endif
 
         <section class="booking-cta" id="bookingForm">
-            <h2>{{ $pageSettings->details_booking_title }}</h2>
-            <p>{{ $pageSettings->details_booking_subtitle }}</p>
-            @if ($pageSettings->details_booking_note)
-                <p class="note">{{ $pageSettings->details_booking_note }}</p>
+            <h2>{{ $copy['booking_title'] ?: $pageSettings->details_booking_title }}</h2>
+            <p>{{ $copy['booking_subtitle'] ?: $pageSettings->details_booking_subtitle }}</p>
+            @if ($copy['booking_note'] ?? $pageSettings->details_booking_note)
+                <p class="note">{{ $copy['booking_note'] ?: $pageSettings->details_booking_note }}</p>
             @endif
             <div class="booking-btn">
-                <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">{{ $pageSettings->details_cta_title }}</a>
+                <a href="{{ $copy['trial_url'] ?: route('home').'#trial-form' }}" class="btn-primary">{{ $copy['trial_btn_text'] ?: $pageSettings->details_cta_title }}</a>
             </div>
         </section>
 
@@ -330,7 +360,7 @@
         @if ($relatedCourses->isNotEmpty())
             <section class="detail-section details-sidebar-section">
                 <div class="catalog-head section-center" style="margin-bottom: 24px;">
-                    <h3 class="details-sidebar-title">Autres cours similaires</h3>
+                    <h3 class="details-sidebar-title">{{ $copy['related_title'] ?: $copy['sidebar_title'] ?: 'Autres cours similaires' }}</h3>
                 </div>
                 <div class="related-courses-grid">
                     @foreach ($relatedCourses as $related)
@@ -347,7 +377,7 @@
                                         <span class="related-course-badge">{{ $related->badge_text }}</span>
                                     @endif
                                     <span class="related-course-cta">
-                                        Voir les détails <i class="fa-solid fa-arrow-right"></i>
+                                        {{ $copy['related_cta_text'] ?: 'Voir les détails' }} <i class="fa-solid fa-arrow-right"></i>
                                     </span>
                                 </div>
                             </a>
@@ -358,9 +388,9 @@
         @endif
 
         <div class="sidebar-cta-card">
-            <p>{{ $pageSettings->details_cta_title }}</p>
-            <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">
-                Réserver une séance d'essai <i class="fa-solid fa-calendar-check"></i>
+            <p>{{ $copy['sidebar_title'] ?: $pageSettings->details_cta_title }}</p>
+            <a href="{{ $copy['trial_url'] ?: route('home').'#trial-form' }}" class="btn-primary">
+                {{ $copy['trial_btn_text'] ?: 'Réserver une séance d\'essai' }} <i class="fa-solid fa-calendar-check"></i>
             </a>
         </div>
 

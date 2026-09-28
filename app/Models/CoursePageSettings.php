@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CourseAudience;
 use Illuminate\Database\Eloquent\Model;
 
 class CoursePageSettings extends Model
@@ -17,6 +18,7 @@ class CoursePageSettings extends Model
         'kids_curriculum_subtitle',
         'kids_curriculum_items',
         'kids_cta_title',
+        'kids_cta_url',
         'kids_wa_title',
         'kids_wa_url',
         'kids_showcase_emoji',
@@ -39,10 +41,31 @@ class CoursePageSettings extends Model
         'kids_faq_cta1_url',
         'kids_faq_cta2_text',
         'kids_faq_cta2_url',
+        'kids_session_label',
+        'kids_session_title',
+        'kids_session_subtitle',
+        'kids_session_items',
+        'kids_testimonials_label',
         'kids_testimonials_title',
         'kids_testimonials_subtitle',
         'kids_form_title',
         'kids_form_subtitle',
+        'kids_shared_curriculum_items',
+        'kids_shared_about_items',
+        'kids_shared_session_items',
+        'kids_shared_journey_items',
+        'kids_shared_faq_items',
+        'kids_why_items',
+        'kids_shared_why_items',
+        'kids_catalog_title',
+        'kids_catalog_subtitle',
+        'kids_catalog_empty_text',
+        'kids_card_cta_text',
+        'kids_card_age_template',
+        'kids_card_level_prefix',
+        'kids_final_title',
+        'kids_final_subtitle',
+        'kids_final_cta_text',
 
         'adults_label',
         'adults_title',
@@ -50,6 +73,7 @@ class CoursePageSettings extends Model
         'adults_subtitle',
         'adults_badge',
         'adults_cta_title',
+        'adults_cta_url',
         'adults_wa_title',
         'adults_wa_url',
         'adults_showcase_emoji',
@@ -76,16 +100,90 @@ class CoursePageSettings extends Model
         'adults_faq_cta1_url',
         'adults_faq_cta2_text',
         'adults_faq_cta2_url',
+        'adults_session_label',
+        'adults_session_title',
+        'adults_session_subtitle',
+        'adults_session_items',
+        'adults_testimonials_label',
         'adults_testimonials_title',
         'adults_testimonials_subtitle',
         'adults_form_title',
         'adults_form_subtitle',
+        'adults_shared_curriculum_items',
+        'adults_shared_about_items',
+        'adults_shared_session_items',
+        'adults_shared_journey_items',
+        'adults_shared_faq_items',
+        'adults_why_items',
+        'adults_shared_why_items',
+        'adults_catalog_title',
+        'adults_catalog_subtitle',
+        'adults_catalog_empty_text',
+        'adults_card_cta_text',
+        'adults_card_age_template',
+        'adults_card_level_prefix',
+        'adults_final_title',
+        'adults_final_subtitle',
+        'adults_final_cta_text',
 
         'details_booking_title',
         'details_booking_subtitle',
         'details_cta_title',
         'details_form_title',
         'details_booking_note',
+
+        'details_kids_hero_label',
+        'details_kids_trial_btn_text',
+        'details_kids_trial_url',
+        'details_kids_whatsapp_btn_text',
+        'details_kids_back_label',
+        'details_kids_suitability_label',
+        'details_kids_suitability_title',
+        'details_kids_curriculum_label',
+        'details_kids_curriculum_title',
+        'details_kids_session_label',
+        'details_kids_session_title',
+        'details_kids_session_subtitle',
+        'details_kids_testimonials_label',
+        'details_kids_testimonials_title',
+        'details_kids_journey_label',
+        'details_kids_journey_title',
+        'details_kids_why_label',
+        'details_kids_why_title',
+        'details_kids_faq_label',
+        'details_kids_faq_title',
+        'details_kids_related_title',
+        'details_kids_related_cta_text',
+        'details_kids_booking_title',
+        'details_kids_booking_subtitle',
+        'details_kids_booking_note',
+        'details_kids_sidebar_title',
+        'details_adults_hero_label',
+        'details_adults_trial_btn_text',
+        'details_adults_trial_url',
+        'details_adults_whatsapp_btn_text',
+        'details_adults_back_label',
+        'details_adults_suitability_label',
+        'details_adults_suitability_title',
+        'details_adults_curriculum_label',
+        'details_adults_curriculum_title',
+        'details_adults_session_label',
+        'details_adults_session_title',
+        'details_adults_session_subtitle',
+        'details_adults_testimonials_label',
+        'details_adults_testimonials_title',
+        'details_adults_journey_label',
+        'details_adults_journey_title',
+        'details_adults_why_label',
+        'details_adults_why_title',
+        'details_adults_faq_label',
+        'details_adults_faq_title',
+        'details_adults_related_title',
+        'details_adults_related_cta_text',
+        'details_adults_booking_title',
+        'details_adults_booking_subtitle',
+        'details_adults_booking_note',
+        'details_adults_sidebar_title',
 
         'is_active',
         'meta_title',
@@ -107,14 +205,124 @@ class CoursePageSettings extends Model
         'kids_journey_items' => 'array',
         'kids_curriculum_items' => 'array',
         'kids_faq_items' => 'array',
+        'kids_session_items' => 'array',
+        'kids_shared_curriculum_items' => 'array',
+        'kids_shared_about_items' => 'array',
+        'kids_shared_session_items' => 'array',
+        'kids_shared_journey_items' => 'array',
+        'kids_shared_faq_items' => 'array',
+        'kids_why_items' => 'array',
+        'kids_shared_why_items' => 'array',
         'adults_about_items' => 'array',
         'adults_curriculum_items' => 'array',
         'adults_journey_items' => 'array',
         'adults_faq_items' => 'array',
+        'adults_session_items' => 'array',
+        'adults_shared_curriculum_items' => 'array',
+        'adults_shared_about_items' => 'array',
+        'adults_shared_session_items' => 'array',
+        'adults_shared_journey_items' => 'array',
+        'adults_shared_faq_items' => 'array',
+        'adults_why_items' => 'array',
+        'adults_shared_why_items' => 'array',
     ];
 
     public static function singleton(): self
     {
         return static::query()->firstOrCreate([]);
+    }
+
+    /**
+     * Course detail page copy for one audience, keyed the same way for both so
+     * the view can drop the per-audience ternaries.
+     *
+     * @return array<string, string|null>
+     */
+    public function detailsCopy(CourseAudience $audience): array
+    {
+        $prefix = 'details_'.$audience->value.'_';
+
+        return [
+            'hero_label' => $this->{$prefix.'hero_label'},
+            'back_label' => $this->{$prefix.'back_label'},
+            'trial_btn_text' => $this->{$prefix.'trial_btn_text'},
+            'trial_url' => $this->{$prefix.'trial_url'},
+            'whatsapp_btn_text' => $this->{$prefix.'whatsapp_btn_text'},
+            'suitability_label' => $this->{$prefix.'suitability_label'},
+            'suitability_title' => $this->{$prefix.'suitability_title'},
+            'curriculum_label' => $this->{$prefix.'curriculum_label'},
+            'curriculum_title' => $this->{$prefix.'curriculum_title'},
+            'session_label' => $this->{$prefix.'session_label'},
+            'session_title' => $this->{$prefix.'session_title'},
+            'session_subtitle' => $this->{$prefix.'session_subtitle'},
+            'testimonials_label' => $this->{$prefix.'testimonials_label'},
+            'testimonials_title' => $this->{$prefix.'testimonials_title'},
+            'journey_label' => $this->{$prefix.'journey_label'},
+            'journey_title' => $this->{$prefix.'journey_title'},
+            'why_label' => $this->{$prefix.'why_label'},
+            'why_title' => $this->{$prefix.'why_title'},
+            'faq_label' => $this->{$prefix.'faq_label'},
+            'faq_title' => $this->{$prefix.'faq_title'},
+            'related_title' => $this->{$prefix.'related_title'},
+            'related_cta_text' => $this->{$prefix.'related_cta_text'},
+            'booking_title' => $this->{$prefix.'booking_title'},
+            'booking_subtitle' => $this->{$prefix.'booking_subtitle'},
+            'booking_note' => $this->{$prefix.'booking_note'},
+            'sidebar_title' => $this->{$prefix.'sidebar_title'},
+        ];
+    }
+
+    /**
+     * Course card copy for one audience, including the age line built from a
+     * template so the French wording lives in the dashboard, not the model.
+     *
+     * @return array<string, string|null>
+     */
+    public function cardCopy(CourseAudience $audience): array
+    {
+        $prefix = $audience->value.'_';
+
+        return [
+            'cta_text' => $this->{$prefix.'card_cta_text'},
+            'age_template' => $this->{$prefix.'card_age_template'},
+            'level_prefix' => $this->{$prefix.'card_level_prefix'},
+        ];
+    }
+
+    /**
+     * Age line of a catalog card, e.g. "Âge : À partir de 6 ans".
+     *
+     * The "{age}" token in card_age_template is replaced with the course age
+     * label. Falls back to the previous hardcoded wording so rows migrated
+     * before this field existed keep rendering.
+     */
+    public function courseAgeLabel(CourseAudience $audience, ?string $age): string
+    {
+        $age = trim((string) $age);
+
+        if ($age === '') {
+            return '';
+        }
+
+        $template = $this->{$audience->value.'_card_age_template'} ?: 'Âge : {age}';
+
+        return str_replace('{age}', $age, $template);
+    }
+
+    /**
+     * Level line of a catalog card, e.g. "Niveau : Débutant". Returns the bare
+     * level when no prefix is configured.
+     */
+    public function courseLevelLabel(CourseAudience $audience, ?string $level): string
+    {
+        $level = trim((string) $level);
+
+        if ($level === '') {
+            return '';
+        }
+
+        $prefix = trim((string) $this->{$audience->value.'_card_level_prefix'});
+
+        return $prefix === '' ? $level : rtrim($prefix, " \t:").' '.$level;
     }
 }

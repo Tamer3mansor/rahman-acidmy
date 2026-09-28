@@ -154,12 +154,22 @@ window.addEventListener('scroll', () => {
    ============================================================ */
 const contactForm = document.getElementById('trialForm');
 
+/* Copy comes from "إعدادات الصفحة الرئيسية" so an admin can change the
+   toasts and the button label without touching this file. */
+const FORM_COPY = {
+    success: contactForm?.dataset.successText || 'Votre demande a été envoyée avec succès ! Nous vous contacterons dans les 24 heures ✓',
+    error: contactForm?.dataset.errorText || 'Une erreur est survenue, veuillez réessayer',
+    received: contactForm?.dataset.receivedText || 'Votre demande a été reçue ! Nous vous contacterons bientôt ✓',
+    loading: contactForm?.dataset.loadingText || 'Envoi en cours...',
+    submit: document.getElementById('submitBtn')?.textContent.trim() || 'Envoyer ma demande et attendre le contact',
+};
+
 contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
-    btn.innerHTML = spinnerHtml('Envoi en cours...');
+    btn.innerHTML = spinnerHtml(FORM_COPY.loading);
 
     const scheduleText = document.getElementById('schedule').value.trim();
     const schedule = scheduleText ? [scheduleText] : [];
@@ -189,7 +199,7 @@ contactForm?.addEventListener('submit', async (e) => {
         });
 
         if (!response.ok) {
-            let message = 'Une erreur est survenue, veuillez réessayer';
+            let message = FORM_COPY.error;
             try {
                 const data = await response.json();
                 message = data.errors ? Object.values(data.errors).flat()[0] : (data.message ?? message);
@@ -223,10 +233,10 @@ contactForm?.addEventListener('submit', async (e) => {
             });
         }
 
-        showToast('Votre demande a été envoyée avec succès ! Nous vous contacterons dans les 24 heures ✓');
+        showToast(FORM_COPY.success);
         contactForm.reset();
     } catch (_) {
-        showToast('Votre demande a été reçue ! Nous vous contacterons bientôt ✓');
+        showToast(FORM_COPY.received);
     }
 
     resetButton(btn);
@@ -239,7 +249,7 @@ function spinnerHtml(label) {
 function submitButtonHtml() {
     const icon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
 
-    return `${icon} Envoyer ma demande et attendre le contact`;
+    return `${icon} ${FORM_COPY.submit}`;
 }
 
 function resetButton(btn) {

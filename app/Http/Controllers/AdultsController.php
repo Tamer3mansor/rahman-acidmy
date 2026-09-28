@@ -15,6 +15,8 @@ class AdultsController extends Controller
         $settings = LandingSettings::singleton();
         $pageSettings = CoursePageSettings::singleton();
 
+        abort_unless($pageSettings->is_active, 404);
+
         $courses = Course::query()
             ->active()
             ->forAudience(CourseAudience::Adults)
@@ -26,6 +28,7 @@ class AdultsController extends Controller
             ->get();
 
         return view('adults.index', [
+            'audience' => CourseAudience::Adults,
             'settings' => $settings,
             'pageSettings' => $pageSettings,
             'courses' => $courses,

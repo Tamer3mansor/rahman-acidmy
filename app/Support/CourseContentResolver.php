@@ -9,29 +9,95 @@ use App\Models\CoursePageSettings;
 class CourseContentResolver
 {
     /**
-     * Fill a course's empty content blocks from the catalog settings of its
-     * audience. Course-stored content always wins; session_features stays
-     * course-scoped because the catalog has no equivalent for it.
+     * Fill a course's empty content blocks from the dashboard, walking down the
+     * three tiers in order until something is found:
+     *
+     *   1. the course record itself (per-course override)
+     *   2. the "المحتوى المشترك" tab for the course audience
+     *   3. the audience main-page tab
+     *
+     * A block that is empty on all three tiers stays empty, and the view hides
+     * its section. Course-stored content always wins, so an admin can pin a
+     * block to a single course without touching the shared copy.
+     *
+     * The "why choose Madrassat Ar-Rahman" block is the one exception: it only
+     * exists on the details page, so it walks two tiers (shared, then main).
      */
     public static function resolve(Course $course, CoursePageSettings $settings): void
     {
         $prefix = $course->audience === CourseAudience::Kids ? 'kids' : 'adults';
 
-        if (blank($course->curriculum_items)) {
-            $course->curriculum_items = $settings->{$prefix.'_curriculum_items'};
+        $course->curriculum_items = self::firstFilled(
+            $course->curriculum_items,
+            [
+                fn (): mixed => $settings->{$prefix.'_shared_curriculum_items'},
+                fn (): mixed => $settings->{$prefix.'_curriculum_items'},
+            ],
+        );
+
+        $course->session_features = self::firstFilled(
+            $course->session_features,
+            [
+                fn (): mixed => $settings->{$prefix.'_shared_session_items'},
+                fn (): mixed => $settings->{$prefix.'_session_items'},
+            ],
+        );
+
+        $course->journey_steps = self::firstFilled(
+            $course->journey_steps,
+            [
+                fn (): mixed => $settings->{$prefix.'_shared_journey_items'},
+                fn (): mixed => $settings->{$prefix.'_journey_items'},
+            ],
+        );
+        $course->journey_steps = self::journeySteps($course->journey_steps);
+
+        $course->suitability_checks = self::firstFilled(
+            $course->suitability_checks,
+            [
+                fn (): mixed => $settings->{$prefix.'_shared_about_items'},
+                fn (): mixed => $settings->{$prefix.'_about_items'},
+            ],
+        );
+        $course->suitability_checks = self::suitabilityChecks($course->suitability_checks);
+
+        $course->faqs = self::firstFilled(
+            $course->faqs,
+            [
+                fn (): mixed => $settings->{$prefix.'_shared_faq_items'},
+                fn (): mixed => $settings->{$prefix.'_faq_items'},
+            ],
+        );
+
+        $course->why_items = self::firstFilled(
+            null,
+            [
+                fn (): mixed => $settings->{$prefix.'_shared_why_items'},
+                fn (): mixed => $settings->{$prefix.'_why_items'},
+            ],
+        );
+    }
+
+    /**
+     * Return the first tier that holds content, or null when every tier is empty.
+     *
+     * @param  array<int, callable(): mixed>  $tiers
+     */
+    private static function firstFilled(mixed $courseValue, array $tiers): mixed
+    {
+        if (! blank($courseValue)) {
+            return $courseValue;
         }
 
-        if (blank($course->journey_steps)) {
-            $course->journey_steps = self::journeySteps($settings->{$prefix.'_journey_items'});
+        foreach ($tiers as $tier) {
+            $value = $tier();
+
+            if (! blank($value)) {
+                return $value;
+            }
         }
 
-        if (blank($course->suitability_checks)) {
-            $course->suitability_checks = self::suitabilityChecks($settings->{$prefix.'_about_items'});
-        }
-
-        if (blank($course->faqs)) {
-            $course->faqs = $settings->{$prefix.'_faq_items'};
-        }
+        return null;
     }
 
     /**
@@ -82,20 +148,33 @@ class CourseContentResolver
     }
 
     /**
-     * Flatten catalog "about" items, which carry an icon, title and
-     * description, into the plain-text suitability_checks shape.
+     * Flatten a "suitability" list into the plain-text suitability_checks
+     * shape. The course level stores plain strings, while the catalog level
+     * stores icon/title/description blocks, so both shapes are accepted.
      *
-     * @param  array<int, array<string, string>>|null  $items
+     * @param  array<int, array<string, mixed>|string>|null  $items
      * @return array<int, string>
      */
     private static function suitabilityChecks(?array $items): array
     {
         return collect($items ?? [])
-            ->map(function (array $item): string {
+            ->map(function (array|string $item): string {
+                if (is_string($item)) {
+                    return trim($item);
+                }
+
                 $title = trim((string) ($item['title'] ?? ''));
                 $description = trim((string) ($item['description'] ?? ''));
 
-                return $title === '' ? $description : $title.' — '.$description;
+                if ($title === '') {
+                    return $description;
+                }
+
+                if ($description === '') {
+                    return $title;
+                }
+
+                return $title.' — '.$description;
             })
             ->filter()
             ->values()

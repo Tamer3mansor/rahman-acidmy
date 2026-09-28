@@ -28,17 +28,27 @@ function initTvPlayer(player, autoplay) {
 
     const show = (node, visible) => { if (node) node.style.display = visible ? '' : 'none'; };
 
+    /* Labels come from "إعدادات الصفحة الرئيسية" so an admin can change the
+       player copy without touching this file. */
+    const copy = {
+        play: player.dataset.playLabel || 'تشغيل الفيديو',
+        resume: player.dataset.resumeLabel || 'تشغيل',
+        pause: player.dataset.pauseLabel || 'إيقاف مؤقت',
+        mute: player.dataset.muteLabel || 'كتم الصوت',
+        unmute: player.dataset.unmuteLabel || 'تشغيل الصوت',
+    };
+
     const setPlaying = (playing) => {
         player.classList.toggle('is-playing', playing);
         show(icoPlay, !playing);
         show(icoPause, playing);
-        toggleBtn.setAttribute('aria-label', playing ? 'إيقاف مؤقت' : 'تشغيل');
+        toggleBtn.setAttribute('aria-label', playing ? copy.pause : copy.resume);
     };
 
     const setMuted = (muted) => {
         show(icoVolOn, !muted);
         show(icoVolOff, muted);
-        muteBtn.setAttribute('aria-label', muted ? 'تشغيل الصوت' : 'كتم الصوت');
+        muteBtn.setAttribute('aria-label', muted ? copy.unmute : copy.mute);
         volume.value = String(muted ? 0 : (video.volume || 1));
     };
 

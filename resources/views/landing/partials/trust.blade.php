@@ -3,6 +3,9 @@
         <div class="section-center">
             <span class="section-label">{{ $settings->trust_label }}</span>
             <h2 class="section-title">{{ $settings->trust_title }}</h2>
+            @if (filled($settings->trust_subtitle))
+                <div class="section-sub">{!! $settings->trust_subtitle !!}</div>
+            @endif
         </div>
 
         @php

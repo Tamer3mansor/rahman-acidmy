@@ -277,6 +277,90 @@ class LandingSettingsForm
                                     ->maxLength(255),
                             ]),
 
+                        Tab::make('النصوص المشتركة (ناف/فوتر/فورم)')
+                            ->schema([
+                                Section::make('القائمة العلوية')
+                                    ->description('نصوص مشتركة في كل صفحات الموقع. أي حقل فاضي يستخدم النص الافتراضي.')
+                                    ->schema(self::textInputs([
+                                        'nav_courses_label' => 'رابط «دوراتنا»',
+                                        'nav_kids_label' => 'رابط «دورات الأطفال»',
+                                        'nav_adults_label' => 'رابط «دورات الكبار»',
+                                        'nav_teachers_label' => 'رابط «المعلمون»',
+                                        'nav_testimonials_label' => 'رابط «آراء العملاء»',
+                                        'nav_pricing_label' => 'رابط «الأسعار»',
+                                        'nav_resources_label' => 'رابط «الموارد»',
+                                        'nav_blog_label' => 'رابط «المدونة»',
+                                        'nav_lessons_label' => 'رابط «دروس مجانية»',
+                                        'nav_faq_label' => 'رابط «الأسئلة الشائعة»',
+                                        'nav_menu_label' => 'اسم زر القائمة (موبايل)',
+                                        'nav_theme_label' => 'اسم زر المظهر (موبايل)',
+                                        'nav_theme_toggle_label' => 'aria-label زر المظهر',
+                                    ]))
+                                    ->columns(3),
+
+                                Section::make('الفوتر والتذييل')
+                                    ->schema(self::textInputs([
+                                        'footer_quicklinks_title' => 'عنوان عمود «روابط سريعة»',
+                                        'footer_contact_title' => 'عنوان عمود «تواصل معنا»',
+                                        'footer_link_home' => 'رابط «الرئيسية»',
+                                        'footer_link_courses' => 'رابط «دوراتنا»',
+                                        'footer_link_journey' => 'رابط «مسارنا»',
+                                        'footer_link_teachers' => 'رابط «معلمونا»',
+                                        'footer_link_faq' => 'رابط «الأسئلة الشائعة»',
+                                        'footer_link_whatsapp' => 'رابط «واتساب»',
+                                        'footer_link_trial' => 'رابط «احجز تجربة»',
+                                        'footer_link_email' => 'رابط «البريد»',
+                                        'footer_made_with' => 'نص «صُنع بحب»',
+                                        'floating_whatsapp_title' => 'tooltip زر واتساب العائم',
+                                        'floating_scroll_top_label' => 'aria-label زر «العودة للأعلى»',
+                                    ]))
+                                    ->columns(3),
+
+                                Section::make('نصوص بطاقة التواصل')
+                                    ->description('العناوين و placeholder حقول نموذجtrial. التنسيقات-supported: {name} و {phone} و {email} داخل الـ placeholder لو أردت مثالاً.')
+                                    ->schema(self::textInputs([
+                                        'field_student_name_label' => 'حقل «اسم الطالب» — التسمية',
+                                        'field_student_name_placeholder' => 'حقل «اسم الطالب» — مثال',
+                                        'field_parent_name_label' => 'حقل «اسم ولي الأمر» — التسمية',
+                                        'field_parent_name_placeholder' => 'حقل «اسم ولي الأمر» — مثال',
+                                        'field_student_age_label' => 'حقل «سن الطالب» — التسمية',
+                                        'field_student_age_placeholder' => 'حقل «سن الطالب» — مثال',
+                                        'field_phone_label' => 'حقل «رقم واتساب» — التسمية',
+                                        'field_phone_placeholder' => 'حقل «رقم واتساب» — مثال',
+                                        'field_email_label' => 'حقل «البريد الإلكتروني» — التسمية',
+                                        'field_email_placeholder' => 'حقل «البريد الإلكتروني» — مثال',
+                                        'field_level_label' => 'حقل «المستوى» — التسمية',
+                                        'field_level_placeholder' => 'حقل «المستوى» — مثال',
+                                        'field_schedule_label' => 'حقل «المواعيد المفضلة» — التسمية',
+                                        'field_schedule_placeholder' => 'حقل «المواعيد المفضلة» — مثال',
+                                        'field_message_label' => 'حقل «رسالة إضافية» — التسمية',
+                                        'field_message_placeholder' => 'حقل «رسالة إضافية» — مثال',
+                                        'form_optional_suffix' => 'لاحقة «(اختياري)»',
+                                        'form_required_suffix' => 'رمز الحقل المطلوب',
+                                        'form_submit_text' => 'نص زر الإرسال',
+                                    ]))
+                                    ->columns(2),
+
+                                Section::make('رسائل النظام وشهادات العملاء')
+                                    ->description('تُستخدم في toast و shahidat بعد الإرسال.')
+                                    ->schema(self::textInputs([
+                                        'toast_success_text' => 'رسالة النجاح',
+                                        'toast_error_text' => 'رسالة الخطأ',
+                                        'toast_received_text' => 'رسالة «تم الاستلام»',
+                                        'form_loading_text' => 'نص جاري الإرسال',
+                                        'testimonial_tag_whatsapp' => 'وسم شهادة واتساب',
+                                        'testimonial_tag_google' => 'وسم شهادة Google',
+                                        'testimonial_video_placeholder' => 'نص بديل فيديو شهادة',
+                                        'testimonial_play_label' => 'aria-label زر تشغيل الفيديو',
+                                        'testimonial_mute_label' => 'aria-label زر كتم الصوت',
+                                        'testimonial_unmute_label' => 'aria-label زر تشغيل الصوت',
+                                        'testimonial_resume_label' => 'aria-label زر التشغيل (متوقف)',
+                                        'testimonial_pause_label' => 'aria-label زر الإيقاف المؤقت',
+                                        'testimonial_volume_label' => 'aria-label مفتاح الصوت',
+                                    ]))
+                                    ->columns(2),
+                            ]),
+
                         Tab::make('تحسين محركات البحث (SEO)')
                             ->schema([
                                 Section::make('إعدادات SEO العامة للموقع')
@@ -313,5 +397,25 @@ class LandingSettingsForm
                             ]),
                     ]),
             ]);
+    }
+
+    /**
+     * Build plain text inputs from a field name => Arabic label map.
+     *
+     * @param  array<string, string>  $labels
+     * @return array<int, TextInput>
+     */
+    private static function textInputs(array $labels): array
+    {
+        $fields = [];
+
+        foreach ($labels as $name => $label) {
+            $fields[] = TextInput::make($name)
+                ->label($label)
+                ->maxLength(255)
+                ->columnSpan(1);
+        }
+
+        return $fields;
     }
 }

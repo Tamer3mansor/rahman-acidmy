@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\LandingFaqs\Schemas;
 
+use App\Rules\CtaUrl;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -53,13 +54,13 @@ class LandingFaqForm
                                     ->disabled(fn ($get) => ! $get('show_cta2')),
                                 TextInput::make('cta_url')
                                     ->label('رابط الزر الأول')
-                                    ->url()
+                                    ->rules([new CtaUrl])
                                     ->placeholder('# أو https://...')
                                     ->helperText('«#» للتمرير لنموذج التواصل.')
                                     ->disabled(fn ($get) => ! $get('show_cta')),
                                 TextInput::make('cta2_url')
                                     ->label('رابط الزر الثاني')
-                                    ->url()
+                                    ->rules([new CtaUrl])
                                     ->placeholder('# أو https://...')
                                     ->helperText('«#» للتمرير لنموذج التواصل.')
                                     ->disabled(fn ($get) => ! $get('show_cta2')),

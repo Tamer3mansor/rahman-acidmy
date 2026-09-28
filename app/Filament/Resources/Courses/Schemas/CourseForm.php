@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Courses\Schemas;
 
 use App\Enums\CourseAudience;
+use App\Rules\CtaUrl;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
@@ -104,7 +105,7 @@ class CourseForm
                             ->schema([
                                 Repeater::make('curriculum_items')
                                     ->label('نقاط التعلم')
-                                    ->helperText('اتركه فارغًا ليُعرض محتوى «ماذا سيتعلم» الخاص بصفحة أطفال/كبار تلقائيًا — املأه فقط إذا أردت محتوى خاصًا بهذه الدورة.')
+                                    ->helperText('أولوية المحتوى: هذا الحقل ← «المحتوى المشترك» في تبويب الفئة ← «صفحة أطفال/كبار الرئيسية». اتركه فارغًا ليأخذ المحتوى من الإعدادات المشتركة تلقائيًا.')
                                     ->schema([
                                         TextInput::make('icon')
                                             ->label('الأيقونة (إيموجي)')
@@ -125,7 +126,7 @@ class CourseForm
                             ->schema([
                                 Repeater::make('session_features')
                                     ->label('مميزات الحصة')
-                                    ->helperText('قسم يدوي لكل دورة — لا يوجد إعداد افتراضي له في صفحة أطفال/كبار.')
+                                    ->helperText('أولوية المحتوى: هذا الحقل ← «المحتوى المشترك» في تبويب الفئة ← «صفحة أطفال/كبار الرئيسية». اتركه فارغًا ليأخذ المحتوى من الإعدادات المشتركة تلقائيًا.')
                                     ->schema([
                                         TextInput::make('title')->label('العنوان')->required()->columnSpan(1),
                                         RichEditor::make('description')->label('الوصف')->columnSpan(1),
@@ -140,7 +141,7 @@ class CourseForm
                             ->schema([
                                 Repeater::make('journey_steps')
                                     ->label('خطوات الرحلة')
-                                    ->helperText('اتركه فارغًا ليُعرض محتوى «مراحل الكورس» الخاص بصفحة أطفال/كبار تلقائيًا — املأه فقط إذا أردت محتوى خاصًا بهذه الدورة.')
+                                    ->helperText('أولوية المحتوى: هذا الحقل ← «المحتوى المشترك» في تبويب الفئة ← «صفحة أطفال/كبار الرئيسية». اتركه فارغًا ليأخذ المحتوى من الإعدادات المشتركة تلقائيًا.')
                                     ->schema([
                                         Select::make('htmlClass')
                                             ->label('النمط')
@@ -164,7 +165,7 @@ class CourseForm
                             ->schema([
                                 Repeater::make('suitability_checks')
                                     ->label('نقاط الملاءمة')
-                                    ->helperText('اتركه فارغًا ليُعرض محتوى «مناسب لـ» الخاص بصفحة أطفال/كبار تلقائيًا — املأه فقط إذا أردت محتوى خاصًا بهذه الدورة.')
+                                    ->helperText('أولوية المحتوى: هذا الحقل ← «المحتوى المشترك» في تبويب الفئة ← «صفحة أطفال/كبار الرئيسية». اتركه فارغًا ليأخذ المحتوى من الإعدادات المشتركة تلقائيًا.')
                                     ->schema([
                                         TextInput::make('text')->label('نقطة الملاءمة')->required(),
                                     ])
@@ -188,14 +189,14 @@ class CourseForm
                             ->schema([
                                 Repeater::make('faqs')
                                     ->label('الأسئلة الشائعة')
-                                    ->helperText('اتركه فارغًا لتظهر أسئلة «الأسئلة الشائعة» الخاصة بصفحة أطفال/كبار تلقائيًا. لكل سؤال سطرا CTA يظهران أسفل الإجابة — نص ورابط لكل زر.')
+                                    ->helperText('أولوية المحتوى: هذا الحقل ← «المحتوى المشترك» في تبويب الفئة ← «صفحة أطفال/كبار الرئيسية». اتركه فارغًا ليأخذ المحتوى من الإعدادات المشتركة تلقائيًا. لكل سؤال سطرا CTA يظهران أسفل الإجابة — نص ورابط لكل زر.')
                                     ->schema([
                                         TextInput::make('question')->label('السؤال')->required()->columnSpanFull(),
                                         RichEditor::make('answer')->label('الإجابة')->required()->columnSpanFull(),
                                         TextInput::make('cta1_text')->label('نص الزر الأول')->placeholder('مثال: احجز جلسة تجريبية')->columnSpan(1),
-                                        TextInput::make('cta1_url')->label('رابط الزر الأول')->url()->placeholder('# أو https://...')->columnSpan(1),
+                                        TextInput::make('cta1_url')->label('رابط الزر الأول')->rules([new CtaUrl])->placeholder('# أو https://...')->columnSpan(1),
                                         TextInput::make('cta2_text')->label('نص الزر الثاني')->placeholder('مثال: تواصل عبر واتساب')->columnSpan(1),
-                                        TextInput::make('cta2_url')->label('رابط الزر الثاني')->url()->placeholder('# أو https://...')->columnSpan(1),
+                                        TextInput::make('cta2_url')->label('رابط الزر الثاني')->rules([new CtaUrl])->placeholder('# أو https://...')->columnSpan(1),
                                     ])
                                     ->columns(2)
                                     ->defaultItems(0)

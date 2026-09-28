@@ -39,7 +39,6 @@ class LandingTestimonial extends Model
     {
         return $query
             ->where('is_active', true)
-            ->whereIn('page_audience', ['kids', 'adults', 'both'])
             ->whereRaw('page_audience = ? OR page_audience = ?', ['both', $audience->value])
             ->orderBy('sort_order');
     }

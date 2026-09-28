@@ -18,13 +18,14 @@ class CourseController extends Controller
         $settings = LandingSettings::singleton();
         $pageSettings = CoursePageSettings::singleton();
 
+        abort_unless($pageSettings->is_active, 404);
+
         CourseContentResolver::resolve($course, $pageSettings);
 
         $relatedCourses = $this->relatedCoursesFor($course);
 
         $testimonials = LandingTestimonial::query()
-            ->where('is_active', true)
-            ->orderBy('sort_order')
+            ->forCoursePage($course->audience)
             ->get();
 
         return view('courses.show', [

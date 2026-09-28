@@ -15,6 +15,8 @@ class KidsController extends Controller
         $settings = LandingSettings::singleton();
         $pageSettings = CoursePageSettings::singleton();
 
+        abort_unless($pageSettings->is_active, 404);
+
         $courses = Course::query()
             ->active()
             ->forAudience(CourseAudience::Kids)
@@ -26,6 +28,7 @@ class KidsController extends Controller
             ->get();
 
         return view('kids.index', [
+            'audience' => CourseAudience::Kids,
             'settings' => $settings,
             'pageSettings' => $pageSettings,
             'courses' => $courses,

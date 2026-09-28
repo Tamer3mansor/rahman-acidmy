@@ -5,6 +5,7 @@
 @section('description', $pageSettings->kids_meta_description ?: $pageSettings->meta_description ?: 'Cours de Coran et d\'arabe en ligne pour enfants de 4 à 16 ans en France, Belgique et Canada. Mémorisation, Tajwid, langue arabe avec des enseignants spécialisés Al-Azhar.')
 
 @php
+    $activePage = 'kids';
     $kidsOgImage = trim((string) ($pageSettings->kids_og_image ?: $pageSettings->og_image));
 @endphp
 @if ($kidsOgImage !== '')
@@ -48,13 +49,15 @@
 @section('content')
 
     @include('landing.partials.nav', [
-        'activePage' => 'kids',
         'homeUrl' => route('home'),
     ])
 
     <section class="catalog-hero kids">
         <div class="container">
             <div>
+                @if (filled($pageSettings->kids_badge))
+                    <div class="hero-badge">{{ $pageSettings->kids_badge }}</div>
+                @endif
                 <span class="section-label">{{ $pageSettings->kids_label }}</span>
                 <h1 class="catalog-hero-title">
                     {{ $pageSettings->kids_title }}
@@ -63,7 +66,7 @@
                 <p class="catalog-hero-sub">{{ $pageSettings->kids_subtitle }}</p>
 
                 <div class="catalog-hero-btns">
-                    <a href="#catalog" class="btn-primary">
+                    <a href="{{ \App\Support\CtaUrl::resolve($pageSettings->kids_cta_url ?: '#catalog', $activePage) }}" class="btn-primary">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         {{ $pageSettings->kids_cta_title }}
                     </a>
@@ -90,8 +93,10 @@
         <div class="container">
             <div class="catalog-head section-center">
                 <span class="section-label">{{ $pageSettings->kids_label }}</span>
-                <h2 class="section-title">Cours des enfants disponibles</h2>
-                <p class="section-sub">Choisissez le programme adapté à l'âge de votre enfant et cliquez pour voir les détails complets et réserver le cours d'essai.</p>
+                <h2 class="section-title">{{ $pageSettings->kids_catalog_title ?: 'Cours des enfants disponibles' }}</h2>
+                @if (filled($pageSettings->kids_catalog_subtitle))
+                    <p class="section-sub">{{ $pageSettings->kids_catalog_subtitle }}</p>
+                @endif
             </div>
 
             @if ($courses->count())
@@ -106,11 +111,15 @@
                         <div class="course-card-body">
                             <h3 class="course-card-title">{{ $course->title }}</h3>
                             <div class="course-meta">
+                                    @php
+                                        $ageLabel = $pageSettings->courseAgeLabel($audience, $course->minAgeLabel());
+                                        $levelLabel = $pageSettings->courseLevelLabel($audience, $course->level_label);
+                                    @endphp
                                     <span class="meta-badge">
-                                        @if ($course->minAgeLabel())
-                                            <i class="fa-solid fa-child"></i> Âge : {{ $course->minAgeLabel() }}
-                                        @elseif ($course->level_label)
-                                            <i class="fa-solid fa-gauge-high"></i> {{ $course->level_label }}
+                                        @if ($ageLabel !== '')
+                                            <i class="fa-solid fa-child"></i> {{ $ageLabel }}
+                                        @elseif ($levelLabel !== '')
+                                            <i class="fa-solid fa-gauge-high"></i> {{ $levelLabel }}
                                         @endif
                                     </span>
                                     @if ($course->badge_text)
@@ -119,14 +128,14 @@
                                 </div>
                                 <p class="course-desc">{{ $course->short_description }}</p>
                                 <a href="{{ route('courses.show', $course->slug) }}" class="course-cta">
-                                    Voir les détails et réserver <i class="fa-solid fa-arrow-right"></i>
+                                    {{ $pageSettings->kids_card_cta_text ?: 'Voir les détails et réserver' }} <i class="fa-solid fa-arrow-right"></i>
                                 </a>
                             </div>
                         </article>
                     @endforeach
                 </div>
             @else
-                <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">Aucun cours disponible pour le moment.</p>
+                <p class="section-center" style="color: var(--text-mid); padding: 40px 0;">{{ $pageSettings->kids_catalog_empty_text ?: 'Aucun cours disponible pour le moment.' }}</p>
             @endif
         </div>
     </section>
@@ -135,7 +144,7 @@
         <section class="section section-white">
             <div class="container">
                 <div class="catalog-head section-center" style="margin-bottom: 32px;">
-                    <span class="section-label">Témoignages</span>
+                    <span class="section-label">{{ $pageSettings->kids_testimonials_label ?: 'Témoignages' }}</span>
                     <h2 class="section-title">{{ $pageSettings->kids_testimonials_title ?: 'Ils nous font confiance' }}</h2>
                     @if ($pageSettings->kids_testimonials_subtitle)
                         <p class="section-sub">{{ $pageSettings->kids_testimonials_subtitle }}</p>
@@ -204,6 +213,32 @@
                             </div>
                             <h3>{{ $subject['title'] }}</h3>
                             <p>{{ $subject['description'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    @if (filled($pageSettings->kids_session_items) || filled($pageSettings->kids_session_title))
+        <section class="section">
+            <div class="container">
+                <div class="catalog-head section-center" style="margin-bottom: 32px;">
+                    @if (filled($pageSettings->kids_session_label))
+                        <span class="section-label">{{ $pageSettings->kids_session_label }}</span>
+                    @endif
+                    @if (filled($pageSettings->kids_session_title))
+                        <h2 class="section-title">{{ $pageSettings->kids_session_title }}</h2>
+                    @endif
+                    @if ($pageSettings->kids_session_subtitle)
+                        <p class="section-sub">{{ $pageSettings->kids_session_subtitle }}</p>
+                    @endif
+                </div>
+                <div class="session-grid">
+                    @foreach ($pageSettings->kids_session_items ?? [] as $feature)
+                        <div class="session-card">
+                            <div class="session-card-title">{{ $feature['title'] ?? '' }}</div>
+                            <p>{{ $feature['description'] ?? '' }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -321,10 +356,10 @@
     <section class="section" style="padding-top: 0;">
         <div class="container">
             <div class="booking-cta">
-                <h2>Offrez à votre enfant la meilleure éducation coranique</h2>
-                <p>Réservez dès maintenant la séance d'essai gratuite. Notre équipe pédagogique vous contactera dans les 24 heures pour évaluer le niveau de votre enfant et fixer le premier créneau.</p>
+                <h2>{{ $pageSettings->kids_final_title ?: 'Offrez à votre enfant la meilleure éducation coranique' }}</h2>
+                <p>{{ $pageSettings->kids_final_subtitle ?: 'Réservez dès maintenant la séance d\'essai gratuite. Notre équipe pédagogique vous contactera dans les 24 heures pour évaluer le niveau de votre enfant et fixer le premier créneau.' }}</p>
                 <div class="booking-btn">
-                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">Réserver une séance d'essai gratuite</a>
+                    <a href="{{ \App\Support\CtaUrl::resolve($pageSettings->kids_cta_url ?: '#trial-form', $activePage) }}" class="btn-primary">{{ $pageSettings->kids_final_cta_text ?: 'Réserver une séance d\'essai gratuite' }}</a>
                 </div>
             </div>
         </div>
