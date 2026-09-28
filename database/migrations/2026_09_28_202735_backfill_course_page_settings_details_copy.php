@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Seeds the columns added by the preceding three migrations with the exact copy
@@ -32,11 +33,14 @@ return new class extends Migration
         'related_cta_text' => 'Voir les détails',
     ];
 
-    /** @var array<string, array<string, string>> */
+    /**
+     * Per-audience copy that lands in the main-page columns, so every key maps
+     * to `{audience}_{key}`.
+     *
+     * @var array<string, array<string, string>>
+     */
     private const PER_AUDIENCE = [
         'kids' => [
-            'hero_label' => 'Programme dédié aux enfants et aux jeunes',
-            'back_label' => 'Cours des enfants',
             'catalog_title' => 'Cours des enfants disponibles',
             'catalog_subtitle' => "Choisissez le programme adapté à l'âge de votre enfant et cliquez pour voir les détails complets et réserver le cours d'essai.",
             'card_level_prefix' => '',
@@ -45,14 +49,30 @@ return new class extends Migration
             'final_cta_text' => "Réserver une séance d'essai gratuite",
         ],
         'adults' => [
-            'hero_label' => 'Programme dédié aux adultes et aux grands',
-            'back_label' => 'Cours des adultes',
             'catalog_title' => 'Cours des adultes et des grands',
             'catalog_subtitle' => "Choisissez le cours adapté à votre niveau et à votre objectif, puis cliquez pour voir les détails complets et réserver la séance d'essai.",
             'card_level_prefix' => 'Niveau : ',
             'final_title' => "Commencez votre apprentissage du Coran dès aujourd'hui",
             'final_subtitle' => "Réservez votre séance d'essai gratuite. Votre enseignant vous contactera dans les 24 heures pour évaluer votre niveau et définir votre plan d'étude personnalisé.",
             'final_cta_text' => "Réserver ma séance d'essai gratuite",
+        ],
+    ];
+
+    /**
+     * Per-audience copy that lands in the detail-page columns, so every key maps
+     * to `details_{audience}_{key}`. Kept apart from PER_AUDIENCE because the
+     * two tiers use different column prefixes.
+     *
+     * @var array<string, array<string, string>>
+     */
+    private const PER_AUDIENCE_DETAILS = [
+        'kids' => [
+            'hero_label' => 'Programme dédié aux enfants et aux jeunes',
+            'back_label' => 'Cours des enfants',
+        ],
+        'adults' => [
+            'hero_label' => 'Programme dédié aux adultes et aux grands',
+            'back_label' => 'Cours des adultes',
         ],
     ];
 
@@ -90,12 +110,26 @@ return new class extends Migration
                 $updates['details_'.$audience.'_'.$key] = $value;
             }
 
+            foreach (self::PER_AUDIENCE_DETAILS[$audience] as $key => $value) {
+                $updates['details_'.$audience.'_'.$key] = $value;
+            }
+
             // Carry the global booking copy over to both audiences, so the
             // legacy columns can be dropped in a later release.
             $updates['details_'.$audience.'_booking_title'] = $settings->details_booking_title;
             $updates['details_'.$audience.'_booking_subtitle'] = $settings->details_booking_subtitle;
             $updates['details_'.$audience.'_booking_note'] = $settings->details_booking_note;
             $updates['details_'.$audience.'_sidebar_title'] = $settings->details_cta_title;
+        }
+
+        // A previous run could have been aborted part way, leaving some of the
+        // columns unmigrated. Writing an unknown column aborts the whole
+        // statement, so only touch what is actually present.
+        $existing = array_flip(Schema::getColumnListing('course_page_settings'));
+        $updates = array_intersect_key($updates, $existing);
+
+        if ($updates === []) {
+            return;
         }
 
         DB::table('course_page_settings')
