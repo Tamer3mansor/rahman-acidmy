@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Schema;
  * course detail page itself. The legacy `details_booking_*` / `details_cta_title`
  * / `details_form_title` columns are intentionally left in place: they are
  * backfilled into the new per-audience columns and dropped in a later release.
+ *
+ * Labels and titles are `text` rather than `varchar(255)` because this table
+ * sits near the InnoDB 65,535-byte row limit; see the main-page migration for
+ * the full explanation.
  */
 return new class extends Migration
 {

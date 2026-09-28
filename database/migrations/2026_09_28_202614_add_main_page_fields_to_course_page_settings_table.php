@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Schema;
  * Copy shown in the "صفحة الأطفال/الكبار الرئيسية" dashboard tabs. Every field
  * is scoped to one audience and nullable so the table can grow on production
  * without a data backfill; the seeder supplies the French defaults.
+ *
+ * The copy columns are `text`, not `varchar(255)`: `course_page_settings` is
+ * close to the InnoDB 65,535-byte row limit, and a single varchar(255) costs
+ * 1,020 bytes under utf8mb4. `text` is stored off-row and only costs a pointer,
+ * so the whole set of new fields fits. The copy is far shorter than 255
+ * characters, so this costs nothing in practice.
  */
 return new class extends Migration
 {
