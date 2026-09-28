@@ -16,30 +16,30 @@ return new class extends Migration
         Schema::table('course_page_settings', function (Blueprint $table) {
             foreach (['kids', 'adults'] as $audience) {
                 // Catalog grid head.
-                $table->string($audience.'_catalog_title')->nullable()->after($audience.'_wa_url');
+                $table->text($audience.'_catalog_title')->nullable()->after($audience.'_wa_url');
                 $table->text($audience.'_catalog_subtitle')->nullable()->after($audience.'_catalog_title');
-                $table->string($audience.'_catalog_empty_text')->nullable()->after($audience.'_catalog_subtitle');
+                $table->text($audience.'_catalog_empty_text')->nullable()->after($audience.'_catalog_subtitle');
 
                 // Course card.
-                $table->string($audience.'_card_cta_text')->nullable()->after($audience.'_catalog_empty_text');
-                $table->string($audience.'_card_age_template')->nullable()->after($audience.'_card_cta_text');
-                $table->string($audience.'_card_level_prefix')->nullable()->after($audience.'_card_age_template');
+                $table->text($audience.'_card_cta_text')->nullable()->after($audience.'_catalog_empty_text');
+                $table->text($audience.'_card_age_template')->nullable()->after($audience.'_card_cta_text');
+                $table->text($audience.'_card_level_prefix')->nullable()->after($audience.'_card_age_template');
 
                 // Testimonials section head.
-                $table->string($audience.'_testimonials_label')->nullable()->after($audience.'_card_level_prefix');
+                $table->text($audience.'_testimonials_label')->nullable()->after($audience.'_card_level_prefix');
 
                 // "كيف تكون الحصة" section. Absent on the page until an editor
                 // fills it in, which is what makes the third fallback tier
                 // reachable for session_features.
-                $table->string($audience.'_session_label')->nullable()->after($audience.'_testimonials_label');
-                $table->string($audience.'_session_title')->nullable()->after($audience.'_session_label');
+                $table->text($audience.'_session_label')->nullable()->after($audience.'_testimonials_label');
+                $table->text($audience.'_session_title')->nullable()->after($audience.'_session_label');
                 $table->text($audience.'_session_subtitle')->nullable()->after($audience.'_session_title');
                 $table->json($audience.'_session_items')->nullable()->after($audience.'_session_subtitle');
 
                 // Final booking band closing the page.
-                $table->string($audience.'_final_title')->nullable()->after($audience.'_session_items');
+                $table->text($audience.'_final_title')->nullable()->after($audience.'_session_items');
                 $table->text($audience.'_final_subtitle')->nullable()->after($audience.'_final_title');
-                $table->string($audience.'_final_cta_text')->nullable()->after($audience.'_final_subtitle');
+                $table->text($audience.'_final_cta_text')->nullable()->after($audience.'_final_subtitle');
             }
         });
     }

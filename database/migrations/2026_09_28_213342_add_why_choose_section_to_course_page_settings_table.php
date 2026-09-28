@@ -18,8 +18,8 @@ return new class extends Migration
     {
         Schema::table('course_page_settings', function (Blueprint $table) {
             foreach (['kids', 'adults'] as $audience) {
-                $table->string('details_'.$audience.'_why_label')->nullable()->after('details_'.$audience.'_journey_title');
-                $table->string('details_'.$audience.'_why_title')->nullable()->after('details_'.$audience.'_why_label');
+                $table->text('details_'.$audience.'_why_label')->nullable()->after('details_'.$audience.'_journey_title');
+                $table->text('details_'.$audience.'_why_title')->nullable()->after('details_'.$audience.'_why_label');
                 $table->json($audience.'_why_items')->nullable()->after('details_'.$audience.'_why_title');
                 $table->json($audience.'_shared_why_items')->nullable()->after($audience.'_why_items');
             }
