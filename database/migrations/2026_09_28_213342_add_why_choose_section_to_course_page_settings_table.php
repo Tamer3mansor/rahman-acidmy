@@ -13,6 +13,10 @@ return new class extends Migration
      * The cards follow the same two tiers as the other details blocks: the
      * audience shared column overrides the audience main column, and an empty
      * result makes the view hide the section entirely.
+     *
+     * Labels and titles are `text`, not `varchar(255)`, because the table sits
+     * near the InnoDB 65,535-byte row limit; see the main-page migration for
+     * the full explanation.
      */
     public function up(): void
     {
