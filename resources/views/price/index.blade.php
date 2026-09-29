@@ -79,7 +79,7 @@
                         @endif
 
                         @if ($package->isOffer())
-                            <span class="offer-tag"><i class="fa-solid fa-tags"></i> Offre spéciale</span>
+                            <span class="offer-tag"><i class="fa-solid fa-tags"></i> {{ $package->offerBadgeText() }}</span>
                         @endif
 
                         <div class="pack-header">

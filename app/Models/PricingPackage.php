@@ -27,6 +27,9 @@ class PricingPackage extends Model
         self::TYPE_SPECIAL => 'تسعير خاص',
     ];
 
+    /** Badge wording used on the card when no custom text is set. */
+    public const DEFAULT_OFFER_BADGE_TEXT = 'Offre spéciale';
+
     protected $fillable = [
         'name',
         'badge',
@@ -35,6 +38,8 @@ class PricingPackage extends Model
         'classes_count',
         'pricing_type',
         'price',
+        'show_offer_design',
+        'offer_badge_text',
         'features',
         'button_label',
         'whatsapp_url',
@@ -47,6 +52,8 @@ class PricingPackage extends Model
         'classes_count' => 'integer',
         'pricing_type' => 'string',
         'price' => 'float',
+        'show_offer_design' => 'boolean',
+        'offer_badge_text' => 'string',
         'features' => 'array',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
@@ -93,9 +100,27 @@ class PricingPackage extends Model
         return round($this->classes_count * $durationHours * PricingSettings::singleton()->per_hour_price, 2);
     }
 
+    /**
+     * A package shows the discount design only when it is priced specially
+     * *and* the editor has switched the design on. The special rate still
+     * applies either way — the flag only controls the badge and the struck
+     * through general price.
+     */
     public function isOffer(): bool
     {
-        return $this->pricing_type === static::TYPE_SPECIAL;
+        return $this->pricing_type === static::TYPE_SPECIAL
+            && (bool) $this->show_offer_design;
+    }
+
+    /**
+     * Wording for the offer badge, falling back to the shared default when the
+     * editor left the field empty.
+     */
+    public function offerBadgeText(): string
+    {
+        $text = trim((string) $this->offer_badge_text);
+
+        return $text !== '' ? $text : static::DEFAULT_OFFER_BADGE_TEXT;
     }
 
     public function whatsappPhone(): string

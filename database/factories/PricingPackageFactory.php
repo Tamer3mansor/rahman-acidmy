@@ -21,6 +21,8 @@ class PricingPackageFactory extends Factory
             'classes_count' => fake()->randomElement([4, 8, 12, 16, 24, 48, 100]),
             'pricing_type' => $pricingType,
             'price' => $pricingType === PricingPackage::TYPE_SPECIAL ? fake()->randomFloat(2, 4, 8) : 0,
+            'show_offer_design' => false,
+            'offer_badge_text' => null,
             'features' => fake()->sentences(3),
             'button_label' => 'Ce pack me convient',
             'whatsapp_url' => null,
@@ -48,6 +50,21 @@ class PricingPackageFactory extends Factory
         return $this->state(fn () => [
             'pricing_type' => PricingPackage::TYPE_SPECIAL,
             'price' => fake()->randomFloat(2, 4, 8),
+        ]);
+    }
+
+    public function withOfferDesign(?string $badgeText = null): static
+    {
+        return $this->state(fn () => [
+            'show_offer_design' => true,
+            'offer_badge_text' => $badgeText,
+        ]);
+    }
+
+    public function withoutOfferDesign(): static
+    {
+        return $this->state(fn () => [
+            'show_offer_design' => false,
         ]);
     }
 }

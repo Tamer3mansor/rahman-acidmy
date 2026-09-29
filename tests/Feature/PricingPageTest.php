@@ -147,7 +147,7 @@ class PricingPageTest extends TestCase
     {
         PricingSettings::query()->create(['per_hour_price' => 8.00]);
 
-        $package = PricingPackage::factory()->special()->create([
+        $package = PricingPackage::factory()->special()->withOfferDesign()->create([
             'classes_count' => 24,
             'price' => 6.00,
         ]);
@@ -157,6 +157,74 @@ class PricingPageTest extends TestCase
         $this->assertSame(144.00, $package->effectivePrice());
         $this->assertSame(6.00, $package->ratePerLesson());
         $this->assertSame(192.00, $package->generalPrice());
+    }
+
+    public function test_special_package_hides_the_offer_design_when_the_toggle_is_off(): void
+    {
+        PricingSettings::query()->create(['per_hour_price' => 8.00]);
+
+        $package = PricingPackage::factory()->special()->withoutOfferDesign()->create([
+            'classes_count' => 24,
+            'price' => 6.00,
+        ]);
+
+        $this->assertFalse($package->isOffer());
+        $this->assertSame(6.00, $package->hourlyRate());
+        $this->assertSame(144.00, $package->effectivePrice());
+    }
+
+    public function test_offer_badge_text_uses_the_custom_wording_when_set(): void
+    {
+        $package = PricingPackage::factory()->special()->withOfferDesign('Promo Ramadan')->create();
+
+        $this->assertTrue($package->isOffer());
+        $this->assertSame('Promo Ramadan', $package->offerBadgeText());
+    }
+
+    public function test_offer_badge_text_falls_back_to_the_default_wording(): void
+    {
+        $package = PricingPackage::factory()->special()->withOfferDesign()->create();
+
+        $this->assertSame(PricingPackage::DEFAULT_OFFER_BADGE_TEXT, $package->offerBadgeText());
+    }
+
+    public function test_offer_design_never_applies_to_a_general_price_package(): void
+    {
+        $package = PricingPackage::factory()->perHour()->withOfferDesign()->create();
+
+        $this->assertFalse($package->isOffer());
+    }
+
+    public function test_price_page_renders_the_custom_offer_badge_and_struck_through_price(): void
+    {
+        PricingSettings::query()->create(['per_hour_price' => 8.00]);
+        PricingPackage::factory()->special()->withOfferDesign('Offre Ramadan')->create([
+            'name' => 'Pack Ramadan',
+            'classes_count' => 10,
+            'price' => 6.00,
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('Offre Ramadan')
+            ->assertSee('Valeur normale', false);
+    }
+
+    public function test_price_page_hides_the_badge_and_compare_price_when_the_toggle_is_off(): void
+    {
+        PricingSettings::query()->create(['per_hour_price' => 8.00]);
+        PricingPackage::factory()->special()->withoutOfferDesign()->create([
+            'name' => 'Pack Sans Badge',
+            'classes_count' => 10,
+            'price' => 6.00,
+            'offer_badge_text' => 'Offre Ramadan',
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('Pack Sans Badge')
+            ->assertDontSee('Offre Ramadan')
+            ->assertDontSee('Valeur normale', false);
     }
 
     public function test_per_hour_price_package_tracks_global_rate(): void
@@ -214,7 +282,7 @@ class PricingPageTest extends TestCase
     {
         $this->seed(PricingSettingsSeeder::class);
 
-        PricingPackage::factory()->special()->create([
+        PricingPackage::factory()->special()->withOfferDesign()->create([
             'name' => 'Pack Offre Test',
             'classes_count' => 8,
             'price' => 6.00,

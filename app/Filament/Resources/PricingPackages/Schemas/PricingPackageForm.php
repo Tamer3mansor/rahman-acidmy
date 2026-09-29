@@ -65,6 +65,7 @@ class PricingPackageForm
                             ->afterStateUpdated(function (Get $get, Set $set, ?string $state): void {
                                 if ($state === PricingPackage::TYPE_PER_HOUR) {
                                     $set('price', null);
+                                    $set('show_offer_design', false);
                                 }
                             }),
                         TextInput::make('price')
@@ -80,6 +81,21 @@ class PricingPackageForm
                             ->dehydrated()
                             ->required(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_SPECIAL)
                             ->visible(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_SPECIAL),
+                        Toggle::make('show_offer_design')
+                            ->label('تفعيل تصميم التخفيض')
+                            ->helperText('يظهر شارة العرض والسعر القديم مشطوب على البطاقة. السعر الخاص يُطبَّق في الحالتين.')
+                            ->default(false)
+                            ->live()
+                            ->columnSpanFull()
+                            ->visible(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_SPECIAL),
+                        TextInput::make('offer_badge_text')
+                            ->label('نص شارة العرض')
+                            ->helperText('الكلمة التي تظهر على البطاقة. اتركها فارغة لاستخدام: '.PricingPackage::DEFAULT_OFFER_BADGE_TEXT)
+                            ->maxLength(50)
+                            ->placeholder(PricingPackage::DEFAULT_OFFER_BADGE_TEXT)
+                            ->default(PricingPackage::DEFAULT_OFFER_BADGE_TEXT)
+                            ->visible(fn (Get $get): bool => $get('pricing_type') === PricingPackage::TYPE_SPECIAL
+                                && (bool) $get('show_offer_design')),
                         Repeater::make('features')
                             ->label('المميزات')
                             ->schema([

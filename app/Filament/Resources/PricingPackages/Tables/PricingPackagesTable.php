@@ -38,6 +38,9 @@ class PricingPackagesTable
                     ->label('المميزات')
                     ->formatStateUsing(fn (mixed $state): int => is_array($state) ? count($state) : 0)
                     ->badge(),
+                IconColumn::make('show_offer_design')
+                    ->label('تصميم التخفيض')
+                    ->boolean(),
                 IconColumn::make('is_featured')
                     ->label('مميزة')
                     ->boolean(),
