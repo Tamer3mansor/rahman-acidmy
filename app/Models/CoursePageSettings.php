@@ -129,7 +129,6 @@ class CoursePageSettings extends Model
         'details_booking_title',
         'details_booking_subtitle',
         'details_cta_title',
-        'details_form_title',
         'details_booking_note',
 
         'details_kids_hero_label',

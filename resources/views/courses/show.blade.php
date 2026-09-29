@@ -25,7 +25,11 @@
 
 @section('title', $course->meta_title ?: $course->title . ' | ' . $settings->footer_brand_name)
 
-@section('description', $course->meta_description ?: $course->description)
+@php
+    $courseMetaDescription = trim((string) ($course->meta_description ?: strip_tags((string) $course->description)));
+    $courseMetaDescription = \Illuminate\Support\Str::limit($courseMetaDescription, 160);
+@endphp
+@section('description', $courseMetaDescription)
 
 @php
     $courseOgImage = trim((string) ($course->og_image ?: $pageSettings->og_image));

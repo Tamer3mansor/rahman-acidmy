@@ -306,13 +306,16 @@ function initTeachersCarousel() {
         }
 
         const visible = perPage();
+        const maxOffset = Math.max(0, cards.length - visible);
+        const offsetFor = (page) => Math.min(page * visible, maxOffset);
 
         for (let page = 0; page < pages; page += 1) {
             const bullet = document.createElement('button');
             const distance = Math.abs(page - activePage);
+            const offset = offsetFor(page);
             bullet.type = 'button';
             bullet.className = `teachers-pagination-bullet${page === activePage ? ' is-active' : ''}${distance === 1 ? ' is-near' : ''}`;
-            bullet.setAttribute('aria-label', `Afficher les professeurs ${page * visible + 1} à ${Math.min((page + 1) * visible, cards.length)}`);
+            bullet.setAttribute('aria-label', `Afficher les professeurs ${offset + 1} à ${Math.min(offset + visible, cards.length)}`);
             bullet.setAttribute('aria-current', page === activePage ? 'true' : 'false');
             bullet.addEventListener('click', () => {
                 activePage = page;
@@ -321,7 +324,7 @@ function initTeachersCarousel() {
             pagination.append(bullet);
         }
 
-        track.style.transform = `translateX(-${activePage * step}px)`;
+        track.style.transform = `translateX(-${offsetFor(activePage) * step}px)`;
         startAuto();
     };
 

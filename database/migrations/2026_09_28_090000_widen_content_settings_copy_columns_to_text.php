@@ -63,6 +63,15 @@ return new class extends Migration
 
     private function widenCopyColumns(string $table): void
     {
+        // The column inventory below and the ALTER that follows it are MySQL
+        // syntax, and the row-size limit being escaped only exists on InnoDB.
+        // The test suite runs on SQLite, where the varchar/text distinction
+        // carries no row-size cost and `information_schema.COLUMNS` is not
+        // queryable, so the conversion is a no-op there.
+        if (DB::connection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         if (! Schema::hasTable($table)) {
             return;
         }

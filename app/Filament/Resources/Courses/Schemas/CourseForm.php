@@ -70,10 +70,6 @@ class CourseForm
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
-                        RichEditor::make('description')
-                            ->label('الوصف التفصيلي')
-                            ->required()
-                            ->columnSpanFull(),
                     ])
                     ->columns(3)
                     ->collapsible(),

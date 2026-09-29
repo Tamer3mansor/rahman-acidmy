@@ -388,7 +388,6 @@ class CoursePageSettingsSeeder extends Seeder
             'details_booking_title' => "Commencez votre parcours d'apprentissage dès aujourd'hui",
             'details_booking_subtitle' => 'Remplissez le formulaire et nous vous contacterons immédiatement pour fixer le créneau du cours d\'essai adapté.',
             'details_cta_title' => "Réserver un cours d'essai",
-            'details_form_title' => 'Réservation du cours d\'essai',
             'details_booking_note' => 'Nos équipes vous répondent sous 24 heures.',
 
             'is_active' => true,

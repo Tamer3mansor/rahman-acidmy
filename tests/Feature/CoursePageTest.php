@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\CourseAudience;
 use App\Enums\TestimonialAudience;
 use App\Enums\TestimonialType;
+use App\Filament\Resources\Courses\Pages\EditCourse;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
 use App\Models\LandingTestimonial;
@@ -14,6 +15,7 @@ use Database\Seeders\CourseSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class CoursePageTest extends TestCase
@@ -527,5 +529,87 @@ class CoursePageTest extends TestCase
             'related_course_id' => $related->id,
         ]);
         $this->assertTrue($course->relatedCourses()->pluck('courses.id')->contains($related->id));
+    }
+
+    public function test_the_course_form_no_longer_asks_for_a_long_description(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(EditCourse::class, ['record' => Course::query()->firstOrFail()->getKey()])
+            ->assertOk()
+            ->assertFormFieldDoesNotExist('description');
+    }
+
+    public function test_a_course_is_stored_without_a_description(): void
+    {
+        $this->seed(CoursePageSettingsSeeder::class);
+
+        $course = Course::create([
+            'audience' => CourseAudience::Kids->value,
+            'title' => 'Cours sans description',
+            'slug' => 'cours-sans-description',
+            'short_description' => 'Un résumé court qui fait le lien vers la page.',
+        ]);
+
+        $this->assertNull($course->fresh()->description);
+    }
+
+    public function test_editing_a_course_keeps_the_description_it_already_stores(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $this->actingAs(User::factory()->create());
+
+        $course = Course::query()->firstOrFail();
+        $stored = $course->description;
+
+        Livewire::test(EditCourse::class, ['record' => $course->getKey()])
+            ->fillForm(['title' => $course->title.' — révisé'])
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertSame($stored, $course->fresh()->description);
+    }
+
+    public function test_the_meta_description_falls_back_to_the_description_without_its_html(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $course = Course::query()->firstOrFail();
+        $course->update(['meta_description' => null]);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertSeeInOrder(
+                ['<meta name="description" content="', 'Ce programme initie les plus petits'],
+                escape: false,
+            );
+    }
+
+    public function test_the_course_page_renders_with_no_description_at_all(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $course = Course::query()->firstOrFail();
+        $course->update(['description' => null, 'meta_description' => null]);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertViewIs('courses.show')
+            ->assertSee('<meta name="description" content="">', false);
     }
 }
