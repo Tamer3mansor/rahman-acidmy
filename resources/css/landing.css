@@ -912,6 +912,7 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 .form-side-title .accent { color:var(--gold-light); }
 .form-side-sub { font-size:1rem; font-weight:500; color:var(--white); margin-bottom:36px; line-height:1.8; }
 .form-side-sub p, .form-side-sub font { color:inherit; font:inherit; }
+.form-section .form-inner > div p { color:var(--white); }
 .form-info-list { display:flex; flex-direction:column; gap:18px; }
 .form-info-item { display:flex; align-items:flex-start; gap:14px; }
 .form-info-icon {
