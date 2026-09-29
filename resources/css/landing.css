@@ -609,7 +609,7 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 }
 /* screenshot columns */
 .trust-screenshots { display:flex; flex-direction:column; gap:14px; }
-.trust-marquee { height:500px; overflow:hidden; --trust-marquee-duration:45s; }
+.trust-marquee { height:500px; overflow:hidden; --trust-marquee-duration:35s; }
 .trust-marquee-track { display:flex; flex-direction:column; gap:14px; animation:trust-marquee-up var(--trust-marquee-duration) linear infinite; }
 .trust-marquee[data-direction="down"] .trust-marquee-track { animation-name:trust-marquee-down; }
 .trust-marquee--static .trust-marquee-track { animation:none; }
