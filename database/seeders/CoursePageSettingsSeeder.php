@@ -107,7 +107,7 @@ class CoursePageSettingsSeeder extends Seeder
     private const MAIN_PAGE_SHARED = [
         'catalog_empty_text' => 'Aucun cours disponible pour le moment.',
         'card_cta_text' => 'Voir les détails et réserver',
-        'card_age_template' => 'Âge : À partir de {age} ans',
+        'card_age_template' => 'Âge : {age}',
         'testimonials_label' => 'Témoignages',
     ];
 

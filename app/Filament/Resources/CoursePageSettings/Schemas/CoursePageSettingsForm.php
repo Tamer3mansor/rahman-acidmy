@@ -120,7 +120,8 @@ class CoursePageSettingsForm
                     TextInput::make($audience.'_card_cta_text')->label('نص زر البطاقة')->columnSpan(2),
                     TextInput::make($audience.'_card_age_template')
                         ->label('قالب عمر الطالب')
-                        ->helperText('استخدم {age} كعنصر نائب لسن الطالب — مثال: Âge : À partir de {age} ans')
+                        ->helperText('استخدم {age} كعنصر نائب للسن — مثال: Âge : {age} (تتحول لـ Âge : Dès 5 ans)')
+                        ->placeholder('Âge : {age}')
                         ->columnSpan(2),
                     TextInput::make($audience.'_card_level_prefix')
                         ->label('بادئة المستوى على البطاقة')

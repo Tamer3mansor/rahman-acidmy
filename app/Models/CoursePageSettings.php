@@ -289,11 +289,13 @@ class CoursePageSettings extends Model
     }
 
     /**
-     * Age line of a catalog card, e.g. "Âge : À partir de 6 ans".
+     * Age line of a catalog card, e.g. "Âge : Dès 6 ans".
      *
      * The "{age}" token in card_age_template is replaced with the course age
-     * label. Falls back to the previous hardcoded wording so rows migrated
-     * before this field existed keep rendering.
+     * label, which already carries its own wording and number ("Dès 6 ans").
+     * The template therefore only owns the prefix, otherwise the label gets
+     * wrapped twice. Falls back to the previous hardcoded wording so rows
+     * migrated before this field existed keep rendering.
      */
     public function courseAgeLabel(CourseAudience $audience, ?string $age): string
     {

@@ -81,6 +81,6 @@ class Course extends Model
             return null;
         }
 
-        return 'À partir de '.$this->age_band_min.' ans';
+        return 'Dès '.$this->age_band_min.' ans';
     }
 }
