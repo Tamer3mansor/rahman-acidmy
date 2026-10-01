@@ -68,6 +68,8 @@ document.addEventListener('click', (e) => {
     if (!e.target.closest('.mobile-menu a')) return;
 
     document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger')?.classList.remove('is-active');
+    document.body.style.overflow = '';
 });
 
 /* ============================================================
@@ -119,14 +121,36 @@ function scrollToForm() {
     if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger')?.classList.remove('is-active');
+    document.body.style.overflow = '';
 }
 
 /* ============================================================
    MOBILE MENU
    ============================================================ */
 function toggleMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+    const isOpen = menu.classList.toggle('open');
+
+    hamburger.classList.toggle('is-active', isOpen);
+
+    /* Prevent body scroll while mobile menu is open */
+    document.body.style.overflow = isOpen ? 'hidden' : '';
 }
+
+/* Close the mobile menu when clicking outside */
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+
+    if (!menu || !menu.classList.contains('open')) return;
+    if (e.target.closest('#mobileMenu') || e.target.closest('#hamburger')) return;
+
+    menu.classList.remove('open');
+    hamburger.classList.remove('is-active');
+    document.body.style.overflow = '';
+});
 
 /* ============================================================
    FAQ
@@ -268,79 +292,120 @@ function initTeachersCarousel() {
     const carousel = document.getElementById('teachersCarousel');
     const track = document.getElementById('teachersGrid');
     const pagination = carousel?.querySelector('.teachers-pagination');
-    const cards = track ? [...track.querySelectorAll('.teacher-card')] : [];
 
-    if (!carousel || !track || !pagination || cards.length < 2) return;
+    if (!carousel || !track || !pagination) return;
 
-    const AUTOPLAY_MS = 3000;
-    const TICK_LEAD_MS = 1000;
+    // Clean up any previously cloned cards
+    track.querySelectorAll('.teacher-card.is-clone').forEach((el) => el.remove());
+
+    const originalCards = [...track.querySelectorAll('.teacher-card')];
+    const totalOriginal = originalCards.length;
+    if (totalOriginal < 2) return;
+
+    const AUTOPLAY_MS = 3500;
+    const TICK_LEAD_MS = 1200;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    let activePage = 0;
-    let pages = 1;
+    let currentIndex = 0;
     let step = 0;
     let autoTimer = null;
     let firstTimer = null;
     let isPaused = false;
+    let isAnimating = false;
 
-    const perPage = () => window.matchMedia('(max-width: 768px)').matches ? 1 : window.matchMedia('(max-width: 1024px)').matches ? 2 : 3;
-
-    const measure = () => {
-        const first = cards[0].getBoundingClientRect();
-        const second = cards[1]?.getBoundingClientRect();
-        step = second ? second.left - first.left : first.width;
-        pages = Math.max(1, Math.ceil(cards.length / perPage()));
-        activePage = Math.min(activePage, pages - 1);
+    const perPage = () => {
+        if (window.matchMedia('(max-width: 768px)').matches) return 1;
+        if (window.matchMedia('(max-width: 1024px)').matches) return 2;
+        return 3;
     };
 
-    const render = () => {
-        measure();
-        carousel.classList.toggle('is-ready', pages > 1);
-        pagination.replaceChildren();
-
-        if (pages < 2) {
-            track.style.transform = '';
-            stopAuto();
-
-            return;
-        }
-
+    // Clone cards to achieve seamless infinite loop
+    const setupClones = () => {
+        track.querySelectorAll('.teacher-card.is-clone').forEach((el) => el.remove());
         const visible = perPage();
-        const maxOffset = Math.max(0, cards.length - visible);
-        const offsetFor = (page) => Math.min(page * visible, maxOffset);
+        const cloneCount = Math.min(visible + 1, totalOriginal);
+        for (let i = 0; i < cloneCount; i += 1) {
+            const clone = originalCards[i].cloneNode(true);
+            clone.classList.add('is-clone');
+            clone.setAttribute('aria-hidden', 'true');
+            // Clone buttons inside should scroll to form too
+            track.appendChild(clone);
+        }
+    };
 
-        for (let page = 0; page < pages; page += 1) {
+    const measure = () => {
+        const first = originalCards[0];
+        const second = originalCards[1] || track.querySelector('.teacher-card.is-clone');
+        if (first && second) {
+            step = second.offsetLeft - first.offsetLeft;
+        } else if (first) {
+            step = first.offsetWidth + 24;
+        }
+        if (step <= 0 && first) {
+            step = first.getBoundingClientRect().width + 24;
+        }
+    };
+
+    const updateBullets = () => {
+        const bullets = pagination.querySelectorAll('.teachers-pagination-bullet');
+        const activeMod = currentIndex % totalOriginal;
+        bullets.forEach((bullet, idx) => {
+            const isActive = idx === activeMod;
+            const distance = Math.abs(idx - activeMod);
+            bullet.classList.toggle('is-active', isActive);
+            bullet.classList.toggle('is-near', distance === 1);
+            bullet.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+    };
+
+    const applyTransform = (withTransition = true) => {
+        measure();
+        track.style.transition = withTransition ? 'transform 0.55s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
+        track.style.transform = `translateX(-${currentIndex * step}px)`;
+        updateBullets();
+    };
+
+    const initPagination = () => {
+        pagination.replaceChildren();
+        for (let i = 0; i < totalOriginal; i += 1) {
             const bullet = document.createElement('button');
-            const distance = Math.abs(page - activePage);
-            const offset = offsetFor(page);
             bullet.type = 'button';
-            bullet.className = `teachers-pagination-bullet${page === activePage ? ' is-active' : ''}${distance === 1 ? ' is-near' : ''}`;
-            bullet.setAttribute('aria-label', `Afficher les professeurs ${offset + 1} à ${Math.min(offset + visible, cards.length)}`);
-            bullet.setAttribute('aria-current', page === activePage ? 'true' : 'false');
+            bullet.className = `teachers-pagination-bullet${i === 0 ? ' is-active' : ''}`;
+            bullet.setAttribute('aria-label', `Professeur ${i + 1} sur ${totalOriginal}`);
+            bullet.setAttribute('aria-current', i === 0 ? 'true' : 'false');
             bullet.addEventListener('click', () => {
-                activePage = page;
-                render();
+                if (isAnimating) return;
+                currentIndex = i;
+                applyTransform(true);
+                resetAuto();
             });
             pagination.append(bullet);
         }
-
-        track.style.transform = `translateX(-${offsetFor(activePage) * step}px)`;
-        startAuto();
     };
 
-    const tick = () => {
-        if (isPaused) return;
-        activePage = (activePage + 1) % pages;
-        render();
+    const nextCard = () => {
+        if (isPaused || isAnimating) return;
+        isAnimating = true;
+        currentIndex += 1;
+        applyTransform(true);
     };
+
+    track.addEventListener('transitionend', (e) => {
+        if (e.target !== track) return;
+        isAnimating = false;
+        if (currentIndex >= totalOriginal) {
+            currentIndex = currentIndex % totalOriginal;
+            applyTransform(false);
+            void track.offsetHeight; // Force reflow
+        }
+    });
 
     const startAuto = () => {
-        if (prefersReducedMotion || pages < 2 || autoTimer || firstTimer) return;
-
+        if (prefersReducedMotion || autoTimer || firstTimer) return;
         firstTimer = window.setTimeout(() => {
             firstTimer = null;
-            tick();
-            autoTimer = window.setInterval(tick, AUTOPLAY_MS);
+            nextCard();
+            autoTimer = window.setInterval(nextCard, AUTOPLAY_MS);
         }, TICK_LEAD_MS);
     };
 
@@ -355,27 +420,102 @@ function initTeachersCarousel() {
         }
     };
 
-    const ensureRunning = () => {
-        if (autoTimer || firstTimer) return;
-        measure();
-        if (pages >= 2 && !prefersReducedMotion) render();
+    const resetAuto = () => {
+        stopAuto();
+        startAuto();
     };
+
+    // Touch swipe handling
+    let touchStartX = 0;
+    let touchEndX = 0;
+    carousel.addEventListener('touchstart', (e) => {
+        isPaused = true;
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', (e) => {
+        isPaused = false;
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+            if (diff > 0) {
+                // Swipe left -> next card
+                if (!isAnimating) {
+                    isAnimating = true;
+                    currentIndex += 1;
+                    applyTransform(true);
+                }
+            } else {
+                // Swipe right -> prev card
+                if (!isAnimating) {
+                    isAnimating = true;
+                    if (currentIndex === 0) {
+                        currentIndex = totalOriginal;
+                        applyTransform(false);
+                        void track.offsetHeight;
+                    }
+                    currentIndex -= 1;
+                    applyTransform(true);
+                }
+            }
+            resetAuto();
+        }
+    }, { passive: true });
 
     carousel.addEventListener('mouseenter', () => { isPaused = true; });
     carousel.addEventListener('mouseleave', () => { isPaused = false; });
-    carousel.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
-    carousel.addEventListener('touchend', () => { isPaused = false; });
     carousel.addEventListener('focusin', () => { isPaused = true; });
     carousel.addEventListener('focusout', () => { isPaused = false; });
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) stopAuto(); else startAuto();
     });
 
-    carousel.classList.add('is-ready');
-    render();
-    window.addEventListener('load', ensureRunning, { once: true });
-    window.setTimeout(ensureRunning, 800);
-    window.addEventListener('resize', () => { activePage = 0; render(); }, { passive: true });
+    const init = () => {
+        setupClones();
+        initPagination();
+        measure();
+        carousel.classList.add('is-ready');
+        applyTransform(false);
+        startAuto();
+    };
+
+    init();
+
+    window.addEventListener('resize', () => {
+        setupClones();
+        currentIndex = currentIndex % totalOriginal;
+        applyTransform(false);
+    }, { passive: true });
+
+    window.addEventListener('load', () => {
+        measure();
+        applyTransform(false);
+    }, { once: true });
+}
+
+function initTrustMobileTabs() {
+    const tabsContainer = document.querySelector('[data-trust-tabs]');
+    const trustGrid = document.querySelector('.trust-grid');
+    if (!tabsContainer || !trustGrid) return;
+
+    const tabButtons = tabsContainer.querySelectorAll('.trust-tab-btn');
+    const panes = trustGrid.querySelectorAll('[data-trust-pane]');
+
+    tabButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const target = btn.dataset.tab;
+            tabButtons.forEach((b) => {
+                const isActive = b === btn;
+                b.classList.toggle('is-active', isActive);
+                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            panes.forEach((pane) => {
+                const isActive = pane.dataset.trustPane === target;
+                pane.classList.toggle('is-tab-active', isActive);
+            });
+            trustGrid.setAttribute('data-active-tab', target);
+        });
+    });
 }
 
 function initTrustVideosColumn() {
@@ -478,4 +618,5 @@ function initHeroVideo() {
 
 initTeachersCarousel();
 initTrustVideosColumn();
+initTrustMobileTabs();
 initHeroVideo();

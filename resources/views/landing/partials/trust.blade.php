@@ -18,10 +18,35 @@
             $videoTestimonials = $testimonials
                 ->filter(fn ($testimonial) => $testimonial->type?->value === 'video' && filled($testimonial->media_path))
                 ->values();
+            $defaultTab = $videoTestimonials->isNotEmpty() ? 'videos' : ($whatsappTestimonials->isNotEmpty() ? 'whatsapp' : 'google');
         @endphp
 
-        <div class="trust-grid">
-            <div class="trust-screenshots trust-marquee {{ $whatsappTestimonials->count() < 2 ? 'trust-marquee--static' : '' }}" data-direction="up">
+        <div class="trust-mobile-tabs" data-trust-tabs role="tablist" aria-label="{{ __('Catégories de témoignages') }}">
+            @if ($videoTestimonials->isNotEmpty())
+                <button type="button" class="trust-tab-btn {{ $defaultTab === 'videos' ? 'is-active' : '' }}" data-tab="videos" role="tab" aria-selected="{{ $defaultTab === 'videos' ? 'true' : 'false' }}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <span>{{ __('Vidéos') }}</span>
+                    <span class="trust-tab-count">{{ $videoTestimonials->count() }}</span>
+                </button>
+            @endif
+            @if ($whatsappTestimonials->isNotEmpty())
+                <button type="button" class="trust-tab-btn {{ $defaultTab === 'whatsapp' ? 'is-active' : '' }}" data-tab="whatsapp" role="tab" aria-selected="{{ $defaultTab === 'whatsapp' ? 'true' : 'false' }}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                    <span>WhatsApp</span>
+                    <span class="trust-tab-count">{{ $whatsappTestimonials->count() }}</span>
+                </button>
+            @endif
+            @if ($googleTestimonials->isNotEmpty())
+                <button type="button" class="trust-tab-btn {{ $defaultTab === 'google' ? 'is-active' : '' }}" data-tab="google" role="tab" aria-selected="{{ $defaultTab === 'google' ? 'true' : 'false' }}">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 7.1L22 9.3l-5.9 4.6 1.9 7.4L12 16.9 6 21.3l1.9-7.4L2 9.3l7.4-.2L12 2z"/></svg>
+                    <span>{{ __('Avis Google') }}</span>
+                    <span class="trust-tab-count">{{ $googleTestimonials->count() }}</span>
+                </button>
+            @endif
+        </div>
+
+        <div class="trust-grid" data-active-tab="{{ $defaultTab }}">
+            <div class="trust-screenshots trust-marquee {{ $whatsappTestimonials->count() < 2 ? 'trust-marquee--static' : '' }} {{ $defaultTab === 'whatsapp' ? 'is-tab-active' : '' }}" data-trust-pane="whatsapp" data-direction="up">
                 @if ($whatsappTestimonials->isNotEmpty())
                     <div class="trust-marquee-track">
                         <div class="trust-marquee-group">
@@ -40,7 +65,7 @@
                 @endif
             </div>
 
-            <div class="trust-videos-wrap">
+            <div class="trust-videos-wrap {{ $defaultTab === 'videos' ? 'is-tab-active' : '' }}" data-trust-pane="videos">
                 <div class="trust-videos" data-trust-videos>
                     @forelse ($videoTestimonials as $index => $testimonial)
                         @include('landing.partials.testimonial-card', [
@@ -60,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="trust-screenshots trust-marquee {{ $googleTestimonials->count() < 2 ? 'trust-marquee--static' : '' }}" data-direction="down">
+            <div class="trust-screenshots trust-marquee {{ $googleTestimonials->count() < 2 ? 'trust-marquee--static' : '' }} {{ $defaultTab === 'google' ? 'is-tab-active' : '' }}" data-trust-pane="google" data-direction="down">
                 @if ($googleTestimonials->isNotEmpty())
                     <div class="trust-marquee-track">
                         <div class="trust-marquee-group">
