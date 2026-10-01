@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\PricingPackages\Pages\CreatePricingPackage;
 use App\Models\PricingPackage;
 use App\Models\PricingSettings;
 use App\Models\SystemSettings;
@@ -10,11 +11,22 @@ use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\PricingPackageSeeder;
 use Database\Seeders\PricingSettingsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class PricingPageTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_special_price_field_accepts_any_decimal(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(CreatePricingPackage::class)
+            ->fillForm(['pricing_type' => PricingPackage::TYPE_SPECIAL])
+            ->assertFormFieldVisible('price')
+            ->assertSee('step="0.01"', false);
+    }
 
     public function test_price_page_renders_packages_and_perks(): void
     {

@@ -75,7 +75,7 @@ class PricingPackageForm
                                 : 'يُعتمد السعر العام للساعة ('.\number_format(PricingSettings::singleton()->per_hour_price, 2).' €) عند التسعير العام.')
                             ->numeric()
                             ->minValue(0.5)
-                            ->step(0.5)
+                            ->step(0.01)
                             ->suffix('€/ساعة')
                             ->default(0)
                             ->dehydrated()
