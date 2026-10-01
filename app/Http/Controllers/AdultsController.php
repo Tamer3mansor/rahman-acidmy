@@ -24,7 +24,7 @@ class AdultsController extends Controller
             ->get();
 
         $testimonials = LandingTestimonial::query()
-            ->forCoursePage(CourseAudience::Adults)
+            ->forAudience(CourseAudience::Adults)
             ->get();
 
         return view('adults.index', [

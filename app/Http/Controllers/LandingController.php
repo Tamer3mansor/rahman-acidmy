@@ -59,8 +59,7 @@ class LandingController extends Controller
             ->get();
 
         $testimonials = LandingTestimonial::query()
-            ->where('is_active', true)
-            ->orderBy('sort_order')
+            ->forLanding()
             ->get();
 
         $courses = Course::query()

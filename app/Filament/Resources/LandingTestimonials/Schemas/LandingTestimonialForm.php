@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\LandingTestimonials\Schemas;
 
-use App\Enums\TestimonialAudience;
+use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -70,12 +71,14 @@ class LandingTestimonialForm
                         Toggle::make('is_active')
                             ->label('نشط')
                             ->default(true),
-                        Select::make('page_audience')
-                            ->label('ظهور إضافي على صفحات الدورات')
-                            ->helperText('تظهر الشهادة دائمًا في الصفحة الرئيسية. حدد هنا صفحات الدورات التي تظهر فيها أيضًا.')
-                            ->options(TestimonialAudience::class)
-                            ->enum(TestimonialAudience::class)
-                            ->default(TestimonialAudience::LandingOnly)
+                        CheckboxList::make('placements')
+                            ->label('أماكن الظهور')
+                            ->helperText('اختر الصفحات التي تظهر فيها هذه الشهادة. اختيار «الصفحة الرئيسية» وحدها يعني أنها لا تظهر في صفحات الكورسات.')
+                            ->options(TestimonialPlacement::class)
+                            ->default([TestimonialPlacement::Landing])
+                            ->required()
+                            ->bulkToggleable()
+                            ->columns(2)
                             ->columnSpanFull(),
                         TextInput::make('sort_order')
                             ->label('ترتيب العرض')

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\LandingTestimonials\Tables;
 
-use App\Enums\TestimonialAudience;
+use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -22,9 +22,11 @@ class LandingTestimonialsTable
                     ->formatStateUsing(fn (?TestimonialType $state): string => $state?->getLabel() ?? '—')
                     ->badge()
                     ->color(fn (?TestimonialType $state): string => $state?->color() ?? 'gray'),
-                TextColumn::make('page_audience')
-                    ->label('الصفحات')
-                    ->formatStateUsing(fn (?TestimonialAudience $state): string => $state?->getLabel() ?? '—')
+                TextColumn::make('placements')
+                    ->label('أماكن الظهور')
+                    ->formatStateUsing(fn (?array $state): string => collect($state ?? [])
+                        ->map(fn (TestimonialPlacement $placement): string => $placement->getLabel())
+                        ->join(' · '))
                     ->badge(),
                 TextColumn::make('author_name')
                     ->label('الاسم')

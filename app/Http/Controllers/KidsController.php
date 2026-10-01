@@ -24,7 +24,7 @@ class KidsController extends Controller
             ->get();
 
         $testimonials = LandingTestimonial::query()
-            ->forCoursePage(CourseAudience::Kids)
+            ->forAudience(CourseAudience::Kids)
             ->get();
 
         return view('kids.index', [

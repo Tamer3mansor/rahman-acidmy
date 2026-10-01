@@ -2,10 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CourseAudience;
+use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
 use App\Filament\Resources\LandingTestimonials\Pages\CreateLandingTestimonial;
+use App\Models\Course;
 use App\Models\LandingTestimonial;
 use App\Models\User;
+use Database\Seeders\CoursePageSettingsSeeder;
+use Database\Seeders\CourseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -55,6 +60,7 @@ class LandingTestimonialsTest extends TestCase
     {
         LandingTestimonial::create([
             'type' => TestimonialType::Video,
+            'placements' => [TestimonialPlacement::Landing],
             'author_name' => 'أم محمد',
             'author_location' => 'الرياض',
             'media_path' => 'landing/testimonials/temoignage.mp4',
@@ -74,6 +80,7 @@ class LandingTestimonialsTest extends TestCase
     {
         LandingTestimonial::create([
             'type' => TestimonialType::Whatsapp,
+            'placements' => [TestimonialPlacement::Landing],
             'author_name' => 'متصل واتساب',
             'content' => '<p>شهادة واتساب</p>',
             'is_active' => true,
@@ -81,6 +88,7 @@ class LandingTestimonialsTest extends TestCase
         ]);
         LandingTestimonial::create([
             'type' => TestimonialType::Video,
+            'placements' => [TestimonialPlacement::Landing],
             'author_name' => 'صاحب فيديو',
             'media_path' => 'landing/testimonials/center.mp4',
             'is_active' => true,
@@ -88,7 +96,8 @@ class LandingTestimonialsTest extends TestCase
         ]);
         LandingTestimonial::create([
             'type' => TestimonialType::Google,
-            'author_name' => 'مقيم جوجل',
+            'placements' => [TestimonialPlacement::Landing],
+            'author_name' => 'مقييم جوجل',
             'content' => '<p>تقييم جوجل مكتوب هنا</p>',
             'rating' => 5,
             'is_active' => true,
@@ -108,6 +117,7 @@ class LandingTestimonialsTest extends TestCase
     {
         LandingTestimonial::create([
             'type' => TestimonialType::Whatsapp,
+            'placements' => [TestimonialPlacement::Landing],
             'author_name' => 'مثال',
             'content' => '<p>شهادة</p>',
             'is_active' => true,
@@ -123,6 +133,7 @@ class LandingTestimonialsTest extends TestCase
     {
         LandingTestimonial::create([
             'type' => TestimonialType::Video,
+            'placements' => [TestimonialPlacement::Landing],
             'author_name' => 'أم محمد',
             'media_path' => null,
             'is_active' => true,
@@ -141,6 +152,7 @@ class LandingTestimonialsTest extends TestCase
             ['id' => 1],
             [
                 'type' => TestimonialType::Whatsapp,
+                'placements' => [TestimonialPlacement::Landing],
                 'author_name' => 'مثال',
                 'content' => '<p>بيانات</p>',
                 'is_active' => true,
@@ -161,13 +173,57 @@ class LandingTestimonialsTest extends TestCase
         $this->assertNull((new LandingTestimonial(['type' => '', 'author_name' => 'x']))->type);
     }
 
-    public function test_admin_form_includes_course_page_audience_select(): void
+    public function test_admin_form_includes_placements_checkbox_list(): void
     {
         $admin = User::factory()->create();
 
         $this->actingAs($admin);
 
         Livewire::test(CreateLandingTestimonial::class)
-            ->assertFormFieldExists('page_audience');
+            ->assertFormFieldExists('placements');
+    }
+
+    public function test_video_testimonial_renders_on_the_kids_page_and_course_detail_page(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        LandingTestimonial::create([
+            'type' => TestimonialType::Video,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids],
+            'media_path' => 'landing/testimonials/kids.mp4',
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        $kidsCourse = Course::query()->where('audience', CourseAudience::Kids->value)->firstOrFail();
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('storage/landing/testimonials/kids.mp4', false)
+            ->assertSee('data-tv-video', false);
+
+        $this->get("/cours/{$kidsCourse->slug}")
+            ->assertOk()
+            ->assertSee('storage/landing/testimonials/kids.mp4', false)
+            ->assertSee('data-tv-video', false);
+    }
+
+    public function test_unknown_placement_values_are_dropped_on_read(): void
+    {
+        $testimonial = LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => ['kids', 'not-a-real-placement'],
+            'author_name' => 'مثال',
+            'content' => '<p>شهادة</p>',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $testimonial->refresh();
+
+        $this->assertSame([TestimonialPlacement::Kids], $testimonial->placements);
     }
 }

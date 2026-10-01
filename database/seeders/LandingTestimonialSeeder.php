@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
 use App\Models\LandingTestimonial;
 use Illuminate\Database\Seeder;
@@ -62,6 +63,7 @@ class LandingTestimonialSeeder extends Seeder
             LandingTestimonial::query()->updateOrCreate(
                 ['type' => $testimonial['type'], 'author_name' => $testimonial['author_name']],
                 [
+                    'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids, TestimonialPlacement::Adults],
                     'author_location' => $testimonial['author_location'],
                     'content' => $testimonial['content'],
                     'media_path' => null,

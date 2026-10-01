@@ -25,7 +25,7 @@ class CourseController extends Controller
         $relatedCourses = $this->relatedCoursesFor($course);
 
         $testimonials = LandingTestimonial::query()
-            ->forCoursePage($course->audience)
+            ->forAudience($course->audience)
             ->get();
 
         return view('courses.show', [

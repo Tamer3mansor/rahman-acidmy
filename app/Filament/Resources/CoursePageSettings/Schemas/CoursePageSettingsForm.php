@@ -207,11 +207,19 @@ class CoursePageSettingsForm
                 ->columns(3),
 
             Section::make('قسم «الشهادات»')
-                ->description('الشهادات نفسها بتتحكم فيها من صفحة «آراء العملاء»، والقسم ده بيحدد عنوانه فقط.')
+                ->description('الشهادات نفسها بتتحكم فيها من صفحة «آراء العملاء»، والقسم ده بيحدد عنوانه وعدد اللي بيظهروا.')
                 ->schema([
                     TextInput::make($audience.'_testimonials_label')->label('التسمية')->columnSpan(3),
                     TextInput::make($audience.'_testimonials_title')->label('العنوان')->columnSpan(3),
-                    Textarea::make($audience.'_testimonials_subtitle')->label('الوصف')->rows(2)->columnSpanFull(),
+                    Textarea::make($audience.'_testimonials_subtitle')->label('الوصف')->rows(2)->columnSpan(3),
+                    TextInput::make($audience.'_testimonials_limit')
+                        ->label('عدد الشهادات المعروضة')
+                        ->helperText('أقصى عدد يظهر في صفحة الجمهور دي وفي صفحات الكورسات بتاعته.')
+                        ->numeric()
+                        ->minValue(1)
+                        ->maxValue(12)
+                        ->default(3)
+                        ->columnSpan(3),
                 ])
                 ->columns(3),
 

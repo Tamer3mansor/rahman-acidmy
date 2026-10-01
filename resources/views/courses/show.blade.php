@@ -250,26 +250,19 @@
             </section>
         @endif
 
-        @if ($testimonials->count())
+        @php
+            $visibleTestimonials = $testimonials->take($pageSettings->testimonialsLimit($course->audience));
+        @endphp
+
+        @if ($visibleTestimonials->isNotEmpty())
             <section class="testimonials-section detail-section">
                 <div class="section-center">
                     <span class="section-label">{{ $copy['testimonials_label'] ?: 'Témoignages' }}</span>
                     <h2 class="testimonials-title">{{ $copy['testimonials_title'] ?: 'Ce que disent les parents' }}</h2>
                 </div>
                 <div class="testimonials-grid">
-                    @foreach ($testimonials as $testimonial)
-                        @if (!empty($testimonial->content))
-                        <article class="testimonials-card">
-                            <div class="testimonials-stars">{{ str_repeat('★', min($testimonial->rating ?? 5, 5)) }}{{ str_repeat('☆', max(5 - min($testimonial->rating ?? 5, 5), 0)) }}</div>
-                            <div class="testimonials-text">{!! $testimonial->content !!}</div>
-                            @if ($testimonial->author_name || $testimonial->author_location)
-                                <div class="testimonials-author">
-                                    {{ $testimonial->author_name }}
-                                    @if ($testimonial->author_location)<span>{{ $testimonial->author_location }}</span>@endif
-                                </div>
-                            @endif
-                        </article>
-                        @endif
+                    @foreach ($visibleTestimonials as $testimonial)
+                        @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                     @endforeach
                 </div>
             </section>

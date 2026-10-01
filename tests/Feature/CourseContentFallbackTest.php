@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\CourseAudience;
-use App\Enums\TestimonialAudience;
+use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
@@ -324,7 +324,7 @@ class CourseContentFallbackTest extends TestCase
     {
         LandingTestimonial::create([
             'type' => TestimonialType::Google,
-            'page_audience' => TestimonialAudience::Kids,
+            'placements' => [TestimonialPlacement::Kids],
             'author_name' => 'Parent',
             'content' => 'Retour élève enfant.',
             'rating' => 5,

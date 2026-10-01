@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\CourseAudience;
-use App\Enums\TestimonialAudience;
+use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
 use App\Filament\Resources\Courses\Pages\EditCourse;
 use App\Models\Course;
@@ -246,7 +246,7 @@ class CoursePageTest extends TestCase
 
         LandingTestimonial::create([
             'type' => TestimonialType::Google,
-            'page_audience' => TestimonialAudience::Kids,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids],
             'author_name' => 'Parent Avis Enfants',
             'content' => 'Retour élève enfant.',
             'rating' => 5,
@@ -255,7 +255,7 @@ class CoursePageTest extends TestCase
         ]);
         LandingTestimonial::create([
             'type' => TestimonialType::Google,
-            'page_audience' => TestimonialAudience::Adults,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Adults],
             'author_name' => 'Parent Avis Adultes',
             'content' => 'Retour élève adulte.',
             'rating' => 5,
@@ -264,7 +264,7 @@ class CoursePageTest extends TestCase
         ]);
         LandingTestimonial::create([
             'type' => TestimonialType::Whatsapp,
-            'page_audience' => TestimonialAudience::Both,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids, TestimonialPlacement::Adults],
             'author_name' => 'Avis Les Deux',
             'content' => 'Disponible partout.',
             'is_active' => true,
@@ -272,7 +272,7 @@ class CoursePageTest extends TestCase
         ]);
         LandingTestimonial::create([
             'type' => TestimonialType::Whatsapp,
-            'page_audience' => TestimonialAudience::LandingOnly,
+            'placements' => [TestimonialPlacement::Landing],
             'author_name' => 'Avis Accueil',
             'content' => 'Réservé à la page d\'accueil.',
             'is_active' => true,
@@ -292,6 +292,65 @@ class CoursePageTest extends TestCase
             ->assertSee('Avis Les Deux')
             ->assertDontSee('Parent Avis Enfants')
             ->assertDontSee('Avis Accueil');
+    }
+
+    public function test_testimonial_placed_outside_the_landing_page_stays_off_it(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        LandingTestimonial::create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Kids],
+            'author_name' => 'Avis Kids فقط',
+            'content' => 'Retours élève enfant.',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('Avis Kids فقط');
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('Avis Kids فقط');
+    }
+
+    public function test_course_detail_page_respects_the_testimonials_limit(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        CoursePageSettings::singleton()->update([
+            'kids_testimonials_limit' => 2,
+        ]);
+
+        foreach (range(1, 4) as $index) {
+            LandingTestimonial::create([
+                'type' => TestimonialType::Google,
+                'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids],
+                'author_name' => "Avis numéro {$index}",
+                'content' => "Contenu {$index}.",
+                'rating' => 5,
+                'is_active' => true,
+                'sort_order' => $index,
+            ]);
+        }
+
+        $kidsCourse = Course::query()->where('audience', CourseAudience::Kids->value)->firstOrFail();
+
+        $this->get("/cours/{$kidsCourse->slug}")
+            ->assertOk()
+            ->assertSee('Avis numéro 1')
+            ->assertSee('Avis numéro 2')
+            ->assertDontSee('Avis numéro 3')
+            ->assertDontSee('Avis numéro 4');
     }
 
     public function test_course_admin_resources_render(): void

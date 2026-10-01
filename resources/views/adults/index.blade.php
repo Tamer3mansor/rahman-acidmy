@@ -151,7 +151,7 @@
                     @endif
                 </div>
                 <div class="testimonials-row">
-                    @foreach ($testimonials->take(3) as $testimonial)
+                    @foreach ($testimonials->take($pageSettings->testimonialsLimit($audience)) as $testimonial)
                         @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                     @endforeach
                 </div>

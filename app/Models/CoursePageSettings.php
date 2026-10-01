@@ -48,6 +48,7 @@ class CoursePageSettings extends Model
         'kids_testimonials_label',
         'kids_testimonials_title',
         'kids_testimonials_subtitle',
+        'kids_testimonials_limit',
         'kids_form_title',
         'kids_form_subtitle',
         'kids_shared_curriculum_items',
@@ -107,6 +108,7 @@ class CoursePageSettings extends Model
         'adults_testimonials_label',
         'adults_testimonials_title',
         'adults_testimonials_subtitle',
+        'adults_testimonials_limit',
         'adults_form_title',
         'adults_form_subtitle',
         'adults_shared_curriculum_items',
@@ -200,6 +202,8 @@ class CoursePageSettings extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_indexed' => 'boolean',
+        'kids_testimonials_limit' => 'integer',
+        'adults_testimonials_limit' => 'integer',
         'kids_about_items' => 'array',
         'kids_journey_items' => 'array',
         'kids_curriculum_items' => 'array',
@@ -286,6 +290,17 @@ class CoursePageSettings extends Model
             'age_template' => $this->{$prefix.'card_age_template'},
             'level_prefix' => $this->{$prefix.'card_level_prefix'},
         ];
+    }
+
+    /**
+     * How many testimonials one audience shows, on the audience page and on the
+     * course detail pages of that audience alike.
+     */
+    public function testimonialsLimit(CourseAudience $audience): int
+    {
+        $limit = (int) $this->{$audience->value.'_testimonials_limit'};
+
+        return $limit > 0 ? $limit : 3;
     }
 
     /**
