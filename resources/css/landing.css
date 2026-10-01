@@ -794,6 +794,36 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 .teachers-pagination-bullet.is-near { width:12px; }
 .teachers-pagination-bullet.is-active { width:26px; background:var(--gold); }
 .teachers-pagination-bullet:hover { background:var(--green); }
+
+/* testimonials pagination (audience pages + course detail pages) */
+.testimonials-pagination {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:32px;
+}
+.testimonials-pages { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+.testimonials-page {
+  min-width:40px;
+  padding:9px 14px;
+  border-radius:10px;
+  border:0.5px solid var(--border-subtle);
+  background:var(--surface-card);
+  color:var(--text-body);
+  font-size:0.85rem;
+  font-weight:600;
+  text-align:center;
+  transition:border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
+.testimonials-page.is-active {
+  background:var(--green);
+  border-color:var(--green);
+  color:var(--white);
+}
+.testimonials-page.is-disabled { opacity:0.4; cursor:default; }
 .teachers-carousel.is-ready .teachers-grid { display:flex; gap:24px; margin-top:0; transition:transform 0.55s cubic-bezier(0.25, 1, 0.5, 1); will-change:transform; }
 .teachers-carousel.is-ready .teacher-card { flex:0 0 calc((100% - 48px) / 3); min-width:0; }
 @media (max-width: 1024px) and (min-width: 769px) {

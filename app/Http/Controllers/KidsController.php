@@ -25,7 +25,7 @@ class KidsController extends Controller
 
         $testimonials = LandingTestimonial::query()
             ->forAudience(CourseAudience::Kids)
-            ->get();
+            ->paginate($pageSettings->testimonialsPerPage(CourseAudience::Kids), ['*'], 'testimonials');
 
         return view('kids.index', [
             'audience' => CourseAudience::Kids,

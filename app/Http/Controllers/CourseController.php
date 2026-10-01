@@ -26,7 +26,7 @@ class CourseController extends Controller
 
         $testimonials = LandingTestimonial::query()
             ->forAudience($course->audience)
-            ->get();
+            ->paginate($pageSettings->testimonialsPerPage($course->audience), ['*'], 'testimonials');
 
         return view('courses.show', [
             'settings' => $settings,

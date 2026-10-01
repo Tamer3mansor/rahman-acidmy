@@ -25,7 +25,7 @@ class AdultsController extends Controller
 
         $testimonials = LandingTestimonial::query()
             ->forAudience(CourseAudience::Adults)
-            ->get();
+            ->paginate($pageSettings->testimonialsPerPage(CourseAudience::Adults), ['*'], 'testimonials');
 
         return view('adults.index', [
             'audience' => CourseAudience::Adults,

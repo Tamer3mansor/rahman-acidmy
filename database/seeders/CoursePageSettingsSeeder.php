@@ -205,7 +205,7 @@ class CoursePageSettingsSeeder extends Seeder
                 'kids_testimonials_label' => self::MAIN_PAGE_SHARED['testimonials_label'],
                 'kids_testimonials_title' => 'Ils nous font confiance',
                 'kids_testimonials_subtitle' => null,
-                'kids_testimonials_limit' => 6,
+                'kids_testimonials_per_page' => 6,
 
                 'kids_why_items' => [
                     ['icon' => '🕌', 'title' => 'Enseignants diplômés de l\'Al-Azhar', 'description' => 'Tous nos enseignants sont diplômés de l\'Al-Azhar et titulaires d\'Ijazah certifiées en Tajwid, avec une expérience confirmée auprès des enfants.'],
@@ -311,7 +311,7 @@ class CoursePageSettingsSeeder extends Seeder
                 'adults_testimonials_label' => self::MAIN_PAGE_SHARED['testimonials_label'],
                 'adults_testimonials_title' => 'Ils nous font confiance',
                 'adults_testimonials_subtitle' => null,
-                'adults_testimonials_limit' => 6,
+                'adults_testimonials_per_page' => 6,
 
                 'adults_faq_label' => 'Questions fréquentes',
                 'adults_faq_title' => '❓ Questions fréquentes — Cours adultes',

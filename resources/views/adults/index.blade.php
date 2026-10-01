@@ -151,10 +151,11 @@
                     @endif
                 </div>
                 <div class="testimonials-row">
-                    @foreach ($testimonials->take($pageSettings->testimonialsLimit($audience)) as $testimonial)
+                    @foreach ($testimonials as $testimonial)
                         @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                     @endforeach
                 </div>
+                {{ $testimonials->links('partials.testimonials-pagination') }}
             </div>
         </section>
     @endif

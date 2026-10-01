@@ -320,7 +320,7 @@ class CoursePageTest extends TestCase
             ->assertSee('Avis Kids فقط');
     }
 
-    public function test_course_detail_page_respects_the_testimonials_limit(): void
+    public function test_course_detail_page_paginates_testimonials(): void
     {
         $this->seed([
             CourseSeeder::class,
@@ -328,7 +328,7 @@ class CoursePageTest extends TestCase
         ]);
 
         CoursePageSettings::singleton()->update([
-            'kids_testimonials_limit' => 2,
+            'kids_testimonials_per_page' => 2,
         ]);
 
         foreach (range(1, 4) as $index) {
@@ -351,6 +351,45 @@ class CoursePageTest extends TestCase
             ->assertSee('Avis numéro 2')
             ->assertDontSee('Avis numéro 3')
             ->assertDontSee('Avis numéro 4');
+
+        $this->get("/cours/{$kidsCourse->slug}?testimonials=2")
+            ->assertOk()
+            ->assertSee('Avis numéro 3')
+            ->assertSee('Avis numéro 4')
+            ->assertDontSee('Avis numéro 1');
+    }
+
+    public function test_landing_page_keeps_showing_every_testimonial_without_pagination(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        CoursePageSettings::singleton()->update([
+            'kids_testimonials_per_page' => 2,
+        ]);
+
+        foreach (range(1, 5) as $index) {
+            LandingTestimonial::create([
+                'type' => TestimonialType::Google,
+                'placements' => [TestimonialPlacement::Landing],
+                'author_name' => "Avis Landing {$index}",
+                'content' => "Contenu {$index}.",
+                'rating' => 5,
+                'is_active' => true,
+                'sort_order' => $index,
+            ]);
+        }
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Avis Landing 1')
+            ->assertSee('Avis Landing 2')
+            ->assertSee('Avis Landing 3')
+            ->assertSee('Avis Landing 4')
+            ->assertSee('Avis Landing 5')
+            ->assertDontSee('السابق', false);
     }
 
     public function test_course_admin_resources_render(): void

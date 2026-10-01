@@ -48,7 +48,7 @@ class CoursePageSettings extends Model
         'kids_testimonials_label',
         'kids_testimonials_title',
         'kids_testimonials_subtitle',
-        'kids_testimonials_limit',
+        'kids_testimonials_per_page',
         'kids_form_title',
         'kids_form_subtitle',
         'kids_shared_curriculum_items',
@@ -108,7 +108,7 @@ class CoursePageSettings extends Model
         'adults_testimonials_label',
         'adults_testimonials_title',
         'adults_testimonials_subtitle',
-        'adults_testimonials_limit',
+        'adults_testimonials_per_page',
         'adults_form_title',
         'adults_form_subtitle',
         'adults_shared_curriculum_items',
@@ -202,8 +202,8 @@ class CoursePageSettings extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_indexed' => 'boolean',
-        'kids_testimonials_limit' => 'integer',
-        'adults_testimonials_limit' => 'integer',
+        'kids_testimonials_per_page' => 'integer',
+        'adults_testimonials_per_page' => 'integer',
         'kids_about_items' => 'array',
         'kids_journey_items' => 'array',
         'kids_curriculum_items' => 'array',
@@ -293,14 +293,14 @@ class CoursePageSettings extends Model
     }
 
     /**
-     * How many testimonials one audience shows, on the audience page and on the
-     * course detail pages of that audience alike.
+     * How many testimonials one audience shows per page, on the audience page and
+     * on the course detail pages of that audience alike.
      */
-    public function testimonialsLimit(CourseAudience $audience): int
+    public function testimonialsPerPage(CourseAudience $audience): int
     {
-        $limit = (int) $this->{$audience->value.'_testimonials_limit'};
+        $perPage = (int) $this->{$audience->value.'_testimonials_per_page'};
 
-        return $limit > 0 ? $limit : 3;
+        return $perPage > 0 ? $perPage : 6;
     }
 
     /**

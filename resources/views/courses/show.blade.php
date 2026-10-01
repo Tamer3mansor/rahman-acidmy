@@ -250,21 +250,18 @@
             </section>
         @endif
 
-        @php
-            $visibleTestimonials = $testimonials->take($pageSettings->testimonialsLimit($course->audience));
-        @endphp
-
-        @if ($visibleTestimonials->isNotEmpty())
+        @if ($testimonials->count())
             <section class="testimonials-section detail-section">
                 <div class="section-center">
                     <span class="section-label">{{ $copy['testimonials_label'] ?: 'Témoignages' }}</span>
                     <h2 class="testimonials-title">{{ $copy['testimonials_title'] ?: 'Ce que disent les parents' }}</h2>
                 </div>
                 <div class="testimonials-grid">
-                    @foreach ($visibleTestimonials as $testimonial)
+                    @foreach ($testimonials as $testimonial)
                         @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
                     @endforeach
                 </div>
+                {{ $testimonials->links('partials.testimonials-pagination') }}
             </section>
         @endif
 

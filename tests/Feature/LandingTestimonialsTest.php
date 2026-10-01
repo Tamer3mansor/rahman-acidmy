@@ -8,6 +8,7 @@ use App\Enums\TestimonialType;
 use App\Filament\Resources\LandingTestimonials\Pages\CreateLandingTestimonial;
 use App\Filament\Resources\LandingTestimonials\Pages\ListLandingTestimonials;
 use App\Models\Course;
+use App\Models\CoursePageSettings;
 use App\Models\LandingTestimonial;
 use App\Models\User;
 use Database\Seeders\CoursePageSettingsSeeder;
@@ -210,6 +211,41 @@ class LandingTestimonialsTest extends TestCase
             ->assertOk()
             ->assertSee('storage/landing/testimonials/kids.mp4', false)
             ->assertSee('data-tv-video', false);
+    }
+
+    public function test_audience_page_paginates_testimonials(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        CoursePageSettings::singleton()->update([
+            'kids_testimonials_per_page' => 2,
+        ]);
+
+        foreach (range(1, 3) as $index) {
+            LandingTestimonial::query()->create([
+                'type' => TestimonialType::Google,
+                'placements' => [TestimonialPlacement::Kids],
+                'author_name' => "رأي أطفال {$index}",
+                'content' => "<p>محتوى {$index}</p>",
+                'rating' => 5,
+                'is_active' => true,
+                'sort_order' => $index,
+            ]);
+        }
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('رأي أطفال 1')
+            ->assertSee('رأي أطفال 2')
+            ->assertDontSee('رأي أطفال 3');
+
+        $this->get('/enfants?testimonials=2')
+            ->assertOk()
+            ->assertSee('رأي أطفال 3')
+            ->assertDontSee('رأي أطفال 1');
     }
 
     public function test_unknown_placement_values_are_dropped_on_read(): void
