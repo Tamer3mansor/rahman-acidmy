@@ -1073,14 +1073,20 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 @media (max-width:768px) {
   .nav-links { display:none; }
   .nav-actions .nav-wa { display:none; }
-  .nav-btn { font-size: 0.78rem; padding: 9px 14px; }
+  /* The booking CTA is already the first action inside the mobile menu, so
+     keeping it in the bar only pushes the hamburger off-screen: the logo and
+     .nav-actions are both flex-shrink:0, and .container clips the overflow. */
+  .nav-actions .nav-btn { display: none; }
   .hamburger { display:flex; }
 
   .nav-inner { gap: 12px; }
-  .nav-logo { min-width: 0; }
+  .nav-logo { min-width: 0; flex-shrink: 1; }
   .nav-logo-text { min-width: 0; }
   .nav-logo-text .name,
   .nav-logo-text .sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* Never let the hamburger be squeezed or clipped */
+  .nav-actions { flex-shrink: 0; }
+  .hamburger { flex-shrink: 0; margin-left: auto; }
 
   .hero-inner { grid-template-columns:1fr; gap:40px; text-align:center; }
   .hero-sub { margin-left:auto; margin-right:auto; }
