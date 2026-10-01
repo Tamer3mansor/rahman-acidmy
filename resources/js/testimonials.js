@@ -80,11 +80,25 @@ function initTvPlayer(player, autoplay) {
     setMuted(video.muted);
 
     if (autoplay) {
-        video.muted = false;
-        setMuted(false);
+        /* Phones only allow muted autoplay, so start muted and upgrade to sound
+           on the first interaction. Trying with sound first leaves the card as a
+           black frame because the rejected promise is never retried. */
+        video.muted = true;
+        setMuted(true);
+
         const attempt = video.play();
         if (attempt !== undefined && typeof attempt.catch === 'function') {
-            attempt.catch(() => { /* autoplay with sound blocked until user interaction */ });
+            attempt.catch(() => { /* play button stays as the fallback */ });
         }
+
+        const unmute = () => {
+            video.muted = false;
+            setMuted(false);
+            if (video.paused) video.play();
+        };
+
+        ['pointerdown', 'touchstart', 'keydown', 'wheel'].forEach((evt) => {
+            window.addEventListener(evt, unmute, { once: true, passive: true });
+        });
     }
 }

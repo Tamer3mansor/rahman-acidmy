@@ -1163,15 +1163,17 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
     height: auto;
     overflow: visible;
   }
+  /* Keep the scrolling marquee on phones, same as desktop. It is clipped to a
+     fixed viewport so the pane stays a readable strip instead of growing with
+     the duplicated loop group. Touching it pauses the loop so a message can
+     actually be read. */
   .trust-marquee {
-    height: auto;
-    overflow: visible;
+    height: 420px;
+    overflow: hidden;
   }
-  .trust-marquee-track {
-    animation: none !important;
-  }
-  .trust-marquee-group[aria-hidden="true"] {
-    display: none !important;
+  .trust-marquee:hover .trust-marquee-track,
+  .trust-marquee:active .trust-marquee-track {
+    animation-play-state: paused;
   }
   .trust-videos-wrap::after { display: none; }
   .trust-videos {
@@ -1180,6 +1182,13 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
     scrollbar-width: none;
   }
   .trust-videos::-webkit-scrollbar { display: none; }
+  .trust-videos { gap: 14px; }
+  /* Testimonial clips are landscape (roughly 16:9 up to 1.97:1). A 4:3 frame
+     letterboxes them into black bars and the video reads as "missing" on a
+     phone, so match the frame to the footage and fill it. */
+  .trust-video-card { aspect-ratio: 16/9; border-radius: var(--r-md); }
+  .trust-video-card video,
+  .tv-player .tv-video { object-fit: cover; background: var(--green); }
 
   .steps-grid { grid-template-columns:1fr 1fr; }
 
@@ -1345,8 +1354,13 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 /* TRUST */
 .lp .trust-section { padding:44px 0; }
 .lp .trust-grid { gap:20px; margin-top:20px; }
-.lp .trust-marquee { height:420px; }
-.lp .trust-videos { max-height:420px; }
+/* The fixed column heights only make sense on desktop. On phones the panes
+   are switched by the tab bar, so they must size to their content instead of
+   becoming inner scroll boxes. */
+@media (min-width:769px) {
+  .lp .trust-marquee { height:420px; }
+  .lp .trust-videos { max-height:420px; }
+}
 .lp .trust-cta-wrap { margin-top:20px; }
 
 /* JOURNEY */
