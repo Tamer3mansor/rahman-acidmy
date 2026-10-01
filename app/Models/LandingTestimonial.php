@@ -50,7 +50,8 @@ class LandingTestimonial extends Model
         return $query
             ->where('is_active', true)
             ->whereJsonContains('placements', $audience->value)
-            ->orderBy('sort_order');
+            ->orderBy('sort_order')
+            ->orderBy('id');
     }
 
     public function scopeForPlacement(Builder $query, TestimonialPlacement $placement): Builder
@@ -58,6 +59,7 @@ class LandingTestimonial extends Model
         return $query
             ->where('is_active', true)
             ->whereJsonContains('placements', $placement->value)
-            ->orderBy('sort_order');
+            ->orderBy('sort_order')
+            ->orderBy('id');
     }
 }

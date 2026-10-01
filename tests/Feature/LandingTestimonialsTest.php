@@ -6,6 +6,7 @@ use App\Enums\CourseAudience;
 use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
 use App\Filament\Resources\LandingTestimonials\Pages\CreateLandingTestimonial;
+use App\Filament\Resources\LandingTestimonials\Pages\ListLandingTestimonials;
 use App\Models\Course;
 use App\Models\LandingTestimonial;
 use App\Models\User;
@@ -225,5 +226,98 @@ class LandingTestimonialsTest extends TestCase
         $testimonial->refresh();
 
         $this->assertSame([TestimonialPlacement::Kids], $testimonial->placements);
+    }
+
+    public function test_dashboard_order_is_kept_per_placement(): void
+    {
+        $kidsFirst = LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids],
+            'author_name' => 'اطفال أول',
+            'content' => '<p>أول</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+        $adultsOnly = LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Adults],
+            'author_name' => 'كبار بس',
+            'content' => '<p>كبار</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+        $kidsSecond = LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids],
+            'author_name' => 'اطفال تاني',
+            'content' => '<p>تاني</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 3,
+        ]);
+
+        $this->assertSame(
+            [$kidsFirst->id, $kidsSecond->id],
+            LandingTestimonial::query()->forAudience(CourseAudience::Kids)->pluck('id')->all()
+        );
+        $this->assertSame(
+            [$adultsOnly->id],
+            LandingTestimonial::query()->forAudience(CourseAudience::Adults)->pluck('id')->all()
+        );
+        $this->assertSame(
+            [$kidsFirst->id, $adultsOnly->id, $kidsSecond->id],
+            LandingTestimonial::query()->forLanding()->pluck('id')->all()
+        );
+    }
+
+    public function test_reordering_a_filtered_subset_does_not_collide_with_hidden_testimonials(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $kidsFirst = LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids],
+            'author_name' => 'اطفال أول',
+            'content' => '<p>أول</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+        $adultsOnly = LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Adults],
+            'author_name' => 'كبار بس',
+            'content' => '<p>كبار</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+        $kidsSecond = LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Landing, TestimonialPlacement::Kids],
+            'author_name' => 'اطفال تاني',
+            'content' => '<p>تاني</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 3,
+        ]);
+
+        Livewire::test(ListLandingTestimonials::class)
+            ->call('reorderTable', [$kidsSecond->id, $kidsFirst->id]);
+
+        $this->assertSame(
+            [$kidsSecond->id, $kidsFirst->id],
+            LandingTestimonial::query()->forAudience(CourseAudience::Kids)->pluck('id')->all()
+        );
+        $this->assertSame(
+            [$kidsSecond->id, $kidsFirst->id, $adultsOnly->id],
+            LandingTestimonial::query()->forLanding()->pluck('id')->all()
+        );
+        $this->assertSame(
+            [1, 2, 3],
+            LandingTestimonial::query()->orderBy('sort_order')->pluck('sort_order')->all()
+        );
     }
 }

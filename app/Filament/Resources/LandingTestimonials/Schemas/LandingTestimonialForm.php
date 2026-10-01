@@ -4,6 +4,7 @@ namespace App\Filament\Resources\LandingTestimonials\Schemas;
 
 use App\Enums\TestimonialPlacement;
 use App\Enums\TestimonialType;
+use App\Models\LandingTestimonial;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -82,9 +83,10 @@ class LandingTestimonialForm
                             ->columnSpanFull(),
                         TextInput::make('sort_order')
                             ->label('ترتيب العرض')
+                            ->helperText('الترتيب بين الشهادات اللي بتظهر في نفس المكان. الشهادة الجديدة بتتحط في الآخر.')
                             ->required()
                             ->numeric()
-                            ->default(0),
+                            ->default(fn (): int => (int) LandingTestimonial::query()->max('sort_order') + 1),
                     ])
                     ->columns(2),
             ]);
