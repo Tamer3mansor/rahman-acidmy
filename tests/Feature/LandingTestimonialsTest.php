@@ -312,7 +312,11 @@ class LandingTestimonialsTest extends TestCase
             LandingTestimonial::query()->forAudience(CourseAudience::Kids)->pluck('id')->all()
         );
         $this->assertSame(
-            [$kidsSecond->id, $kidsFirst->id, $adultsOnly->id],
+            [$adultsOnly->id],
+            LandingTestimonial::query()->forAudience(CourseAudience::Adults)->pluck('id')->all()
+        );
+        $this->assertSame(
+            [$kidsSecond->id, $adultsOnly->id, $kidsFirst->id],
             LandingTestimonial::query()->forLanding()->pluck('id')->all()
         );
         $this->assertSame(

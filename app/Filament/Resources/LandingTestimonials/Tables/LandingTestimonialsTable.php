@@ -29,7 +29,8 @@ class LandingTestimonialsTable
                     ->color(fn (?TestimonialType $state): string => $state?->color() ?? 'gray'),
                 TextColumn::make('placements')
                     ->label('أماكن الظهور')
-                    ->formatStateUsing(fn (?array $state): string => collect($state ?? [])
+                    ->formatStateUsing(fn (mixed $state): string => collect(Arr::wrap($state))
+                        ->filter(fn (mixed $placement): bool => $placement instanceof TestimonialPlacement)
                         ->map(fn (TestimonialPlacement $placement): string => $placement->getLabel())
                         ->join(' · '))
                     ->badge(),
@@ -117,10 +118,12 @@ class LandingTestimonialsTable
     /**
      * Filament renumbers only the rows it was given, starting from 1, so
      * reordering a filtered subset would hand those rows the sort_order values
-     * the hidden testimonials already hold. This drops the moved rows into their
-     * previous slots of the full list and renumbers everything, which is what
-     * makes "filter to the kids testimonials, then reorder them" keep the new
-     * order for the kids section while every other section stays put.
+     * the hidden testimonials already hold and leave both sections with ties.
+     *
+     * The moved rows keep the slots they held in the full list and take the new
+     * order as values, which is what makes "filter to the kids testimonials,
+     * then reorder them" give the kids section the requested order while the
+     * hidden rows keep their relative positions.
      *
      * @param  array<int, string|int>  $order
      * @param  array<int, int>  $globalOrder
@@ -132,11 +135,11 @@ class LandingTestimonialsTable
         }
 
         $reordered = array_map(intval(...), array_values($order));
-        $slots = array_values(array_intersect($globalOrder, $reordered));
-        $merged = array_values(array_diff($globalOrder, $reordered));
+        $slots = array_keys(array_intersect($globalOrder, $reordered));
+        $merged = $globalOrder;
 
-        foreach ($slots as $index => $id) {
-            $merged[$index] = $id;
+        foreach ($slots as $index => $position) {
+            $merged[$position] = $reordered[$index];
         }
 
         DB::transaction(function () use ($merged): void {
