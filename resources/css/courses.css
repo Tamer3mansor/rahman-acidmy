@@ -467,21 +467,46 @@
   box-shadow: 0 0 0 3px rgba(201,150,58,0.4);
 }
 
-/* Testimonials row (2-3 landing-style cards horizontal) */
+/* Testimonials row: equal-height landing-style cards.
+   A grid with `grid-auto-rows: 1fr` forces every card to the height of the
+   tallest one, so short WhatsApp/Google cards no longer leave ragged edges.
+   The max-width + justify-self keep the previous centred, width-capped look. */
 .testimonials-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 380px));
+  grid-auto-rows: 1fr;
   gap: 24px;
   justify-content: center;
   align-items: stretch;
 }
 .testimonials-row > * {
-  flex: 1 1 300px;
+  width: 100%;
   max-width: 380px;
-}
-.testimonials-row .screenshot-card,
-.testimonials-row .trust-video-card {
+  justify-self: center;
   height: 100%;
+}
+/* Screenshot cards are a column so their footer can be pushed to the bottom
+   of the stretched card instead of leaving a gap under the text. */
+.testimonials-row .screenshot-card {
+  display: flex;
+  flex-direction: column;
+}
+.testimonials-row .screenshot-card .wa-mock,
+.testimonials-row .screenshot-card .review-mock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.testimonials-row .screenshot-card .wa-bubble,
+.testimonials-row .screenshot-card .review-text {
+  flex: 1;
+}
+.testimonials-row .screenshot-card .wa-bubble {
+  display: flex;
+  flex-direction: column;
+}
+.testimonials-row .screenshot-card .wa-bubble .time {
+  margin-top: auto;
 }
 .testimonials-row .wa-bubble,
 .testimonials-row .review-text {
@@ -490,8 +515,14 @@
 .testimonials-row .review-stars {
   font-size: 1.05rem;
 }
+/* Video cards share the row height too; the absolutely positioned player fills
+   whatever height the card gets. Portrait clips no longer opt out of the
+   stretch (their inline height:auto still lets the grid row drive the height). */
 .testimonials-row .trust-video-card {
-  aspect-ratio: 16/9;
+  aspect-ratio: auto;
+}
+.testimonials-row .trust-video-card.is-portrait {
+  align-self: stretch;
 }
 
 /* testimonial video player (shared with landing trust videos) */
@@ -574,7 +605,7 @@
   .faq-contact-grid { grid-template-columns: 1fr; gap: 32px; }
 }
 @media (max-width: 640px) {
-  .testimonials-row { flex-direction: column; align-items: center; }
+  .testimonials-row { grid-template-columns: 1fr; }
   .testimonials-row > * { max-width: 100%; }
   .contact-card { padding: 24px; }
 }
