@@ -136,6 +136,44 @@ class CoursePageTest extends TestCase
             ->assertSee('build/assets/courses-', false);
     }
 
+    public function test_kids_and_adults_catalog_labels_are_editable_and_fall_back_to_the_page_label(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $this->assertTrue(Schema::hasColumn('course_page_settings', 'kids_catalog_label'));
+        $this->assertTrue(Schema::hasColumn('course_page_settings', 'adults_catalog_label'));
+
+        $settings = CoursePageSettings::singleton();
+        $settings->update([
+            'kids_catalog_label' => 'Nos programmes enfants',
+            'adults_catalog_label' => 'Nos formations adultes',
+        ]);
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('Nos programmes enfants');
+
+        $this->get('/adultes')
+            ->assertOk()
+            ->assertSee('Nos formations adultes');
+
+        $settings->update([
+            'kids_catalog_label' => null,
+            'adults_catalog_label' => null,
+        ]);
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('Cours pour enfants');
+
+        $this->get('/adultes')
+            ->assertOk()
+            ->assertSee('Cours pour adultes');
+    }
+
     public function test_course_show_renders_full_details(): void
     {
         $this->seed([
@@ -510,6 +548,39 @@ class CoursePageTest extends TestCase
             ->assertSee('Enseignants Al-Azhar — Diplômés')
             ->assertSee('Puis-je apprendre le Coran à mon rythme ?')
             ->assertDontSee('Séance interactive');
+    }
+
+    public function test_course_hero_label_prefers_the_course_then_the_shared_copy_then_the_default(): void
+    {
+        $this->seed(CoursePageSettingsSeeder::class);
+
+        $this->assertTrue(Schema::hasColumn('courses', 'hero_label'));
+
+        $course = Course::factory()->kids()->create(['hero_label' => null]);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertSee('Programme dédié aux enfants et aux jeunes');
+
+        $course->update(['hero_label' => 'Programme réservé à cette formation']);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertSee('Programme réservé à cette formation')
+            ->assertDontSee('Programme dédié aux enfants et aux jeunes');
+
+        $course->update(['hero_label' => '   ']);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertSee('Programme dédié aux enfants et aux jeunes');
+
+        $course->update(['hero_label' => null]);
+        CoursePageSettings::singleton()->update(['details_kids_hero_label' => null]);
+
+        $this->get('/cours/'.$course->slug)
+            ->assertOk()
+            ->assertSee('Programme dédié aux enfants et aux jeunes');
     }
 
     public function test_course_stored_content_overrides_catalog_content(): void

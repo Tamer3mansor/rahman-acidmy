@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\LessonCategory;
 use App\Models\Lesson;
+use App\Models\LessonPageSettings;
 use App\Models\User;
 use Database\Seeders\CourseSeeder;
 use Database\Seeders\DatabaseSeeder;
@@ -26,7 +27,7 @@ class LessonPageTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('lessons.index')
-            ->assertSee('Découvrez par vous-même notre méthode et la qualité de l\'enseignement', false)
+            ->assertSee('Découvrez par vous-même notre méthode et la qualité de l\'enseignement')
             ->assertSee('Comment prononcer les trois lettres de madd facilement avec votre enfant ?')
             ->assertSee('Règles de la nun sakina et du tanwin — l\'izhar')
             ->assertSee('Les adhkar du matin et du soir pour les enfants simplifiés')
@@ -270,6 +271,82 @@ class LessonPageTest extends TestCase
             ->assertSee('Leçons gratuites');
     }
 
+    public function test_lessons_index_copy_and_seo_come_from_the_page_settings(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            LessonSeeder::class,
+        ]);
+
+        LessonPageSettings::singleton()->update([
+            'label' => 'Mini-leçons',
+            'title' => 'Testez notre pédagogie',
+            'description' => 'Une description choisie depuis le tableau de bord.',
+            'meta_title' => 'Leçons | Ar-Rahman Academy',
+            'meta_description' => 'Description de meta choisie depuis le tableau de bord.',
+        ]);
+
+        $this->get('/lecons-gratuites')
+            ->assertOk()
+            ->assertSee('Mini-leçons')
+            ->assertSee('Testez notre pédagogie')
+            ->assertSee('Une description choisie depuis le tableau de bord.')
+            ->assertSee('<title>Leçons | Ar-Rahman Academy</title>', false)
+            ->assertSee('Description de meta choisie depuis le tableau de bord.', false)
+            ->assertDontSee('Exemples et explications gratuits');
+    }
+
+    public function test_lessons_index_falls_back_to_the_bundled_wording_without_settings(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            LessonSeeder::class,
+        ]);
+
+        $settings = LessonPageSettings::singleton();
+        $settings->update([
+            'label' => null,
+            'title' => null,
+            'description' => null,
+            'meta_title' => null,
+            'meta_description' => null,
+        ]);
+
+        $this->get('/lecons-gratuites')
+            ->assertOk()
+            ->assertDontSee('section-label')
+            ->assertDontSee('<p class="section-sub">')
+            ->assertSee('Découvrez par vous-même notre méthode et la qualité de l\'enseignement');
+    }
+
+    public function test_lessons_og_image_uses_the_page_setting(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            LessonSeeder::class,
+        ]);
+
+        LessonPageSettings::singleton()->update(['og_image' => 'images/og/lessons.jpg']);
+
+        $this->get('/lecons-gratuites')
+            ->assertOk()
+            ->assertSee('<meta property="og:image" content="'.asset('storage/images/og/lessons.jpg').'">', false);
+    }
+
+    public function test_lessons_index_is_noindex_when_the_page_settings_say_so(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            LessonSeeder::class,
+        ]);
+
+        LessonPageSettings::singleton()->update(['is_indexed' => false]);
+
+        $this->get('/lecons-gratuites')
+            ->assertOk()
+            ->assertSee('<meta name="robots" content="noindex,nofollow"', false);
+    }
+
     public function test_lessons_admin_resources_render(): void
     {
         $this->seed([
@@ -285,5 +362,6 @@ class LessonPageTest extends TestCase
             ->assertSee('toggleTableReordering', false);
         $this->actingAs($user)->get('/admin/lessons/create')->assertOk();
         $this->actingAs($user)->get('/admin/lessons/1/edit')->assertOk();
+        $this->actingAs($user)->get('/admin/lesson-page-settings')->assertOk();
     }
 }

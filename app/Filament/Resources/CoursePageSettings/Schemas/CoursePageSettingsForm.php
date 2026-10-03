@@ -111,6 +111,10 @@ class CoursePageSettingsForm
             Section::make('شبكة الدورات')
                 ->description('رأس القسم الذي يعرض بطاقات الدورات، والنصوص الظاهرة على كل بطاقة.')
                 ->schema([
+                    TextInput::make($audience.'_catalog_label')
+                        ->label('التسمية')
+                        ->helperText('السطر الصغير فوق عنوان القسم — لو سايبه فاضي هتظهر تسمية الهيرو.')
+                        ->columnSpan(2),
                     TextInput::make($audience.'_catalog_title')->label('عنوان القسم')->columnSpan(2),
                     Textarea::make($audience.'_catalog_subtitle')->label('وصف القسم')->rows(2)->columnSpan(2),
                     TextInput::make($audience.'_catalog_empty_text')

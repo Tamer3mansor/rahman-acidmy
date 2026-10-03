@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogCategory;
+use App\Models\BlogPageSettings;
 use App\Models\BlogPost;
 use App\Models\LandingSettings;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $settings = LandingSettings::singleton();
+        $pageSettings = BlogPageSettings::singleton();
 
         $categories = BlogCategory::query()
             ->where('is_active', true)
@@ -47,12 +49,13 @@ class BlogController extends Controller
 
         return view('blog.index', [
             'settings' => $settings,
+            'pageSettings' => $pageSettings,
             'categories' => $categories,
             'activeCategorySlug' => $activeCategorySlug,
             'search' => $search,
             'featured' => $featured,
             'posts' => $posts,
-            'isIndexed' => $search === null && $posts->currentPage() === 1,
+            'isIndexed' => $pageSettings->is_indexed && $search === null && $posts->currentPage() === 1,
         ]);
     }
 

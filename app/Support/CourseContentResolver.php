@@ -9,8 +9,8 @@ use App\Models\CoursePageSettings;
 class CourseContentResolver
 {
     /**
-     * Fill a course's empty content blocks from the dashboard, walking down the
-     * three tiers in order until something is found:
+     * Fill a course's empty content from the dashboard, walking down the three
+     * tiers in order until something is found:
      *
      *   1. the course record itself (per-course override)
      *   2. the "المحتوى المشترك" tab for the course audience
@@ -22,10 +22,20 @@ class CourseContentResolver
      *
      * The "why choose Madrassat Ar-Rahman" block is the one exception: it only
      * exists on the details page, so it walks two tiers (shared, then main).
+     * `hero_label` is the other: it lives on the detail hero, so it walks the
+     * course then the shared details tab, and the view keeps the last-resort
+     * wording for its audience.
      */
     public static function resolve(Course $course, CoursePageSettings $settings): void
     {
         $prefix = $course->audience === CourseAudience::Kids ? 'kids' : 'adults';
+
+        $course->hero_label = self::firstFilled(
+            $course->hero_label,
+            [
+                fn (): mixed => $settings->{'details_'.$prefix.'_hero_label'},
+            ],
+        );
 
         $course->curriculum_items = self::firstFilled(
             $course->curriculum_items,

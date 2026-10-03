@@ -66,6 +66,7 @@ class CoursePageSettingsSeeder extends Seeder
      */
     private const MAIN_PAGE = [
         'kids' => [
+            'catalog_label' => 'Cours pour enfants',
             'catalog_title' => 'Cours des enfants disponibles',
             'catalog_subtitle' => "Choisissez le programme adapté à l'âge de votre enfant et cliquez pour voir les détails complets et réserver le cours d'essai.",
             'card_level_prefix' => '',
@@ -74,6 +75,7 @@ class CoursePageSettingsSeeder extends Seeder
             'final_cta_text' => "Réserver une séance d'essai gratuite",
         ],
         'adults' => [
+            'catalog_label' => 'Cours pour adultes',
             'catalog_title' => 'Cours des adultes et des grands',
             'catalog_subtitle' => "Choisissez le cours adapté à votre niveau et à votre objectif, puis cliquez pour voir les détails complets et réserver la séance d'essai.",
             'card_level_prefix' => 'Niveau : ',
@@ -152,6 +154,7 @@ class CoursePageSettingsSeeder extends Seeder
                 'kids_showcase_subtitle' => 'Suivi précis avec des rapports périodiques pour les parents après chaque séance.',
 
                 // ---- Catalog grid ----
+                'kids_catalog_label' => self::MAIN_PAGE['kids']['catalog_label'],
                 'kids_catalog_title' => self::MAIN_PAGE['kids']['catalog_title'],
                 'kids_catalog_subtitle' => self::MAIN_PAGE['kids']['catalog_subtitle'],
                 'kids_catalog_empty_text' => self::MAIN_PAGE_SHARED['catalog_empty_text'],
@@ -264,6 +267,7 @@ class CoursePageSettingsSeeder extends Seeder
                 'adults_showcase_subtitle' => "Des plans d'étude adaptés à votre emploi du temps, avec un enseignant pour les hommes et une enseignante pour les femmes.",
 
                 // ---- Catalog grid ----
+                'adults_catalog_label' => self::MAIN_PAGE['adults']['catalog_label'],
                 'adults_catalog_title' => self::MAIN_PAGE['adults']['catalog_title'],
                 'adults_catalog_subtitle' => self::MAIN_PAGE['adults']['catalog_subtitle'],
                 'adults_catalog_empty_text' => self::MAIN_PAGE_SHARED['catalog_empty_text'],

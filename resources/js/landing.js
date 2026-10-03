@@ -564,10 +564,10 @@ function initHeroVideo() {
 
         muteBtn.classList.toggle('is-muted', !on);
         muteBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-        muteBtn.setAttribute('aria-label', on ? 'كتم الصوت' : 'تشغيل الصوت');
+        muteBtn.setAttribute('aria-label', on ? 'Couper le son' : 'Activer le son');
         if (icoSound) icoSound.hidden = !on;
         if (icoMuted) icoMuted.hidden = on;
-        if (soundLabel) soundLabel.textContent = on ? 'كتم الصوت' : 'تشغيل الصوت';
+        if (soundLabel) soundLabel.textContent = on ? 'Couper le son' : 'Activer le son';
     };
 
     const enableSound = () => {

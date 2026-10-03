@@ -92,7 +92,10 @@
     <section class="section" id="catalog">
         <div class="container">
             <div class="catalog-head section-center">
-                <span class="section-label">{{ $pageSettings->kids_label }}</span>
+                @php $catalogLabel = $pageSettings->kids_catalog_label ?: $pageSettings->kids_label; @endphp
+                @if (filled($catalogLabel))
+                    <span class="section-label">{{ $catalogLabel }}</span>
+                @endif
                 <h2 class="section-title">{{ $pageSettings->kids_catalog_title ?: 'Cours des enfants disponibles' }}</h2>
                 @if (filled($pageSettings->kids_catalog_subtitle))
                     <p class="section-sub">{{ $pageSettings->kids_catalog_subtitle }}</p>

@@ -118,7 +118,7 @@
                     @if ($course->icon)
                         <img src="{{ asset('storage/'.$course->icon) }}" class="details-hero-icon" alt="">
                     @endif
-                    {{ $copy['hero_label'] ?? ($course->audience === \App\Enums\CourseAudience::Kids
+                    {{ $course->hero_label ?: ($course->audience === \App\Enums\CourseAudience::Kids
                         ? 'Programme dédié aux enfants et aux jeunes'
                         : 'Programme dédié aux adultes et aux grands') }}
                 </span>

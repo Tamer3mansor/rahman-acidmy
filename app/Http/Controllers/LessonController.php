@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\LessonCategory;
 use App\Models\LandingSettings;
 use App\Models\Lesson;
+use App\Models\LessonPageSettings;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller
@@ -12,6 +13,7 @@ class LessonController extends Controller
     public function index(Request $request)
     {
         $settings = LandingSettings::singleton();
+        $pageSettings = LessonPageSettings::singleton();
 
         $activeCategory = $request->has('k') && LessonCategory::tryFrom($request->input('k')) !== null
             ? LessonCategory::from($request->input('k'))
@@ -35,11 +37,12 @@ class LessonController extends Controller
 
         return view('lessons.index', [
             'settings' => $settings,
+            'pageSettings' => $pageSettings,
             'lessons' => $lessons,
             'activeCategory' => $activeCategory,
             'search' => $search,
             'categories' => LessonCategory::cases(),
-            'isIndexed' => $search === null && $lessons->currentPage() === 1,
+            'isIndexed' => $pageSettings->is_indexed && $search === null && $lessons->currentPage() === 1,
         ]);
     }
 

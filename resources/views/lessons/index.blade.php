@@ -1,8 +1,20 @@
 @extends('layouts.landing')
 
-@section('title', 'Leçons gratuites - Exemples et explications | ' . $settings->footer_brand_name)
+@section('title', $pageSettings->meta_title ?: 'Leçons gratuites - Exemples et explications | ' . $settings->footer_brand_name)
 
-@section('description', 'Leçons gratuites de Coran, Tajwid et langue arabe en ligne pour enfants et adultes en France, Belgique et Canada. Découvrez notre méthode d\'enseignement avec des exemples et explications simplifiés.')
+@section('description', $pageSettings->meta_description ?: 'Leçons gratuites de Coran, Tajwid et langue arabe en ligne pour enfants et adultes en France, Belgique et Canada. Découvrez notre méthode d\'enseignement avec des exemples et explications simplifiés.')
+
+@php
+    $lessonsOgImage = trim((string) $pageSettings->og_image);
+@endphp
+@if ($lessonsOgImage !== '')
+    @php
+        $lessonsOgImageUrl = \Illuminate\Support\Str::startsWith($lessonsOgImage, ['http://', 'https://'])
+            ? $lessonsOgImage
+            : asset('storage/'.$lessonsOgImage);
+    @endphp
+    @section('og_image', $lessonsOgImageUrl)
+@endif
 
 @section('bodyClass', 'pattern-bg')
 
@@ -19,9 +31,13 @@
 
     <section class="section page-hero lessons-hero">
         <div class="container section-center">
-            <span class="section-label">Exemples et explications gratuits</span>
-            <h1 class="section-title">Découvrez par vous-même notre méthode et la qualité de l'enseignement</h1>
-            <p class="section-sub">Un ensemble d'exemples et de mini-leçons qui expliquent le tajwid, la lecture et la langue arabe d'une façon simplifiée, soutenue par l'audio et les visuels.</p>
+            @if (filled($pageSettings->label))
+                <span class="section-label">{{ $pageSettings->label }}</span>
+            @endif
+            <h1 class="section-title">{{ $pageSettings->title ?: 'Découvrez par vous-même notre méthode et la qualité de l\'enseignement' }}</h1>
+            @if (filled($pageSettings->description))
+                <p class="section-sub">{{ $pageSettings->description }}</p>
+            @endif
 
             @include('landing.partials.search-form', [
                 'searchAction' => route('lessons.index'),

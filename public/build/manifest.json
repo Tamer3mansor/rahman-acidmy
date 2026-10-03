@@ -46,7 +46,7 @@
     "isEntry": true
   },
   "resources/css/courses.css": {
-    "file": "assets/courses-ddECxTl9.css",
+    "file": "assets/courses-BbqCoyr7.css",
     "name": "courses",
     "names": [
       "courses.css"
@@ -55,7 +55,7 @@
     "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-ButEU-jL.css",
+    "file": "assets/theme-n2_JNROX.css",
     "name": "theme",
     "names": [
       "theme.css"
@@ -64,7 +64,7 @@
     "isEntry": true
   },
   "resources/css/landing.css": {
-    "file": "assets/landing-B--UPJQg.css",
+    "file": "assets/landing-Zn_A1Sd4.css",
     "name": "landing",
     "names": [
       "landing.css"
@@ -97,7 +97,7 @@
     "isEntry": true
   },
   "resources/js/landing.js": {
-    "file": "assets/landing-6DvWelD6.js",
+    "file": "assets/landing-kQmpSee9.js",
     "name": "landing",
     "src": "resources/js/landing.js",
     "isEntry": true
@@ -109,7 +109,7 @@
     "isEntry": true
   },
   "resources/js/testimonials.js": {
-    "file": "assets/testimonials-DAyf5fzb.js",
+    "file": "assets/testimonials-aHMJrrMR.js",
     "name": "testimonials",
     "src": "resources/js/testimonials.js",
     "isEntry": true

@@ -1,11 +1,19 @@
 @extends('layouts.landing')
 
-@section('title', 'Blog islamique - Coran, Tajwid et arabe | Ar-Rahman Academy')
+@section('title', $pageSettings->meta_title ?: 'Blog islamique - Coran, Tajwid et arabe | Ar-Rahman Academy')
 
-@section('description', 'Blog islamique | Ar-Rahman Academy. Articles sur l\'apprentissage du Coran, le Tajwid, la langue arabe et l\'éducation islamique pour les familles en France, Belgique et Canada.')
+@section('description', $pageSettings->meta_description ?: 'Blog islamique | Ar-Rahman Academy. Articles sur l\'apprentissage du Coran, le Tajwid, la langue arabe et l\'éducation islamique pour les familles en France, Belgique et Canada.')
 
-@if ($featured?->cover_image_url)
-    @section('og_image', $featured->cover_image_url)
+@php
+    $blogOgImage = trim((string) ($pageSettings->og_image ?: $featured?->cover_image_url));
+@endphp
+@if ($blogOgImage !== '')
+    @php
+        $blogOgImageUrl = \Illuminate\Support\Str::startsWith($blogOgImage, ['http://', 'https://'])
+            ? $blogOgImage
+            : asset('storage/'.$blogOgImage);
+    @endphp
+    @section('og_image', $blogOgImageUrl)
 @endif
 
 @section('bodyClass', 'pattern-bg')
@@ -23,9 +31,13 @@
 
     <section class="section page-hero">
         <div class="container section-center">
-            <span class="section-label">Blog éducatif</span>
-            <h1 class="section-title">Derniers articles et conseils éducatifs</h1>
-            <p class="section-sub">Votre guide complet pour la mémorisation du Coran et l'apprentissage de la langue arabe pour enfants et adultes avec des méthodes modernes.</p>
+            @if (filled($pageSettings->label))
+                <span class="section-label">{{ $pageSettings->label }}</span>
+            @endif
+            <h1 class="section-title">{{ $pageSettings->title ?: 'Derniers articles et conseils éducatifs' }}</h1>
+            @if (filled($pageSettings->description))
+                <p class="section-sub">{{ $pageSettings->description }}</p>
+            @endif
 
             @include('landing.partials.search-form', [
                 'searchAction' => route('blog.index'),

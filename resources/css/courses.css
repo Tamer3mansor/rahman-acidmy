@@ -491,12 +491,24 @@
   font-size: 1.05rem;
 }
 .testimonials-row .trust-video-card {
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/9;
 }
 
 /* testimonial video player (shared with landing trust videos) */
 .tv-player { position:absolute; inset:0; }
 .tv-player .tv-video { width:100%; height:100%; object-fit:contain; background:#000; }
+/* Portrait clips (phones record 9:16) get a portrait frame whose ratio
+   testimonials.js reads off the video and writes inline, clamped to a sane
+   band. Cover then fills that frame exactly, so no bars and no crop. The width
+   cap keeps a tall clip from dominating the row. */
+.trust-video-card.is-portrait {
+  width: 100%;
+  max-width: 300px;
+  margin-inline: auto;
+  align-self: center;
+}
+.trust-video-card.is-portrait video,
+.trust-video-card.is-portrait .tv-video { object-fit: cover; }
 .tv-play {
   position:absolute; inset:0; margin:auto;
   width:58px;height:58px;border-radius:50%;
@@ -783,6 +795,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  align-items: stretch;
 }
 /* shared with the landing trust section so WhatsApp, Google and video cards
    look the same here as on the kids/adults pages */

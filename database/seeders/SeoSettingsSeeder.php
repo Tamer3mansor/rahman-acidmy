@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\BlogPageSettings;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
 use App\Models\LandingSettings;
+use App\Models\LessonPageSettings;
 use App\Models\PricingSettings;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +25,8 @@ class SeoSettingsSeeder extends Seeder
         $this->seedCoursePageSettings();
         $this->seedCourses();
         $this->seedPricingSettings();
+        $this->seedBlogPageSettings();
+        $this->seedLessonPageSettings();
     }
 
     private function seedLandingSettings(): void
@@ -115,6 +119,40 @@ class SeoSettingsSeeder extends Seeder
 
         if ($settings->meta_description === null) {
             $settings->meta_description = 'Tarifs clairs des cours particuliers de Coran et arabe en ligne. Packs sans engagement, première séance d\'essai gratuite, pour enfants et adultes.';
+        }
+
+        if ($settings->isDirty()) {
+            $settings->save();
+        }
+    }
+
+    private function seedBlogPageSettings(): void
+    {
+        $settings = BlogPageSettings::singleton();
+
+        if ($settings->meta_title === null) {
+            $settings->meta_title = 'Blog islamique - Coran, Tajwid et arabe | Ar-Rahman Academy';
+        }
+
+        if ($settings->meta_description === null) {
+            $settings->meta_description = 'Articles sur l\'apprentissage du Coran, le Tajwid, la langue arabe et l\'éducation islamique pour les familles en France, Belgique et Canada.';
+        }
+
+        if ($settings->isDirty()) {
+            $settings->save();
+        }
+    }
+
+    private function seedLessonPageSettings(): void
+    {
+        $settings = LessonPageSettings::singleton();
+
+        if ($settings->meta_title === null) {
+            $settings->meta_title = 'Leçons gratuites - Exemples et explications | '.LandingSettings::singleton()->footer_brand_name;
+        }
+
+        if ($settings->meta_description === null) {
+            $settings->meta_description = 'Exemples et mini-leçons gratuits de Coran, Tajwid et langue arabe pour enfants et adultes. Écoutez, regardez et appliquez la méthode de l\'académie.';
         }
 
         if ($settings->isDirty()) {

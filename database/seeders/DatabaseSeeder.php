@@ -36,11 +36,13 @@ class DatabaseSeeder extends Seeder
             LandingTestimonialSeeder::class,
             BlogCategorySeeder::class,
             BlogPostSeeder::class,
+            BlogPageSettingsSeeder::class,
             PricingSettingsSeeder::class,
             PricingPackageSeeder::class,
             CourseSeeder::class,
             CoursePageSettingsSeeder::class,
             LessonSeeder::class,
+            LessonPageSettingsSeeder::class,
             SeoSettingsSeeder::class,
         ]);
     }

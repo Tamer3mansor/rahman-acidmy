@@ -64,6 +64,21 @@ class SeoMetaTest extends TestCase
             ->assertSee('"@type": "Course"', false);
     }
 
+    public function test_blog_and_lessons_pages_use_seeded_meta_titles(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $this->get('/blog')
+            ->assertOk()
+            ->assertSee('<title>Blog islamique - Coran, Tajwid et arabe | Ar-Rahman Academy</title>', false)
+            ->assertSee('<meta name="robots" content="index,follow"', false);
+
+        $this->get('/lecons-gratuites')
+            ->assertOk()
+            ->assertSee('<title>Leçons gratuites - Exemples et explications | Ar-Rahman Academy</title>', false)
+            ->assertSee('<meta name="robots" content="index,follow"', false);
+    }
+
     public function test_noindex_robots_when_page_is_unindexed(): void
     {
         $this->seed(DatabaseSeeder::class);

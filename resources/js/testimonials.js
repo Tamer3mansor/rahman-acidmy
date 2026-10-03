@@ -6,6 +6,16 @@
    as a fallback.
    ============================================================ */
 
+/* Clips are recorded on phones, so they arrive in both orientations. The card
+   frame is sized from the real video dimensions once they are known: a
+   landscape clip keeps the 16/9 frame, a portrait clip gets a portrait frame.
+   The frame then matches the footage exactly, so the clip is neither cropped
+   nor letterboxed. Portrait ratios are clamped so an extreme recording cannot
+   turn a card into a sliver or a wall. */
+const FRAME_PORTRAIT_MIN_RATIO = 0.45;
+const FRAME_PORTRAIT_MAX_RATIO = 0.9;
+const METADATA_ROOT_MARGIN = '200px';
+
 document.addEventListener('DOMContentLoaded', () => {
     const players = document.querySelectorAll('[data-tv-player]');
 
@@ -21,6 +31,9 @@ function initTvPlayer(player, autoplay) {
 
     if (!video || !toggleBtn || !muteBtn || !volume) return;
 
+    fitFrameToVideo(video);
+    loadMetadataWhenNear(video);
+
     const icoPlay = toggleBtn.querySelector('[data-ico-play]');
     const icoPause = toggleBtn.querySelector('[data-ico-pause]');
     const icoVolOn = muteBtn.querySelector('[data-ico-vol-on]');
@@ -31,11 +44,11 @@ function initTvPlayer(player, autoplay) {
     /* Labels come from "إعدادات الصفحة الرئيسية" so an admin can change the
        player copy without touching this file. */
     const copy = {
-        play: player.dataset.playLabel || 'تشغيل الفيديو',
-        resume: player.dataset.resumeLabel || 'تشغيل',
-        pause: player.dataset.pauseLabel || 'إيقاف مؤقت',
-        mute: player.dataset.muteLabel || 'كتم الصوت',
-        unmute: player.dataset.unmuteLabel || 'تشغيل الصوت',
+        play: player.dataset.playLabel || 'Lire la vidéo',
+        resume: player.dataset.resumeLabel || 'Lire',
+        pause: player.dataset.pauseLabel || 'Pause',
+        mute: player.dataset.muteLabel || 'Couper le son',
+        unmute: player.dataset.unmuteLabel || 'Activer le son',
     };
 
     const setPlaying = (playing) => {
@@ -101,4 +114,60 @@ function initTvPlayer(player, autoplay) {
             window.addEventListener(evt, unmute, { once: true, passive: true });
         });
     }
+}
+
+function fitFrameToVideo(video) {
+    const frame = video.closest('.trust-video-card');
+
+    if (!frame) return;
+
+    const applyRatio = () => {
+        const width = video.videoWidth;
+        const height = video.videoHeight;
+
+        if (!width || !height) return;
+
+        if (width >= height) {
+            frame.classList.remove('is-portrait');
+            frame.style.removeProperty('aspect-ratio');
+            frame.style.removeProperty('height');
+            return;
+        }
+
+        const ratio = Math.min(
+            Math.max(width / height, FRAME_PORTRAIT_MIN_RATIO),
+            FRAME_PORTRAIT_MAX_RATIO
+        );
+
+        frame.classList.add('is-portrait');
+        frame.style.setProperty('aspect-ratio', String(ratio));
+        frame.style.setProperty('height', 'auto');
+    };
+
+    if (video.readyState >= 1) {
+        applyRatio();
+        return;
+    }
+
+    video.addEventListener('loadedmetadata', applyRatio);
+}
+
+/* Later cards ship with preload="none" so the landing page does not fetch every
+   clip up front, which would leave their orientation unknown and the frame at
+   the 16/9 default. Nudging those to metadata as they approach the viewport
+   resolves the dimensions without pulling the clip itself. */
+function loadMetadataWhenNear(video) {
+    if (video.preload !== 'none' || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            observer.disconnect();
+            video.setAttribute('preload', 'metadata');
+            video.load();
+        });
+    }, { rootMargin: METADATA_ROOT_MARGIN });
+
+    observer.observe(video);
 }

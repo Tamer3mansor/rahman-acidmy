@@ -94,6 +94,18 @@ class CourseForm
                     ->columns(4)
                     ->collapsible(),
 
+                Section::make('ترويسة صفحة التفاصيل')
+                    ->description('يظهر في أعلى صفحة تفاصيل هذه الدورة.')
+                    ->schema([
+                        TextInput::make('hero_label')
+                            ->label('الشارة أعلى العنوان')
+                            ->helperText('أولوية المحتوى: هذا الحقل ← «المحتوى المشترك» لتبويب الفئة. اتركه فارغًا ليأخذ النص المشترك تلقائيًا.')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(1)
+                    ->collapsible(),
+
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([

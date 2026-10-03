@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\BlogPageSettings\BlogPageSettingsResource;
 use App\Filament\Resources\CompareItems\CompareItemResource;
 use App\Filament\Resources\CoursePageSettings\CoursePageSettingsResource;
 use App\Filament\Resources\Courses\CourseResource;
@@ -12,6 +13,7 @@ use App\Filament\Resources\LandingFaqs\LandingFaqResource;
 use App\Filament\Resources\LandingSettings\LandingSettingsResource;
 use App\Filament\Resources\LandingTeachers\LandingTeacherResource;
 use App\Filament\Resources\LandingTestimonials\LandingTestimonialResource;
+use App\Filament\Resources\LessonPageSettings\LessonPageSettingsResource;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
@@ -43,6 +45,17 @@ class AdminNavigationGroupsTest extends TestCase
             $this->assertSame('إعدادات الصفحة الرئيسية', $resource::getNavigationGroup(), $resource);
             $this->assertSame($sort, $resource::getNavigationSort(), $resource);
         }
+    }
+
+    public function test_blog_and_lesson_page_settings_live_in_their_own_groups(): void
+    {
+        $this->assertSame('المدونة', BlogPageSettingsResource::getNavigationGroup());
+        $this->assertSame(3, BlogPageSettingsResource::getNavigationSort());
+        $this->assertSame('الحصص المجانية', LessonPageSettingsResource::getNavigationGroup());
+        $this->assertSame(3, LessonPageSettingsResource::getNavigationSort());
+
+        $this->assertFalse(BlogPageSettingsResource::canCreate());
+        $this->assertFalse(LessonPageSettingsResource::canCreate());
     }
 
     public function test_no_resource_still_points_at_a_retired_navigation_group(): void

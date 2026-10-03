@@ -23,6 +23,7 @@ class Course extends Model
         'card_theme',
         'short_description',
         'description',
+        'hero_label',
         'age_band_min',
         'badge_text',
         'level_label',

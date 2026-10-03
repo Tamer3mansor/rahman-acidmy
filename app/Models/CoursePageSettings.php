@@ -58,6 +58,7 @@ class CoursePageSettings extends Model
         'kids_shared_faq_items',
         'kids_why_items',
         'kids_shared_why_items',
+        'kids_catalog_label',
         'kids_catalog_title',
         'kids_catalog_subtitle',
         'kids_catalog_empty_text',
@@ -118,6 +119,7 @@ class CoursePageSettings extends Model
         'adults_shared_faq_items',
         'adults_why_items',
         'adults_shared_why_items',
+        'adults_catalog_label',
         'adults_catalog_title',
         'adults_catalog_subtitle',
         'adults_catalog_empty_text',
@@ -228,6 +230,18 @@ class CoursePageSettings extends Model
         'adults_shared_faq_items' => 'array',
         'adults_why_items' => 'array',
         'adults_shared_why_items' => 'array',
+    ];
+
+    /**
+     * A row created on demand by `singleton()` is not re-read from the database,
+     * so the migration defaults have to be mirrored here or a fresh install
+     * would render the catalog pages as `noindex`.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'is_active' => true,
+        'is_indexed' => true,
     ];
 
     public static function singleton(): self

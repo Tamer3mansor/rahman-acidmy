@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\BlogCategory;
+use App\Models\BlogPageSettings;
 use App\Models\BlogPost;
 use App\Models\User;
 use Database\Seeders\BlogCategorySeeder;
@@ -157,6 +158,83 @@ class BlogPageTest extends TestCase
         $this->assertSame('https://example.com/cover.jpg', $post->cover_image_url);
     }
 
+    public function test_blog_index_copy_and_seo_come_from_the_page_settings(): void
+    {
+        $this->seed([
+            BlogCategorySeeder::class,
+            BlogPostSeeder::class,
+        ]);
+
+        BlogPageSettings::singleton()->update([
+            'label' => 'Notre revue',
+            'title' => 'Articles du mois',
+            'description' => 'Une description choisie depuis le tableau de bord.',
+            'meta_title' => 'Blog | Ar-Rahman Academy',
+            'meta_description' => 'Description de meta choisie depuis le tableau de bord.',
+        ]);
+
+        $this->get('/blog')
+            ->assertOk()
+            ->assertSee('Notre revue')
+            ->assertSee('Articles du mois')
+            ->assertSee('Une description choisie depuis le tableau de bord.')
+            ->assertSee('<title>Blog | Ar-Rahman Academy</title>', false)
+            ->assertSee('Description de meta choisie depuis le tableau de bord.', false)
+            ->assertDontSee('Blog éducatif');
+    }
+
+    public function test_blog_index_falls_back_to_the_bundled_wording_without_settings(): void
+    {
+        $this->seed([
+            BlogCategorySeeder::class,
+            BlogPostSeeder::class,
+        ]);
+
+        $settings = BlogPageSettings::singleton();
+        $settings->update([
+            'label' => null,
+            'title' => null,
+            'description' => null,
+            'meta_title' => null,
+            'meta_description' => null,
+        ]);
+
+        $this->get('/blog')
+            ->assertOk()
+            ->assertDontSee('section-label')
+            ->assertDontSee('<p class="section-sub">')
+            ->assertSee('Derniers articles et conseils éducatifs')
+            ->assertSee('<title>Blog islamique - Coran, Tajwid et arabe | Ar-Rahman Academy</title>', false);
+    }
+
+    public function test_blog_og_image_prefers_the_page_setting_over_the_featured_cover(): void
+    {
+        $this->seed([
+            BlogCategorySeeder::class,
+            BlogPostSeeder::class,
+        ]);
+
+        BlogPageSettings::singleton()->update(['og_image' => 'images/og/blog.jpg']);
+
+        $this->get('/blog')
+            ->assertOk()
+            ->assertSee('<meta property="og:image" content="'.asset('storage/images/og/blog.jpg').'">', false);
+    }
+
+    public function test_blog_index_is_noindex_when_the_page_settings_say_so(): void
+    {
+        $this->seed([
+            BlogCategorySeeder::class,
+            BlogPostSeeder::class,
+        ]);
+
+        BlogPageSettings::singleton()->update(['is_indexed' => false]);
+
+        $this->get('/blog')
+            ->assertOk()
+            ->assertSee('<meta name="robots" content="noindex,nofollow"', false);
+    }
+
     public function test_blog_admin_resources_render(): void
     {
         $this->seed([
@@ -166,7 +244,7 @@ class BlogPageTest extends TestCase
 
         $user = User::factory()->create();
 
-        foreach (['/admin/blog-posts', '/admin/blog-categories'] as $url) {
+        foreach (['/admin/blog-posts', '/admin/blog-categories', '/admin/blog-page-settings'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
 
