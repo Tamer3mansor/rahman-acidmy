@@ -200,6 +200,42 @@ class LandingPageTest extends TestCase
             ->assertDontSee('Membre distingué');
     }
 
+    /**
+     * form_note is a Filament RichEditor field, so the admin's markup lands in
+     * the column as HTML. Escaping it showed the raw tags to visitors, and
+     * wrapping it in a <p> let the parser split the injected block out of
+     * .form-note entirely, costing it the centred note styling.
+     */
+    public function test_form_note_renders_rich_editor_markup_as_html(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        LandingSettings::singleton()->update([
+            'form_note' => '<p dir="rtl">ملاحظة <strong>مهمة</strong> قبل الإرسال</p>',
+        ]);
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertSame(1, preg_match('/<div class="form-note form-note--top">(.*?)<form/s', $html, $matches), 'The trial form must render the top note.');
+        $this->assertStringContainsString('<strong>مهمة</strong>', $matches[1]);
+        $this->assertStringNotContainsString('&lt;strong&gt;', $matches[1], 'The note must not be escaped.');
+    }
+
+    public function test_form_card_subtitle_renders_rich_editor_markup_inside_a_div_wrapper(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        LandingSettings::singleton()->update([
+            'form_card_subtitle' => '<p dir="rtl">Sous-titre <em>essai</em> gratuit</p>',
+        ]);
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertSame(1, preg_match('/<div class="form-card-sub">(.*?)<\/div>/s', $html, $matches), 'The card subtitle must render in a div wrapper.');
+        $this->assertStringContainsString('<em>essai</em>', $matches[1]);
+        $this->assertStringNotContainsString('&lt;em&gt;', $matches[1], 'The subtitle must not be escaped.');
+    }
+
     public function test_faq_renders_two_admin_controlled_ctas(): void
     {
         $this->seed(DatabaseSeeder::class);

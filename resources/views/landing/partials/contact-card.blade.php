@@ -4,10 +4,10 @@
 <div class="{{ $cardClass }}">
     <h3 class="form-card-title">{{ $title }}</h3>
     @if (! empty($subtitle))
-        <p class="form-card-sub">{!! $subtitle !!}</p>
+        <div class="form-card-sub">{!! $subtitle !!}</div>
     @endif
     @if (! empty($note) && filled($settings->form_note))
-        <p class="form-note form-note--top">{{ $settings->form_note }}</p>
+        <div class="form-note form-note--top">{!! $settings->form_note !!}</div>
     @endif
 
     <form id="trialForm"

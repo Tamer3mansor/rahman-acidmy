@@ -793,10 +793,14 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
    TEACHERS
    ============================================================ */
 .teachers-section { background: var(--bg-band); padding:100px 0; }
+/* Every card in a row shares one height. The grid already stretches items by
+   default, but stating it keeps the rule next to the flex rule below, which has
+   to survive the carousel swapping .teachers-grid into a flex track. */
 .teachers-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:24px;
+  align-items:stretch;
   margin-top:56px;
 }
 .teachers-viewport { overflow:hidden; }
@@ -836,12 +840,17 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
   color:var(--white);
 }
 .testimonials-page.is-disabled { opacity:0.4; cursor:default; }
-.teachers-carousel.is-ready .teachers-grid { display:flex; gap:24px; margin-top:0; transition:transform 0.55s cubic-bezier(0.25, 1, 0.5, 1); will-change:transform; }
+.teachers-carousel.is-ready .teachers-grid { display:flex; align-items:stretch; gap:24px; margin-top:0; transition:transform 0.55s cubic-bezier(0.25, 1, 0.5, 1); will-change:transform; }
 .teachers-carousel.is-ready .teacher-card { flex:0 0 calc((100% - 48px) / 3); min-width:0; }
 @media (max-width: 1024px) and (min-width: 769px) {
   .teachers-carousel.is-ready .teacher-card { flex:0 0 calc((100% - 24px) / 2); }
 }
+/* Column so the body can absorb the stretched height the track hands the card:
+   badges wrap to a different number of rows per teacher, so the leftover space
+   has to be pushed down to the CTA instead of trailing after it. */
 .teacher-card {
+  display:flex;
+  flex-direction:column;
   background: var(--surface-alt);
   border-radius:var(--r-xl);
   overflow:hidden;
@@ -852,6 +861,7 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
 .teacher-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(27,67,50,0.14); }
 .teacher-photo {
   aspect-ratio:4/3;
+  flex:0 0 auto;
   background:linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
   display:flex; align-items:center; justify-content:center;
   position:relative;
@@ -876,7 +886,7 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
   display:flex; align-items:center; justify-content:center;
   font-size:2.2rem; color:rgba(255,255,255,0.8);
 }
-.teacher-body { padding:24px; }
+.teacher-body { padding:24px; flex:1; display:flex; flex-direction:column; }
 .teacher-name { font-size:1.1rem; font-weight:800; color:var(--green); margin-bottom:4px; }
 .teacher-specialty { font-size:0.85rem; color: var(--text-body); margin-bottom:16px; line-height:1.7; }
 .teacher-badges { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
@@ -894,6 +904,7 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
   padding:12px; border-radius:var(--r-sm); border:none; cursor:pointer;
   transition:background 0.2s;
   display:flex; align-items:center; justify-content:center; gap:8px;
+  margin-top:auto;
 }
 .teacher-cta:hover { background:var(--green-mid); }
 
@@ -994,6 +1005,19 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
 }
 .form-card-title { font-size:1.3rem; font-weight:800; color:var(--green); margin-bottom:8px; }
 .form-card-sub { font-size:0.85rem; color: var(--text-body); margin-bottom:28px; line-height:1.6; }
+/* form_card_subtitle and form_note are Filament RichEditor fields, so the admin's
+   markup arrives as its own blocks. Their wrappers are divs for that reason: a
+   <p> would be split in two by the parser and the block would fall out of the
+   rule below, losing the card's type scale. Flatten the inner blocks here so
+   they inherit the wrapper instead of the body defaults. */
+.form-card-sub > *:first-child,
+.form-note > *:first-child { margin-top:0; }
+.form-card-sub p, .form-card-sub ul, .form-card-sub ol, .form-card-sub blockquote,
+.form-note p, .form-note div, .form-note ul, .form-note ol, .form-note blockquote {
+  margin:0;
+  font:inherit;
+  color:inherit;
+}
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 .form-group { display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
 .form-group label { font-size:0.82rem; font-weight:700; color:var(--green); }
@@ -1050,6 +1074,9 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
 }
 .form-submit:hover { background:var(--gold-light); transform:translateY(-2px); }
 .form-note { text-align:center; font-size:0.78rem; color: var(--text-muted); margin-top:12px; }
+/* The --top variant sits above the fields instead of under the submit button,
+   so it needs its own gap rather than the trailing one the base rule sets. */
+.form-note--top { margin:0 0 20px; }
 
 /* ============================================================
    FOOTER
