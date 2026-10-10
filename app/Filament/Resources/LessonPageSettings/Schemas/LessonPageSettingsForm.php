@@ -65,6 +65,43 @@ class LessonPageSettingsForm
                             ->default(true),
                     ])
                     ->columns(2),
+                Section::make('الشريط الجانبي (صفحة تفاصيل الحصة)')
+                    ->description('عنوان الويدجت والنص وزري الدعوة في الشريط الجانبي بصفحة تفاصيل الحصة — تُترك فارغة للعودة إلى الوضع الافتراضي.')
+                    ->schema([
+                        TextInput::make('sidebar_title')
+                            ->label('عنوان الويدجت')
+                            ->placeholder('Commencez le parcours de votre enfant')
+                            ->maxLength(255)
+                            ->columnSpan(2),
+                        Textarea::make('sidebar_text')
+                            ->label('نص الويدجت')
+                            ->placeholder('Donnez à votre enfant les bonnes orientations dès le début...')
+                            ->rows(2)
+                            ->columnSpan(2),
+                        TextInput::make('sidebar_trial_label')
+                            ->label('نص زر التجربة (الأساسي)')
+                            ->placeholder('Essai gratuit')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('sidebar_trial_url')
+                            ->label('رابط زر التجربة')
+                            ->helperText('مثال: /#trial-form أو رابط كامل')
+                            ->placeholder('/#trial-form')
+                            ->maxLength(255)
+                            ->columnSpan(1),
+                        TextInput::make('sidebar_whatsapp_label')
+                            ->label('نص زر واتساب')
+                            ->placeholder('Contactez-nous via WhatsApp')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('sidebar_whatsapp_url')
+                            ->label('رابط زر واتساب')
+                            ->helperText('فارغ = رابط الواتساب الافتراضي من إعدادات الرئيسية')
+                            ->placeholder('https://wa.me/...')
+                            ->maxLength(255)
+                            ->columnSpan(1),
+                    ])
+                    ->columns(2),
             ]);
     }
 }

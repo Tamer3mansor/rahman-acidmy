@@ -74,6 +74,14 @@ class LandingSettings extends Model
         'footer_description',
         'footer_copyright',
 
+        'footer_social_whatsapp',
+        'footer_social_telegram',
+        'footer_social_facebook',
+        'footer_social_instagram',
+        'footer_social_tiktok',
+        'footer_social_x',
+        'footer_social_youtube',
+
         'meta_title',
         'meta_description',
         'og_image',
@@ -122,6 +130,8 @@ class LandingSettings extends Model
         'testimonial_resume_label',
         'testimonial_pause_label',
         'testimonial_volume_label',
+        'testimonial_seek_label',
+        'testimonial_fullscreen_label',
 
         'field_student_name_label',
         'field_student_name_placeholder',

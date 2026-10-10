@@ -1,9 +1,9 @@
 /* ============================================================
    Ar-Rahman Academy — testimonial video player
-   Custom play/pause + volume controls (no native controls).
-   First video attempts autoplay with sound; browsers may block
-   it until the visitor interacts, so the big play button stays
-   as a fallback.
+   Custom play/pause, seek, volume and fullscreen controls
+   (no native controls). Videos never autoplay; the big play button
+   starts playback on demand so several clips cannot play over each
+   other.
    ============================================================ */
 
 /* Clips are recorded on phones, so they arrive in both orientations. The card
@@ -19,15 +19,17 @@ const METADATA_ROOT_MARGIN = '200px';
 document.addEventListener('DOMContentLoaded', () => {
     const players = document.querySelectorAll('[data-tv-player]');
 
-    players.forEach((player, index) => initTvPlayer(player, index === 0));
+    players.forEach((player) => initTvPlayer(player));
 });
 
-function initTvPlayer(player, autoplay) {
+function initTvPlayer(player) {
     const video = player.querySelector('[data-tv-video]');
     const playBtn = player.querySelector('[data-tv-play]');
     const toggleBtn = player.querySelector('[data-tv-toggle]');
     const muteBtn = player.querySelector('[data-tv-mute]');
     const volume = player.querySelector('[data-tv-volume]');
+    const seek = player.querySelector('[data-tv-seek]');
+    const fullscreenBtn = player.querySelector('[data-tv-fullscreen]');
 
     if (!video || !toggleBtn || !muteBtn || !volume) return;
 
@@ -65,8 +67,16 @@ function initTvPlayer(player, autoplay) {
         volume.value = String(muted ? 0 : (video.volume || 1));
     };
 
-    video.addEventListener('play', () => setPlaying(true));
-    video.addEventListener('pause', () => setPlaying(false));
+    const marquee = player.closest('[data-video-marquee]');
+
+    video.addEventListener('play', () => {
+        setPlaying(true);
+        marquee?.classList.add('is-paused');
+    });
+    video.addEventListener('pause', () => {
+        setPlaying(false);
+        marquee?.classList.remove('is-paused');
+    });
 
     playBtn?.addEventListener('click', () => {
         video.muted = false;
@@ -89,31 +99,80 @@ function initTvPlayer(player, autoplay) {
         setMuted(video.muted);
     });
 
-    setPlaying(false);
-    setMuted(video.muted);
-
-    if (autoplay) {
-        /* Phones only allow muted autoplay, so start muted and upgrade to sound
-           on the first interaction. Trying with sound first leaves the card as a
-           black frame because the rejected promise is never retried. */
-        video.muted = true;
-        setMuted(true);
-
-        const attempt = video.play();
-        if (attempt !== undefined && typeof attempt.catch === 'function') {
-            attempt.catch(() => { /* play button stays as the fallback */ });
-        }
-
-        const unmute = () => {
-            video.muted = false;
-            setMuted(false);
-            if (video.paused) video.play();
+    /* The progress bar mirrors playback and seeks on drag. It is normalised to
+       0–1000 so the value stays meaningful before the duration is known. */
+    if (seek) {
+        const syncSeek = () => {
+            if (!video.duration) return;
+            seek.value = String(Math.round((video.currentTime / video.duration) * 1000));
         };
 
-        ['pointerdown', 'touchstart', 'keydown', 'wheel'].forEach((evt) => {
-            window.addEventListener(evt, unmute, { once: true, passive: true });
+        video.addEventListener('timeupdate', syncSeek);
+        video.addEventListener('loadedmetadata', syncSeek);
+        video.addEventListener('seeked', syncSeek);
+
+        seek.addEventListener('input', () => {
+            if (!video.duration) return;
+            video.currentTime = (parseFloat(seek.value) / 1000) * video.duration;
         });
     }
+
+    initFullscreen(player, video, fullscreenBtn);
+
+    setPlaying(false);
+    setMuted(video.muted);
+}
+
+/* Fullscreen is requested on the player (not the raw <video>) so the custom
+   controls stay visible. Safari only exposes element fullscreen on newer
+   versions, so older iPhones fall back to the native video fullscreen. */
+function initFullscreen(player, video, button) {
+    const requestElement = player.requestFullscreen || player.webkitRequestFullscreen;
+    const enterNative = video.webkitEnterFullscreen;
+    const supported = Boolean(requestElement || enterNative);
+
+    if (!button || !supported) return;
+
+    button.hidden = false;
+
+    const icoEnter = button.querySelector('[data-ico-fs-enter]');
+    const icoExit = button.querySelector('[data-ico-fs-exit]');
+    const show = (node, visible) => { if (node) node.style.display = visible ? '' : 'none'; };
+
+    const currentFullscreenElement = () =>
+        document.fullscreenElement || document.webkitFullscreenElement || null;
+
+    const syncIcon = () => {
+        const active = currentFullscreenElement() === player;
+        show(icoEnter, !active);
+        show(icoExit, active);
+    };
+
+    button.addEventListener('click', () => {
+        if (currentFullscreenElement()) {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen;
+            exit?.call(document);
+            return;
+        }
+
+        if (requestElement) {
+            try {
+                const attempt = requestElement.call(player);
+                attempt?.catch?.(() => {});
+            } catch {
+                enterNative?.call(video);
+            }
+            return;
+        }
+
+        enterNative?.call(video);
+    });
+
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach((event) => {
+        document.addEventListener(event, syncIcon);
+    });
+
+    syncIcon();
 }
 
 function fitFrameToVideo(video) {
@@ -141,7 +200,17 @@ function fitFrameToVideo(video) {
 
         frame.classList.add('is-portrait');
         frame.style.setProperty('aspect-ratio', String(ratio));
-        frame.style.setProperty('height', 'auto');
+
+        /* The homepage marquee sizes portrait cards from CSS (a fixed viewport
+           height), so leave inline height/width alone there. Screenshot-style
+           grids derive the height from the card width instead. */
+        if (frame.closest('.trust-video-marquee')) {
+            frame.style.removeProperty('height');
+            frame.style.removeProperty('width');
+        } else {
+            frame.style.setProperty('height', 'auto');
+            frame.style.removeProperty('width');
+        }
     };
 
     if (video.readyState >= 1) {

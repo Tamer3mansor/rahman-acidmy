@@ -7,6 +7,7 @@ use App\Models\LandingSettings;
 use App\Models\Lesson;
 use App\Models\LessonPageSettings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class LessonController extends Controller
 {
@@ -51,17 +52,50 @@ class LessonController extends Controller
         abort_unless($lesson->is_active, 404);
 
         $settings = LandingSettings::singleton();
+        $pageSettings = LessonPageSettings::singleton();
 
         $lesson->load('course');
 
         [$bodyHtml, $toc] = $this->prepareBody($lesson->body);
 
+        $related = $this->relatedLessonsFor($lesson);
+
         return view('lessons.show', [
             'settings' => $settings,
+            'pageSettings' => $pageSettings,
             'lesson' => $lesson,
             'bodyHtml' => $bodyHtml,
             'toc' => $toc,
+            'related' => $related,
         ]);
+    }
+
+    /**
+     * Lessons shown as recommendations at the end of a lesson: the ones picked
+     * in the dashboard, or — when none were picked — other active lessons from
+     * the same category, so the grid is never empty.
+     *
+     * @return Collection<int, Lesson>
+     */
+    private function relatedLessonsFor(Lesson $lesson): Collection
+    {
+        $related = $lesson->relatedLessons()
+            ->where('lessons.id', '!=', $lesson->id)
+            ->active()
+            ->take(3)
+            ->get();
+
+        if ($related->isNotEmpty()) {
+            return $related;
+        }
+
+        return Lesson::query()
+            ->active()
+            ->where('id', '!=', $lesson->id)
+            ->when($lesson->category, fn ($q) => $q->where('category', $lesson->category))
+            ->orderBy('sort_order')
+            ->take(3)
+            ->get();
     }
 
     /**

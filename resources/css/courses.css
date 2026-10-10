@@ -552,7 +552,7 @@
 .tv-player.is-playing .tv-play { opacity:0; pointer-events:none; }
 .tv-controls {
   position:absolute; left:10px; right:10px; bottom:10px;
-  display:flex; align-items:center; gap:8px;
+  display:flex; flex-direction:column; align-items:stretch; gap:6px;
   padding:6px 8px; border-radius:var(--r-sm);
   background:rgba(18,52,38,0.55); backdrop-filter:blur(6px);
   opacity:0; transform:translateY(4px); pointer-events:none;
@@ -560,12 +560,20 @@
   z-index:2;
 }
 .tv-player:hover .tv-controls, .tv-player:focus-within .tv-controls { opacity:1; transform:translateY(0); pointer-events:auto; }
+.tv-row { display:flex; align-items:center; gap:8px; }
 .tv-btn {
   background:none;border:none;cursor:pointer;color:var(--white);
   display:flex;align-items:center;justify-content:center;padding:3px;border-radius:4px;
 }
 .tv-btn:hover { color:var(--gold); }
+.tv-seek { width:100%; height:4px; accent-color:var(--gold); cursor:pointer; }
 .tv-volume { flex:1; height:4px; accent-color:var(--gold); cursor:pointer; min-width:0; }
+/* Fullscreen: the player is promoted out of the card, so neutralise the
+   portrait crop and fill the viewport. */
+.tv-player:fullscreen,
+.tv-player:-webkit-full-screen { position:fixed; inset:0; background:#000; }
+.tv-player:fullscreen .tv-video,
+.tv-player:-webkit-full-screen .tv-video { object-fit:contain; }
 @media (hover:none) {
   .tv-controls { opacity:1; transform:none; pointer-events:auto; }
 }

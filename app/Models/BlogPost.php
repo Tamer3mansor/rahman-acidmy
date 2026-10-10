@@ -65,6 +65,16 @@ class BlogPost extends Model
         return $this->belongsToMany(BlogCategory::class, 'blog_post_category');
     }
 
+    public function relatedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            BlogPost::class,
+            'blog_post_related',
+            'blog_post_id',
+            'related_blog_post_id',
+        )->withTimestamps();
+    }
+
     protected function coverImageUrl(): Attribute
     {
         return Attribute::make(

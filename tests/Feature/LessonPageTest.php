@@ -148,6 +148,52 @@ class LessonPageTest extends TestCase
         $this->get('/lecons-gratuites/'.$lesson->slug)->assertNotFound();
     }
 
+    public function test_lesson_show_uses_admin_picked_related_lessons(): void
+    {
+        $parent = Lesson::factory()->create(['slug' => 'parent-lesson']);
+
+        $picked = Lesson::factory()->create([
+            'title' => 'Leçon choisie depuis le tableau de bord',
+            'category' => LessonCategory::Adults->value,
+        ]);
+
+        $sameCategoryNotPicked = Lesson::factory()->create(['title' => 'Leçon même catégorie non choisie']);
+
+        $parent->relatedLessons()->attach($picked->id);
+
+        $this->get('/lecons-gratuites/parent-lesson')
+            ->assertOk()
+            ->assertSee('Leçons recommandées')
+            ->assertSee('Leçon choisie depuis le tableau de bord')
+            ->assertDontSee('Leçon même catégorie non choisie');
+    }
+
+    public function test_lesson_show_falls_back_to_same_category_lessons_when_none_picked(): void
+    {
+        $parent = Lesson::factory()->create(['slug' => 'parent-lesson']);
+
+        $sameCategory = Lesson::factory()->create(['title' => 'Leçon de la même catégorie']);
+
+        $this->get('/lecons-gratuites/parent-lesson')
+            ->assertOk()
+            ->assertSee('Leçon de la même catégorie');
+    }
+
+    public function test_lesson_show_hides_inactive_related_lessons(): void
+    {
+        $parent = Lesson::factory()->create(['slug' => 'parent-lesson']);
+
+        $active = Lesson::factory()->create();
+        $inactive = Lesson::factory()->inactive()->create();
+
+        $parent->relatedLessons()->attach([$inactive->id, $active->id]);
+
+        $this->get('/lecons-gratuites/parent-lesson')
+            ->assertOk()
+            ->assertSee($active->title)
+            ->assertDontSee($inactive->title);
+    }
+
     public function test_lesson_cover_image_url_returns_absolute_url(): void
     {
         $lesson = Lesson::factory()->create([

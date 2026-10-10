@@ -117,7 +117,7 @@
 .in-article-cta p { color: var(--text-on-dark); margin-bottom: 20px; }
 
 /* Sidebar widget */
-.sidebar-widget { background: var(--surface-card); padding: 25px; border-radius: var(--r-lg); border: 1px solid var(--border-subtle); position: sticky; top: 30px; }
+.sidebar-widget { background: var(--surface-card); padding: 25px; border-radius: var(--r-lg); border: 1px solid var(--border-subtle); position: sticky; top: 88px; }
 .sidebar-title { color: var(--green); font-size: 1.2rem; margin-bottom: 15px; border-bottom: 2px solid var(--border-subtle); padding-bottom: 8px; }
 .btn-whatsapp {
   background: #25D366; color: white; border-radius: var(--r-sm); padding: 12px 24px;
@@ -131,6 +131,7 @@
 .share-fb { background: #1877F2; }
 .share-tw { background: #000000; }
 .share-wa { background: #25D366; }
+.share-tg { background: #229ED9; }
 .author-box { display: flex; gap: 20px; background: var(--surface-alt); padding: 25px; border-radius: var(--r-lg); margin-top: 40px; align-items: center; }
 .author-box .author-img { width: 70px; height: 70px; }
 

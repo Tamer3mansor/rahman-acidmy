@@ -129,7 +129,7 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk' => env('LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK'), // Example: 'local', 's3'             | Default: 'default'
+        'disk' => env('LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK', 'local'), // Example: 'local', 's3'             | Default: 'local'
         'rules' => ['required', 'file', 'max:1048576'],      // 1GB - allows lesson audio & testimonial videos up to the 1GB field limit
         'directory' => null,                                  // Example: 'tmp'                     | Default: 'livewire-tmp'
         'middleware' => null,                                 // Example: 'throttle:5,1'            | Default: 'throttle:60,1'

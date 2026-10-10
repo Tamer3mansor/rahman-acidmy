@@ -138,6 +138,57 @@ class BlogPageTest extends TestCase
         $this->get('/blog/draft-post')->assertNotFound();
     }
 
+    public function test_blog_show_uses_admin_picked_related_posts(): void
+    {
+        $category = BlogCategory::factory()->create();
+
+        $parent = BlogPost::factory()->create(['slug' => 'parent-post']);
+        $parent->categories()->attach($category->id);
+
+        $picked = BlogPost::factory()->create(['title' => 'Article choisi depuis le tableau de bord']);
+
+        $sameCategoryNotPicked = BlogPost::factory()->create(['title' => 'Article même catégorie non choisi']);
+        $sameCategoryNotPicked->categories()->attach($category->id);
+
+        $parent->relatedPosts()->attach($picked->id);
+
+        $this->get('/blog/parent-post')
+            ->assertOk()
+            ->assertSee('Articles similaires')
+            ->assertSee('Article choisi depuis le tableau de bord')
+            ->assertDontSee('Article même catégorie non choisi');
+    }
+
+    public function test_blog_show_falls_back_to_same_category_posts_when_none_picked(): void
+    {
+        $category = BlogCategory::factory()->create();
+
+        $parent = BlogPost::factory()->create(['slug' => 'parent-post']);
+        $parent->categories()->attach($category->id);
+
+        $sameCategory = BlogPost::factory()->create(['title' => 'Article de la même catégorie']);
+        $sameCategory->categories()->attach($category->id);
+
+        $this->get('/blog/parent-post')
+            ->assertOk()
+            ->assertSee('Article de la même catégorie');
+    }
+
+    public function test_blog_show_hides_inactive_related_posts(): void
+    {
+        $parent = BlogPost::factory()->create(['slug' => 'parent-post']);
+
+        $active = BlogPost::factory()->create();
+        $inactive = BlogPost::factory()->draft()->create();
+
+        $parent->relatedPosts()->attach([$inactive->id, $active->id]);
+
+        $this->get('/blog/parent-post')
+            ->assertOk()
+            ->assertSee($active->title)
+            ->assertDontSee($inactive->title);
+    }
+
     public function test_landing_nav_always_shows_blog_link(): void
     {
         $this->seed(DatabaseSeeder::class);

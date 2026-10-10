@@ -8,13 +8,13 @@
    RESET & BASE
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 body {
   font-family: 'Inter', sans-serif;
   background: var(--bg-page);
   color: var(--text-strong);
   line-height: 1.7;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   max-width: 100vw;
 }
@@ -541,36 +541,21 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 }
 .trust-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1.4fr 1fr;
   gap: 28px;
   margin-top: 56px;
   align-items: start;
 }
-/* middle: stacked videos, own scroll so the three columns stay balanced */
-.trust-videos-wrap { position: relative; }
-.trust-videos-wrap::after {
-  content:'';
-  position:absolute; left:0; right:8px; bottom:0; height:64px;
-  background:linear-gradient(to bottom, rgba(255,255,255,0), var(--bg-band) 88%);
-  pointer-events:none;
-  opacity:0;
-  transition:opacity 0.2s ease;
+/* middle: clips auto-scroll like the side marquees. The wider column lets a
+   clip render bigger, and playing one pauses the loop (see testimonials.js).
+   Portrait clips are sized by height instead of width so a tall phone video
+   still fits the fixed marquee viewport whole (ratio stays untouched). */
+.trust-video-marquee .trust-video-card.is-portrait {
+  width: auto;
+  height: calc(var(--trust-marquee-h, 500px) - 40px);
+  max-width: 100%;
 }
-.trust-videos-wrap.has-more::after { opacity:1; }
-.trust-videos {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-height: 500px;
-  overflow-y: auto;
-  padding-right: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(201,150,58,0.5) transparent;
-}
-.trust-videos::-webkit-scrollbar { width: 6px; }
-.trust-videos::-webkit-scrollbar-track { background: transparent; }
-.trust-videos::-webkit-scrollbar-thumb { background: rgba(201,150,58,0.5); border-radius: 999px; }
-.trust-videos::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+.trust-marquee.is-paused .trust-marquee-track { animation-play-state: paused; }
 .trust-video-card {
   border-radius: var(--r-lg);
   overflow: hidden;
@@ -618,7 +603,7 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 .tv-player.is-playing .tv-play { opacity:0; pointer-events:none; }
 .tv-controls {
   position:absolute; left:10px; right:10px; bottom:10px;
-  display:flex; align-items:center; gap:8px;
+  display:flex; flex-direction:column; align-items:stretch; gap:6px;
   padding:6px 8px; border-radius:var(--r-sm);
   background:rgba(18,52,38,0.55); backdrop-filter:blur(6px);
   opacity:0; transform:translateY(4px); pointer-events:none;
@@ -626,26 +611,32 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
   z-index:2;
 }
 .tv-player:hover .tv-controls, .tv-player:focus-within .tv-controls { opacity:1; transform:translateY(0); pointer-events:auto; }
+.tv-row { display:flex; align-items:center; gap:8px; }
 .tv-btn {
   background:none;border:none;cursor:pointer;color:var(--white);
   display:flex;align-items:center;justify-content:center;padding:3px;border-radius:4px;
 }
 .tv-btn:hover { color:var(--gold); }
+.tv-seek { width:100%; height:4px; accent-color:var(--gold); cursor:pointer; }
 .tv-volume { flex:1; height:4px; accent-color:var(--gold); cursor:pointer; min-width:0; }
+/* Fullscreen: the player is promoted out of the card, so neutralise the
+   portrait crop and fill the viewport. */
+.tv-player:fullscreen,
+.tv-player:-webkit-full-screen { position:fixed; inset:0; background:#000; }
+.tv-player:fullscreen .tv-video,
+.tv-player:-webkit-full-screen .tv-video { object-fit:contain; }
 @media (hover:none) {
   .tv-controls { opacity:1; transform:none; pointer-events:auto; }
 }
 .trust-mobile-tabs { display:none; }
 /* screenshot columns */
 .trust-screenshots { display:flex; flex-direction:column; gap:14px; }
-.trust-marquee { height:500px; overflow:hidden; --trust-marquee-duration:75s; }
+.trust-marquee { height:var(--trust-marquee-h, 500px); overflow:hidden; --trust-marquee-h:500px; --trust-marquee-duration:75s; }
 .trust-marquee-track { display:flex; flex-direction:column; gap:14px; animation:trust-marquee-up var(--trust-marquee-duration) linear infinite; }
-.trust-marquee[data-direction="down"] .trust-marquee-track { animation-name:trust-marquee-down; }
 .trust-marquee--static .trust-marquee-track { animation:none; }
 .trust-marquee-group { display:flex; flex-direction:column; gap:14px; }
 .trust-marquee:hover .trust-marquee-track { animation-play-state:paused; }
 @keyframes trust-marquee-up { to { transform:translateY(calc(-50% - 7px)); } }
-@keyframes trust-marquee-down { from { transform:translateY(calc(-50% - 7px)); } to { transform:translateY(0); } }
 .screenshot-card {
   border-radius:var(--r-md);
   overflow:hidden;
@@ -1086,6 +1077,16 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
 .footer-brand .brand-name { font-size:1.3rem; font-weight:900; color:var(--white); margin-bottom:4px; }
 .footer-brand .brand-sub { font-size:0.78rem; color:var(--gold); font-weight:600; margin-bottom:16px; }
 .footer-brand p { font-size:0.88rem; color:rgba(255,255,255,0.55); line-height:1.7; max-width:280px; }
+.footer-social { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+.footer-social-btn { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.95rem; color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); transition:background 0.2s, color 0.2s, transform 0.2s; }
+.footer-social-btn:hover { transform:translateY(-2px); }
+.footer-social-whatsapp:hover { background:#25D366; }
+.footer-social-telegram:hover { background:#229ED9; }
+.footer-social-facebook:hover { background:#1877F2; }
+.footer-social-instagram:hover { background:linear-gradient(45deg,#F09433,#E6683C 25%,#DC2743 50%,#CC2366 75%,#BC1888); }
+.footer-social-tiktok:hover { background:#010101; }
+.footer-social-x:hover { background:#0f1419; }
+.footer-social-youtube:hover { background:#FF0000; }
 .footer-col h4 { font-size:0.9rem; font-weight:700; color:var(--white); margin-bottom:16px; }
 .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
 .footer-col ul li a { font-size:0.85rem; color:rgba(255,255,255,0.5); transition:color 0.2s; }
@@ -1243,21 +1244,13 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
      the duplicated loop group. Touching it pauses the loop so a message can
      actually be read. */
   .trust-marquee {
-    height: 420px;
+    --trust-marquee-h: 420px;
     overflow: hidden;
   }
   .trust-marquee:hover .trust-marquee-track,
   .trust-marquee:active .trust-marquee-track {
     animation-play-state: paused;
   }
-  .trust-videos-wrap::after { display: none; }
-  .trust-videos {
-    max-height: none;
-    overflow: visible;
-    scrollbar-width: none;
-  }
-  .trust-videos::-webkit-scrollbar { display: none; }
-  .trust-videos { gap: 14px; }
   .trust-video-card { border-radius: var(--r-md); }
   .trust-video-card video,
   .tv-player .tv-video { object-fit: contain; background: var(--green); }
@@ -1426,12 +1419,10 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
 /* TRUST */
 .lp .trust-section { padding:44px 0; }
 .lp .trust-grid { gap:20px; margin-top:20px; }
-/* The fixed column heights only make sense on desktop. On phones the panes
-   are switched by the tab bar, so they must size to their content instead of
-   becoming inner scroll boxes. */
+/* All three columns are fixed-height loops; compact the desktop height so the
+   section still fits a short viewport. Phones keep the base 420px height. */
 @media (min-width:769px) {
-  .lp .trust-marquee { height:420px; }
-  .lp .trust-videos { max-height:420px; }
+  .lp .trust-marquee { --trust-marquee-h:420px; }
 }
 .lp .trust-cta-wrap { margin-top:20px; }
 

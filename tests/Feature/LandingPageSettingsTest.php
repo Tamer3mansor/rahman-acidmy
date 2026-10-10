@@ -287,4 +287,36 @@ class LandingPageSettingsTest extends TestCase
         $this->assertNull((new LandingSettings(['hero_media_type' => 'corrupt-value']))->hero_media_type);
         $this->assertNull((new LandingSettings)->hero_media_type);
     }
+
+    public function test_footer_social_links_hidden_when_empty(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('footer-social', false);
+    }
+
+    public function test_footer_social_links_render_configured_platforms(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update([
+            'footer_social_whatsapp' => 'https://wa.me/201028268553',
+            'footer_social_telegram' => 'https://t.me/arrahman',
+            'footer_social_facebook' => 'https://facebook.com/arrahman',
+            'footer_social_instagram' => 'https://instagram.com/arrahman',
+            'footer_social_tiktok' => 'https://tiktok.com/@arrahman',
+            'footer_social_x' => 'https://x.com/arrahman',
+            'footer_social_youtube' => 'https://youtube.com/@arrahman',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('footer-social', false)
+            ->assertSee('https://wa.me/201028268553')
+            ->assertSee('https://t.me/arrahman')
+            ->assertSee('https://tiktok.com/@arrahman')
+            ->assertSee('aria-label="YouTube"', false);
+    }
 }

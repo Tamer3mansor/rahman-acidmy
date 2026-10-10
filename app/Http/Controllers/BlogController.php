@@ -7,6 +7,7 @@ use App\Models\BlogPageSettings;
 use App\Models\BlogPost;
 use App\Models\LandingSettings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class BlogController extends Controller
 {
@@ -64,25 +65,49 @@ class BlogController extends Controller
         abort_unless($post->is_active && $post->published_at?->lte(now()), 404);
 
         $settings = LandingSettings::singleton();
+        $pageSettings = BlogPageSettings::singleton();
 
         $post->load('categories');
 
-        $related = BlogPost::published()
-            ->where('id', '!=', $post->id)
-            ->whereHas('categories', fn ($q) => $q->whereIn('blog_categories.id', $post->categories->pluck('id')))
-            ->latest('published_at')
-            ->limit(3)
-            ->get();
+        $related = $this->relatedPostsFor($post);
 
         [$bodyHtml, $toc] = $this->prepareBody($post->body);
 
         return view('blog.show', [
             'settings' => $settings,
+            'pageSettings' => $pageSettings,
             'post' => $post,
             'related' => $related,
             'bodyHtml' => $bodyHtml,
             'toc' => $toc,
         ]);
+    }
+
+    /**
+     * Articles shown as recommendations at the end of a post: the ones picked in
+     * the dashboard, or — when none were picked — other published posts sharing
+     * a category, so the grid is never empty.
+     *
+     * @return Collection<int, BlogPost>
+     */
+    private function relatedPostsFor(BlogPost $post): Collection
+    {
+        $related = $post->relatedPosts()
+            ->where('blog_posts.id', '!=', $post->id)
+            ->published()
+            ->take(3)
+            ->get();
+
+        if ($related->isNotEmpty()) {
+            return $related;
+        }
+
+        return BlogPost::published()
+            ->where('id', '!=', $post->id)
+            ->whereHas('categories', fn ($q) => $q->whereIn('blog_categories.id', $post->categories->pluck('id')))
+            ->latest('published_at')
+            ->take(3)
+            ->get();
     }
 
     /**

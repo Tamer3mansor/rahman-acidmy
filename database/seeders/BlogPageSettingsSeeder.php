@@ -20,6 +20,10 @@ class BlogPageSettingsSeeder extends Seeder
                 'label' => 'Blog éducatif',
                 'title' => 'Derniers articles et conseils éducatifs',
                 'description' => "Votre guide complet pour la mémorisation du Coran et l'apprentissage de la langue arabe pour enfants et adultes avec des méthodes modernes.",
+                'sidebar_trial_label' => 'Essai gratuit',
+                'sidebar_whatsapp_label' => 'Contactez-nous via WhatsApp',
+                'sidebar_title' => 'Commencez le parcours de votre enfant',
+                'sidebar_text' => "Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais.",
             ]
         );
     }

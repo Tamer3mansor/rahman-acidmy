@@ -518,25 +518,6 @@ function initTrustMobileTabs() {
     });
 }
 
-function initTrustVideosColumn() {
-    const column = document.querySelector('[data-trust-videos]');
-    const wrap = column?.closest('.trust-videos-wrap');
-
-    if (!column || !wrap) return;
-
-    const update = () => {
-        const atBottom = column.scrollTop + column.clientHeight >= column.scrollHeight - 8;
-        wrap.classList.toggle('has-more', column.scrollHeight > column.clientHeight + 4 && !atBottom);
-    };
-
-    column.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    window.addEventListener('load', update, { once: true });
-    window.setTimeout(update, 800);
-
-    update();
-}
-
 function initHeroVideo() {
     const video = document.querySelector('[data-hero-video]');
 
@@ -617,6 +598,5 @@ function initHeroVideo() {
 }
 
 initTeachersCarousel();
-initTrustVideosColumn();
 initTrustMobileTabs();
 initHeroVideo();

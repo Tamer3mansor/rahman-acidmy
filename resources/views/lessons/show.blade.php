@@ -111,15 +111,15 @@
 
             <aside>
                 <div class="sidebar-widget shadow-card">
-                    <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> Commencez le parcours de votre enfant</h3>
-                    <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais.</p>
+                    <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> {{ $pageSettings->sidebar_title ?: 'Commencez le parcours de votre enfant' }}</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">{{ $pageSettings->sidebar_text ?: "Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais." }}</p>
 
-                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
-                        <i class="fa-solid fa-laptop"></i> Essai gratuit
+                    <a href="{{ $pageSettings->sidebar_trial_url ?: route('home') . '#trial-form' }}" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
+                        <i class="fa-solid fa-laptop"></i> {{ $pageSettings->sidebar_trial_label ?: 'Essai gratuit' }}
                     </a>
 
-                    <a href="{{ $settings->header_btn1_url }}" class="btn-whatsapp" target="_blank" rel="noopener">
-                        <i class="fa-brands fa-whatsapp"></i> Contactez-nous via WhatsApp
+                    <a href="{{ $pageSettings->sidebar_whatsapp_url ?: $settings->header_btn1_url }}" class="btn-whatsapp" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-whatsapp"></i> {{ $pageSettings->sidebar_whatsapp_label ?: 'Contactez-nous via WhatsApp' }}
                     </a>
                 </div>
             </aside>
@@ -134,6 +134,40 @@
                     <source src="{{ $lesson->audio_download_url }}">
                     Votre navigateur ne prend pas en charge le lecteur audio.
                 </audio>
+            </section>
+        @endif
+
+        @if ($related->count())
+            <section style="margin-top: 60px; padding-top: 40px; border-top: 2px dashed var(--cream-dark);">
+                <div style="margin-bottom: 30px;">
+                    <span class="section-label">Enrichissez votre apprentissage</span>
+                    <h2 class="section-title" style="font-size: 1.8rem;">Leçons recommandées</h2>
+                </div>
+
+                <div class="lessons-grid">
+                    @foreach ($related as $rel)
+                        <article class="card">
+                            <div class="card-img-wrapper">
+                                <img src="{{ $rel->cover_image_url ?? 'https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=600&auto=format&fit=crop' }}" alt="{{ $rel->title }}" class="card-img">
+                                @if ($rel->course)
+                                    <span class="badge gold lesson-badge"><i class="fa-solid fa-graduation-cap"></i> {{ $rel->course->title }}</span>
+                                @endif
+                            </div>
+                            <div class="card-body">
+                                <div class="card-meta">
+                                    <span class="badge">{{ \App\Enums\LessonCategory::tryFrom($rel->category)?->getLabel() ?? $rel->category }}</span>
+                                    <span><i class="fa-regular fa-clock"></i> {{ $rel->reading_time }} min</span>
+                                    @if ($rel->audio_url)
+                                        <span><i class="fa-solid fa-headphones"></i> Fichier audio</span>
+                                    @endif
+                                </div>
+                                <h3 class="card-title">{{ $rel->title }}</h3>
+                                <p class="card-excerpt">{{ $rel->excerpt }}</p>
+                                <a href="{{ route('lessons.show', $rel->slug) }}" class="btn-outline lesson-cta">Consulter la leçon complète <i class="fa-solid fa-arrow-left"></i></a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
             </section>
         @endif
     </div>

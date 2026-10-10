@@ -179,7 +179,7 @@
 .in-article-cta .badge { margin-bottom: 12px; }
 
 /* Sidebar widget */
-.sidebar-widget { background: var(--surface-card); padding: 25px; border-radius: var(--r-lg); border: 1px solid var(--border-subtle); position: sticky; top: 30px; }
+.sidebar-widget { background: var(--surface-card); padding: 25px; border-radius: var(--r-lg); border: 1px solid var(--border-subtle); position: sticky; top: 88px; }
 .sidebar-title { color: var(--green); font-size: 1.2rem; margin-bottom: 15px; border-bottom: 2px solid var(--border-subtle); padding-bottom: 8px; }
 .btn-whatsapp {
   background: #25D366; color: white; border-radius: var(--r-sm); padding: 12px 24px;

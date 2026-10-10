@@ -14,6 +14,12 @@ class LessonPageSettings extends Model
         'meta_description',
         'og_image',
         'is_indexed',
+        'sidebar_trial_label',
+        'sidebar_trial_url',
+        'sidebar_whatsapp_label',
+        'sidebar_whatsapp_url',
+        'sidebar_title',
+        'sidebar_text',
     ];
 
     protected $casts = [

@@ -277,6 +277,47 @@ class LandingSettingsForm
                                     ->maxLength(255),
                             ]),
 
+                        Section::make('وسائل التواصل')
+                            ->description('أيقونات التواصل في الفوتر. تُعرض كل أيقونة فقط إذا كان رابطها مملوءاً، وتختفي تلقائياً عند تفريغه.')
+                            ->schema([
+                                TextInput::make('footer_social_whatsapp')
+                                    ->label('واتساب')
+                                    ->url()
+                                    ->placeholder('https://wa.me/...')
+                                    ->maxLength(255),
+                                TextInput::make('footer_social_telegram')
+                                    ->label('تيليجرام')
+                                    ->url()
+                                    ->placeholder('https://t.me/...')
+                                    ->maxLength(255),
+                                TextInput::make('footer_social_facebook')
+                                    ->label('فيسبوك')
+                                    ->url()
+                                    ->placeholder('https://facebook.com/...')
+                                    ->maxLength(255),
+                                TextInput::make('footer_social_instagram')
+                                    ->label('إنستجرام')
+                                    ->url()
+                                    ->placeholder('https://instagram.com/...')
+                                    ->maxLength(255),
+                                TextInput::make('footer_social_tiktok')
+                                    ->label('تيك توك')
+                                    ->url()
+                                    ->placeholder('https://tiktok.com/@...')
+                                    ->maxLength(255),
+                                TextInput::make('footer_social_x')
+                                    ->label('إكس (تويتر)')
+                                    ->url()
+                                    ->placeholder('https://x.com/...')
+                                    ->maxLength(255),
+                                TextInput::make('footer_social_youtube')
+                                    ->label('يوتيوب')
+                                    ->url()
+                                    ->placeholder('https://youtube.com/@...')
+                                    ->maxLength(255),
+                            ])
+                            ->columns(2),
+
                         Tab::make('النصوص المشتركة (ناف/فوتر/فورم)')
                             ->schema([
                                 Section::make('القائمة العلوية')
@@ -357,6 +398,8 @@ class LandingSettingsForm
                                         'testimonial_resume_label' => 'aria-label زر التشغيل (متوقف)',
                                         'testimonial_pause_label' => 'aria-label زر الإيقاف المؤقت',
                                         'testimonial_volume_label' => 'aria-label مفتاح الصوت',
+                                        'testimonial_seek_label' => 'aria-label شريط التقدم في الفيديو',
+                                        'testimonial_fullscreen_label' => 'aria-label زر ملء الشاشة',
                                     ]))
                                     ->columns(2),
                             ]),

@@ -6,6 +6,34 @@
                 <div class="brand-name">{{ $settings->footer_brand_name }}</div>
                 <div class="brand-sub">{{ $settings->footer_brand_sub }}</div>
                 <p>{!! $settings->footer_description !!}</p>
+
+                @php($social = collect([
+                    'WhatsApp' => $settings->footer_social_whatsapp,
+                    'Telegram' => $settings->footer_social_telegram,
+                    'Facebook' => $settings->footer_social_facebook,
+                    'Instagram' => $settings->footer_social_instagram,
+                    'TikTok' => $settings->footer_social_tiktok,
+                    'X' => $settings->footer_social_x,
+                    'YouTube' => $settings->footer_social_youtube,
+                ])->filter())
+
+                @if ($social->isNotEmpty())
+                    <div class="footer-social">
+                        @foreach ($social as $name => $url)
+                            <a href="{{ $url }}" class="footer-social-btn footer-social-{{ strtolower($name) }}" aria-label="{{ $name }}" target="_blank" rel="noopener">
+                                <i class="fa-brands {{ match ($name) {
+                                    'WhatsApp' => 'fa-whatsapp',
+                                    'Telegram' => 'fa-telegram',
+                                    'Facebook' => 'fa-facebook-f',
+                                    'Instagram' => 'fa-instagram',
+                                    'TikTok' => 'fa-tiktok',
+                                    'X' => 'fa-x-twitter',
+                                    'YouTube' => 'fa-youtube',
+                                } }}"></i>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
             <div class="footer-col">
                 <h4>{{ $settings->footer_quicklinks_title ?: 'Liens rapides' }}</h4>

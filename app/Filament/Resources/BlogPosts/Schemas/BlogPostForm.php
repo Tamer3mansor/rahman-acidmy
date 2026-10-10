@@ -109,6 +109,17 @@ class BlogPostForm
                                     ])
                                     ->columns(3),
                             ]),
+
+                        Tab::make('المقالات المرتبطة')
+                            ->schema([
+                                Select::make('relatedPosts')
+                                    ->label('مقالات مرتبطة')
+                                    ->helperText('اختر مقالات أخرى مماثلة لتظهر في نهاية هذا المقال كترشيحات — يمكن الاختيار من أي تصنيف. إن تُرك فارغاً تظهر تلقائياً مقالات من نفس التصنيف.')
+                                    ->relationship('relatedPosts', 'title', ignoreRecord: true)
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload(),
+                            ]),
                     ]),
             ]);
     }

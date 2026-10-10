@@ -102,6 +102,7 @@
                     <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" class="share-btn share-wa" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" class="share-btn share-fb" aria-label="Facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareText }}" class="share-btn share-tw" aria-label="Twitter" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://t.me/share/url?url={{ $shareUrl }}&text={{ $shareText }}" class="share-btn share-tg" aria-label="Telegram" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i></a>
                 </div>
 
                 <div class="author-box">
@@ -117,15 +118,15 @@
 
             <aside>
                 <div class="sidebar-widget shadow-card">
-                    <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> Commencez le parcours de votre enfant</h3>
-                    <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais.</p>
+                    <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> {{ $pageSettings->sidebar_title ?: 'Commencez le parcours de votre enfant' }}</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">{{ $pageSettings->sidebar_text ?: "Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais." }}</p>
 
-                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
-                        <i class="fa-solid fa-laptop"></i> Essai gratuit
+                    <a href="{{ $pageSettings->sidebar_trial_url ?: route('home') . '#trial-form' }}" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
+                        <i class="fa-solid fa-laptop"></i> {{ $pageSettings->sidebar_trial_label ?: 'Essai gratuit' }}
                     </a>
 
-                    <a href="{{ $settings->header_btn1_url }}" class="btn-whatsapp" target="_blank" rel="noopener">
-                        <i class="fa-brands fa-whatsapp"></i> Contactez-nous via WhatsApp
+                    <a href="{{ $pageSettings->sidebar_whatsapp_url ?: $settings->header_btn1_url }}" class="btn-whatsapp" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-whatsapp"></i> {{ $pageSettings->sidebar_whatsapp_label ?: 'Contactez-nous via WhatsApp' }}
                     </a>
                 </div>
             </aside>

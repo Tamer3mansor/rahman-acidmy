@@ -59,15 +59,22 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 </button>
                 <div class="tv-controls" data-tv-controls>
-                    <button class="tv-btn" data-tv-toggle type="button" aria-label="{{ $settings->testimonial_resume_label }}">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-pause hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-play><polygon points="6 4 20 12 6 20 6 4"/></svg>
-                    </button>
-                    <button class="tv-btn" data-tv-mute type="button" aria-label="{{ $settings->testimonial_mute_label }}">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-vol-on><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-vol-off hidden><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/><path d="M18.5 4.68 23 9.18 21.4 10.8 17.22 6.6 18.5 4.68zm0 0L23 14.82 21.4 13.2l-4.18-4.2L18.5 4.68z" transform="rotate(0)"/></svg>
-                    </button>
-                    <input class="tv-volume" data-tv-volume type="range" min="0" max="1" step="0.05" value="1" aria-label="{{ $settings->testimonial_volume_label }}">
+                    <input class="tv-seek" data-tv-seek type="range" min="0" max="1000" step="1" value="0" aria-label="{{ $settings->testimonial_seek_label ?: 'Position de lecture' }}">
+                    <div class="tv-row">
+                        <button class="tv-btn" data-tv-toggle type="button" aria-label="{{ $settings->testimonial_resume_label }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-pause hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-play><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                        </button>
+                        <button class="tv-btn" data-tv-mute type="button" aria-label="{{ $settings->testimonial_mute_label }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-vol-on><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-vol-off hidden><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/><path d="M18.5 4.68 23 9.18 21.4 10.8 17.22 6.6 18.5 4.68zm0 0L23 14.82 21.4 13.2l-4.18-4.2L18.5 4.68z" transform="rotate(0)"/></svg>
+                        </button>
+                        <input class="tv-volume" data-tv-volume type="range" min="0" max="1" step="0.05" value="1" aria-label="{{ $settings->testimonial_volume_label }}">
+                        <button class="tv-btn tv-fullscreen" data-tv-fullscreen type="button" aria-label="{{ $settings->testimonial_fullscreen_label ?: 'Plein écran' }}" hidden>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-fs-enter><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-ico-fs-exit hidden><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         @else

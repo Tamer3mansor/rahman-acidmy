@@ -59,6 +59,8 @@ class LandingSettingsSeeder extends Seeder
         'testimonial_resume_label' => 'Lire',
         'testimonial_pause_label' => 'Pause',
         'testimonial_volume_label' => 'Volume du son',
+        'testimonial_seek_label' => 'Position de lecture',
+        'testimonial_fullscreen_label' => 'Plein écran',
 
         'field_student_name_label' => "Nom de l'élève",
         'field_student_name_placeholder' => "Entrez le nom de l'élève",

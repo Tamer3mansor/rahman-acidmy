@@ -129,6 +129,17 @@ class LessonForm
                                     ])
                                     ->columns(3),
                             ]),
+
+                        Tab::make('الدروس المرتبطة')
+                            ->schema([
+                                Select::make('relatedLessons')
+                                    ->label('دروس مرتبطة')
+                                    ->helperText('اختر دروساً أخرى مماثلة لتظهر في نهاية هذا الدرس كترشيحات — يمكن الاختيار من أي فئة. إن تُرك فارغاً تظهر تلقائياً دروس من نفس الفئة.')
+                                    ->relationship('relatedLessons', 'title', ignoreRecord: true)
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload(),
+                            ]),
                     ]),
             ]);
     }
