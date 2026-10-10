@@ -67,6 +67,18 @@ class RichEditorAudioTest extends TestCase
         $this->assertContains('image/jpeg', AudioPlugin::ACCEPTED_FILE_TYPES);
     }
 
+    public function test_every_accepted_file_type_is_previewable_by_livewire(): void
+    {
+        $previewExtensions = config('livewire.temporary_file_upload.preview_mimes');
+
+        foreach (['ogg', 'oga', 'aac', 'flac', 'webm'] as $extension) {
+            $this->assertContains($extension, $previewExtensions);
+        }
+
+        $this->assertNotContains('application/pdf', AudioPlugin::ACCEPTED_FILE_TYPES);
+        $this->assertNotContains('application/msword', AudioPlugin::ACCEPTED_FILE_TYPES);
+    }
+
     public function test_audio_toolbar_button_renders_a_well_formed_click_handler(): void
     {
         $html = $this->actingAs(User::factory()->create())

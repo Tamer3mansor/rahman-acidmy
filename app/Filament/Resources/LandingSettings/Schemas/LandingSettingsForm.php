@@ -275,48 +275,48 @@ class LandingSettingsForm
                                     ->label('نص الحقوق')
                                     ->columnSpan(2)
                                     ->maxLength(255),
-                            ]),
 
-                        Section::make('وسائل التواصل')
-                            ->description('أيقونات التواصل في الفوتر. تُعرض كل أيقونة فقط إذا كان رابطها مملوءاً، وتختفي تلقائياً عند تفريغه.')
-                            ->schema([
-                                TextInput::make('footer_social_whatsapp')
-                                    ->label('واتساب')
-                                    ->url()
-                                    ->placeholder('https://wa.me/...')
-                                    ->maxLength(255),
-                                TextInput::make('footer_social_telegram')
-                                    ->label('تيليجرام')
-                                    ->url()
-                                    ->placeholder('https://t.me/...')
-                                    ->maxLength(255),
-                                TextInput::make('footer_social_facebook')
-                                    ->label('فيسبوك')
-                                    ->url()
-                                    ->placeholder('https://facebook.com/...')
-                                    ->maxLength(255),
-                                TextInput::make('footer_social_instagram')
-                                    ->label('إنستجرام')
-                                    ->url()
-                                    ->placeholder('https://instagram.com/...')
-                                    ->maxLength(255),
-                                TextInput::make('footer_social_tiktok')
-                                    ->label('تيك توك')
-                                    ->url()
-                                    ->placeholder('https://tiktok.com/@...')
-                                    ->maxLength(255),
-                                TextInput::make('footer_social_x')
-                                    ->label('إكس (تويتر)')
-                                    ->url()
-                                    ->placeholder('https://x.com/...')
-                                    ->maxLength(255),
-                                TextInput::make('footer_social_youtube')
-                                    ->label('يوتيوب')
-                                    ->url()
-                                    ->placeholder('https://youtube.com/@...')
-                                    ->maxLength(255),
-                            ])
-                            ->columns(2),
+                                Section::make('وسائل التواصل')
+                                    ->description('أيقونات التواصل في الفوتر. تُعرض كل أيقونة فقط إذا كان رابطها مملوءاً، وتختفي تلقائياً عند تفريغه.')
+                                    ->schema([
+                                        TextInput::make('footer_social_whatsapp')
+                                            ->label('واتساب')
+                                            ->url()
+                                            ->placeholder('https://wa.me/...')
+                                            ->maxLength(255),
+                                        TextInput::make('footer_social_telegram')
+                                            ->label('تيليجرام')
+                                            ->url()
+                                            ->placeholder('https://t.me/...')
+                                            ->maxLength(255),
+                                        TextInput::make('footer_social_facebook')
+                                            ->label('فيسبوك')
+                                            ->url()
+                                            ->placeholder('https://facebook.com/...')
+                                            ->maxLength(255),
+                                        TextInput::make('footer_social_instagram')
+                                            ->label('إنستجرام')
+                                            ->url()
+                                            ->placeholder('https://instagram.com/...')
+                                            ->maxLength(255),
+                                        TextInput::make('footer_social_tiktok')
+                                            ->label('تيك توك')
+                                            ->url()
+                                            ->placeholder('https://tiktok.com/@...')
+                                            ->maxLength(255),
+                                        TextInput::make('footer_social_x')
+                                            ->label('إكس (تويتر)')
+                                            ->url()
+                                            ->placeholder('https://x.com/...')
+                                            ->maxLength(255),
+                                        TextInput::make('footer_social_youtube')
+                                            ->label('يوتيوب')
+                                            ->url()
+                                            ->placeholder('https://youtube.com/@...')
+                                            ->maxLength(255),
+                                    ])
+                                    ->columns(2),
+                            ]),
 
                         Tab::make('النصوص المشتركة (ناف/فوتر/فورم)')
                             ->schema([

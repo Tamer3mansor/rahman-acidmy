@@ -38,24 +38,6 @@ class AudioPlugin implements HasToolbarButtons, RichContentPlugin
         'image/gif',
         'image/webp',
         ...self::AUDIO_FILE_TYPES,
-        ...self::DOCUMENT_FILE_TYPES,
-    ];
-
-    public const DOCUMENT_FILE_TYPES = [
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
-        'application/rtf',
-        'text/rtf',
-        'text/plain',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'application/vnd.ms-powerpoint',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'application/vnd.oasis.opendocument.text',
-        'application/vnd.oasis.opendocument.spreadsheet',
-        'application/vnd.oasis.opendocument.presentation',
     ];
 
     /**

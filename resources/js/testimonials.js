@@ -16,6 +16,11 @@ const FRAME_PORTRAIT_MIN_RATIO = 0.45;
 const FRAME_PORTRAIT_MAX_RATIO = 0.9;
 const METADATA_ROOT_MARGIN = '200px';
 
+/* The hero video autoplays muted in the background. Playing a testimonial clip
+   is a deliberate, visible choice, so the hero is paused to avoid the two
+   audios overlapping once the visitor unmutes. */
+const getHeroVideo = () => document.querySelector('[data-hero-video]');
+
 document.addEventListener('DOMContentLoaded', () => {
     const players = document.querySelectorAll('[data-tv-player]');
 
@@ -72,6 +77,7 @@ function initTvPlayer(player) {
     video.addEventListener('play', () => {
         setPlaying(true);
         marquee?.classList.add('is-paused');
+        getHeroVideo()?.pause();
     });
     video.addEventListener('pause', () => {
         setPlaying(false);

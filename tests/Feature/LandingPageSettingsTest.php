@@ -83,6 +83,18 @@ class LandingPageSettingsTest extends TestCase
         $this->assertSame(1, LandingSettings::query()->count());
     }
 
+    public function test_admin_landing_settings_form_renders_footer_social_section(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/admin/landing-settings')
+            ->assertOk()
+            ->assertSee('وسائل التواصل')
+            ->assertSee('footer_social_whatsapp', false)
+            ->assertSee('footer_social_youtube', false);
+    }
+
     public function test_admin_can_list_hero_trust_pills(): void
     {
         HeroTrustPill::factory()->count(2)->create();
