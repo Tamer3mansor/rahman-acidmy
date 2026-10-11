@@ -570,11 +570,24 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 /* testimonial video player */
 .tv-player { position:absolute; inset:0; }
 .tv-player .tv-video { width:100%; height:100%; object-fit:contain; background:#000; }
-/* Loading placeholder layered over a clip until the browser has a frame to
-   paint. It hides the blank area (and the uninitialised green GPU frame some
-   browsers flash before the first decoded frame) and disappears once the
-   player is ready or while it is buffering again mid-playback. */
-.tv-skeleton,
+/* Cover layered over a testimonial clip until the browser has decoded a frame
+   to paint (testimonials.js seeks a hair into each visible clip to force that).
+   It is a static, branded panel rather than an animated loader, so a card that
+   is merely not-yet-played never reads as "still loading"; it also hides the
+   blank area and the uninitialised green GPU frame some browsers flash before
+   the first decoded frame. The hero keeps its own shimmer because it plays on
+   hover. */
+.tv-skeleton {
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+  transition:opacity .35s ease;
+  z-index:1;
+  pointer-events:none;
+}
 .hero-skeleton {
   position:absolute;
   inset:0;
@@ -588,21 +601,11 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
   z-index:1;
   pointer-events:none;
 }
-.tv-skeleton::after {
-  content:"";
-  width:26px;height:26px;border-radius:50%;
-  border:3px solid rgba(255,255,255,0.22);
-  border-top-color:var(--gold);
-  animation:skeletonSpin .8s linear infinite;
-}
 .tv-player.is-ready .tv-skeleton,
 .video-card.is-ready .hero-skeleton { opacity:0; }
 @keyframes skeletonShimmer {
   from { background-position:120% 0; }
   to { background-position:-120% 0; }
-}
-@keyframes skeletonSpin {
-  to { transform:rotate(360deg); }
 }
 /* Portrait clips (phones record 9:16) get a portrait frame whose ratio
    testimonials.js reads off the video and writes inline, clamped to a sane
@@ -1393,7 +1396,7 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
 
 @media (prefers-reduced-motion: reduce) {
   .trust-marquee-track, .teachers-carousel.is-ready .teachers-grid, .teachers-pagination-bullet { animation:none; transition:none; }
-  .tv-skeleton, .hero-skeleton, .tv-skeleton::after { animation:none; }
+  .hero-skeleton { animation:none; }
   /* No marquee without animation: let the column scroll instead, and drop the
      duplicated group that only exists to make the loop seamless. */
   .trust-marquee-group[aria-hidden="true"] { display:none; }

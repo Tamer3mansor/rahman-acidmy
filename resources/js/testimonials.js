@@ -89,6 +89,7 @@ function initTvPlayer(player) {
 
     fitFrameToVideo(video);
     trackLoadingState(player, video);
+    initFirstFrame(player, video);
 
     const icoPlay = toggleBtn.querySelector('[data-ico-play]');
     const icoPause = toggleBtn.querySelector('[data-ico-pause]');
@@ -276,16 +277,110 @@ function fitFrameToVideo(video) {
     video.addEventListener('loadedmetadata', applyRatio);
 }
 
-/* The skeleton overlay covers the card until the browser has a frame to paint,
-   so the clip never flashes an empty (or uninitialised green) area. It comes
-   back while playback rebuffers, and large clips stay untouched until played. */
+/* The branded cover stays over a clip until the browser has a frame to paint,
+   so the card never shows an empty (or uninitialised green) area. Once a frame
+   exists it only comes back if playback genuinely runs out of data. */
 function trackLoadingState(player, video) {
     const setReady = (ready) => player.classList.toggle('is-ready', ready);
 
     video.addEventListener('loadeddata', () => setReady(true));
     video.addEventListener('canplay', () => setReady(true));
     video.addEventListener('playing', () => setReady(true));
-    video.addEventListener('waiting', () => setReady(false));
+    video.addEventListener('waiting', () => { if (video.readyState < 2) setReady(false); });
 
     if (video.readyState >= 2) setReady(true);
+}
+
+/* Waiting for a clip to load before the visitor asks for it would download data
+   nobody is watching, so the first frame is only seeded for cards that scroll
+   into view. Seeding means nudging the playhead a hair past zero: the browser
+   then decodes a real frame, which replaces the cover and also avoids the
+   uninitialised green GPU frame some browsers paint otherwise. If the clip
+   cannot be decoded (stalled network, unsupported codec) the branded cover
+   simply stays put, so the card never flickers to a raw frame. */
+function initFirstFrame(player, video) {
+    if (player.dataset.firstFrame === 'done') return;
+
+    player.dataset.firstFrame = 'done';
+
+    const setReady = () => player.classList.add('is-ready');
+
+    if (video.readyState >= 2) {
+        setReady();
+        return;
+    }
+
+    whenVisible(player, async () => {
+        try {
+            if (video.readyState < 1) {
+                if (video.preload === 'none') {
+                    video.preload = 'metadata';
+                    video.load();
+                }
+
+                await once(video, ['loadedmetadata'], 8000);
+            }
+
+            if (video.readyState >= 2) {
+                setReady();
+                return;
+            }
+
+            const duration = Number.isFinite(video.duration) ? video.duration : 1;
+            video.currentTime = Math.min(0.1, duration * 0.5);
+
+            await once(video, ['seeked', 'loadeddata', 'canplay'], 8000);
+            setReady();
+        } catch {
+            /* Leave the branded cover in place. */
+        }
+    });
+}
+
+/* Runs the callback the first time the element scrolls within (or near) the
+   viewport, then stops observing. Falls back to running immediately when
+   IntersectionObserver is unavailable. */
+function whenVisible(element, callback) {
+    if (!('IntersectionObserver' in window)) {
+        callback();
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+            observer.disconnect();
+            callback();
+        }
+    }, { rootMargin: '150px 0px' });
+
+    observer.observe(element);
+}
+
+/* Resolves on the first of the given events, or rejects after the timeout so a
+   stalled clip cannot leave the caller waiting forever. */
+function once(target, events, timeout) {
+    return new Promise((resolve, reject) => {
+        let done = false;
+
+        const cleanup = () => {
+            events.forEach((name) => target.removeEventListener(name, handler));
+            clearTimeout(timer);
+        };
+
+        const handler = () => {
+            if (done) return;
+            done = true;
+            cleanup();
+            resolve();
+        };
+
+        const timer = setTimeout(() => {
+            if (done) return;
+            done = true;
+            cleanup();
+            reject(new Error('timeout'));
+        }, timeout);
+
+        events.forEach((name) => target.addEventListener(name, handler));
+    });
 }
