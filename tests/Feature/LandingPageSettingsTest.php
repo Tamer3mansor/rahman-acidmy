@@ -156,7 +156,6 @@ class LandingPageSettingsTest extends TestCase
         Livewire::test(EditLandingSettings::class, ['record' => LandingSettings::singleton()->getKey()])
             ->fillForm(['hero_media_type' => 'video'])
             ->set('data.hero_video_path', UploadedFile::fake()->create('hero.mp4', 1024, 'video/mp4'))
-            ->assertFormFieldVisible('hero_video_autoplay')
             ->assertFormFieldVisible('hero_video_loop')
             ->call('save')
             ->assertHasNoFormErrors();
@@ -167,7 +166,6 @@ class LandingPageSettingsTest extends TestCase
         Livewire::test(EditLandingSettings::class, ['record' => LandingSettings::singleton()->getKey()])
             ->fillForm(['hero_media_type' => 'image'])
             ->set('data.hero_video_path', UploadedFile::fake()->image('hero.jpg'))
-            ->assertFormFieldHidden('hero_video_autoplay')
             ->assertFormFieldHidden('hero_video_loop')
             ->call('save')
             ->assertHasNoFormErrors();
@@ -184,7 +182,6 @@ class LandingPageSettingsTest extends TestCase
         $settings->update([
             'hero_media_type' => MediaType::Video,
             'hero_video_path' => 'hero-media/hero.mp4',
-            'hero_video_autoplay' => true,
             'hero_video_loop' => true,
         ]);
 
@@ -193,7 +190,7 @@ class LandingPageSettingsTest extends TestCase
             ->assertSee('data-hero-video', false)
             ->assertSee('data-hero-mute', false)
             ->assertSee('type="video/mp4"', false)
-            ->assertSee('autoplay', false)
+            ->assertDontSee('autoplay', false)
             ->assertSee('loop', false);
     }
 

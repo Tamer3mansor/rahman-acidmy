@@ -57,7 +57,7 @@
                                 default => 'video/mp4',
                             };
                         @endphp
-                        <video id="heroVideo" data-hero-video {{ $settings->hero_video_autoplay ? 'autoplay' : '' }} {{ $settings->hero_video_loop ? 'loop' : '' }} muted playsinline preload="auto">
+                        <video id="heroVideo" data-hero-video {{ $settings->hero_video_loop ? 'loop' : '' }} muted playsinline preload="auto">
                             <source src="{{ \Illuminate\Support\Str::startsWith($settings->hero_video_path, ['http://', 'https://']) ? $settings->hero_video_path : asset('storage/' . $settings->hero_video_path) }}" type="{{ $heroVideoType }}">
                         </video>
                         <button class="hero-sound is-muted" type="button" data-hero-mute aria-pressed="false" aria-label="Activer le son">

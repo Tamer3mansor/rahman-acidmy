@@ -1229,6 +1229,7 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
      actually be read. */
   .trust-marquee {
     --trust-marquee-h: 420px;
+    height: var(--trust-marquee-h);
     overflow: hidden;
   }
   .trust-marquee:hover .trust-marquee-track,

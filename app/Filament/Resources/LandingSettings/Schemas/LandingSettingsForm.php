@@ -118,9 +118,6 @@ class LandingSettingsForm
                                             ->disk('public')
                                             ->helperText('ارفع صورة أو فيديو — منطبقاً على نوع الوسائط. فيديو (mp4/mov/webm) أو صورة (jpg/png/webp).')
                                             ->columnSpan(2),
-                                        Toggle::make('hero_video_autoplay')
-                                            ->label('تشغيل تلقائي')
-                                            ->hidden(fn (Get $get): bool => $get('hero_media_type') !== MediaType::Video),
                                         Toggle::make('hero_video_loop')
                                             ->label('تكرار الفيديو')
                                             ->hidden(fn (Get $get): bool => $get('hero_media_type') !== MediaType::Video),

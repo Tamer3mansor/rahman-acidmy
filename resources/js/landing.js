@@ -512,9 +512,49 @@ function initTrustMobileTabs() {
             panes.forEach((pane) => {
                 const isActive = pane.dataset.trustPane === target;
                 pane.classList.toggle('is-tab-active', isActive);
+                if (isActive) syncTrustMarqueeDuration(pane);
             });
             trustGrid.setAttribute('data-active-tab', target);
         });
+    });
+}
+
+/* Every marquee track slides by half its own height (translateY(-50% - 7px)),
+   so one shared duration makes a dense column scroll faster than a sparse one
+   (WhatsApp vs Google on the homepage). Derive each duration from a common
+   px/s speed instead, and re-measure whenever a track's height changes —
+   fonts, video metadata, mobile tab switch or resize all shift it. */
+const TRUST_MARQUEE_SPEED = 6;
+
+function syncTrustMarqueeDuration(marquee) {
+    if (!marquee || marquee.classList.contains('trust-marquee--static')) return;
+
+    const track = marquee.querySelector('.trust-marquee-track');
+    if (!track) return;
+
+    /* Hidden panes (display:none) measure 0; keep the last known duration. */
+    const height = track.getBoundingClientRect().height;
+    if (!height) return;
+
+    const distance = height / 2 + 7;
+    marquee.style.setProperty('--trust-marquee-duration', `${(distance / TRUST_MARQUEE_SPEED).toFixed(2)}s`);
+}
+
+function initTrustMarquees() {
+    const marquees = document.querySelectorAll('.trust-marquee');
+    if (!marquees.length || typeof ResizeObserver === 'undefined') return;
+
+    const observer = new ResizeObserver((entries) => {
+        entries.forEach((entry) => {
+            syncTrustMarqueeDuration(entry.target.closest('.trust-marquee'));
+        });
+    });
+
+    marquees.forEach((marquee) => {
+        syncTrustMarqueeDuration(marquee);
+
+        const track = marquee.querySelector('.trust-marquee-track');
+        if (track) observer.observe(track);
     });
 }
 
@@ -523,12 +563,11 @@ function initHeroVideo() {
 
     if (!video) return;
 
+    const card = document.getElementById('heroVideoCard');
     const muteBtn = document.querySelector('[data-hero-mute]');
     const icoSound = muteBtn?.querySelector('[data-hero-ico-sound]');
     const icoMuted = muteBtn?.querySelector('[data-hero-ico-muted]');
     const soundLabel = muteBtn?.querySelector('[data-hero-sound-label]');
-
-    let visitorChose = false;
 
     const play = () => {
         const attempt = video.play();
@@ -537,6 +576,8 @@ function initHeroVideo() {
             attempt.catch(() => { /* blocked until the visitor interacts */ });
         }
     };
+
+    const pause = () => video.pause();
 
     const setSound = (on) => {
         video.muted = !on;
@@ -551,22 +592,21 @@ function initHeroVideo() {
         if (soundLabel) soundLabel.textContent = on ? 'Couper le son' : 'Activer le son';
     };
 
-    const enableSound = () => {
-        if (visitorChose) return;
-
-        setSound(true);
-        play();
-    };
+    /* Hold the pointer (or keyboard focus) over the card to play; leaving
+       pauses it. Nothing else on the page drives the video: clicks in other
+       sections no longer start or stop it. */
+    card?.addEventListener('mouseenter', play);
+    card?.addEventListener('mouseleave', pause);
+    card?.addEventListener('focusin', play);
+    card?.addEventListener('focusout', pause);
 
     muteBtn?.addEventListener('click', (event) => {
         event.stopPropagation();
-        visitorChose = true;
         setSound(video.muted);
         if (video.paused) play();
     });
 
     video.addEventListener('click', () => {
-        visitorChose = true;
         if (video.paused) {
             setSound(true);
             play();
@@ -575,28 +615,10 @@ function initHeroVideo() {
         }
     });
 
-    ['pointerdown', 'touchstart', 'keydown', 'wheel'].forEach((evt) => {
-        window.addEventListener(evt, enableSound, { once: true, passive: true });
-    });
-
     setSound(false);
-
-    if (!video.hasAttribute('autoplay')) return;
-
-    video.muted = false;
-    const attempt = video.play();
-
-    if (attempt === undefined || typeof attempt.then !== 'function') return;
-
-    attempt
-        .then(() => { if (!visitorChose) setSound(true); })
-        .catch(() => {
-            if (visitorChose) return;
-            setSound(false);
-            play();
-        });
 }
 
 initTeachersCarousel();
 initTrustMobileTabs();
+initTrustMarquees();
 initHeroVideo();
