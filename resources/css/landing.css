@@ -151,6 +151,9 @@ a { text-decoration: none; color: inherit; }
   display: flex; align-items: center; justify-content: center;
 }
 .nav-logo-icon img { width: 44px; height: 44px; object-fit: contain; }
+.nav-logo-icon .nav-logo-dark { display: none; }
+html[data-theme="dark"] .nav-logo-icon .nav-logo-light { display: none; }
+html[data-theme="dark"] .nav-logo-icon .nav-logo-dark { display: block; }
 .nav-logo-text { line-height: 1.1; }
 .nav-logo-text .name { font-size: 1.05rem; font-weight: 900; color: var(--green); }
 .nav-logo-text .sub  { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.06em; font-weight: 600; }

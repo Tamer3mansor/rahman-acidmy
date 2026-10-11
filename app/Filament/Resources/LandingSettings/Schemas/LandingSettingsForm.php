@@ -36,6 +36,13 @@ class LandingSettingsForm
                                             ->directory('landing/header')
                                             ->helperText('يظهر في شريط التنقل أعلى الصفحة. اتركه فارغاً لاستخدام الأيقونة الافتراضية')
                                             ->columnSpanFull(),
+                                        FileUpload::make('header_logo_dark_path')
+                                            ->label('شعار الهيدر (الوضع الداكن)')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('landing/header')
+                                            ->helperText('يظهر عندما يختار الزائر الثيم الداكن. اتركه فارغاً لاستخدام نفس الشعار الفاتح.')
+                                            ->columnSpanFull(),
                                         TextInput::make('header_brand_name')
                                             ->label('اسم العلامة التجارية')
                                             ->maxLength(255),

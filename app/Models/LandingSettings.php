@@ -16,6 +16,7 @@ class LandingSettings extends Model
         'header_brand_name',
         'header_brand_sub',
         'header_logo_path',
+        'header_logo_dark_path',
         'header_btn1_title',
         'header_btn1_url',
         'header_btn2_title',

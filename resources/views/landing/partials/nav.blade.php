@@ -6,9 +6,14 @@
     <div class="container">
         <div class="nav-inner">
             <a href="{{ $logoUrl ?? $homeUrl }}" class="nav-logo">
+                @php
+                    $logoLight = $settings->header_logo_path ?: $settings->header_logo_dark_path;
+                    $logoDark = $settings->header_logo_dark_path ?: $settings->header_logo_path;
+                @endphp
                 <div class="nav-logo-icon">
-                    @if ($settings->header_logo_path)
-                        <img src="{{ asset('storage/' . $settings->header_logo_path) }}" alt="{{ $settings->header_brand_name }}">
+                    @if ($logoLight)
+                        <img class="nav-logo-light" src="{{ asset('storage/' . $logoLight) }}" alt="{{ $settings->header_brand_name }}">
+                        <img class="nav-logo-dark" src="{{ asset('storage/' . $logoDark) }}" alt="{{ $settings->header_brand_name }}">
                     @else
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M12 3L4 7v5c0 4.4 3.4 8.5 8 9.5 4.6-1 8-5.1 8-9.5V7l-8-4z" fill="none" stroke="#C9963A" stroke-width="1.5"/>

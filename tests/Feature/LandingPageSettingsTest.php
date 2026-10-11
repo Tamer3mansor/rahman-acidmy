@@ -328,4 +328,35 @@ class LandingPageSettingsTest extends TestCase
             ->assertSee('https://tiktok.com/@arrahman')
             ->assertSee('aria-label="YouTube"', false);
     }
+
+    public function test_nav_renders_a_separate_logo_for_dark_mode(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update([
+            'header_logo_path' => 'landing/header/logo-light.png',
+            'header_logo_dark_path' => 'landing/header/logo-dark.png',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('nav-logo-light', false)
+            ->assertSee('nav-logo-dark', false)
+            ->assertSee('storage/landing/header/logo-light.png', false)
+            ->assertSee('storage/landing/header/logo-dark.png', false);
+    }
+
+    public function test_nav_reuses_the_light_logo_for_dark_mode_when_no_dark_logo_is_set(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update([
+            'header_logo_path' => 'landing/header/logo-light.png',
+            'header_logo_dark_path' => null,
+        ]);
+
+        $response = $this->get('/')->assertOk();
+
+        $this->assertSame(2, substr_count($response->getContent(), 'storage/landing/header/logo-light.png'));
+    }
 }
