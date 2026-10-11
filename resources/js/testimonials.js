@@ -305,6 +305,13 @@ function initFirstFrame(player, video) {
 
     const setReady = () => player.classList.add('is-ready');
 
+    /* An admin-uploaded poster is already a real image, so show it straight
+       away and skip seeding a frame from the clip. */
+    if (video.getAttribute('poster')) {
+        setReady();
+        return;
+    }
+
     if (video.readyState >= 2) {
         setReady();
         return;

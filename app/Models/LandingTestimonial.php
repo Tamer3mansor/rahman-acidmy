@@ -7,6 +7,7 @@ use App\Casts\TestimonialTypeCast;
 use App\Enums\CourseAudience;
 use App\Enums\TestimonialPlacement;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,7 @@ class LandingTestimonial extends Model
         'content',
         'media_path',
         'video_name',
+        'poster_path',
         'rating',
         'is_active',
         'sort_order',
@@ -33,6 +35,28 @@ class LandingTestimonial extends Model
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    /**
+     * Public URL of the optional admin-uploaded poster, or null when the card
+     * should fall back to the first frame the browser generates on its own.
+     */
+    protected function posterUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => filled($this->poster_path) ? $this->resolveMediaUrl($this->poster_path) : null,
+        );
+    }
+
+    private function resolveMediaUrl(string $path): string
+    {
+        foreach (['https://', 'http://', 'data:'] as $prefix) {
+            if (str_starts_with($path, $prefix)) {
+                return $path;
+            }
+        }
+
+        return asset('storage/'.$path);
+    }
 
     /**
      * Testimonials shown in the landing page trust section.

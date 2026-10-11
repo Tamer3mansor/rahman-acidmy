@@ -44,6 +44,7 @@
                 $videoUrl = \Illuminate\Support\Str::startsWith($testimonial->media_path, ['http://', 'https://'])
                     ? $testimonial->media_path
                     : asset('storage/'.$testimonial->media_path);
+                $posterUrl = $testimonial->poster_url;
             @endphp
                 <div class="tv-player"
                      data-tv-player
@@ -52,7 +53,7 @@
                      data-pause-label="{{ $settings->testimonial_pause_label }}"
                      data-mute-label="{{ $settings->testimonial_mute_label }}"
                      data-unmute-label="{{ $settings->testimonial_unmute_label }}">
-                <video class="tv-video" data-tv-video playsinline loop preload="{{ $videoPreload ?? 'none' }}">
+                <video class="tv-video" data-tv-video playsinline loop preload="{{ $videoPreload ?? 'none' }}" @if ($posterUrl) poster="{{ $posterUrl }}" @endif>
                     <source src="{{ $videoUrl }}" type="{{ $videoExtension === 'webm' ? 'video/webm' : 'video/mp4' }}">
                 </video>
                 <div class="tv-skeleton" data-tv-skeleton aria-hidden="true"></div>

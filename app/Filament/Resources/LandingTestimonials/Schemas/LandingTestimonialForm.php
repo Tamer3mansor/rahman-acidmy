@@ -65,6 +65,17 @@ class LandingTestimonialForm
                             ->maxLength(255)
                             ->columnSpanFull()
                             ->hidden(fn ($get) => $get('type') !== TestimonialType::Video),
+                        FileUpload::make('poster_path')
+                            ->label('صورة مصغّرة للفيديو (اختياري)')
+                            ->disk('public')
+                            ->directory('landing/testimonials/posters')
+                            ->image()
+                            ->imageEditor()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->maxSize(5120)
+                            ->helperText('تظهر قبل تشغيل الفيديو بدل الصورة الأولى. لو سيبتها فاضية بنولّد أول إطار من الفيديو تلقائيًا.')
+                            ->columnSpanFull()
+                            ->hidden(fn ($get) => $get('type') !== TestimonialType::Video),
                         TextInput::make('rating')
                             ->label('التقييم (من 5)')
                             ->numeric()

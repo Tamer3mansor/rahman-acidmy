@@ -252,6 +252,55 @@ class LandingTestimonialsTest extends TestCase
             ->assertDontSee('مقابلة-الأم-سارة');
     }
 
+    public function test_poster_image_field_is_visible_only_for_video_type(): void
+    {
+        $admin = User::factory()->create();
+
+        $this->actingAs($admin);
+
+        Livewire::test(CreateLandingTestimonial::class)
+            ->fillForm(['type' => TestimonialType::Video->value])
+            ->assertFormFieldVisible('poster_path');
+
+        Livewire::test(CreateLandingTestimonial::class)
+            ->fillForm(['type' => TestimonialType::Google->value])
+            ->assertFormFieldHidden('poster_path');
+    }
+
+    public function test_admin_uploaded_poster_is_rendered_on_the_video(): void
+    {
+        LandingTestimonial::create([
+            'type' => TestimonialType::Video,
+            'placements' => [TestimonialPlacement::Landing],
+            'media_path' => 'landing/testimonials/clip.mp4',
+            'poster_path' => 'landing/testimonials/posters/cover.jpg',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('storage/landing/testimonials/clip.mp4', false)
+            ->assertSee('poster="'.asset('storage/landing/testimonials/posters/cover.jpg').'"', false);
+    }
+
+    public function test_video_without_an_uploaded_poster_leaves_the_poster_attribute_empty(): void
+    {
+        LandingTestimonial::create([
+            'type' => TestimonialType::Video,
+            'placements' => [TestimonialPlacement::Landing],
+            'media_path' => 'landing/testimonials/clip.mp4',
+            'poster_path' => null,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('data-tv-video', false)
+            ->assertDontSee('poster="', false);
+    }
+
     public function test_audience_page_paginates_testimonials(): void
     {
         $this->seed([

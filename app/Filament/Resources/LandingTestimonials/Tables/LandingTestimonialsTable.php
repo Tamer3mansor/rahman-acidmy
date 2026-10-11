@@ -9,6 +9,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -38,6 +39,11 @@ class LandingTestimonialsTable
                     ->label('اسم الفيديو')
                     ->placeholder('—')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                ImageColumn::make('poster_path')
+                    ->label('الصورة المصغّرة')
+                    ->height(40)
+                    ->state(fn (LandingTestimonial $record): ?string => $record->poster_url)
                     ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('author_name')
                     ->label('الاسم')
