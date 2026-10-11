@@ -213,6 +213,45 @@ class LandingTestimonialsTest extends TestCase
             ->assertSee('data-tv-video', false);
     }
 
+    public function test_video_name_field_is_visible_only_for_video_type(): void
+    {
+        $admin = User::factory()->create();
+
+        $this->actingAs($admin);
+
+        Livewire::test(CreateLandingTestimonial::class)
+            ->fillForm(['type' => TestimonialType::Video->value])
+            ->assertFormFieldVisible('video_name');
+
+        Livewire::test(CreateLandingTestimonial::class)
+            ->fillForm(['type' => TestimonialType::Google->value])
+            ->assertFormFieldHidden('video_name');
+    }
+
+    public function test_video_name_stays_admin_only_and_is_not_rendered_on_the_site(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $testimonial = LandingTestimonial::create([
+            'type' => TestimonialType::Video,
+            'placements' => [TestimonialPlacement::Kids],
+            'media_path' => 'landing/testimonials/kids.mp4',
+            'video_name' => 'مقابلة-الأم-سارة',
+            'is_active' => true,
+            'sort_order' => 0,
+        ]);
+
+        $this->assertSame('مقابلة-الأم-سارة', $testimonial->fresh()->video_name);
+
+        $this->get('/enfants')
+            ->assertOk()
+            ->assertSee('storage/landing/testimonials/kids.mp4', false)
+            ->assertDontSee('مقابلة-الأم-سارة');
+    }
+
     public function test_audience_page_paginates_testimonials(): void
     {
         $this->seed([
@@ -246,6 +285,65 @@ class LandingTestimonialsTest extends TestCase
             ->assertOk()
             ->assertSee('رأي أطفال 3')
             ->assertDontSee('رأي أطفال 1');
+    }
+
+    public function test_testimonials_pagination_loads_as_a_section_partial_for_ajax(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        CoursePageSettings::singleton()->update([
+            'kids_testimonials_per_page' => 2,
+        ]);
+
+        foreach (range(1, 3) as $index) {
+            LandingTestimonial::query()->create([
+                'type' => TestimonialType::Google,
+                'placements' => [TestimonialPlacement::Kids],
+                'author_name' => "رأي أطفال {$index}",
+                'content' => "<p>محتوى {$index}</p>",
+                'rating' => 5,
+                'is_active' => true,
+                'sort_order' => $index,
+            ]);
+        }
+
+        $this->withHeaders(['X-Requested-With' => 'XMLHttpRequest'])
+            ->get('/enfants?testimonials=2')
+            ->assertOk()
+            ->assertSee('data-testimonials-section', false)
+            ->assertSee('رأي أطفال 3')
+            ->assertDontSee('رأي أطفال 1')
+            ->assertDontSee('<!DOCTYPE', false);
+    }
+
+    public function test_course_page_testimonials_pagination_loads_as_a_section_partial_for_ajax(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $course = Course::query()->where('audience', CourseAudience::Kids->value)->firstOrFail();
+
+        LandingTestimonial::query()->create([
+            'type' => TestimonialType::Google,
+            'placements' => [TestimonialPlacement::Kids],
+            'author_name' => 'رأي كورس',
+            'content' => '<p>محتوى</p>',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->withHeaders(['X-Requested-With' => 'XMLHttpRequest'])
+            ->get("/cours/{$course->slug}?testimonials=1")
+            ->assertOk()
+            ->assertSee('data-testimonials-section', false)
+            ->assertSee('رأي كورس')
+            ->assertDontSee('<!DOCTYPE', false);
     }
 
     public function test_unknown_placement_values_are_dropped_on_read(): void

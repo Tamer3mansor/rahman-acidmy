@@ -21,6 +21,7 @@ class LandingTestimonial extends Model
         'author_location',
         'content',
         'media_path',
+        'video_name',
         'rating',
         'is_active',
         'sort_order',

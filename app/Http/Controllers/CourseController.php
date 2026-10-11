@@ -7,11 +7,12 @@ use App\Models\CoursePageSettings;
 use App\Models\LandingSettings;
 use App\Models\LandingTestimonial;
 use App\Support\CourseContentResolver;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class CourseController extends Controller
 {
-    public function show(Course $course)
+    public function show(Request $request, Course $course)
     {
         abort_unless($course->is_active, 404);
 
@@ -27,6 +28,14 @@ class CourseController extends Controller
         $testimonials = LandingTestimonial::query()
             ->forAudience($course->audience)
             ->paginate($pageSettings->testimonialsPerPage($course->audience), ['*'], 'testimonials');
+
+        if ($request->ajax()) {
+            return response()->view('partials.testimonials-section', [
+                'testimonials' => $testimonials,
+                'settings' => $settings,
+                'wrapperClass' => 'testimonials-grid',
+            ]);
+        }
 
         return view('courses.show', [
             'settings' => $settings,

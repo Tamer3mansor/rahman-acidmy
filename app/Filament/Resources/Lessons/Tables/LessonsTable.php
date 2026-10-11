@@ -24,11 +24,9 @@ class LessonsTable
                 TextColumn::make('categories.name')
                     ->label('الفئات')
                     ->badge(),
-                TextColumn::make('course.title')
-                    ->label('الدورة المرتبطة')
-                    ->placeholder('—')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('courses.title')
+                    ->label('الدورات المرتبطة')
+                    ->badge(),
                 TextColumn::make('reading_time')
                     ->label('وقت القراءة')
                     ->sortable(),
@@ -54,9 +52,10 @@ class LessonsTable
                     ->label('الفئة')
                     ->relationship('categories', 'name')
                     ->multiple(),
-                SelectFilter::make('course')
-                    ->label('الدورة المرتبطة')
-                    ->relationship('course', 'title'),
+                SelectFilter::make('courses')
+                    ->label('الدورات المرتبطة')
+                    ->relationship('courses', 'title')
+                    ->multiple(),
             ])
             ->recordActions([
                 EditAction::make(),

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Lesson extends Model
@@ -25,7 +24,6 @@ class Lesson extends Model
         'audio_url',
         'pdf_url',
         'reading_time',
-        'course_id',
         'is_active',
         'sort_order',
     ];
@@ -36,9 +34,9 @@ class Lesson extends Model
         'sort_order' => 'integer',
     ];
 
-    public function course(): BelongsTo
+    public function courses(): BelongsToMany
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsToMany(Course::class, 'course_lesson');
     }
 
     public function categories(): BelongsToMany

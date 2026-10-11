@@ -49,11 +49,10 @@
     <div class="container">
         <div class="breadcrumbs">
             <a href="{{ route('home') }}">Accueil</a> /
-            <a href="{{ route('blog.index') }}">Blog</a> /
+            <a href="{{ route('blog.index') }}">Blog</a>
             @if ($post->categories->count())
-                <a href="{{ route('blog.index', ['k' => $post->categories->first()?->slug]) }}">{{ $post->categories->pluck('name')->implode(', ') }}</a> /
+                / <a href="{{ route('blog.index', ['k' => $post->categories->first()?->slug]) }}">{{ $post->categories->pluck('name')->implode(', ') }}</a>
             @endif
-            <span>{{ $post->title }}</span>
         </div>
 
         <div class="article-layout">

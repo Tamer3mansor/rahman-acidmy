@@ -34,6 +34,11 @@ class LandingTestimonialsTable
                         ->map(fn (TestimonialPlacement $placement): string => $placement->getLabel())
                         ->join(' · '))
                     ->badge(),
+                TextColumn::make('video_name')
+                    ->label('اسم الفيديو')
+                    ->placeholder('—')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('author_name')
                     ->label('الاسم')
                     ->searchable(),

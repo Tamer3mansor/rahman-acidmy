@@ -59,6 +59,12 @@ class LandingTestimonialForm
                             ->helperText('ارفع الفيديو (MP4، WebM). الحد الأقصى 1 جيجابايت.')
                             ->columnSpanFull()
                             ->hidden(fn ($get) => $get('type') !== TestimonialType::Video),
+                        TextInput::make('video_name')
+                            ->label('اسم الفيديو (للأدمن فقط)')
+                            ->helperText('اسم داخلي لتمييز الفيديو في اللوحة فقط، ولا يظهر في الموقع.')
+                            ->maxLength(255)
+                            ->columnSpanFull()
+                            ->hidden(fn ($get) => $get('type') !== TestimonialType::Video),
                         TextInput::make('rating')
                             ->label('التقييم (من 5)')
                             ->numeric()

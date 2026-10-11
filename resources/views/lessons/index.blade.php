@@ -73,8 +73,12 @@
                     <article class="card">
                         <div class="card-img-wrapper">
                             <img src="{{ $lesson->cover_image_url ?? 'https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=600&auto=format&fit=crop' }}" alt="{{ $lesson->title }}" class="card-img">
-                            @if ($lesson->course)
-                                <span class="badge gold lesson-badge"><i class="fa-solid fa-graduation-cap"></i> {{ $lesson->course->title }}</span>
+                            @if ($lesson->courses->isNotEmpty())
+                                <div class="lesson-badges">
+                                    @foreach ($lesson->courses as $course)
+                                        <span class="badge gold"><i class="fa-solid fa-graduation-cap"></i> {{ $course->title }}</span>
+                                    @endforeach
+                                </div>
                             @endif
                         </div>
                         <div class="card-body">

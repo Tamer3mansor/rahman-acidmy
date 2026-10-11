@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,7 +27,6 @@ class LessonFactory extends Factory
             'cover_image' => null,
             'audio_url' => null,
             'reading_time' => fake()->numberBetween(3, 8),
-            'course_id' => Course::factory(),
             'is_active' => true,
             'sort_order' => 0,
         ];

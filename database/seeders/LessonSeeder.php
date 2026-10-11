@@ -82,7 +82,6 @@ class LessonSeeder extends Seeder
                     'cover_image' => $lesson['cover_image'],
                     'audio_url' => $lesson['audio_url'],
                     'reading_time' => $lesson['reading_time'],
-                    'course_id' => $courseBySlug[$lesson['course_slug']] ?? null,
                     'is_active' => true,
                     'sort_order' => $sort,
                 ]
@@ -90,6 +89,9 @@ class LessonSeeder extends Seeder
 
             $categoryId = $categories[$lesson['category_slug']] ?? null;
             $model->categories()->sync($categoryId ? [$categoryId] : []);
+
+            $courseId = $courseBySlug[$lesson['course_slug']] ?? null;
+            $model->courses()->sync($courseId ? [$courseId] : []);
         }
     }
 }

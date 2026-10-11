@@ -853,6 +853,8 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
   color:var(--white);
 }
 .testimonials-page.is-disabled { opacity:0.4; cursor:default; }
+.testimonials-section-panel { transition:opacity 0.2s ease; }
+.testimonials-section-panel.is-loading { opacity:0.45; pointer-events:none; }
 .teachers-carousel.is-ready .teachers-grid { display:flex; align-items:stretch; gap:24px; margin-top:0; transition:transform 0.55s cubic-bezier(0.25, 1, 0.5, 1); will-change:transform; }
 .teachers-carousel.is-ready .teacher-card { flex:0 0 calc((100% - 48px) / 3); min-width:0; }
 @media (max-width: 1024px) and (min-width: 769px) {

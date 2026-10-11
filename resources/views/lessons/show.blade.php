@@ -1,6 +1,5 @@
 @php
-    $course = $lesson->course;
-    $trialUrl = $course ? route('courses.show', $course->slug) : route('home').'#trial-form';
+    $courses = $lesson->courses;
     $currentUrl = route('lessons.show', $lesson->slug);
 @endphp
 
@@ -44,17 +43,16 @@
     <div class="container">
         <div class="breadcrumbs">
             <a href="{{ route('home') }}">Accueil</a> /
-            <a href="{{ route('lessons.index') }}">Leçons gratuites</a> /
-            <span>{{ $lesson->title }}</span>
+            <a href="{{ route('lessons.index') }}">Leçons gratuites</a>
         </div>
 
         <div class="article-layout">
 
             <main class="article-main shadow-card">
                 <div class="article-meta">
-                    @if ($course)
+                    @foreach ($courses as $course)
                         <span class="badge gold"><i class="fa-solid fa-graduation-cap"></i> Lié au cours : {{ $course->title }}</span>
-                    @endif
+                    @endforeach
                     @foreach ($lesson->categories as $cat)
                         <span class="badge">{{ $cat->name }}</span>
                     @endforeach
@@ -104,7 +102,18 @@
                         <span class="badge gold"><i class="fa-solid fa-rocket"></i> Application pratique directe</span>
                         <h3>Aimez-vous notre méthode d'explication ?</h3>
                         <p>Réservez une séance d'essai en direct avec un enseignant spécialisé pour appliquer ces leçons avec votre enfant, étape par étape.</p>
-                        <a href="{{ $trialUrl }}" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> {{ $course ? 'Découvrir la formation complète' : "Réserver l'essai gratuit" }}</a>
+                        @if ($courses->isNotEmpty())
+                            <div class="in-article-cta-buttons">
+                                @foreach ($courses as $course)
+                                    <a href="{{ route('courses.show', $course->slug) }}" class="btn-primary">
+                                        <i class="fa-solid fa-graduation-cap"></i>
+                                        {{ $courses->count() > 1 ? $course->title : 'Découvrir la formation complète' }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @else
+                            <a href="{{ route('home').'#trial-form' }}" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver l'essai gratuit</a>
+                        @endif
                     </div>
                 </div>
             </main>
@@ -149,8 +158,12 @@
                         <article class="card">
                             <div class="card-img-wrapper">
                                 <img src="{{ $rel->cover_image_url ?? 'https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=600&auto=format&fit=crop' }}" alt="{{ $rel->title }}" class="card-img">
-                                @if ($rel->course)
-                                    <span class="badge gold lesson-badge"><i class="fa-solid fa-graduation-cap"></i> {{ $rel->course->title }}</span>
+                                @if ($rel->courses->isNotEmpty())
+                                    <div class="lesson-badges">
+                                        @foreach ($rel->courses as $course)
+                                            <span class="badge gold"><i class="fa-solid fa-graduation-cap"></i> {{ $course->title }}</span>
+                                        @endforeach
+                                    </div>
                                 @endif
                             </div>
                             <div class="card-body">

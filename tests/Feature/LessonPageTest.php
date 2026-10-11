@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\LessonCategory;
 use App\Models\LessonPageSettings;
@@ -133,6 +134,33 @@ class LessonPageTest extends TestCase
 
         $response->assertOk()
             ->assertSee('/cours/correction-recitation-tajwid', false);
+    }
+
+    public function test_lesson_can_be_linked_to_multiple_courses(): void
+    {
+        $lesson = Lesson::factory()->create(['slug' => 'multi-course-lesson']);
+
+        $courses = Course::factory()->count(2)->create();
+        $lesson->courses()->attach($courses->pluck('id'));
+
+        $this->assertCount(2, $lesson->fresh()->courses);
+    }
+
+    public function test_lesson_show_renders_one_cta_button_per_related_course(): void
+    {
+        $lesson = Lesson::factory()->create(['slug' => 'multi-course-lesson']);
+
+        $first = Course::factory()->create(['title' => 'Formation Première']);
+        $second = Course::factory()->create(['title' => 'Formation Seconde']);
+
+        $lesson->courses()->attach([$first->id, $second->id]);
+
+        $this->get('/lecons-gratuites/multi-course-lesson')
+            ->assertOk()
+            ->assertSee('Formation Première')
+            ->assertSee('Formation Seconde')
+            ->assertSee('/cours/'.$first->slug, false)
+            ->assertSee('/cours/'.$second->slug, false);
     }
 
     public function test_lesson_show_returns_404_for_unknown_or_inactive_lessons(): void

@@ -64,7 +64,7 @@
     "isEntry": true
   },
   "resources/css/landing.css": {
-    "file": "assets/landing-CWjEI9yB.css",
+    "file": "assets/landing-C2CLNxDD.css",
     "name": "landing",
     "names": [
       "landing.css"
@@ -73,7 +73,7 @@
     "isEntry": true
   },
   "resources/css/lessons.css": {
-    "file": "assets/lessons-To8n9zU7.css",
+    "file": "assets/lessons-DCk0fokN.css",
     "name": "lessons",
     "names": [
       "lessons.css"
@@ -109,7 +109,7 @@
     "isEntry": true
   },
   "resources/js/testimonials.js": {
-    "file": "assets/testimonials-3fkvy39k.js",
+    "file": "assets/testimonials-Bfq17VHg.js",
     "name": "testimonials",
     "src": "resources/js/testimonials.js",
     "isEntry": true

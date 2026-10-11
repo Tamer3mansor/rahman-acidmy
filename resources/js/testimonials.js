@@ -21,10 +21,60 @@ const FRAME_PORTRAIT_MAX_RATIO = 0.9;
 const getHeroVideo = () => document.querySelector('[data-hero-video]');
 
 document.addEventListener('DOMContentLoaded', () => {
-    const players = document.querySelectorAll('[data-tv-player]');
-
-    players.forEach((player) => initTvPlayer(player));
+    initTvPlayers(document);
+    initTestimonialsPagination();
 });
+
+function initTvPlayers(root) {
+    root.querySelectorAll('[data-tv-player]').forEach((player) => initTvPlayer(player));
+}
+
+/* Pagination of the audience/course testimonial sections swaps only that
+   section instead of reloading the whole page. The links keep their real hrefs
+   (so they still work without JS); clicks are intercepted, the freshly rendered
+   section is fetched and dropped in place, and the URL is updated silently. */
+function initTestimonialsPagination() {
+    document.querySelectorAll('[data-testimonials-section]').forEach((section) => {
+        if (section.dataset.paginationBound === 'true') return;
+
+        section.dataset.paginationBound = 'true';
+        section.addEventListener('click', (event) => {
+            const link = event.target.closest('a.testimonials-page');
+            if (!link) return;
+
+            event.preventDefault();
+            loadTestimonialsPage(section, link.href);
+        });
+    });
+}
+
+async function loadTestimonialsPage(section, url) {
+    section.classList.add('is-loading');
+
+    try {
+        const response = await fetch(url, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin',
+        });
+
+        if (!response.ok) throw new Error(String(response.status));
+
+        const template = document.createElement('template');
+        template.innerHTML = (await response.text()).trim();
+
+        const fresh = template.content.firstElementChild;
+        if (!fresh) throw new Error('empty response');
+
+        section.replaceWith(fresh);
+        initTvPlayers(fresh);
+        initTestimonialsPagination();
+
+        window.history.replaceState(window.history.state, '', url);
+    } catch {
+        section.classList.remove('is-loading');
+        window.location.href = url;
+    }
+}
 
 function initTvPlayer(player) {
     const video = player.querySelector('[data-tv-video]');

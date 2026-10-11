@@ -256,12 +256,7 @@
                     <span class="section-label">{{ $copy['testimonials_label'] ?: 'Témoignages' }}</span>
                     <h2 class="testimonials-title">{{ $copy['testimonials_title'] ?: 'Ce que disent les parents' }}</h2>
                 </div>
-                <div class="testimonials-grid">
-                    @foreach ($testimonials as $testimonial)
-                        @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
-                    @endforeach
-                </div>
-                {{ $testimonials->links('partials.testimonials-pagination') }}
+                @include('partials.testimonials-section', ['testimonials' => $testimonials, 'settings' => $settings, 'wrapperClass' => 'testimonials-grid'])
             </section>
         @endif
 

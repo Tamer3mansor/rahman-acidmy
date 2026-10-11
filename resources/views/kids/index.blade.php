@@ -153,12 +153,7 @@
                         <p class="section-sub">{{ $pageSettings->kids_testimonials_subtitle }}</p>
                     @endif
                 </div>
-                <div class="testimonials-row">
-                    @foreach ($testimonials as $testimonial)
-                        @include('landing.partials.testimonial-card', ['testimonial' => $testimonial])
-                    @endforeach
-                </div>
-                {{ $testimonials->links('partials.testimonials-pagination') }}
+                @include('partials.testimonials-section', ['testimonials' => $testimonials, 'settings' => $settings, 'wrapperClass' => 'testimonials-row'])
             </div>
         </section>
     @endif

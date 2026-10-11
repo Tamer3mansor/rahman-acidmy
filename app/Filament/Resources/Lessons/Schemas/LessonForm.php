@@ -109,9 +109,10 @@ class LessonForm
                                             ->directory('lessons/pdfs')
                                             ->downloadable()
                                             ->columnSpanFull(),
-                                        Select::make('course_id')
-                                            ->label('الدورة المرتبطة')
-                                            ->relationship('course', 'title')
+                                        Select::make('courses')
+                                            ->label('الدورات المرتبطة')
+                                            ->relationship('courses', 'title')
+                                            ->multiple()
                                             ->searchable()
                                             ->preload(),
                                     ])

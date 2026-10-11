@@ -27,7 +27,7 @@ class LessonController extends Controller
 
         $lessons = Lesson::query()
             ->active()
-            ->with(['course', 'categories'])
+            ->with(['courses', 'categories'])
             ->when($activeCategorySlug, function ($q, $slug) use ($categories) {
                 $category = $categories->firstWhere('slug', $slug);
 
@@ -63,7 +63,7 @@ class LessonController extends Controller
         $settings = LandingSettings::singleton();
         $pageSettings = LessonPageSettings::singleton();
 
-        $lesson->load(['course', 'categories']);
+        $lesson->load(['courses', 'categories']);
 
         [$bodyHtml, $toc] = $this->prepareBody($lesson->body);
 
@@ -91,7 +91,7 @@ class LessonController extends Controller
         $related = $lesson->relatedLessons()
             ->where('lessons.id', '!=', $lesson->id)
             ->active()
-            ->with('categories')
+            ->with(['categories', 'courses'])
             ->take(3)
             ->get();
 
@@ -105,7 +105,7 @@ class LessonController extends Controller
             ->active()
             ->where('id', '!=', $lesson->id)
             ->when($categoryIds->isNotEmpty(), fn ($q) => $q->whereHas('categories', fn ($cq) => $cq->whereIn('lesson_categories.id', $categoryIds)))
-            ->with('categories')
+            ->with(['categories', 'courses'])
             ->orderBy('sort_order')
             ->take(3)
             ->get();

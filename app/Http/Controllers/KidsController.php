@@ -7,10 +7,11 @@ use App\Models\Course;
 use App\Models\CoursePageSettings;
 use App\Models\LandingSettings;
 use App\Models\LandingTestimonial;
+use Illuminate\Http\Request;
 
 class KidsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $settings = LandingSettings::singleton();
         $pageSettings = CoursePageSettings::singleton();
@@ -26,6 +27,14 @@ class KidsController extends Controller
         $testimonials = LandingTestimonial::query()
             ->forAudience(CourseAudience::Kids)
             ->paginate($pageSettings->testimonialsPerPage(CourseAudience::Kids), ['*'], 'testimonials');
+
+        if ($request->ajax()) {
+            return response()->view('partials.testimonials-section', [
+                'testimonials' => $testimonials,
+                'settings' => $settings,
+                'wrapperClass' => 'testimonials-row',
+            ]);
+        }
 
         return view('kids.index', [
             'audience' => CourseAudience::Kids,
