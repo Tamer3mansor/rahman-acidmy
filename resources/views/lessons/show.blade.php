@@ -55,9 +55,9 @@
                     @if ($course)
                         <span class="badge gold"><i class="fa-solid fa-graduation-cap"></i> Lié au cours : {{ $course->title }}</span>
                     @endif
-                    @if ($lesson->category)
-                        <span class="badge">{{ \App\Enums\LessonCategory::tryFrom($lesson->category)?->getLabel() ?? $lesson->category }}</span>
-                    @endif
+                    @foreach ($lesson->categories as $cat)
+                        <span class="badge">{{ $cat->name }}</span>
+                    @endforeach
                     @if ($lesson->reading_time)
                         <span class="article-meta-item"><i class="fa-regular fa-clock"></i> Temps de lecture estimé : {{ $lesson->reading_time }} min</span>
                     @endif
@@ -155,7 +155,9 @@
                             </div>
                             <div class="card-body">
                                 <div class="card-meta">
-                                    <span class="badge">{{ \App\Enums\LessonCategory::tryFrom($rel->category)?->getLabel() ?? $rel->category }}</span>
+                                    @foreach ($rel->categories as $cat)
+                                        <span class="badge">{{ $cat->name }}</span>
+                                    @endforeach
                                     <span><i class="fa-regular fa-clock"></i> {{ $rel->reading_time }} min</span>
                                     @if ($rel->audio_url)
                                         <span><i class="fa-solid fa-headphones"></i> Fichier audio</span>

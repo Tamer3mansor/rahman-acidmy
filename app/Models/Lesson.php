@@ -17,7 +17,6 @@ class Lesson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category',
         'title',
         'slug',
         'excerpt',
@@ -40,6 +39,11 @@ class Lesson extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(LessonCategory::class, 'lesson_category_lesson');
     }
 
     public function relatedLessons(): BelongsToMany

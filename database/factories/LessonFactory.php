@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\LessonCategory;
 use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +21,6 @@ class LessonFactory extends Factory
         $title = fake()->unique()->sentence(6);
 
         return [
-            'category' => LessonCategory::Kids->value,
             'title' => $title,
             'slug' => str()->slug($title),
             'excerpt' => fake()->paragraph(),

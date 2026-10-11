@@ -21,10 +21,9 @@ class LessonsTable
                     ->label('العنوان')
                     ->searchable()
                     ->limit(50),
-                TextColumn::make('category')
-                    ->label('الفئة')
-                    ->badge()
-                    ->sortable(),
+                TextColumn::make('categories.name')
+                    ->label('الفئات')
+                    ->badge(),
                 TextColumn::make('course.title')
                     ->label('الدورة المرتبطة')
                     ->placeholder('—')
@@ -51,6 +50,10 @@ class LessonsTable
                     ->color('gray');
             })
             ->filters([
+                SelectFilter::make('categories')
+                    ->label('الفئة')
+                    ->relationship('categories', 'name')
+                    ->multiple(),
                 SelectFilter::make('course')
                     ->label('الدورة المرتبطة')
                     ->relationship('course', 'title'),

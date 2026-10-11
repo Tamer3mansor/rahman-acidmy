@@ -26,10 +26,12 @@ class LessonForm
 
                         Tab::make('المحتوى')
                             ->schema([
-                                TextInput::make('category')
-                                    ->label('الفئة')
-                                    ->placeholder('مثال: تجويد، أطفال، كبار…')
-                                    ->maxLength(255),
+                                Select::make('categories')
+                                    ->label('التصنيفات')
+                                    ->relationship('categories', 'name')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload(),
                                 TextInput::make('title')
                                     ->label('العنوان')
                                     ->maxLength(255)

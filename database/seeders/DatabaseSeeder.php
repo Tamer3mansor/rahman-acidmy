@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             PricingPackageSeeder::class,
             CourseSeeder::class,
             CoursePageSettingsSeeder::class,
+            LessonCategorySeeder::class,
             LessonSeeder::class,
             LessonPageSettingsSeeder::class,
             SeoSettingsSeeder::class,

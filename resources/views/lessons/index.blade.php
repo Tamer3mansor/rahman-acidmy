@@ -42,8 +42,8 @@
             @include('landing.partials.search-form', [
                 'searchAction' => route('lessons.index'),
                 'searchTerm' => $search,
-                'searchHidden' => array_filter(['k' => $activeCategory?->value]),
-                'searchClearUrl' => route('lessons.index', ['k' => $activeCategory?->value]),
+                'searchHidden' => array_filter(['k' => $activeCategorySlug]),
+                'searchClearUrl' => route('lessons.index', ['k' => $activeCategorySlug]),
                 'searchPlaceholder' => 'Rechercher une leçon…',
             ])
         </div>
@@ -51,9 +51,9 @@
 
     <div class="container">
         <div class="filter-bar">
-            <a href="{{ route('lessons.index', ['q' => $search]) }}" class="filter-btn {{ $activeCategory === null ? 'active' : '' }}">Tous</a>
+            <a href="{{ route('lessons.index', ['q' => $search]) }}" class="filter-btn {{ $activeCategorySlug === null ? 'active' : '' }}">Tous</a>
             @foreach ($categories as $category)
-                <a href="{{ route('lessons.index', ['k' => $category->value, 'q' => $search]) }}" class="filter-btn {{ $activeCategory?->value === $category->value ? 'active' : '' }}">{{ $category->getLabel() }}</a>
+                <a href="{{ route('lessons.index', ['k' => $category->slug, 'q' => $search]) }}" class="filter-btn {{ $activeCategorySlug === $category->slug ? 'active' : '' }}">{{ $category->name }}</a>
             @endforeach
         </div>
 
@@ -79,7 +79,9 @@
                         </div>
                         <div class="card-body">
                             <div class="card-meta">
-                                <span class="badge">{{ \App\Enums\LessonCategory::tryFrom($lesson->category)?->getLabel() ?? $lesson->category }}</span>
+                                @foreach ($lesson->categories as $cat)
+                                    <span class="badge">{{ $cat->name }}</span>
+                                @endforeach
                                 <span><i class="fa-regular fa-clock"></i> {{ $lesson->reading_time }} min</span>
                                 @if ($lesson->audio_url)
                                     <span><i class="fa-solid fa-headphones"></i> Fichier audio</span>

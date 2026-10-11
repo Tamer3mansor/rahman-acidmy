@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Enums\LessonCategory;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\LessonCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,11 +17,14 @@ class LessonSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(LessonCategorySeeder::class);
+
         $courseBySlug = Course::query()->pluck('id', 'slug');
+        $categories = LessonCategory::query()->pluck('id', 'slug');
 
         $lessons = [
             [
-                'category' => LessonCategory::Kids,
+                'category_slug' => 'kids',
                 'title' => 'Comment prononcer les trois lettres de madd facilement avec votre enfant ?',
                 'slug' => 'prononcer-lettres-madd-avec-enfant',
                 'excerpt' => 'Un cours audio et visuel pour apprendre à l\'enfant la différence entre la fatha et l\'aleph, la damma et le waw, la kasra et le ya.',
@@ -39,7 +42,7 @@ class LessonSeeder extends Seeder
                     .'<div class="lesson-tip"><h4>💡 Conseil à l\'enseignant ou aux parents :</h4><p>Ne prolongez pas le madd au-delà de deux temps avec les débutants pour éviter les efforts inutiles, et faites répéter l\'enfant en imitant le mouvement de votre main pendant le madd.</p></div>',
             ],
             [
-                'category' => LessonCategory::Tajwid,
+                'category_slug' => 'tajwid',
                 'title' => 'Règles de la nun sakina et du tanwin — l\'izhar',
                 'slug' => 'regles-nun-sakina-tanwin-izhar',
                 'excerpt' => 'Un exemple pratique qui montre les six lettres de l\'izhar et comment appliquer la règle lors de la lecture des sourates, avec un modèle audio à écouter.',
@@ -54,7 +57,7 @@ class LessonSeeder extends Seeder
                     .'<div class="lesson-tip"><h4>💡 Conseil :</h4><p>Entraînez-vous avec des mots simples puis passez aux versets complets pour installer le réflexe sans réflexion.</p></div>',
             ],
             [
-                'category' => LessonCategory::Kids,
+                'category_slug' => 'kids',
                 'title' => 'Les adhkar du matin et du soir pour les enfants simplifiés',
                 'slug' => 'adhkar-matin-soir-pour-enfants',
                 'excerpt' => 'Des cartes interactives et une explication douce des sens des adhkar quotidiens pour ancrer la bonne habitude chez l\'enfant.',
@@ -70,10 +73,9 @@ class LessonSeeder extends Seeder
         ];
 
         foreach ($lessons as $sort => $lesson) {
-            Lesson::query()->updateOrCreate(
+            $model = Lesson::query()->updateOrCreate(
                 ['slug' => $lesson['slug']],
                 [
-                    'category' => $lesson['category']->value,
                     'title' => $lesson['title'],
                     'excerpt' => $lesson['excerpt'],
                     'body' => $lesson['body'],
@@ -85,6 +87,9 @@ class LessonSeeder extends Seeder
                     'sort_order' => $sort,
                 ]
             );
+
+            $categoryId = $categories[$lesson['category_slug']] ?? null;
+            $model->categories()->sync($categoryId ? [$categoryId] : []);
         }
     }
 }

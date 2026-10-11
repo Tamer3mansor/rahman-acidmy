@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\LessonCategory;
 use App\Models\LandingSettings;
 use App\Models\Lesson;
+use App\Models\LessonCategory;
 use App\Models\LessonPageSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -16,22 +16,31 @@ class LessonController extends Controller
         $settings = LandingSettings::singleton();
         $pageSettings = LessonPageSettings::singleton();
 
-        $activeCategory = $request->has('k') && LessonCategory::tryFrom($request->input('k')) !== null
-            ? LessonCategory::from($request->input('k'))
-            : null;
+        $categories = LessonCategory::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        $activeCategorySlug = $request->input('k');
 
         $search = $this->normalizeSearch($request->input('q'));
 
         $lessons = Lesson::query()
             ->active()
-            ->when($activeCategory !== null, fn ($q) => $q->where('category', $activeCategory->value))
+            ->with(['course', 'categories'])
+            ->when($activeCategorySlug, function ($q, $slug) use ($categories) {
+                $category = $categories->firstWhere('slug', $slug);
+
+                if ($category) {
+                    $q->whereHas('categories', fn ($cq) => $cq->where('lesson_categories.id', $category->id));
+                }
+            })
             ->when($search, fn ($q, $term) => $q->where(function ($sq) use ($term) {
                 $like = '%'.$term.'%';
                 $sq->where('title', 'like', $like)
                     ->orWhere('excerpt', 'like', $like)
                     ->orWhere('body', 'like', $like);
             }))
-            ->with('course')
             ->orderBy('sort_order')
             ->paginate(9)
             ->withQueryString();
@@ -40,9 +49,9 @@ class LessonController extends Controller
             'settings' => $settings,
             'pageSettings' => $pageSettings,
             'lessons' => $lessons,
-            'activeCategory' => $activeCategory,
+            'activeCategorySlug' => $activeCategorySlug,
             'search' => $search,
-            'categories' => LessonCategory::cases(),
+            'categories' => $categories,
             'isIndexed' => $pageSettings->is_indexed && $search === null && $lessons->currentPage() === 1,
         ]);
     }
@@ -54,7 +63,7 @@ class LessonController extends Controller
         $settings = LandingSettings::singleton();
         $pageSettings = LessonPageSettings::singleton();
 
-        $lesson->load('course');
+        $lesson->load(['course', 'categories']);
 
         [$bodyHtml, $toc] = $this->prepareBody($lesson->body);
 
@@ -82,6 +91,7 @@ class LessonController extends Controller
         $related = $lesson->relatedLessons()
             ->where('lessons.id', '!=', $lesson->id)
             ->active()
+            ->with('categories')
             ->take(3)
             ->get();
 
@@ -89,10 +99,13 @@ class LessonController extends Controller
             return $related;
         }
 
+        $categoryIds = $lesson->categories()->pluck('lesson_categories.id');
+
         return Lesson::query()
             ->active()
             ->where('id', '!=', $lesson->id)
-            ->when($lesson->category, fn ($q) => $q->where('category', $lesson->category))
+            ->when($categoryIds->isNotEmpty(), fn ($q) => $q->whereHas('categories', fn ($cq) => $cq->whereIn('lesson_categories.id', $categoryIds)))
+            ->with('categories')
             ->orderBy('sort_order')
             ->take(3)
             ->get();

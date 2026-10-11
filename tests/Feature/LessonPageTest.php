@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Enums\LessonCategory;
 use App\Models\Lesson;
+use App\Models\LessonCategory;
 use App\Models\LessonPageSettings;
 use App\Models\User;
 use Database\Seeders\CourseSeeder;
@@ -53,9 +53,11 @@ class LessonPageTest extends TestCase
 
     public function test_lessons_index_paginates_and_keeps_filters_in_page_links(): void
     {
-        Lesson::factory()->count(11)->create([
-            'category' => LessonCategory::Tajwid->value,
-        ]);
+        $category = LessonCategory::factory()->create(['slug' => 'tajwid', 'name' => 'تجويد وتلاوة']);
+
+        Lesson::factory()->count(11)->create()->each(
+            fn (Lesson $lesson) => $lesson->categories()->attach($category->id)
+        );
 
         $response = $this->get('/lecons-gratuites?k=tajwid');
 
@@ -154,7 +156,6 @@ class LessonPageTest extends TestCase
 
         $picked = Lesson::factory()->create([
             'title' => 'Leçon choisie depuis le tableau de bord',
-            'category' => LessonCategory::Adults->value,
         ]);
 
         $sameCategoryNotPicked = Lesson::factory()->create(['title' => 'Leçon même catégorie non choisie']);
@@ -170,9 +171,13 @@ class LessonPageTest extends TestCase
 
     public function test_lesson_show_falls_back_to_same_category_lessons_when_none_picked(): void
     {
+        $category = LessonCategory::factory()->create();
+
         $parent = Lesson::factory()->create(['slug' => 'parent-lesson']);
+        $parent->categories()->attach($category->id);
 
         $sameCategory = Lesson::factory()->create(['title' => 'Leçon de la même catégorie']);
+        $sameCategory->categories()->attach($category->id);
 
         $this->get('/lecons-gratuites/parent-lesson')
             ->assertOk()
@@ -219,13 +224,34 @@ class LessonPageTest extends TestCase
         $this->assertNotContains($inactive->id, Lesson::query()->active()->pluck('id')->all());
     }
 
-    public function test_lesson_category_is_plain_text(): void
+    public function test_lesson_can_have_multiple_managed_categories(): void
     {
-        $lesson = Lesson::factory()->create([
-            'category' => 'tajwid',
+        $lesson = Lesson::factory()->create();
+
+        $categories = LessonCategory::factory()->count(2)->create();
+        $lesson->categories()->attach($categories->pluck('id'));
+
+        $this->assertCount(2, $lesson->fresh()->categories);
+    }
+
+    public function test_lessons_index_lists_categories_from_the_database(): void
+    {
+        $category = LessonCategory::factory()->create([
+            'name' => 'تصنيف مضاف من اللوحة',
+            'slug' => 'custom-category',
+            'sort_order' => 5,
         ]);
 
-        $this->assertSame('tajwid', $lesson->category);
+        $lesson = Lesson::factory()->create();
+        $lesson->categories()->attach($category->id);
+
+        $this->get('/lecons-gratuites')
+            ->assertOk()
+            ->assertSee('تصنيف مضاف من اللوحة');
+
+        $this->get('/lecons-gratuites?k=custom-category')
+            ->assertOk()
+            ->assertSee($lesson->title);
     }
 
     public function test_lesson_inline_audio_shortcode_renders_audio_player(): void
@@ -296,7 +322,6 @@ class LessonPageTest extends TestCase
     public function test_lesson_with_nullable_fields_renders(): void
     {
         $lesson = Lesson::factory()->create([
-            'category' => null,
             'title' => null,
             'excerpt' => null,
             'body' => null,
@@ -408,6 +433,7 @@ class LessonPageTest extends TestCase
             ->assertSee('toggleTableReordering', false);
         $this->actingAs($user)->get('/admin/lessons/create')->assertOk();
         $this->actingAs($user)->get('/admin/lessons/1/edit')->assertOk();
+        $this->actingAs($user)->get('/admin/lesson-categories')->assertOk();
         $this->actingAs($user)->get('/admin/lesson-page-settings')->assertOk();
     }
 }
