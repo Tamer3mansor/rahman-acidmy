@@ -52,9 +52,10 @@
                      data-pause-label="{{ $settings->testimonial_pause_label }}"
                      data-mute-label="{{ $settings->testimonial_mute_label }}"
                      data-unmute-label="{{ $settings->testimonial_unmute_label }}">
-                <video class="tv-video" data-tv-video playsinline loop preload="{{ $videoPreload ?? 'metadata' }}">
+                <video class="tv-video" data-tv-video playsinline loop preload="{{ $videoPreload ?? 'none' }}">
                     <source src="{{ $videoUrl }}" type="{{ $videoExtension === 'webm' ? 'video/webm' : 'video/mp4' }}">
                 </video>
+                <div class="tv-skeleton" data-tv-skeleton aria-hidden="true"></div>
                 <button class="tv-play" data-tv-play type="button" aria-label="{{ $settings->testimonial_play_label }}">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="#C9963A"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 </button>

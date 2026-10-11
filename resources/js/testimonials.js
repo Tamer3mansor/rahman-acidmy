@@ -14,7 +14,6 @@
    turn a card into a sliver or a wall. */
 const FRAME_PORTRAIT_MIN_RATIO = 0.45;
 const FRAME_PORTRAIT_MAX_RATIO = 0.9;
-const METADATA_ROOT_MARGIN = '200px';
 
 /* The hero video plays only while the pointer/focus is on it (see landing.js).
    Playing a testimonial clip is a deliberate, visible choice, so the hero is
@@ -39,7 +38,7 @@ function initTvPlayer(player) {
     if (!video || !toggleBtn || !muteBtn || !volume) return;
 
     fitFrameToVideo(video);
-    loadMetadataWhenNear(video);
+    trackLoadingState(player, video);
 
     const icoPlay = toggleBtn.querySelector('[data-ico-play]');
     const icoPause = toggleBtn.querySelector('[data-ico-pause]');
@@ -227,22 +226,16 @@ function fitFrameToVideo(video) {
     video.addEventListener('loadedmetadata', applyRatio);
 }
 
-/* Later cards ship with preload="none" so the landing page does not fetch every
-   clip up front, which would leave their orientation unknown and the frame at
-   the 16/9 default. Nudging those to metadata as they approach the viewport
-   resolves the dimensions without pulling the clip itself. */
-function loadMetadataWhenNear(video) {
-    if (video.preload !== 'none' || typeof IntersectionObserver === 'undefined') return;
+/* The skeleton overlay covers the card until the browser has a frame to paint,
+   so the clip never flashes an empty (or uninitialised green) area. It comes
+   back while playback rebuffers, and large clips stay untouched until played. */
+function trackLoadingState(player, video) {
+    const setReady = (ready) => player.classList.toggle('is-ready', ready);
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
+    video.addEventListener('loadeddata', () => setReady(true));
+    video.addEventListener('canplay', () => setReady(true));
+    video.addEventListener('playing', () => setReady(true));
+    video.addEventListener('waiting', () => setReady(false));
 
-            observer.disconnect();
-            video.setAttribute('preload', 'metadata');
-            video.load();
-        });
-    }, { rootMargin: METADATA_ROOT_MARGIN });
-
-    observer.observe(video);
+    if (video.readyState >= 2) setReady(true);
 }

@@ -568,6 +568,15 @@ function initHeroVideo() {
     const icoSound = muteBtn?.querySelector('[data-hero-ico-sound]');
     const icoMuted = muteBtn?.querySelector('[data-hero-ico-muted]');
 
+    /* Drop the loading shimmer as soon as the clip has a frame to paint. */
+    const skeletonCard = card || video.closest('.video-card');
+    const markReady = () => skeletonCard?.classList.add('is-ready');
+
+    video.addEventListener('loadeddata', markReady);
+    video.addEventListener('canplay', markReady);
+
+    if (video.readyState >= 2) markReady();
+
     const play = () => {
         const attempt = video.play();
 

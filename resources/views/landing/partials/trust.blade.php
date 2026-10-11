@@ -19,6 +19,25 @@
                 ->filter(fn ($testimonial) => $testimonial->type?->value === 'video' && filled($testimonial->media_path))
                 ->values();
             $defaultTab = $videoTestimonials->isNotEmpty() ? 'videos' : ($whatsappTestimonials->isNotEmpty() ? 'whatsapp' : 'google');
+
+            /* Only small clips are cheap to prefetch: a non-faststart file
+               forces the browser to reach the end for its metadata, so big
+               uploads stay untouched until the visitor presses play. */
+            $videoPreloadFor = function ($testimonial): string {
+                $path = $testimonial->media_path;
+
+                if (blank($path) || \Illuminate\Support\Str::startsWith($path, ['http://', 'https://'])) {
+                    return 'none';
+                }
+
+                try {
+                    $size = \Illuminate\Support\Facades\Storage::disk('public')->size($path);
+                } catch (\Throwable) {
+                    return 'none';
+                }
+
+                return $size <= 3 * 1024 * 1024 ? 'metadata' : 'none';
+            };
         @endphp
 
         <div class="trust-mobile-tabs" data-trust-tabs role="tablist" aria-label="{{ __('Catégories de témoignages') }}">
@@ -66,10 +85,10 @@
                 @if ($videoTestimonials->isNotEmpty())
                     <div class="trust-marquee-track">
                         <div class="trust-marquee-group">
-                            @foreach ($videoTestimonials as $index => $testimonial)
+                            @foreach ($videoTestimonials as $testimonial)
                                 @include('landing.partials.testimonial-card', [
                                     'testimonial' => $testimonial,
-                                    'videoPreload' => $index === 0 ? 'metadata' : 'none',
+                                    'videoPreload' => $videoPreloadFor($testimonial),
                                 ])
                             @endforeach
                         </div>
