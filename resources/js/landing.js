@@ -567,7 +567,6 @@ function initHeroVideo() {
     const muteBtn = document.querySelector('[data-hero-mute]');
     const icoSound = muteBtn?.querySelector('[data-hero-ico-sound]');
     const icoMuted = muteBtn?.querySelector('[data-hero-ico-muted]');
-    const soundLabel = muteBtn?.querySelector('[data-hero-sound-label]');
 
     const play = () => {
         const attempt = video.play();
@@ -589,7 +588,6 @@ function initHeroVideo() {
         muteBtn.setAttribute('aria-label', on ? 'Couper le son' : 'Activer le son');
         if (icoSound) icoSound.hidden = !on;
         if (icoMuted) icoMuted.hidden = on;
-        if (soundLabel) soundLabel.textContent = on ? 'Couper le son' : 'Activer le son';
     };
 
     /* Hold the pointer (or keyboard focus) over the card to play; leaving

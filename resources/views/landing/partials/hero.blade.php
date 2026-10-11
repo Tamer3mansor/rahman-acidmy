@@ -63,7 +63,6 @@
                         <button class="hero-sound is-muted" type="button" data-hero-mute aria-pressed="false" aria-label="Activer le son">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-hero-ico-sound hidden><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" data-hero-ico-muted><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/><path d="M18.5 4.68 23 9.18 21.4 10.8 17.22 6.6 18.5 4.68zm0 0L23 14.82 21.4 13.2l-4.18-4.2L18.5 4.68z"/></svg>
-                            <span data-hero-sound-label>Activer le son</span>
                         </button>
                     @else
                         <div class="video-placeholder" id="heroPlaceholder">
@@ -74,10 +73,6 @@
                             <small style="color:rgba(255,255,255,0.4);font-size:0.72rem">Téléchargez une image ou une vidéo depuis le tableau de bord</small>
                         </div>
                     @endif
-                    <div class="video-overlay-badge">
-                        <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;"></span>
-                        En cours de visionnage
-                    </div>
                 </div>
             </div>
         </div>
