@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\CleanStaleTemporaryUploads;
+
 return [
 
     /*
@@ -132,14 +134,21 @@ return [
         'disk' => env('LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK', 'local'), // Example: 'local', 's3'             | Default: 'local'
         'rules' => ['required', 'file', 'max:1048576'],      // 1GB - allows lesson audio & testimonial videos up to the 1GB field limit
         'directory' => null,                                  // Example: 'tmp'                     | Default: 'livewire-tmp'
-        'middleware' => null,                                 // Example: 'throttle:5,1'            | Default: 'throttle:60,1'
+        'middleware' => [
+            'throttle:60,1',
+            CleanStaleTemporaryUploads::class,
+        ],                                                    // Runs a bounded sweep of abandoned temporaries on upload...
         'preview_mimes' => [                                  // Supported file types for temporary pre-signed file URLs...
             'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
             'mov', 'avi', 'wmv', 'mp3', 'm4a', 'ogg', 'oga',
             'aac', 'flac', 'webm', 'jpg', 'jpeg', 'mpga', 'webp', 'wma',
         ],
         'max_upload_time' => 5, // Max duration (in minutes) before an upload is invalidated...
-        'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...
+        // Disabled: the 24-hour sweep deletes every temp upload older than a day on each new
+        // upload, including files still referenced by open forms. The next validation/save then
+        // crashes re-reading the missing file (TemporaryUploadedFile::dimensions() ->
+        // stream_copy_to_stream() TypeError -> 500). Filament removes temporaries on save.
+        'cleanup' => false,
     ],
 
     /*

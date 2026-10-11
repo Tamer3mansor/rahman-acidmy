@@ -48,6 +48,27 @@ return Application::configure(basePath: dirname(__DIR__))
                 return null;
             }
 
+            if (str_contains($e->getMessage(), 'stream_copy_to_stream')) {
+                // Livewire/Filament re-reads a temporary upload to validate image dimensions
+                // (TemporaryUploadedFile::dimensions()). When that temp file no longer exists
+                // the stream is null and PHP throws a TypeError; surface a friendly prompt to
+                // re-upload instead of a raw 500.
+                $hint = 'الملف الذي رفعته لم يعد متاحاً (انتهت صلاحية الرفع). أعد رفع الملف ثم أعد الحفظ.';
+                $status = 422;
+
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'message' => $hint,
+                        'status' => $status,
+                    ], $status);
+                }
+
+                return response()->view('errors.generic', [
+                    'status' => $status,
+                    'hint' => $hint,
+                ], $status);
+            }
+
             $status = match (true) {
                 $e instanceof TokenMismatchException => 419,
                 $e instanceof NotFoundHttpException => 404,
