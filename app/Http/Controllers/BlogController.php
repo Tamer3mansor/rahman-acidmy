@@ -80,6 +80,7 @@ class BlogController extends Controller
             'related' => $related,
             'bodyHtml' => $bodyHtml,
             'toc' => $toc,
+            'isIndexed' => $post->is_indexed,
         ]);
     }
 

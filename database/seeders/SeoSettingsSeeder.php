@@ -3,12 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\BlogPageSettings;
+use App\Models\BlogPost;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
 use App\Models\LandingSettings;
 use App\Models\LessonPageSettings;
 use App\Models\PricingSettings;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class SeoSettingsSeeder extends Seeder
 {
@@ -26,6 +28,7 @@ class SeoSettingsSeeder extends Seeder
         $this->seedCourses();
         $this->seedPricingSettings();
         $this->seedBlogPageSettings();
+        $this->seedBlogPosts();
         $this->seedLessonPageSettings();
     }
 
@@ -141,6 +144,30 @@ class SeoSettingsSeeder extends Seeder
         if ($settings->isDirty()) {
             $settings->save();
         }
+    }
+
+    private function seedBlogPosts(): void
+    {
+        $defaultsBySlug = [
+            'how-to-make-kids-love-quran' => 'Faire aimer le Coran à son enfant | Ar-Rahman Academy',
+            'tajweed-rules-for-beginners' => 'Les 5 règles du Tajwid pour débutants | Ar-Rahman Academy',
+            'teaching-arabic-to-non-native-kids' => 'Enseigner l\'arabe aux enfants | Ar-Rahman Academy',
+            'time-plan-for-quran-memorization' => 'Planifier sa mémorisation du Coran | Ar-Rahman Academy',
+        ];
+
+        BlogPost::query()
+            ->whereNull('meta_title')
+            ->get()
+            ->each(function (BlogPost $post) use ($defaultsBySlug): void {
+                if (! isset($defaultsBySlug[$post->slug])) {
+                    return;
+                }
+
+                $post->update([
+                    'meta_title' => $defaultsBySlug[$post->slug],
+                    'meta_description' => $post->meta_description ?: Str::limit($post->excerpt, 160),
+                ]);
+            });
     }
 
     private function seedLessonPageSettings(): void

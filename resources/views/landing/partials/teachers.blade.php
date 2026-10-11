@@ -29,7 +29,7 @@
                         <div class="teacher-specialty">{{ $teacher->specialty }}</div>
                         <div class="teacher-badges">
                             @foreach ($teacher->badges ?? [] as $badge)
-                                <span class="badge {{ in_array($badge, ['Ijazah', 'Al-Azhar']) ? 'gold' : '' }}">{{ $badge }}</span>
+                                <span class="badge">{{ $badge }}</span>
                             @endforeach
                         </div>
                         <button class="teacher-cta" data-scroll-to-form>

@@ -6,9 +6,9 @@
 
 @extends('layouts.landing')
 
-@section('title', $post->title . ' - ' . $settings->footer_brand_name)
+@section('title', $post->meta_title ?: $post->title . ' - ' . $settings->footer_brand_name)
 
-@section('description', $post->excerpt)
+@section('description', $post->meta_description ?: $post->excerpt)
 
 @section('bodyClass', 'pattern-bg')
 
@@ -23,17 +23,21 @@
         'homeUrl' => route('home'),
     ])
 
+    @php
+        $postOgImage = trim((string) ($post->og_image_url ?: $post->cover_image_url));
+    @endphp
+
     {{-- Structured data (SEO) --}}
     @section('head')
-        @if ($post->cover_image_url)
-            @section('og_image', $post->cover_image_url)
+        @if ($postOgImage !== '')
+            @section('og_image', $postOgImage)
         @endif
         <script type="application/ld+json">
         {
             "@@context": "https://schema.org",
-            "@type": "Article",
+            "@type": @json($post->schema_type ?: 'Article'),
             "headline": @json($post->title),
-            "image": @json($post->cover_image_url),
+            "image": @json($postOgImage !== '' ? $postOgImage : null),
             "author": { "@type": "Person", "name": @json($post->author_name) },
             "publisher": { "@type": "Organization", "name": @json($settings->footer_brand_name) },
             "datePublished": @json($post->published_at?->toIso8601String()),

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\BlogCategory;
 use App\Models\BlogPageSettings;
 use App\Models\BlogPost;
+use App\Models\LandingSettings;
 use App\Models\User;
 use Database\Seeders\BlogCategorySeeder;
 use Database\Seeders\BlogPostSeeder;
@@ -302,5 +303,76 @@ class BlogPageTest extends TestCase
         $this->actingAs($user)
             ->get('/admin/blog-posts')
             ->assertSee('toggleTableReordering', false);
+    }
+
+    public function test_blog_show_uses_the_per_post_seo_fields(): void
+    {
+        $category = BlogCategory::factory()->create();
+
+        $post = BlogPost::factory()->create([
+            'slug' => 'seo-post',
+            'meta_title' => 'Titre SEO du tableau de bord',
+            'meta_description' => 'Description SEO choisie depuis le tableau de bord.',
+            'og_image' => 'images/og/seo-post.jpg',
+            'schema_type' => 'BlogPosting',
+        ]);
+        $post->categories()->attach($category->id);
+
+        $this->get('/blog/seo-post')
+            ->assertOk()
+            ->assertSee('<title>Titre SEO du tableau de bord</title>', false)
+            ->assertSee('Description SEO choisie depuis le tableau de bord.', false)
+            ->assertSee('<meta property="og:image" content="'.asset('storage/images/og/seo-post.jpg').'">', false)
+            ->assertSee('"@type": "BlogPosting"', false);
+    }
+
+    public function test_blog_show_falls_back_to_title_and_excerpt_when_seo_is_empty(): void
+    {
+        $category = BlogCategory::factory()->create();
+
+        $post = BlogPost::factory()->create([
+            'slug' => 'plain-post',
+            'title' => 'Un article sans SEO',
+            'excerpt' => 'Resume utilise comme description par defaut.',
+            'meta_title' => null,
+            'meta_description' => null,
+            'og_image' => null,
+        ]);
+        $post->categories()->attach($category->id);
+
+        $brand = LandingSettings::singleton()->footer_brand_name;
+
+        $this->get('/blog/plain-post')
+            ->assertOk()
+            ->assertSee('<title>Un article sans SEO - '.$brand.'</title>', false)
+            ->assertSee('Resume utilise comme description par defaut.', false)
+            ->assertSee('"@type": "Article"', false)
+            ->assertSee('<meta name="robots" content="index,follow"', false);
+    }
+
+    public function test_blog_show_is_noindex_when_the_post_is_not_indexed(): void
+    {
+        $category = BlogCategory::factory()->create();
+
+        $post = BlogPost::factory()->create([
+            'slug' => 'noindex-post',
+            'is_indexed' => false,
+        ]);
+        $post->categories()->attach($category->id);
+
+        $this->get('/blog/noindex-post')
+            ->assertOk()
+            ->assertSee('<meta name="robots" content="noindex,nofollow"', false);
+    }
+
+    public function test_post_og_image_accessor_resolves_uploads_and_absolute_urls(): void
+    {
+        $post = BlogPost::factory()->create(['og_image' => 'images/og/cover.jpg']);
+
+        $this->assertSame(asset('storage/images/og/cover.jpg'), $post->og_image_url);
+
+        $post->update(['og_image' => 'https://example.com/og.jpg']);
+
+        $this->assertSame('https://example.com/og.jpg', $post->og_image_url);
     }
 }
