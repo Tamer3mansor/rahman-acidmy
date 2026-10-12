@@ -45,12 +45,10 @@ class LandingSettings extends Model
         'journey_subtitle',
         'journey_cta_title',
 
-        'compare_label',
-        'compare_title',
-        'compare_subtitle',
-        'compare_problems_title',
-        'compare_solutions_title',
-        'compare_cta_title',
+        'why_label',
+        'why_title',
+        'why_subtitle',
+        'why_cta_title',
 
         'teachers_label',
         'teachers_title',

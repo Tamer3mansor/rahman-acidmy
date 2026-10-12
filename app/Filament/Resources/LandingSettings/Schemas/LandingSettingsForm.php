@@ -170,26 +170,20 @@ class LandingSettingsForm
                                     ->maxLength(255),
                             ]),
 
-                        Tab::make('المقارنة')
+                        Tab::make('لماذا تختار مدرسة الرحمن')
                             ->schema([
-                                TextInput::make('compare_label')
+                                TextInput::make('why_label')
                                     ->label('التسمية')
                                     ->maxLength(255),
-                                TextInput::make('compare_title')
+                                TextInput::make('why_title')
                                     ->label('العنوان')
                                     ->columnSpan(2)
                                     ->maxLength(255),
-                                RichEditor::make('compare_subtitle')
+                                RichEditor::make('why_subtitle')
                                     ->label('العنوان الفرعي')
                                     ->extraAttributes(['style' => 'direction: rtl; text-align: right;'])
                                     ->columnSpan(2),
-                                TextInput::make('compare_problems_title')
-                                    ->label('عنوان عمود المشكلات')
-                                    ->maxLength(255),
-                                TextInput::make('compare_solutions_title')
-                                    ->label('عنوان عمود الحلول')
-                                    ->maxLength(255),
-                                TextInput::make('compare_cta_title')
+                                TextInput::make('why_cta_title')
                                     ->label('نص زر الدعوة')
                                     ->columnSpan(2)
                                     ->maxLength(255),

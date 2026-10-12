@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CompareItems\Schemas;
+namespace App\Filament\Resources\LandingWhyItems\Schemas;
 
-use App\Enums\CompareItemType;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
-class CompareItemForm
+class LandingWhyItemForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -17,15 +16,19 @@ class CompareItemForm
             ->components([
                 Section::make('بيانات البند')
                     ->schema([
-                        Select::make('type')
-                            ->label('النوع')
-                            ->options(CompareItemType::class)
-                            ->enum(CompareItemType::class)
-                            ->required(),
-                        TextInput::make('text')
-                            ->label('النص')
+                        TextInput::make('icon')
+                            ->label('الأيقونة (إيموجي)')
+                            ->helperText('إيموجي واحد فقط، مثال 📖 — لو سايبها فاضية هتظهر أيقونة افتراضية.')
+                            ->maxLength(16)
+                            ->columnSpan(1),
+                        TextInput::make('title')
+                            ->label('العنوان')
                             ->required()
                             ->maxLength(255)
+                            ->columnSpan(1),
+                        Textarea::make('description')
+                            ->label('الوصف')
+                            ->rows(3)
                             ->columnSpanFull(),
                     ])
                     ->columns(2),

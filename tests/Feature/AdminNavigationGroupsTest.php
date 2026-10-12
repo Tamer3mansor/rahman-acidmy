@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Filament\Resources\BlogPageSettings\BlogPageSettingsResource;
-use App\Filament\Resources\CompareItems\CompareItemResource;
 use App\Filament\Resources\CoursePageSettings\CoursePageSettingsResource;
 use App\Filament\Resources\Courses\CourseResource;
 use App\Filament\Resources\FormInfos\FormInfoResource;
@@ -13,6 +12,7 @@ use App\Filament\Resources\LandingFaqs\LandingFaqResource;
 use App\Filament\Resources\LandingSettings\LandingSettingsResource;
 use App\Filament\Resources\LandingTeachers\LandingTeacherResource;
 use App\Filament\Resources\LandingTestimonials\LandingTestimonialResource;
+use App\Filament\Resources\LandingWhyItems\LandingWhyItemResource;
 use App\Filament\Resources\LessonPageSettings\LessonPageSettingsResource;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\File;
@@ -34,7 +34,7 @@ class AdminNavigationGroupsTest extends TestCase
             LandingSettingsResource::class => 1,
             HeroTrustPillResource::class => 2,
             JourneyStepResource::class => 3,
-            CompareItemResource::class => 4,
+            LandingWhyItemResource::class => 4,
             FormInfoResource::class => 5,
             LandingFaqResource::class => 6,
             LandingTeacherResource::class => 7,

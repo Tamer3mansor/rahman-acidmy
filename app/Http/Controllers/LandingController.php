@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\CompareItemType;
 use App\Http\Requests\ContactSubmissionRequest;
-use App\Models\CompareItem;
 use App\Models\ContactSubmission;
 use App\Models\Course;
 use App\Models\FormInfo;
@@ -14,6 +12,7 @@ use App\Models\LandingFaq;
 use App\Models\LandingSettings;
 use App\Models\LandingTeacher;
 use App\Models\LandingTestimonial;
+use App\Models\LandingWhyItem;
 
 class LandingController extends Controller
 {
@@ -31,15 +30,8 @@ class LandingController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        $compareProblems = CompareItem::query()
+        $whyItems = LandingWhyItem::query()
             ->where('is_active', true)
-            ->where('type', CompareItemType::Problem)
-            ->orderBy('sort_order')
-            ->get();
-
-        $compareSolutions = CompareItem::query()
-            ->where('is_active', true)
-            ->where('type', CompareItemType::Solution)
             ->orderBy('sort_order')
             ->get();
 
@@ -71,8 +63,7 @@ class LandingController extends Controller
             'settings' => $settings,
             'trustPills' => $trustPills,
             'journeySteps' => $journeySteps,
-            'compareProblems' => $compareProblems,
-            'compareSolutions' => $compareSolutions,
+            'whyItems' => $whyItems,
             'teachers' => $teachers,
             'faqs' => $faqs,
             'formInfos' => $formInfos,

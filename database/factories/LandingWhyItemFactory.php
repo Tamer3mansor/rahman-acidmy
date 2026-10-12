@@ -2,14 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Enums\CompareItemType;
-use App\Models\CompareItem;
+use App\Models\LandingWhyItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<CompareItem>
+ * @extends Factory<LandingWhyItem>
  */
-class CompareItemFactory extends Factory
+class LandingWhyItemFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,8 +18,9 @@ class CompareItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => fake()->randomElement([CompareItemType::Problem, CompareItemType::Solution]),
-            'text' => fake()->realText(40),
+            'icon' => fake()->randomElement(['🕌', '📚', '⏰', '🎁', '📊', '📈']),
+            'title' => fake()->sentence(3),
+            'description' => fake()->realText(80),
             'is_active' => true,
             'sort_order' => 0,
         ];

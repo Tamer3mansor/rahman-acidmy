@@ -123,12 +123,10 @@ class LandingSettingsSeeder extends Seeder
                     'journey_subtitle' => 'Du premier contact à l\'atteinte de vos objectifs — un chemin clair et un accompagnement continu',
                     'journey_cta_title' => 'Commencez votre parcours aujourd\'hui',
 
-                    'compare_label' => 'Pourquoi Ar-Rahman Academy ?',
-                    'compare_title' => 'La différence est évidente dès le début',
-                    'compare_subtitle' => 'Comparez par vous-même l\'enseignement traditionnel et notre approche',
-                    'compare_problems_title' => 'Les problèmes de l\'enseignement traditionnel',
-                    'compare_solutions_title' => 'La solution Ar-Rahman Academy',
-                    'compare_cta_title' => 'Essayez la différence gratuitement',
+                    'why_label' => 'Pourquoi Madrassat Ar-Rahman ?',
+                    'why_title' => 'Une éducation complète et bienveillante',
+                    'why_subtitle' => 'Ce qui fait notre différence au quotidien, pour chaque élève et chaque famille',
+                    'why_cta_title' => 'Réservez votre essai gratuit',
 
                     'teachers_label' => 'Nos enseignants',
                     'teachers_title' => 'Une sélection des meilleurs enseignants',

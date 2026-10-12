@@ -50,7 +50,7 @@
         @include('landing.partials.hero')
         @include('landing.partials.trust')
         @include('landing.partials.journey')
-        @include('landing.partials.compare')
+        @include('landing.partials.why')
         @include('landing.partials.teachers')
         @include('landing.partials.faq')
         @include('landing.partials.form')

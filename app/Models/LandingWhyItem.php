@@ -2,27 +2,26 @@
 
 namespace App\Models;
 
-use App\Enums\CompareItemType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CompareItem extends Model
+class LandingWhyItem extends Model
 {
     use HasFactory;
 
-    protected $table = 'landing_compare_items';
+    protected $table = 'landing_why_items';
 
     public $timestamps = true;
 
     protected $fillable = [
-        'type',
-        'text',
+        'icon',
+        'title',
+        'description',
         'is_active',
         'sort_order',
     ];
 
     protected $casts = [
-        'type' => CompareItemType::class,
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];

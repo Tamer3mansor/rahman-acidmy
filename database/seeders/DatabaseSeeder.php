@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             LandingSettingsSeeder::class,
             HeroTrustPillsSeeder::class,
             JourneyStepsSeeder::class,
-            CompareItemsSeeder::class,
+            LandingWhyItemsSeeder::class,
             FormInfosSeeder::class,
             LandingTeachersSeeder::class,
             LandingFaqsSeeder::class,

@@ -2,21 +2,20 @@
 
 namespace Tests\Feature;
 
-use App\Enums\CompareItemType;
 use App\Enums\MediaType;
 use App\Filament\Resources\LandingSettings\Pages\EditLandingSettings;
-use App\Models\CompareItem;
 use App\Models\ContactSubmission;
 use App\Models\FormInfo;
 use App\Models\HeroTrustPill;
 use App\Models\JourneyStep;
 use App\Models\LandingSettings;
+use App\Models\LandingWhyItem;
 use App\Models\User;
-use Database\Seeders\CompareItemsSeeder;
 use Database\Seeders\FormInfosSeeder;
 use Database\Seeders\HeroTrustPillsSeeder;
 use Database\Seeders\JourneyStepsSeeder;
 use Database\Seeders\LandingSettingsSeeder;
+use Database\Seeders\LandingWhyItemsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +32,7 @@ class LandingPageSettingsTest extends TestCase
             LandingSettingsSeeder::class,
             HeroTrustPillsSeeder::class,
             JourneyStepsSeeder::class,
-            CompareItemsSeeder::class,
+            LandingWhyItemsSeeder::class,
             FormInfosSeeder::class,
         ]);
 
@@ -49,14 +48,43 @@ class LandingPageSettingsTest extends TestCase
         $this->assertSame('video', $settings->hero_media_type->value);
         $this->assertSame('Apprenez le Coran et l\'arabe', $settings->hero_title);
         $this->assertSame('Personnalisé pour vous', $settings->hero_title_accent);
-        $this->assertSame('La différence est évidente dès le début', $settings->compare_title);
+        $this->assertSame('Une éducation complète et bienveillante', $settings->why_title);
         $this->assertSame('© 2025 Ar-Rahman Academy. Tous droits réservés.', $settings->footer_copyright);
 
         $this->assertSame(3, HeroTrustPill::query()->count());
         $this->assertSame(5, JourneyStep::query()->count());
-        $this->assertSame(5, CompareItem::query()->where('type', CompareItemType::Problem)->count());
-        $this->assertSame(5, CompareItem::query()->where('type', CompareItemType::Solution)->count());
+        $this->assertSame(6, LandingWhyItem::query()->count());
         $this->assertSame(4, FormInfo::query()->count());
+    }
+
+    public function test_landing_renders_why_choose_section_from_database(): void
+    {
+        $this->seed([LandingSettingsSeeder::class, LandingWhyItemsSeeder::class]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('why-section', false)
+            ->assertSee('why-card', false)
+            ->assertSee('id="courses"', false)
+            ->assertSee('Enseignants diplômés de l\'Al-Azhar')
+            ->assertDontSee('compare-card', false);
+    }
+
+    public function test_landing_hides_inactive_why_items(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingWhyItem::query()->create([
+            'icon' => '✅',
+            'title' => 'بند مخفي',
+            'description' => 'لن يظهر',
+            'is_active' => false,
+            'sort_order' => 0,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('بند مخفي');
     }
 
     public function test_singleton_model_creates_missing_row(): void
@@ -239,7 +267,7 @@ class LandingPageSettingsTest extends TestCase
             'المعلمين',
             'الأسئلة الشائعة',
             'خطوات الرحلة',
-            'بنود المقارنة',
+            'لماذا تختار مدرسة الرحمن',
             'نقاط نموذج التواصل',
             'الدورات',
             'إعدادات الدورات',
@@ -263,7 +291,7 @@ class LandingPageSettingsTest extends TestCase
 
     public function test_admin_enum_tables_and_forms_render(): void
     {
-        $this->seed([CompareItemsSeeder::class, JourneyStepsSeeder::class, FormInfosSeeder::class]);
+        $this->seed([LandingWhyItemsSeeder::class, JourneyStepsSeeder::class, FormInfosSeeder::class]);
 
         ContactSubmission::create([
             'student_name' => 'أحمد',
@@ -279,7 +307,7 @@ class LandingPageSettingsTest extends TestCase
 
         $user = User::factory()->create();
 
-        foreach (['/admin/compare-items', '/admin/journey-steps', '/admin/form-infos', '/admin/contact-submissions', '/admin/landing-teachers', '/admin/landing-faqs', '/admin/seo-guide', '/admin/dashboard-guide'] as $url) {
+        foreach (['/admin/landing-why-items', '/admin/journey-steps', '/admin/form-infos', '/admin/contact-submissions', '/admin/landing-teachers', '/admin/landing-faqs', '/admin/seo-guide', '/admin/dashboard-guide'] as $url) {
             $this->actingAs($user)->get($url)->assertOk();
         }
 
@@ -287,7 +315,7 @@ class LandingPageSettingsTest extends TestCase
             ->get('/admin/landing-faqs')
             ->assertSee('toggleTableReordering', false);
 
-        $this->actingAs($user)->get('/admin/compare-items/1/edit')->assertOk();
+        $this->actingAs($user)->get('/admin/landing-why-items/1/edit')->assertOk();
         $this->actingAs($user)->get('/admin/contact-submissions/1/edit')->assertOk();
     }
 

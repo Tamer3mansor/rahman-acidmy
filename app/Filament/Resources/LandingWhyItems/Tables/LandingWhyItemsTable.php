@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Filament\Resources\CompareItems\Tables;
+namespace App\Filament\Resources\LandingWhyItems\Tables;
 
-use App\Enums\CompareItemType;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -10,22 +9,21 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CompareItemsTable
+class LandingWhyItemsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('type')
-                    ->label('النوع')
-                    ->formatStateUsing(fn (CompareItemType $state): string => $state->getLabel())
-                    ->badge()
-                    ->color(
-                        fn (CompareItemType $state): string => $state === CompareItemType::Problem ? 'danger' : 'success'
-                    )
-                    ->sortable(),
-                TextColumn::make('text')
-                    ->label('النص')
+                TextColumn::make('icon')
+                    ->label('الأيقونة')
+                    ->searchable(),
+                TextColumn::make('title')
+                    ->label('العنوان')
+                    ->searchable(),
+                TextColumn::make('description')
+                    ->label('الوصف')
+                    ->limit(50)
                     ->searchable(),
                 IconColumn::make('is_active')
                     ->label('نشط')
