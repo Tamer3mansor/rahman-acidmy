@@ -600,6 +600,33 @@ function initHeroVideo() {
         if (icoMuted) icoMuted.hidden = on;
     };
 
+    /* Lazy-load: only fetch the video bytes when the card is visible. */
+    const loadVideo = () => {
+        const source = video.querySelector('source[data-src]');
+        if (source) {
+            source.src = source.dataset.src;
+            delete source.dataset.src;
+            video.load();
+        }
+    };
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                loadVideo();
+                obs.unobserve(entry.target);
+                /* Auto-play once the src is loaded */
+                video.addEventListener('canplay', play, { once: true });
+            });
+        }, { rootMargin: '200px' });
+        observer.observe(skeletonCard || video);
+    } else {
+        /* Fallback for very old browsers */
+        loadVideo();
+        play();
+    }
+
     /* Playback is a deliberate choice: a click starts or stops the clip and it
        keeps running on its own, no matter where the pointer goes. Only another
        click on the video pauses it. */
@@ -638,7 +665,14 @@ function initHeroVideo() {
     setSound(false);
 }
 
+/* ============================================================
+   LAZY VIDEO LOADING — hero video
+   Loads hero src only when the hero card enters the viewport.
+   Testimonial videos are handled by testimonials.js (whenVisible)
+   which also seeds a first frame to prevent the green GPU flash.
+   ============================================================ */
 initTeachersCarousel();
 initTrustMobileTabs();
 initTrustMarquees();
 initHeroVideo();
+

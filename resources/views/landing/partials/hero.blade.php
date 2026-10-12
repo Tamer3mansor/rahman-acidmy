@@ -57,8 +57,8 @@
                                 default => 'video/mp4',
                             };
                         @endphp
-                        <video id="heroVideo" data-hero-video {{ $settings->hero_video_loop ? 'loop' : '' }} muted playsinline preload="metadata">
-                            <source src="{{ \Illuminate\Support\Str::startsWith($settings->hero_video_path, ['http://', 'https://']) ? $settings->hero_video_path : asset('storage/' . $settings->hero_video_path) }}" type="{{ $heroVideoType }}">
+                        <video id="heroVideo" data-hero-video {{ $settings->hero_video_loop ? 'loop' : '' }} muted playsinline preload="none">
+                            <source data-src="{{ \Illuminate\Support\Str::startsWith($settings->hero_video_path, ['http://', 'https://']) ? $settings->hero_video_path : asset('storage/' . $settings->hero_video_path) }}" type="{{ $heroVideoType }}">
                         </video>
                         <div class="hero-skeleton" data-hero-skeleton aria-hidden="true"></div>
                         <div class="hero-controls" data-hero-controls>
