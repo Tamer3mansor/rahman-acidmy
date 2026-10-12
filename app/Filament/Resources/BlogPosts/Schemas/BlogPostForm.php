@@ -72,7 +72,7 @@ class BlogPostForm
                                             ->maxLength(255),
                                         FileUpload::make('author_image')
                                             ->label('صورة الكاتب')
-                                            ->image()
+                                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                                             ->disk('public')
                                             ->directory('blog/authors')
                                             ->imageResizeMode('cover')
@@ -80,7 +80,7 @@ class BlogPostForm
                                             ->imageEditor(),
                                         FileUpload::make('cover_image')
                                             ->label('صورة الغلاف')
-                                            ->image()
+                                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                                             ->disk('public')
                                             ->directory('blog/covers')
                                             ->imageResizeMode('cover')
@@ -140,7 +140,7 @@ class BlogPostForm
                                     ->columnSpan(1),
                                 FileUpload::make('og_image')
                                     ->label('صورة المشاركة (Open Graph)')
-                                    ->image()
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                                     ->disk('public')
                                     ->directory('images/og')
                                     ->imageResizeMode('contain')
