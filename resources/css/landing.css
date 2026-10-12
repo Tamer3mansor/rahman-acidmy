@@ -459,25 +459,38 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
   object-fit: cover;
   display: block;
 }
-/* hero sound toggle */
-.hero-sound {
+/* hero playback controls (seek + sound) */
+.hero-controls {
   position: absolute;
-  bottom: 16px; left: 16px;
+  left: 16px; right: 16px; bottom: 16px;
   z-index: 2;
-  display: flex; align-items: center;
-  padding: 9px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 14px;
   border-radius: 999px;
   background: rgba(18,52,38,0.55);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.22);
+}
+.hero-seek {
+  flex: 1;
+  min-width: 0;
+  height: 4px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+.hero-sound {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
   color: var(--white);
-  font-size: 0.78rem;
-  font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease;
 }
-.hero-sound:hover { background: rgba(18,52,38,0.75); transform: translateY(-1px); }
+.hero-sound:hover { background: rgba(255,255,255,0.14); transform: translateY(-1px); }
 .hero-sound:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 /* pulse while the video is still silent, to hint that sound is one click away */
 .hero-sound.is-muted { animation: heroSoundPulse 1.8s ease-in-out infinite; }
@@ -486,7 +499,7 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
   50% { box-shadow: 0 0 0 9px rgba(201,150,58,0); }
 }
 @media (max-width: 480px) {
-  .hero-sound { padding: 8px; }
+  .hero-controls { left: 10px; right: 10px; bottom: 10px; padding: 6px 10px; gap: 8px; }
 }
 /* placeholder when no video */
 .video-placeholder {
@@ -575,8 +588,8 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
    It is a static, branded panel rather than an animated loader, so a card that
    is merely not-yet-played never reads as "still loading"; it also hides the
    blank area and the uninitialised green GPU frame some browsers flash before
-   the first decoded frame. The hero keeps its own shimmer because it plays on
-   hover. */
+   the first decoded frame. The hero keeps its own shimmer because it is a
+   click-to-play clip with its own loading state. */
 .tv-skeleton {
   position:absolute;
   inset:0;

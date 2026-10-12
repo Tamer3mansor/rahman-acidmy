@@ -524,7 +524,7 @@ function initTrustMobileTabs() {
    (WhatsApp vs Google on the homepage). Derive each duration from a common
    px/s speed instead, and re-measure whenever a track's height changes —
    fonts, video metadata, mobile tab switch or resize all shift it. */
-const TRUST_MARQUEE_SPEED = 6;
+const TRUST_MARQUEE_SPEED = 12;
 
 function syncTrustMarqueeDuration(marquee) {
     if (!marquee || marquee.classList.contains('trust-marquee--static')) return;
@@ -567,6 +567,7 @@ function initHeroVideo() {
     const muteBtn = document.querySelector('[data-hero-mute]');
     const icoSound = muteBtn?.querySelector('[data-hero-ico-sound]');
     const icoMuted = muteBtn?.querySelector('[data-hero-ico-muted]');
+    const seek = document.querySelector('[data-hero-seek]');
 
     /* Drop the loading shimmer as soon as the clip has a frame to paint. */
     const skeletonCard = card || video.closest('.video-card');
@@ -599,28 +600,40 @@ function initHeroVideo() {
         if (icoMuted) icoMuted.hidden = on;
     };
 
-    /* Hold the pointer (or keyboard focus) over the card to play; leaving
-       pauses it. Nothing else on the page drives the video: clicks in other
-       sections no longer start or stop it. */
-    card?.addEventListener('mouseenter', play);
-    card?.addEventListener('mouseleave', pause);
-    card?.addEventListener('focusin', play);
-    card?.addEventListener('focusout', pause);
+    /* Playback is a deliberate choice: a click starts or stops the clip and it
+       keeps running on its own, no matter where the pointer goes. Only another
+       click on the video pauses it. */
+    video.addEventListener('click', () => {
+        if (video.paused) {
+            play();
+        } else {
+            pause();
+        }
+    });
 
+    /* The sound button controls sound only; it never starts or stops the clip. */
     muteBtn?.addEventListener('click', (event) => {
         event.stopPropagation();
         setSound(video.muted);
-        if (video.paused) play();
     });
 
-    video.addEventListener('click', () => {
-        if (video.paused) {
-            setSound(true);
-            play();
-        } else {
-            video.pause();
-        }
-    });
+    /* The progress bar mirrors playback and seeks on drag. It is normalised to
+       0–1000 so the value stays meaningful before the duration is known. */
+    if (seek) {
+        const syncSeek = () => {
+            if (!video.duration) return;
+            seek.value = String(Math.round((video.currentTime / video.duration) * 1000));
+        };
+
+        video.addEventListener('timeupdate', syncSeek);
+        video.addEventListener('loadedmetadata', syncSeek);
+        video.addEventListener('seeked', syncSeek);
+
+        seek.addEventListener('input', () => {
+            if (!video.duration) return;
+            video.currentTime = (parseFloat(seek.value) / 1000) * video.duration;
+        });
+    }
 
     setSound(false);
 }

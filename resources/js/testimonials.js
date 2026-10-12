@@ -15,7 +15,7 @@
 const FRAME_PORTRAIT_MIN_RATIO = 0.45;
 const FRAME_PORTRAIT_MAX_RATIO = 0.9;
 
-/* The hero video plays only while the pointer/focus is on it (see landing.js).
+/* The hero video keeps playing once the visitor starts it (see landing.js).
    Playing a testimonial clip is a deliberate, visible choice, so the hero is
    paused to avoid the two audios overlapping once the visitor unmutes. */
 const getHeroVideo = () => document.querySelector('[data-hero-video]');
