@@ -123,6 +123,20 @@ class LessonPageTest extends TestCase
             ->assertSee('lesson-tip', false);
     }
 
+    public function test_lesson_show_embeds_the_trial_form_so_ctas_scroll_within_the_page(): void
+    {
+        $lesson = Lesson::factory()->create(['slug' => 'trial-lesson']);
+
+        $response = $this->get('/lecons-gratuites/trial-lesson');
+
+        $response->assertOk()
+            ->assertSee('id="trial-form"', false)
+            ->assertSee('id="trialForm"', false)
+            ->assertSee('href="#trial-form"', false);
+
+        $this->assertSame(1, substr_count($response->getContent(), 'id="trial-form"'), 'The in-page trial form must be rendered exactly once.');
+    }
+
     public function test_lessons_show_course_cta_link(): void
     {
         $this->seed([

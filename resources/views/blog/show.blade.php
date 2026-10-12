@@ -96,7 +96,7 @@
                     <div class="in-article-cta">
                         <h3>Vous souhaitez un enseignant expérimenté pour accompagner votre enfant ?</h3>
                         <p>Réservez dès maintenant une séance d'essai gratuite avec les meilleurs enseignants du Coran pour enfants.</p>
-                        <a href="{{ route('home') . '#trial-form' }}" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver un essai gratuit</a>
+                        <a href="#trial-form" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver un essai gratuit</a>
                     </div>
                 </div>
 
@@ -124,7 +124,7 @@
                     <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> {{ $pageSettings->sidebar_title ?: 'Commencez le parcours de votre enfant' }}</h3>
                     <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">{{ $pageSettings->sidebar_text ?: "Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais." }}</p>
 
-                    <a href="{{ $pageSettings->sidebar_trial_url ?: route('home') . '#trial-form' }}" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
+                    <a href="{{ $pageSettings->sidebar_trial_url ?: '#trial-form' }}" class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 12px;">
                         <i class="fa-solid fa-laptop"></i> {{ $pageSettings->sidebar_trial_label ?: 'Essai gratuit' }}
                     </a>
 
@@ -170,6 +170,8 @@
         @endif
 
     </div>
+
+    @include('landing.partials.trial-form-section')
 
     <div style="height: 60px;"></div>
 

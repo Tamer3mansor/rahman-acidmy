@@ -124,6 +124,22 @@ class BlogPageTest extends TestCase
             ->assertSee('application/ld+json', false);
     }
 
+    public function test_blog_show_embeds_the_trial_form_so_ctas_scroll_within_the_page(): void
+    {
+        $category = BlogCategory::factory()->create();
+        $post = BlogPost::factory()->create(['slug' => 'trial-post']);
+        $post->categories()->attach($category->id);
+
+        $response = $this->get('/blog/trial-post');
+
+        $response->assertOk()
+            ->assertSee('id="trial-form"', false)
+            ->assertSee('id="trialForm"', false)
+            ->assertSee('href="#trial-form"', false);
+
+        $this->assertSame(1, substr_count($response->getContent(), 'id="trial-form"'), 'The in-page trial form must be rendered exactly once.');
+    }
+
     public function test_blog_show_returns_404_for_unknown_inactive_or_unpublished_posts(): void
     {
         $this->seed([

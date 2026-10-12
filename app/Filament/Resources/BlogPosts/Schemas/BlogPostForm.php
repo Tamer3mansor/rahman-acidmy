@@ -76,7 +76,6 @@ class BlogPostForm
                                             ->disk('public')
                                             ->directory('blog/authors')
                                             ->imageResizeMode('cover')
-                                            ->imageCropAspectRatio('1:1')
                                             ->imageEditor(),
                                         FileUpload::make('cover_image')
                                             ->label('صورة الغلاف')
@@ -84,7 +83,6 @@ class BlogPostForm
                                             ->disk('public')
                                             ->directory('blog/covers')
                                             ->imageResizeMode('cover')
-                                            ->imageCropAspectRatio('16:9')
                                             ->imageEditor(),
                                         TextInput::make('reading_time')
                                             ->label('وقت القراءة (دقائق)')

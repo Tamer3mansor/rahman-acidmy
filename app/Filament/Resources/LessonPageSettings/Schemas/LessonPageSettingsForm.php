@@ -85,8 +85,8 @@ class LessonPageSettingsForm
                             ->columnSpan(1),
                         TextInput::make('sidebar_trial_url')
                             ->label('رابط زر التجربة')
-                            ->helperText('مثال: /#trial-form أو رابط كامل')
-                            ->placeholder('/#trial-form')
+                            ->helperText('فارغ = رابط فورم الحجز داخل نفس الصفحة، أو اكتب رابط كامل')
+                            ->placeholder('#trial-form')
                             ->maxLength(255)
                             ->columnSpan(1),
                         TextInput::make('sidebar_whatsapp_label')
