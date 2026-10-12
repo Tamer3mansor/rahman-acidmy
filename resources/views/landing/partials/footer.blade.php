@@ -52,7 +52,7 @@
                         <li><a href="{{ $settings->header_btn1_url }}" target="_blank" rel="noopener">{{ $settings->footer_link_whatsapp ?: 'WhatsApp' }}</a></li>
                     @endif
                     <li><a href="{{ $homeUrl }}#trial-form">{{ $settings->footer_link_trial ?: 'Réservez un essai' }}</a></li>
-                    <li><a href="mailto:{{ \App\Models\SystemSettings::singleton()->contactEmail() }}">{{ $settings->footer_link_email ?: 'E-mail' }}</a></li>
+                    <li><a href="mailto:{{ $settings->footer_contact_email ?: 'contact@arrahman-academy.com' }}">{{ $settings->footer_link_email ?: 'E-mail' }}</a></li>
                 </ul>
             </div>
         </div>

@@ -273,6 +273,12 @@ class LandingSettingsForm
                                     ->label('نص الحقوق')
                                     ->columnSpan(2)
                                     ->maxLength(255),
+                                TextInput::make('footer_contact_email')
+                                    ->label('البريد الإلكتروني')
+                                    ->email()
+                                    ->placeholder('contact@arrahman-academy.com')
+                                    ->helperText('يظهر في رابط البريد الإلكتروني أسفل الموقع (الفوتر). إذا تُرك فارغًا يُستخدم العنوان الافتراضي.')
+                                    ->columnSpanFull(),
 
                                 Section::make('وسائل التواصل')
                                     ->description('أيقونات التواصل في الفوتر. تُعرض كل أيقونة فقط إذا كان رابطها مملوءاً، وتختفي تلقائياً عند تفريغه.')

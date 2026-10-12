@@ -181,7 +181,11 @@
 .in-article-cta-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 
 /* Sidebar widget */
-.lesson-sidebar { position: sticky; top: 88px; display: flex; flex-direction: column; gap: 24px; }
+.lesson-sidebar {
+  position: sticky; top: 88px; align-self: start;
+  display: flex; flex-direction: column; gap: 24px;
+  max-height: calc(100vh - 108px); overflow-y: auto;
+}
 .sidebar-widget { background: var(--surface-card); padding: 25px; border-radius: var(--r-lg); border: 1px solid var(--border-subtle); }
 .sidebar-title { color: var(--green); font-size: 1.2rem; margin-bottom: 15px; border-bottom: 2px solid var(--border-subtle); padding-bottom: 8px; }
 .btn-whatsapp {
@@ -218,7 +222,7 @@
 
 @media (max-width: 992px) {
   .article-layout { grid-template-columns: 1fr; }
-  .lesson-sidebar { position: static; }
+  .lesson-sidebar { position: static; max-height: none; overflow: visible; }
 }
 
 @media (max-width: 768px) {

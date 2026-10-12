@@ -325,6 +325,26 @@ class LandingPageSettingsTest extends TestCase
         $this->assertNull((new LandingSettings)->hero_media_type);
     }
 
+    public function test_footer_renders_the_contact_email_from_landing_settings(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update(['footer_contact_email' => 'hello@arrahman.fr']);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('mailto:hello@arrahman.fr', false);
+    }
+
+    public function test_footer_email_falls_back_to_the_default_address(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('mailto:contact@arrahman-academy.com', false);
+    }
+
     public function test_footer_social_links_hidden_when_empty(): void
     {
         $this->seed([LandingSettingsSeeder::class]);
