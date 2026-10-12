@@ -13,8 +13,8 @@
     <div class="container">
         <div class="form-inner">
             <!-- Left info -->
-            <div>
-                <span class="section-label" style="background:rgba(201,150,58,0.2);color:var(--gold-light);border-color:rgba(201,150,58,0.3);">{{ $settings->form_label }}</span>
+            <div class="form-side">
+                <span class="section-label" style="background:rgba(201,150,58,0.2);color:var(--gold-light);border-color:rgba(201,150,58,0.3);">{{ $settings->form_label }}</span> style="background:rgba(201,150,58,0.2);color:var(--gold-light);border-color:rgba(201,150,58,0.3);">{{ $settings->form_label }}</span>
                 <h2 class="form-side-title">
                     {{ $settings->form_title }}<br>
                     <span class="accent">{{ $settings->form_title_accent }}</span>
