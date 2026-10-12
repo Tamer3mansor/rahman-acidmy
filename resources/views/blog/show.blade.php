@@ -48,10 +48,12 @@
 
     <div class="container">
         <div class="breadcrumbs">
-            <a href="{{ route('home') }}">Accueil</a> /
+            <a href="{{ route('home') }}"><i class="fa-solid fa-house"></i> Accueil</a>
+            <span class="sep">/</span>
             <a href="{{ route('blog.index') }}">Blog</a>
-            @if ($post->categories->count())
-                / <a href="{{ route('blog.index', ['k' => $post->categories->first()?->slug]) }}">{{ $post->categories->pluck('name')->implode(', ') }}</a>
+            @if ($category = $post->categories->first())
+                <span class="sep">/</span>
+                <a href="{{ route('blog.index', ['k' => $category->slug]) }}">{{ $category->name }}</a>
             @endif
         </div>
 
@@ -59,9 +61,13 @@
 
             <main class="article-main shadow-card">
                 @if ($post->categories->count())
-                    @foreach ($post->categories as $cat)
-                        <span class="badge">{{ $cat->name }}</span>
-                    @endforeach
+                    <div class="article-badges">
+                    <div class="post-cats">
+                        @foreach ($post->categories as $cat)
+                            <span class="badge">{{ $cat->name }}</span>
+                        @endforeach
+                    </div>
+                    </div>
                 @endif
                 <h1 class="article-title">{{ $post->title }}</h1>
 

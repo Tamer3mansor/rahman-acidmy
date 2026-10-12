@@ -60,7 +60,7 @@
                 <div class="featured-card shadow-card">
                     <img src="{{ $featured->cover_image_url ?? 'https://images.unsplash.com/photo-1584286595398-a59f21d313f5?q=80&w=800&auto=format&fit=crop' }}" alt="{{ $featured->title }}" class="featured-img">
                     <div class="featured-content">
-                        <div>
+                        <div class="post-cats">
                             <span class="badge gold"><i class="fa-solid fa-thumbtack"></i> Article vedette</span>
                             @foreach ($featured->categories as $cat)
                                 <span class="badge">{{ $cat->name }}</span>

@@ -42,8 +42,13 @@
 
     <div class="container">
         <div class="breadcrumbs">
-            <a href="{{ route('home') }}">Accueil</a> /
+            <a href="{{ route('home') }}"><i class="fa-solid fa-house"></i> Accueil</a>
+            <span class="sep">/</span>
             <a href="{{ route('lessons.index') }}">Leçons gratuites</a>
+            @if ($category = $lesson->categories->first())
+                <span class="sep">/</span>
+                <a href="{{ route('lessons.index', ['k' => $category->slug]) }}">{{ $category->name }}</a>
+            @endif
         </div>
 
         <div class="article-layout">
