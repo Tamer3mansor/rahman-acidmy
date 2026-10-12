@@ -155,6 +155,20 @@ class BlogPageTest extends TestCase
         $this->get('/blog/draft-post')->assertNotFound();
     }
 
+    public function test_blog_post_can_be_created_without_a_legacy_category_id(): void
+    {
+        $post = BlogPost::factory()->create([
+            'category_id' => null,
+            'slug' => 'no-legacy-category',
+        ]);
+
+        $this->assertNull($post->fresh()->category_id);
+        $this->assertDatabaseHas('blog_posts', [
+            'slug' => 'no-legacy-category',
+            'category_id' => null,
+        ]);
+    }
+
     public function test_blog_show_uses_admin_picked_related_posts(): void
     {
         $category = BlogCategory::factory()->create();

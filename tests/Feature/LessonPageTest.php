@@ -119,7 +119,8 @@ class LessonPageTest extends TestCase
             ->assertSee('Sommaire')
             ->assertSee('audio', false)
             ->assertSee('application/ld+json', false)
-            ->assertSee('Découvrir la formation complète')
+            ->assertSee('Formations liées')
+            ->assertSee('Réserver l\'essai gratuit', false)
             ->assertSee('lesson-tip', false);
     }
 
@@ -160,7 +161,7 @@ class LessonPageTest extends TestCase
         $this->assertCount(2, $lesson->fresh()->courses);
     }
 
-    public function test_lesson_show_renders_one_cta_button_per_related_course(): void
+    public function test_lesson_show_lists_each_related_course_as_a_sidebar_card(): void
     {
         $lesson = Lesson::factory()->create(['slug' => 'multi-course-lesson']);
 
@@ -169,12 +170,17 @@ class LessonPageTest extends TestCase
 
         $lesson->courses()->attach([$first->id, $second->id]);
 
-        $this->get('/lecons-gratuites/multi-course-lesson')
-            ->assertOk()
+        $response = $this->get('/lecons-gratuites/multi-course-lesson');
+
+        $response->assertOk()
+            ->assertSee('Formations liées')
+            ->assertSee('lesson-course-card', false)
             ->assertSee('Formation Première')
             ->assertSee('Formation Seconde')
             ->assertSee('/cours/'.$first->slug, false)
             ->assertSee('/cours/'.$second->slug, false);
+
+        $this->assertSame(2, substr_count($response->getContent(), 'lesson-course-card'));
     }
 
     public function test_lesson_show_returns_404_for_unknown_or_inactive_lessons(): void

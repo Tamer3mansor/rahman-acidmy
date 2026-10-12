@@ -102,23 +102,38 @@
                         <span class="badge gold"><i class="fa-solid fa-rocket"></i> Application pratique directe</span>
                         <h3>Aimez-vous notre méthode d'explication ?</h3>
                         <p>Réservez une séance d'essai en direct avec un enseignant spécialisé pour appliquer ces leçons avec votre enfant, étape par étape.</p>
-                        @if ($courses->isNotEmpty())
-                            <div class="in-article-cta-buttons">
-                                @foreach ($courses as $course)
-                                    <a href="{{ route('courses.show', $course->slug) }}" class="btn-primary">
-                                        <i class="fa-solid fa-graduation-cap"></i>
-                                        {{ $courses->count() > 1 ? $course->title : 'Découvrir la formation complète' }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        @else
-                            <a href="#trial-form" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver l'essai gratuit</a>
-                        @endif
+                        <a href="#trial-form" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver l'essai gratuit</a>
                     </div>
                 </div>
             </main>
 
-            <aside>
+            <aside class="lesson-sidebar">
+                @if ($courses->isNotEmpty())
+                    <div class="sidebar-widget lesson-related-widget shadow-card">
+                        <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> Formations liées</h3>
+                        <div class="lesson-course-list">
+                            @foreach ($courses as $course)
+                                <a href="{{ route('courses.show', $course->slug) }}" class="lesson-course-card">
+                                    <span class="lesson-course-thumb theme-{{ $course->card_theme }}">
+                                        @if ($course->icon)
+                                            <img src="{{ asset('storage/'.$course->icon) }}" alt="{{ $course->title }}">
+                                        @else
+                                            <i class="fa-solid fa-book-open"></i>
+                                        @endif
+                                    </span>
+                                    <span class="lesson-course-info">
+                                        <span class="lesson-course-name">{{ $course->title }}</span>
+                                        @if ($course->short_description)
+                                            <span class="lesson-course-desc">{{ \Illuminate\Support\Str::limit($course->short_description, 80) }}</span>
+                                        @endif
+                                    </span>
+                                    <i class="fa-solid fa-arrow-right lesson-course-arrow"></i>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 <div class="sidebar-widget shadow-card">
                     <h3 class="sidebar-title"><i class="fa-solid fa-graduation-cap"></i> {{ $pageSettings->sidebar_title ?: 'Commencez le parcours de votre enfant' }}</h3>
                     <p style="font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;">{{ $pageSettings->sidebar_text ?: "Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais." }}</p>
