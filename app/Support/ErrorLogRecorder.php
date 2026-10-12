@@ -16,10 +16,16 @@ class ErrorLogRecorder
         }
 
         try {
+            $message = $e->getMessage();
+            if (str_contains($message, 'stream_copy_to_stream')) {
+                $diskName = config('livewire.temporary_file_upload.disk') ?? config('filesystems.default', 'local');
+                $message .= PHP_EOL.PHP_EOL."[تشخيص المشكلة]: فشل قراءة الملف المؤقت أثناء التحقق من أبعاد الصورة (TemporaryUploadedFile::dimensions). القرص المؤقت المستخدم: '{$diskName}'. تأكد من ضبط LIVEWIRE_UPLOAD_DISK=public على الخادم وصلاحيات قراءة مجلد livewire-tmp.";
+            }
+
             ErrorLog::create([
                 'level' => 'error',
                 'exception' => $e::class,
-                'message' => $e->getMessage(),
+                'message' => $message,
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'code' => $e->getCode(),

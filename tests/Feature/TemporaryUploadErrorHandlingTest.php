@@ -12,26 +12,25 @@ use Tests\TestCase;
 
 class TemporaryUploadErrorHandlingTest extends TestCase
 {
-    public function test_non_json_request_with_missing_temp_file_returns_422_with_reupload_hint(): void
+    public function test_non_json_request_with_missing_temp_file_returns_500_with_hint(): void
     {
         Route::get('/_test/missing-temp-upload', fn () => throw new \TypeError(
             'stream_copy_to_stream(): Argument #1 ($from) must be of type resource, null given',
         ));
 
         $this->get('/_test/missing-temp-upload')
-            ->assertStatus(422)
-            ->assertSee('أعد رفع الملف ثم أعد الحفظ');
+            ->assertStatus(500)
+            ->assertSee('تعذر قراءة الملف المؤقت أثناء التحقق من أبعاد الصورة');
     }
 
-    public function test_json_request_with_missing_temp_file_returns_422_with_reupload_message(): void
+    public function test_json_request_with_missing_temp_file_returns_500(): void
     {
         Route::get('/_test/missing-temp-upload', fn () => throw new \TypeError(
             'stream_copy_to_stream(): Argument #1 ($from) must be of type resource, null given',
         ));
 
         $this->getJson('/_test/missing-temp-upload')
-            ->assertStatus(422)
-            ->assertJsonPath('message', 'الملف الذي رفعته لم يعد متاحاً (انتهت صلاحية الرفع). أعد رفع الملف ثم أعد الحفظ.');
+            ->assertStatus(500);
     }
 
     public function test_unrelated_type_error_still_returns_500(): void

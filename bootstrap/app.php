@@ -11,6 +11,7 @@ use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -48,27 +49,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 return null;
             }
 
-            if (str_contains($e->getMessage(), 'stream_copy_to_stream')) {
-                // Livewire/Filament re-reads a temporary upload to validate image dimensions
-                // (TemporaryUploadedFile::dimensions()). When that temp file no longer exists
-                // the stream is null and PHP throws a TypeError; surface a friendly prompt to
-                // re-upload instead of a raw 500.
-                $hint = 'الملف الذي رفعته لم يعد متاحاً (انتهت صلاحية الرفع). أعد رفع الملف ثم أعد الحفظ.';
-                $status = 422;
-
-                if ($request->expectsJson()) {
-                    return response()->json([
-                        'message' => $hint,
-                        'status' => $status,
-                    ], $status);
-                }
-
-                return response()->view('errors.generic', [
-                    'status' => $status,
-                    'hint' => $hint,
-                ], $status);
-            }
-
             $status = match (true) {
                 $e instanceof TokenMismatchException => 419,
                 $e instanceof NotFoundHttpException => 404,
@@ -85,9 +65,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 $status = 500;
             }
 
-            $hint = str_contains($e->getMessage(), 'Maximum number of input variables exceeded')
-                ? 'يحتوي النموذج على عدد كبير جداً من الحقول. أعد المحاولة بعد اختصار البيانات أو تقليل عدد العناصر.'
-                : null;
+            $hint = match (true) {
+                str_contains($e->getMessage(), 'stream_copy_to_stream') => 'تعذر قراءة الملف المؤقت أثناء التحقق من أبعاد الصورة. أعد رفع الملف.',
+                str_contains($e->getMessage(), 'Maximum number of input variables exceeded') => 'يحتوي النموذج على عدد كبير جداً من الحقول. أعد المحاولة بعد اختصار البيانات أو تقليل عدد العناصر.',
+                default => null,
+            };
 
             if ($request->expectsJson() && ! $request->header('X-Livewire')) {
                 return response()->json([
@@ -103,6 +85,52 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->report(function (Throwable $e): void {
+            if (str_contains($e->getMessage(), 'stream_copy_to_stream')) {
+                $diskName = (string) (config('livewire.temporary_file_upload.disk') ?? config('filesystems.default', 'local'));
+                $diskConfig = config("filesystems.disks.{$diskName}", []);
+                $req = request();
+
+                Log::error('Temporary upload stream error (stream_copy_to_stream)', [
+                    'diagnosis' => 'Livewire/Filament attempted to inspect image dimensions via TemporaryUploadedFile::dimensions(), but the stream resource was null.',
+                    'possible_causes' => [
+                        'LIVEWIRE_UPLOAD_DISK is set to a private disk (should usually be public on production)',
+                        'Temporary upload file was deleted before validation ran',
+                        'File permissions prevent PHP from opening the temporary stream',
+                        'Image dimensions validation or imageCropAspectRatio triggered on an unreadable temporary file',
+                    ],
+                    'disk' => [
+                        'name' => $diskName,
+                        'driver' => $diskConfig['driver'] ?? 'unknown',
+                        'root' => $diskConfig['root'] ?? 'unknown',
+                        'visibility' => $diskConfig['visibility'] ?? 'default',
+                    ],
+                    'livewire_config' => [
+                        'temporary_file_upload_disk' => config('livewire.temporary_file_upload.disk'),
+                        'default_filesystem' => config('filesystems.default'),
+                        'max_upload_time' => config('livewire.temporary_file_upload.max_upload_time'),
+                        'cleanup' => config('livewire.temporary_file_upload.cleanup'),
+                    ],
+                    'request' => [
+                        'url' => $req?->fullUrl(),
+                        'method' => $req?->method(),
+                        'ip' => $req?->ip(),
+                        'user_agent' => $req?->userAgent(),
+                        'is_livewire' => (bool) $req?->hasHeader('X-Livewire'),
+                        'files' => array_keys($req?->allFiles() ?? []),
+                    ],
+                    'auth' => [
+                        'user_id' => auth()->id(),
+                        'user_email' => auth()->user()?->email,
+                    ],
+                    'exception' => [
+                        'class' => $e::class,
+                        'message' => $e->getMessage(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
+                    ],
+                ]);
+            }
+
             app(ErrorLogRecorder::class)->log($e);
         });
     })->create();
