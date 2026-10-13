@@ -126,7 +126,7 @@
                 <p class="details-hero-sub">{{ $course->short_description }}</p>
 
                 <div class="details-hero-btns">
-                    <a href="{{ $copy['trial_url'] ?: route('home').'#trial-form' }}" class="btn-primary">
+                    <a href="{{ $copy['trial_url'] ?: '#trial-form' }}" class="btn-primary">
                         <i class="fa-solid fa-calendar-check"></i> {{ $copy['trial_btn_text'] ?: 'Réserver une séance d\'essai' }}
                     </a>
                     <a href="{{ $settings->header_btn1_url }}" class="btn-outline" target="_blank" rel="noopener">
@@ -331,17 +331,6 @@
             </script>
         @endif
 
-        <section class="booking-cta" id="bookingForm">
-            <h2>{{ $copy['booking_title'] ?: $pageSettings->details_booking_title }}</h2>
-            <p>{{ $copy['booking_subtitle'] ?: $pageSettings->details_booking_subtitle }}</p>
-            @if ($copy['booking_note'] ?? $pageSettings->details_booking_note)
-                <p class="note">{{ $copy['booking_note'] ?: $pageSettings->details_booking_note }}</p>
-            @endif
-            <div class="booking-btn">
-                <a href="{{ $copy['trial_url'] ?: route('home').'#trial-form' }}" class="btn-primary">{{ $copy['trial_btn_text'] ?: $pageSettings->details_cta_title }}</a>
-            </div>
-        </section>
-
         </div>
 
         <aside class="details-sidebar">
@@ -378,7 +367,7 @@
 
         <div class="sidebar-cta-card">
             <p>{{ $copy['sidebar_title'] ?: $pageSettings->details_cta_title }}</p>
-            <a href="{{ $copy['trial_url'] ?: route('home').'#trial-form' }}" class="btn-primary">
+            <a href="{{ $copy['trial_url'] ?: '#trial-form' }}" class="btn-primary">
                 {{ $copy['trial_btn_text'] ?: 'Réserver une séance d\'essai' }} <i class="fa-solid fa-calendar-check"></i>
             </a>
         </div>
@@ -386,6 +375,8 @@
         </aside>
 
     </main>
+
+    @include('landing.partials.trial-form-section')
 
     @include('landing.partials.footer', ['homeUrl' => route('home')])
     @include('landing.partials.floating')

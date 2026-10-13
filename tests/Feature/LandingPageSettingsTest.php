@@ -120,7 +120,8 @@ class LandingPageSettingsTest extends TestCase
             ->assertOk()
             ->assertSee('وسائل التواصل')
             ->assertSee('footer_social_whatsapp', false)
-            ->assertSee('footer_social_youtube', false);
+            ->assertSee('footer_social_youtube', false)
+            ->assertSee('footer_contact_phone', false);
     }
 
     public function test_admin_can_list_hero_trust_pills(): void
@@ -343,6 +344,30 @@ class LandingPageSettingsTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('mailto:contact@arrahman-academy.com', false);
+    }
+
+    public function test_footer_renders_the_contact_phone_from_landing_settings(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update(['footer_contact_phone' => '+20 10 2826 8553']);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('class="footer-phone"', false)
+            ->assertSee('tel:+201028268553', false)
+            ->assertSee('+20 10 2826 8553');
+    }
+
+    public function test_footer_phone_is_hidden_when_empty(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update(['footer_contact_phone' => null]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('footer-phone', false);
     }
 
     public function test_footer_social_links_hidden_when_empty(): void

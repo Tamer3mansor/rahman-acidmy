@@ -7,6 +7,7 @@ use App\Models\BlogPost;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
 use App\Models\LandingSettings;
+use App\Models\Lesson;
 use App\Models\LessonPageSettings;
 use App\Models\PricingSettings;
 use Illuminate\Database\Seeder;
@@ -30,6 +31,7 @@ class SeoSettingsSeeder extends Seeder
         $this->seedBlogPageSettings();
         $this->seedBlogPosts();
         $this->seedLessonPageSettings();
+        $this->seedLessons();
     }
 
     private function seedLandingSettings(): void
@@ -185,5 +187,28 @@ class SeoSettingsSeeder extends Seeder
         if ($settings->isDirty()) {
             $settings->save();
         }
+    }
+
+    private function seedLessons(): void
+    {
+        $defaultsBySlug = [
+            'prononcer-lettres-madd-avec-enfant' => 'Prononcer les lettres de madd avec son enfant | Ar-Rahman Academy',
+            'regles-nun-sakina-tanwin-izhar' => 'Règle de l\'izhar (nun sakina et tanwin) | Ar-Rahman Academy',
+            'adhkar-matin-soir-pour-enfants' => 'Les adhkar du matin et du soir pour enfants | Ar-Rahman Academy',
+        ];
+
+        Lesson::query()
+            ->whereNull('meta_title')
+            ->get()
+            ->each(function (Lesson $lesson) use ($defaultsBySlug): void {
+                if (! isset($defaultsBySlug[$lesson->slug])) {
+                    return;
+                }
+
+                $lesson->update([
+                    'meta_title' => $defaultsBySlug[$lesson->slug],
+                    'meta_description' => $lesson->meta_description ?: Str::limit($lesson->excerpt, 160),
+                ]);
+            });
     }
 }

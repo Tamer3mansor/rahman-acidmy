@@ -330,6 +330,10 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 }
 .mobile-menu a:hover,
 .mobile-menu a:active { background: var(--surface-inset); color: var(--green); }
+/* WhatsApp row: icon inline with the label, both vertically centred. */
+.mobile-menu a.mobile-wa { display: flex; align-items: center; gap: 10px; }
+.mobile-menu a.mobile-wa svg { flex-shrink: 0; color: #25D366; }
+.mobile-menu a.mobile-wa span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .mobile-menu .mobile-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
 
 /* The mobile switch is a full-width row so it lines up with the menu links. */
@@ -559,7 +563,8 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
   height: calc(var(--trust-marquee-h, 500px) - 40px);
   max-width: 100%;
 }
-.trust-marquee.is-paused .trust-marquee-track { animation-play-state: paused; }
+.trust-marquee.is-paused .trust-marquee-track,
+.trust-marquee.is-held .trust-marquee-track { animation-play-state: paused; }
 .trust-video-card {
   border-radius: var(--r-lg);
   overflow: hidden;
@@ -676,7 +681,13 @@ html[data-theme='dark'] .theme-icon-moon { display: none; }
 .trust-marquee-track { display:flex; flex-direction:column; gap:14px; animation:trust-marquee-up var(--trust-marquee-duration) linear infinite; }
 .trust-marquee--static .trust-marquee-track { animation:none; }
 .trust-marquee-group { display:flex; flex-direction:column; gap:14px; }
-.trust-marquee:hover .trust-marquee-track { animation-play-state:paused; }
+/* Hover-to-read only on devices with a real pointer. On touch the hover state
+   sticks after a tap, which left a marquee paused forever (playing a clip then
+   pausing it never resumed the loop until a reload); touch is handled from JS
+   through `.is-held` instead (see landing.js). */
+@media (hover:hover) and (pointer:fine) {
+  .trust-marquee:hover .trust-marquee-track { animation-play-state:paused; }
+}
 @keyframes trust-marquee-up { to { transform:translateY(calc(-50% - 7px)); } }
 .screenshot-card {
   border-radius:var(--r-md);
@@ -1136,6 +1147,11 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
 .footer-social-tiktok:hover { background:#010101; }
 .footer-social-x:hover { background:#0f1419; }
 .footer-social-youtube:hover { background:#FF0000; }
+.footer-phone { display:inline-flex; align-items:center; gap:10px; margin-top:18px; font-size:0.92rem; font-weight:600; color:rgba(255,255,255,0.85); transition:color 0.2s; }
+.footer-phone i { width:38px; height:38px; flex-shrink:0; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.95rem; color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); transition:background 0.2s, color 0.2s, transform 0.2s; }
+.footer-phone span { white-space:nowrap; }
+.footer-phone:hover { color:var(--gold); }
+.footer-phone:hover i { background:var(--gold); color:var(--surface-inverse); transform:translateY(-2px); }
 .footer-col h4 { font-size:0.9rem; font-weight:700; color:var(--white); margin-bottom:16px; }
 .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
 .footer-col ul li a { font-size:0.85rem; color:rgba(255,255,255,0.5); transition:color 0.2s; }
@@ -1273,16 +1289,13 @@ a.testimonials-page:hover { border-color:var(--green); color:var(--green); }
   }
   /* Keep the scrolling marquee on phones, same as desktop. It is clipped to a
      fixed viewport so the pane stays a readable strip instead of growing with
-     the duplicated loop group. Touching it pauses the loop so a message can
-     actually be read. */
+     the duplicated loop group. Holding it pauses the loop so a message can
+     actually be read (`.is-held`, toggled from landing.js — CSS `:active`/
+     `:hover` stick on touch and would leave the loop paused for good). */
   .trust-marquee {
     --trust-marquee-h: 420px;
     height: var(--trust-marquee-h);
     overflow: hidden;
-  }
-  .trust-marquee:hover .trust-marquee-track,
-  .trust-marquee:active .trust-marquee-track {
-    animation-play-state: paused;
   }
   .trust-video-card { border-radius: var(--r-md); }
   .trust-video-card video,

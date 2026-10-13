@@ -150,6 +150,7 @@ class LandingSettingsSeeder extends Seeder
                     'footer_brand_sub' => 'Académie Ar-Rahman d\'enseignement islamique',
                     'footer_description' => 'Enseignement du Coran et de la langue arabe en ligne pour enfants et adultes, avec des enseignants spécialisés diplômés de l\'Al-Azhar.',
                     'footer_copyright' => '© 2025 Ar-Rahman Academy. Tous droits réservés.',
+                    'footer_contact_phone' => '+20 10 2826 8553',
                 ],
                 self::CHROME_TEXT,
             ),

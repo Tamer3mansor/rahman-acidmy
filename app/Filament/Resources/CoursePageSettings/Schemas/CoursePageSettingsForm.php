@@ -286,7 +286,7 @@ class CoursePageSettingsForm
                     TextInput::make($is('trial_btn_text'))->label('نص زر الحجز')->columnSpan(2),
                     TextInput::make($is('trial_url'))
                         ->label('رابط زر الحجز')
-                        ->helperText('مثال: /#trial-form')
+                        ->helperText('مثال: #trial-form')
                         ->columnSpan(2),
                     TextInput::make($is('whatsapp_btn_text'))->label('نص زر واتساب')->columnSpan(2),
                 ])

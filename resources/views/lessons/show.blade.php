@@ -5,9 +5,9 @@
 
 @extends('layouts.landing')
 
-@section('title', $lesson->title . ' - ' . $settings->footer_brand_name)
+@section('title', $lesson->meta_title ?: $lesson->title . ' - ' . $settings->footer_brand_name)
 
-@section('description', $lesson->excerpt)
+@section('description', $lesson->meta_description ?: $lesson->excerpt)
 
 @section('bodyClass', 'pattern-bg')
 
@@ -22,19 +22,24 @@
         'homeUrl' => route('home'),
     ])
 
+    @php
+        $lessonOgImage = trim((string) ($lesson->og_image_url ?: $lesson->cover_image_url));
+    @endphp
+
     {{-- Structured data (SEO) --}}
     @section('head')
-        @if ($lesson->cover_image_url)
-            @section('og_image', $lesson->cover_image_url)
+        @if ($lessonOgImage !== '')
+            @section('og_image', $lessonOgImage)
         @endif
         <script type="application/ld+json">
         {
             "@@context": "https://schema.org",
-            "@type": "Article",
+            "@type": @json($lesson->schema_type ?: 'Article'),
             "headline": @json($lesson->title),
-            "image": @json($lesson->cover_image_url),
+            "image": @json($lessonOgImage !== '' ? $lessonOgImage : null),
             "publisher": { "@type": "Organization", "name": @json($settings->footer_brand_name) },
-            "description": @json($lesson->excerpt),
+            "description": @json($lesson->meta_description ?: $lesson->excerpt),
+            "datePublished": @json($lesson->created_at?->toIso8601String()),
             "dateModified": @json($lesson->updated_at?->toIso8601String())
         }
         </script>

@@ -26,12 +26,18 @@ class Lesson extends Model
         'reading_time',
         'is_active',
         'sort_order',
+        'meta_title',
+        'meta_description',
+        'og_image',
+        'schema_type',
+        'is_indexed',
     ];
 
     protected $casts = [
         'reading_time' => 'integer',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'is_indexed' => 'boolean',
     ];
 
     public function courses(): BelongsToMany
@@ -58,6 +64,13 @@ class Lesson extends Model
     {
         return Attribute::make(
             get: fn (): ?string => $this->cover_image ? $this->resolveImageUrl($this->cover_image) : null,
+        );
+    }
+
+    protected function ogImageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->og_image ? $this->resolveImageUrl($this->og_image) : null,
         );
     }
 

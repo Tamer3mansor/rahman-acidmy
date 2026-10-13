@@ -34,6 +34,13 @@
                         @endforeach
                     </div>
                 @endif
+
+                @if (! empty($settings->footer_contact_phone))
+                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $settings->footer_contact_phone) }}" class="footer-phone" dir="ltr">
+                        <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                        <span>{{ $settings->footer_contact_phone }}</span>
+                    </a>
+                @endif
             </div>
             <div class="footer-col">
                 <h4>{{ $settings->footer_quicklinks_title ?: 'Liens rapides' }}</h4>

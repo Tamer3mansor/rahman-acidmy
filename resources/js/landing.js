@@ -558,6 +558,28 @@ function initTrustMarquees() {
     });
 }
 
+/* Pause a marquee while the visitor holds it, so a message can be read.
+   Hover is handled by CSS on real pointers only; touch is handled here because
+   CSS `:hover`/`:active` stick after a tap on phones, which used to leave a
+   marquee paused until the page was reloaded. `.is-paused` (a playing clip,
+   see testimonials.js) stays a separate, independent pause. */
+function initTrustMarqueePause() {
+    document.querySelectorAll('.trust-marquee').forEach((marquee) => {
+        if (marquee.dataset.pauseBound === 'true') return;
+
+        marquee.dataset.pauseBound = 'true';
+
+        const hold = () => marquee.classList.add('is-held');
+        const release = () => marquee.classList.remove('is-held');
+
+        marquee.addEventListener('touchstart', hold, { passive: true });
+
+        ['touchend', 'touchcancel'].forEach((event) => {
+            marquee.addEventListener(event, release, { passive: true });
+        });
+    });
+}
+
 function initHeroVideo() {
     const video = document.querySelector('[data-hero-video]');
 
@@ -674,5 +696,6 @@ function initHeroVideo() {
 initTeachersCarousel();
 initTrustMobileTabs();
 initTrustMarquees();
+initTrustMarqueePause();
 initHeroVideo();
 

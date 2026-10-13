@@ -373,7 +373,7 @@ class CoursePageSettingsSeeder extends Seeder
             $copy['details_'.$audience.'_'.$key] = $value;
         }
 
-        $copy['details_'.$audience.'_trial_url'] = '/#trial-form';
+        $copy['details_'.$audience.'_trial_url'] = '#trial-form';
         $copy['details_'.$audience.'_session_subtitle'] = 'Nous garantissons une expérience interactive, sûre et motivante à chaque séance :';
         $copy['details_'.$audience.'_booking_title'] = "Commencez votre parcours d'apprentissage dès aujourd'hui";
         $copy['details_'.$audience.'_booking_subtitle'] = 'Remplissez le formulaire et nous vous contacterons immédiatement pour fixer le créneau du cours d\'essai adapté.';

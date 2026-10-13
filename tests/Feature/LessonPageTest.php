@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Course;
+use App\Models\LandingSettings;
 use App\Models\Lesson;
 use App\Models\LessonCategory;
 use App\Models\LessonPageSettings;
@@ -483,5 +484,67 @@ class LessonPageTest extends TestCase
         $this->actingAs($user)->get('/admin/lessons/1/edit')->assertOk();
         $this->actingAs($user)->get('/admin/lesson-categories')->assertOk();
         $this->actingAs($user)->get('/admin/lesson-page-settings')->assertOk();
+    }
+
+    public function test_lesson_show_uses_the_per_lesson_seo_fields(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'slug' => 'seo-lesson',
+            'meta_title' => 'Titre SEO de la leçon',
+            'meta_description' => 'Description SEO choisie depuis le tableau de bord.',
+            'og_image' => 'images/og/seo-lesson.jpg',
+            'schema_type' => 'BlogPosting',
+        ]);
+
+        $this->get('/lecons-gratuites/seo-lesson')
+            ->assertOk()
+            ->assertSee('<title>Titre SEO de la leçon</title>', false)
+            ->assertSee('Description SEO choisie depuis le tableau de bord.', false)
+            ->assertSee('<meta property="og:image" content="'.asset('storage/images/og/seo-lesson.jpg').'">', false)
+            ->assertSee('"@type": "BlogPosting"', false);
+    }
+
+    public function test_lesson_show_falls_back_to_title_and_excerpt_when_seo_is_empty(): void
+    {
+        $lesson = Lesson::factory()->create([
+            'slug' => 'plain-lesson',
+            'title' => 'Une leçon sans SEO',
+            'excerpt' => 'Resume utilise comme description par defaut.',
+            'meta_title' => null,
+            'meta_description' => null,
+            'og_image' => null,
+        ]);
+
+        $brand = LandingSettings::singleton()->footer_brand_name;
+
+        $this->get('/lecons-gratuites/plain-lesson')
+            ->assertOk()
+            ->assertSee('<title>Une leçon sans SEO - '.$brand.'</title>', false)
+            ->assertSee('Resume utilise comme description par defaut.', false)
+            ->assertSee('"@type": "Article"', false)
+            ->assertSee('<meta name="robots" content="index,follow"', false);
+    }
+
+    public function test_lesson_show_is_noindex_when_the_lesson_is_not_indexed(): void
+    {
+        Lesson::factory()->create([
+            'slug' => 'noindex-lesson',
+            'is_indexed' => false,
+        ]);
+
+        $this->get('/lecons-gratuites/noindex-lesson')
+            ->assertOk()
+            ->assertSee('<meta name="robots" content="noindex,nofollow"', false);
+    }
+
+    public function test_lesson_og_image_accessor_resolves_uploads_and_absolute_urls(): void
+    {
+        $lesson = Lesson::factory()->create(['og_image' => 'images/og/cover.jpg']);
+
+        $this->assertSame(asset('storage/images/og/cover.jpg'), $lesson->og_image_url);
+
+        $lesson->update(['og_image' => 'https://example.com/og.jpg']);
+
+        $this->assertSame('https://example.com/og.jpg', $lesson->og_image_url);
     }
 }

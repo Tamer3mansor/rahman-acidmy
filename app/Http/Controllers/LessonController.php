@@ -76,6 +76,7 @@ class LessonController extends Controller
             'bodyHtml' => $bodyHtml,
             'toc' => $toc,
             'related' => $related,
+            'isIndexed' => $lesson->is_indexed,
         ]);
     }
 

@@ -195,6 +195,23 @@ class CoursePageTest extends TestCase
             ->assertSee('application/ld+json', false);
     }
 
+    public function test_course_show_embeds_the_trial_form_so_ctas_scroll_within_the_page(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $response = $this->get('/cours/initiation-baraaim-quran');
+
+        $response->assertOk()
+            ->assertSee('id="trial-form"', false)
+            ->assertSee('id="trialForm"', false)
+            ->assertSee('href="#trial-form"', false);
+
+        $this->assertSame(1, substr_count($response->getContent(), 'id="trial-form"'), 'The in-page trial form must be rendered exactly once.');
+    }
+
     public function test_course_show_returns_404_for_unknown_or_inactive_courses(): void
     {
         $this->seed([

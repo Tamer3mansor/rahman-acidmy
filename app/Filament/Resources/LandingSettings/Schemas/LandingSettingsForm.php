@@ -279,6 +279,12 @@ class LandingSettingsForm
                                     ->placeholder('contact@arrahman-academy.com')
                                     ->helperText('يظهر في رابط البريد الإلكتروني أسفل الموقع (الفوتر). إذا تُرك فارغًا يُستخدم العنوان الافتراضي.')
                                     ->columnSpanFull(),
+                                TextInput::make('footer_contact_phone')
+                                    ->label('رقم الهاتف للتواصل')
+                                    ->tel()
+                                    ->placeholder('+20 10 2826 8553')
+                                    ->helperText('يظهر في الفوتر كأيقونة هاتف بجانب الرقم، ويُفتح كرابط اتصال (tel). إذا تُرك فارغًا لا يظهر شيء.')
+                                    ->columnSpanFull(),
 
                                 Section::make('وسائل التواصل')
                                     ->description('أيقونات التواصل في الفوتر. تُعرض كل أيقونة فقط إذا كان رابطها مملوءاً، وتختفي تلقائياً عند تفريغه.')

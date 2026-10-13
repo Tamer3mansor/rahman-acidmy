@@ -111,6 +111,7 @@ class LandingSettings extends Model
         'footer_link_trial',
         'footer_link_email',
         'footer_contact_email',
+        'footer_contact_phone',
         'footer_made_with',
 
         'floating_whatsapp_title',
