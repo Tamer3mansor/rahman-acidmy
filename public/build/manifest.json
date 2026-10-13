@@ -28,7 +28,7 @@
     "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-C26KkXTY.css",
+    "file": "assets/app-03s-3ZOf.css",
     "name": "app",
     "names": [
       "app.css"
@@ -97,7 +97,7 @@
     "isEntry": true
   },
   "resources/js/landing.js": {
-    "file": "assets/landing-DJ6xfrN7.js",
+    "file": "assets/landing-DzbEFO7u.js",
     "name": "landing",
     "src": "resources/js/landing.js",
     "isEntry": true

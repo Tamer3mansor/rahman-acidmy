@@ -9,6 +9,7 @@ use App\Models\LandingSettings;
 use App\Models\LandingTeacher;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class LandingPageTest extends TestCase
@@ -121,6 +122,67 @@ class LandingPageTest extends TestCase
 
         $this->assertSame('Débutant renforcé', $submission->level);
         $this->assertSame(['Les après-midis'], $submission->schedule);
+    }
+
+    public function test_contact_submission_forwards_to_google_sheets_when_configured(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        config(['services.google_sheets.form_url' => 'https://script.google.com/macros/s/test/exec']);
+        Http::fake();
+
+        $this->postJson('/contact-submission', [
+            'student_name' => 'أحمد',
+            'parent_name' => 'محمد',
+            'student_age' => 8,
+            'phone' => '+33600000000',
+            'level' => 'Débutant',
+            'schedule' => ['الإثنين', 'الجمعة'],
+        ])->assertOk();
+
+        Http::assertSent(function ($request) {
+            return $request->url() === 'https://script.google.com/macros/s/test/exec'
+                && $request['studentName'] === 'أحمد'
+                && $request['parentName'] === 'محمد'
+                && $request['studentAge'] === 8
+                && $request['schedule'] === 'الإثنين, الجمعة';
+        });
+    }
+
+    public function test_contact_submission_still_succeeds_when_google_sheets_fails(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        config(['services.google_sheets.form_url' => 'https://script.google.com/macros/s/test/exec']);
+        Http::fake([
+            '*' => Http::response('boom', 500),
+        ]);
+
+        $this->postJson('/contact-submission', [
+            'student_name' => 'أحمد',
+            'parent_name' => 'محمد',
+            'student_age' => 8,
+            'phone' => '+33600000000',
+        ])->assertOk()->assertJson(['ok' => true]);
+
+        $this->assertDatabaseHas('contact_submissions', ['student_name' => 'أحمد']);
+    }
+
+    public function test_contact_submission_skips_google_sheets_when_not_configured(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        config(['services.google_sheets.form_url' => '']);
+        Http::fake();
+
+        $this->postJson('/contact-submission', [
+            'student_name' => 'أحمد',
+            'parent_name' => 'محمد',
+            'student_age' => 8,
+            'phone' => '+33600000000',
+        ])->assertOk();
+
+        Http::assertNothingSent();
     }
 
     public function test_teachers_and_faqs_seed_and_render(): void

@@ -13,6 +13,8 @@ use App\Models\LandingSettings;
 use App\Models\LandingTeacher;
 use App\Models\LandingTestimonial;
 use App\Models\LandingWhyItem;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class LandingController extends Controller
 {
@@ -75,8 +77,49 @@ class LandingController extends Controller
 
     public function store(ContactSubmissionRequest $request)
     {
-        ContactSubmission::create($request->validated());
+        $submission = ContactSubmission::create($request->validated());
+
+        $this->forwardToGoogleSheets($submission);
 
         return response()->json(['ok' => true], 200);
+    }
+
+    /**
+     * Forward a stored submission to the optional Google Apps Script web app
+     * that appends it to a spreadsheet. This runs server-side so the write is
+     * not dropped by ad-blockers, page unloads or a browser that closes the tab
+     * before the request is flushed. The submission is already persisted, so a
+     * Sheets failure is logged but never fails the visitor's request.
+     */
+    private function forwardToGoogleSheets(ContactSubmission $submission): void
+    {
+        $url = config('services.google_sheets.form_url');
+
+        if (blank($url)) {
+            return;
+        }
+
+        try {
+            Http::timeout(8)
+                ->acceptJson()
+                ->post($url, [
+                    'studentName' => $submission->student_name,
+                    'parentName' => $submission->parent_name,
+                    'studentAge' => $submission->student_age,
+                    'phone' => $submission->phone,
+                    'email' => $submission->email,
+                    'level' => $submission->level,
+                    'schedule' => is_array($submission->schedule)
+                        ? implode(', ', $submission->schedule)
+                        : (string) $submission->schedule,
+                    'message' => $submission->message,
+                    'timestamp' => $submission->created_at?->format('d/m/Y H:i:s'),
+                ])
+                ->throw();
+        } catch (\Throwable $e) {
+            Log::warning('Google Sheets forward failed for contact submission #'.$submission->id, [
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

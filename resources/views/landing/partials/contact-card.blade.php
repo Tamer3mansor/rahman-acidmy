@@ -12,7 +12,6 @@
 
     <form id="trialForm"
           data-url="{{ route('contact.submission') }}"
-          data-google-url="{{ config('services.google_sheets.form_url', '') }}"
           data-success-text="{{ $settings->toast_success_text }}"
           data-error-text="{{ $settings->toast_error_text }}"
           data-received-text="{{ $settings->toast_received_text }}"

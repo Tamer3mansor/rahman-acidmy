@@ -173,8 +173,8 @@ window.addEventListener('scroll', () => {
 
 /* ============================================================
    FORM SUBMIT — Laravel backend (contact_submissions table).
-   A Google Sheets hook is optional: set GOOGLE_SHEETS_FORM_URL
-   in config/services.php to also forward the payload.
+   The optional Google Sheets forward happens server-side:
+   set GOOGLE_SHEETS_FORM_URL and Laravel posts the payload.
    ============================================================ */
 const contactForm = document.getElementById('trialForm');
 
@@ -236,27 +236,8 @@ contactForm?.addEventListener('submit', async (e) => {
             return;
         }
 
-        /* Google Sheets hook (GAS Web App URL) */
-        const googleUrl = contactForm.dataset.googleUrl;
-        if (googleUrl) {
-            await fetch(googleUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    studentName: payload.student_name,
-                    parentName: payload.parent_name,
-                    studentAge: payload.student_age,
-                    phone: payload.phone,
-                    email: payload.email,
-                    level: payload.level,
-                    schedule: schedule.join(', '),
-                    message: payload.message,
-                    timestamp: new Date().toLocaleString('fr-FR'),
-                }),
-            });
-        }
-
+        /* The Google Sheets write is handled server-side by the Laravel
+           backend so it survives page unloads and browser blockers. */
         showToast(FORM_COPY.success);
         contactForm.reset();
     } catch (_) {
