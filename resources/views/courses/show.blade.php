@@ -365,13 +365,6 @@
             </section>
         @endif
 
-        <div class="sidebar-cta-card">
-            <p>{{ $copy['sidebar_title'] ?: $pageSettings->details_cta_title }}</p>
-            <a href="{{ $copy['trial_url'] ?: '#trial-form' }}" class="btn-primary">
-                {{ $copy['trial_btn_text'] ?: 'Réserver une séance d\'essai' }} <i class="fa-solid fa-calendar-check"></i>
-            </a>
-        </div>
-
         </aside>
 
     </main>

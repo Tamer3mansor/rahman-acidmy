@@ -753,30 +753,6 @@
   gap: 16px;
 }
 .details-sidebar .related-course-body { padding: 14px; }
-.sidebar-cta-card {
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-lg);
-  padding: 20px 16px;
-  text-align: center;
-  box-shadow: var(--shadow-card);
-}
-.sidebar-cta-card p {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--green);
-  margin-bottom: 14px;
-  line-height: 1.5;
-}
-.sidebar-cta-card .btn-primary {
-  width: 100%;
-  white-space: normal;
-  justify-content: center;
-  text-align: center;
-  padding: 12px 14px;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
 
 /* 4 â€” Color rhythm (detail page only) */
 .details-main .detail-section {
