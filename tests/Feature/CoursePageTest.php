@@ -38,7 +38,8 @@ class CoursePageTest extends TestCase
             ->assertSee('Mémorisation du Coran et Tajwid pour enfants')
             ->assertSee('Langue arabe et valeurs islamiques')
             ->assertDontSee('Correction de la récitation et règles du Tajwid')
-            ->assertDontSee('data-scroll-to-form')
+            ->assertSee('id="trial-form"', false)
+            ->assertSee('class="nav-btn" data-scroll-to-form', false)
             ->assertSee('build/assets/courses-', false);
     }
 
@@ -132,7 +133,8 @@ class CoursePageTest extends TestCase
             ->assertSee('Mémorisation du Coran et consolidation')
             ->assertSee('Langue arabe et études islamiques')
             ->assertDontSee('Initiation des Baraa\'im et mémorisation du Coran')
-            ->assertDontSee('data-scroll-to-form')
+            ->assertSee('id="trial-form"', false)
+            ->assertSee('class="nav-btn" data-scroll-to-form', false)
             ->assertSee('build/assets/courses-', false);
     }
 
@@ -223,6 +225,25 @@ class CoursePageTest extends TestCase
             ->assertOk()
             ->assertSee('class="nav-btn" data-scroll-to-form', false)
             ->assertDontSee('href="'.route('home').'#trial-form" class="nav-btn"', false);
+    }
+
+    public function test_kids_and_adults_catalogs_embed_the_trial_form_and_scroll_to_it_locally(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        foreach (['/enfants', '/adultes'] as $url) {
+            $response = $this->get($url)->assertOk();
+
+            $response->assertSee('id="trial-form"', false)
+                ->assertSee('class="nav-btn" data-scroll-to-form', false)
+                ->assertSee('href="#trial-form"', false)
+                ->assertDontSee('href="'.route('home').'#trial-form" class="nav-btn"', false);
+
+            $this->assertSame(1, substr_count($response->getContent(), 'id="trial-form"'), "The trial form must be embedded exactly once on {$url}.");
+        }
     }
 
     public function test_course_show_returns_404_for_unknown_or_inactive_courses(): void

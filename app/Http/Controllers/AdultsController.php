@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\CourseAudience;
 use App\Models\Course;
 use App\Models\CoursePageSettings;
+use App\Models\FormInfo;
 use App\Models\LandingSettings;
 use App\Models\LandingTestimonial;
 use Illuminate\Http\Request;
@@ -41,6 +42,10 @@ class AdultsController extends Controller
             'settings' => $settings,
             'pageSettings' => $pageSettings,
             'courses' => $courses,
+            'formInfos' => FormInfo::query()
+                ->where('is_active', true)
+                ->orderBy('sort_order')
+                ->get(),
             'testimonials' => $testimonials,
             'whatsappPhone' => $this->resolveWhatsAppPhone($pageSettings->adults_wa_url),
             'isIndexed' => $pageSettings->is_indexed,

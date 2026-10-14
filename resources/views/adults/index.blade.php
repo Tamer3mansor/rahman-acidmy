@@ -50,6 +50,7 @@
 
     @include('landing.partials.nav', [
         'homeUrl' => route('home'),
+        'hasLocalTrialForm' => true,
     ])
 
     <section class="catalog-hero adults">
@@ -358,11 +359,13 @@
                 <h2>{{ $pageSettings->adults_final_title ?: 'Commencez votre apprentissage du Coran dès aujourd\'hui' }}</h2>
                 <p>{{ $pageSettings->adults_final_subtitle ?: 'Réservez votre séance d\'essai gratuite. Votre enseignant vous contactera dans les 24 heures pour évaluer votre niveau et définir votre plan d\'étude personnalisé.' }}</p>
                 <div class="booking-btn">
-                    <a href="{{ \App\Support\CtaUrl::resolve($pageSettings->adults_cta_url ?: '#trial-form', $activePage) }}" class="btn-primary">{{ $pageSettings->adults_final_cta_text ?: 'Réserver ma séance d\'essai gratuite' }}</a>
+                    <a href="#trial-form" class="btn-primary">{{ $pageSettings->adults_final_cta_text ?: 'Réserver ma séance d\'essai gratuite' }}</a>
                 </div>
             </div>
         </div>
     </section>
+
+    @include('landing.partials.trial-form-section')
 
     @include('landing.partials.footer', ['homeUrl' => route('home')])
     @include('landing.partials.floating')
