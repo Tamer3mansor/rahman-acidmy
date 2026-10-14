@@ -1,6 +1,7 @@
 <?php
     $homeUrl = $homeUrl ?? route('home');
     $activePage = $activePage ?? 'home';
+    $hasLocalTrialForm = $hasLocalTrialForm ?? ($activePage === 'home');
 ?>
 <nav class="navbar" id="navbar">
     <div class="container">
@@ -64,7 +65,7 @@
                     <svg class="theme-icon theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
                     <svg class="theme-icon theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
                 </button>
-                    @if ($activePage === 'home')
+                    @if ($hasLocalTrialForm)
                         <button class="nav-btn" data-scroll-to-form>{{ $settings->header_btn2_title }}</button>
                     @else
                         <a href="{{ \App\Support\CtaUrl::resolve($settings->header_btn2_url, $activePage) }}" class="nav-btn">{{ $settings->header_btn2_title }}</a>
@@ -95,7 +96,7 @@
             <span>{{ $settings->header_btn1_title }}</span>
         </a>
                 <div class="mobile-btns">
-                    @if ($activePage === 'home')
+                    @if ($hasLocalTrialForm)
                         <button class="btn-primary" data-scroll-to-form>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                             {{ $settings->header_btn2_title }}

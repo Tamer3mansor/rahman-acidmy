@@ -212,6 +212,19 @@ class CoursePageTest extends TestCase
         $this->assertSame(1, substr_count($response->getContent(), 'id="trial-form"'), 'The in-page trial form must be rendered exactly once.');
     }
 
+    public function test_course_show_nav_button_scrolls_to_the_in_page_trial_form(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            CoursePageSettingsSeeder::class,
+        ]);
+
+        $this->get('/cours/initiation-baraaim-quran')
+            ->assertOk()
+            ->assertSee('class="nav-btn" data-scroll-to-form', false)
+            ->assertDontSee('href="'.route('home').'#trial-form" class="nav-btn"', false);
+    }
+
     public function test_course_show_returns_404_for_unknown_or_inactive_courses(): void
     {
         $this->seed([

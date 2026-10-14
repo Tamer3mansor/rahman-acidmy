@@ -109,6 +109,7 @@
     @include('landing.partials.nav', [
         'activePage' => $activePage,
         'homeUrl' => route('home'),
+        'hasLocalTrialForm' => true,
     ])
 
     <section class="details-hero">

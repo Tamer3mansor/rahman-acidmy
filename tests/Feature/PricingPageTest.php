@@ -8,6 +8,7 @@ use App\Models\PricingSettings;
 use App\Models\SystemSettings;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\LandingSettingsSeeder;
 use Database\Seeders\PricingPackageSeeder;
 use Database\Seeders\PricingSettingsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -46,6 +47,20 @@ class PricingPageTest extends TestCase
             ->assertSee('essai gratuit')
             ->assertSee('build/assets/price-', false)
             ->assertDontSee('data-scroll-to-form');
+    }
+
+    public function test_price_page_nav_button_falls_back_to_the_home_trial_form(): void
+    {
+        $this->seed([
+            LandingSettingsSeeder::class,
+            PricingSettingsSeeder::class,
+            PricingPackageSeeder::class,
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('href="'.route('home').'#trial-form" class="nav-btn"', false)
+            ->assertDontSee('class="nav-btn" data-scroll-to-form', false);
     }
 
     public function test_price_cards_embed_total_price(): void

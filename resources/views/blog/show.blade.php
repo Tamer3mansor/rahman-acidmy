@@ -21,6 +21,7 @@
     @include('landing.partials.nav', [
         'activePage' => 'blog',
         'homeUrl' => route('home'),
+        'hasLocalTrialForm' => true,
     ])
 
     @php

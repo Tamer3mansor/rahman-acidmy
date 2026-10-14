@@ -20,6 +20,7 @@
     @include('landing.partials.nav', [
         'activePage' => 'lessons',
         'homeUrl' => route('home'),
+        'hasLocalTrialForm' => true,
     ])
 
     @php
