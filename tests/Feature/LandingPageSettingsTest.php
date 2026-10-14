@@ -402,6 +402,60 @@ class LandingPageSettingsTest extends TestCase
             ->assertSee('aria-label="YouTube"', false);
     }
 
+    public function test_footer_renders_separate_kids_and_adults_course_links(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        $response = $this->get('/')->assertOk();
+
+        $response->assertSee(route('kids.index'), false)
+            ->assertSee(route('adults.index'), false)
+            ->assertSee('Cours pour enfants')
+            ->assertSee('Cours pour adultes');
+    }
+
+    public function test_footer_course_link_labels_fall_back_to_defaults_when_empty(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update([
+            'footer_link_kids_courses' => null,
+            'footer_link_adults_courses' => null,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Cours pour enfants')
+            ->assertSee('Cours pour adultes');
+    }
+
+    public function test_footer_course_link_labels_come_from_landing_settings(): void
+    {
+        $this->seed([LandingSettingsSeeder::class]);
+
+        LandingSettings::singleton()->update([
+            'footer_link_kids_courses' => 'Cours enfants (custom)',
+            'footer_link_adults_courses' => 'Cours adultes (custom)',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Cours enfants (custom)')
+            ->assertSee('Cours adultes (custom)');
+    }
+
+    public function test_admin_landing_settings_form_renders_the_split_footer_course_fields(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/admin/landing-settings')
+            ->assertOk()
+            ->assertSee('footer_link_kids_courses', false)
+            ->assertSee('footer_link_adults_courses', false)
+            ->assertDontSee('footer_link_courses', false);
+    }
+
     public function test_nav_renders_a_separate_logo_for_dark_mode(): void
     {
         $this->seed([LandingSettingsSeeder::class]);

@@ -46,7 +46,8 @@
                 <h4>{{ $settings->footer_quicklinks_title ?: 'Liens rapides' }}</h4>
                 <ul>
                     <li><a href="{{ $homeUrl }}">{{ $settings->footer_link_home ?: 'Accueil' }}</a></li>
-                    <li><a href="{{ $homeUrl }}#courses">{{ $settings->footer_link_courses ?: 'Nos cours' }}</a></li>
+                    <li><a href="{{ route('kids.index') }}">{{ $settings->footer_link_kids_courses ?: 'Cours pour enfants' }}</a></li>
+                    <li><a href="{{ route('adults.index') }}">{{ $settings->footer_link_adults_courses ?: 'Cours pour adultes' }}</a></li>
                     <li><a href="{{ $homeUrl }}#journey">{{ $settings->footer_link_journey ?: 'Notre parcours' }}</a></li>
                     <li><a href="{{ $homeUrl }}#teachers">{{ $settings->footer_link_teachers ?: 'Nos enseignants' }}</a></li>
                     <li><a href="{{ $homeUrl }}#faq">{{ $settings->footer_link_faq ?: 'FAQ' }}</a></li>
