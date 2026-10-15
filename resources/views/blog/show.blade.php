@@ -101,9 +101,15 @@
                     {!! $bodyHtml !!}
 
                     <div class="in-article-cta">
-                        <h3>Vous souhaitez un enseignant expérimenté pour accompagner votre enfant ?</h3>
-                        <p>Réservez dès maintenant une séance d'essai gratuite avec les meilleurs enseignants du Coran pour enfants.</p>
-                        <a href="#trial-form" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver un essai gratuit</a>
+                        @php
+                            $ctaTitle = trim((string) $pageSettings->cta_title);
+                            $ctaText = trim((string) $pageSettings->cta_text);
+                            $ctaButtonLabel = trim((string) $pageSettings->cta_button_label);
+                            $ctaButtonUrl = trim((string) $pageSettings->cta_button_url);
+                        @endphp
+                        <h3>{{ $ctaTitle !== '' ? $ctaTitle : "Vous souhaitez un enseignant expérimenté pour accompagner votre enfant ?" }}</h3>
+                        <p>{{ $ctaText !== '' ? $ctaText : "Réservez dès maintenant une séance d'essai gratuite avec les meilleurs enseignants du Coran pour enfants." }}</p>
+                        <a href="{{ $ctaButtonUrl !== '' ? $ctaButtonUrl : '#trial-form' }}" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> {{ $ctaButtonLabel !== '' ? $ctaButtonLabel : "Réserver un essai gratuit" }}</a>
                     </div>
                 </div>
 

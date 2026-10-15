@@ -24,6 +24,10 @@ class LessonPageSettingsSeeder extends Seeder
                 'sidebar_whatsapp_label' => 'Contactez-nous via WhatsApp',
                 'sidebar_title' => 'Commencez le parcours de votre enfant',
                 'sidebar_text' => "Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais.",
+                'cta_badge' => 'Application pratique directe',
+                'cta_title' => "Aimez-vous notre méthode d'explication ?",
+                'cta_text' => "Réservez une séance d'essai en direct avec un enseignant spécialisé pour appliquer ces leçons avec votre enfant, étape par étape.",
+                'cta_button_label' => "Réserver l'essai gratuit",
             ]
         );
     }

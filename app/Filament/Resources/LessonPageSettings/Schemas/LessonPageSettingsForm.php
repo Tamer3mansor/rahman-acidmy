@@ -102,6 +102,37 @@ class LessonPageSettingsForm
                             ->columnSpan(1),
                     ])
                     ->columns(2),
+                Section::make('الدعوة داخل المقال (صفحة تفاصيل الحصة)')
+                    ->description('بلوك الـ CTA داخل متن المقال: الشارة والعنوان والنص وزره — تُترك فارغة للعودة إلى الوضع الافتراضي.')
+                    ->schema([
+                        TextInput::make('cta_badge')
+                            ->label('الشارة')
+                            ->placeholder('Application pratique directe')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('cta_button_label')
+                            ->label('نص زر الدعوة')
+                            ->placeholder("Réserver l'essai gratuit")
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('cta_title')
+                            ->label('العنوان')
+                            ->placeholder("Aimez-vous notre méthode d'explication ?")
+                            ->maxLength(255)
+                            ->columnSpan(1),
+                        TextInput::make('cta_button_url')
+                            ->label('رابط زر الدعوة')
+                            ->helperText('فارغ = فورم الحجز داخل نفس الصفحة')
+                            ->placeholder('#trial-form')
+                            ->maxLength(255)
+                            ->columnSpan(1),
+                        Textarea::make('cta_text')
+                            ->label('النص')
+                            ->placeholder("Réservez une séance d'essai en direct avec un enseignant spécialisé pour appliquer ces leçons avec votre enfant, étape par étape.")
+                            ->rows(2)
+                            ->columnSpan(2),
+                    ])
+                    ->columns(2),
             ]);
     }
 }

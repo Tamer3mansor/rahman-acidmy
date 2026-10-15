@@ -110,10 +110,21 @@
                     {!! $bodyHtml !!}
 
                     <div class="in-article-cta">
-                        <span class="badge gold"><i class="fa-solid fa-rocket"></i> Application pratique directe</span>
-                        <h3>Aimez-vous notre méthode d'explication ?</h3>
-                        <p>Réservez une séance d'essai en direct avec un enseignant spécialisé pour appliquer ces leçons avec votre enfant, étape par étape.</p>
-                        <a href="#trial-form" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> Réserver l'essai gratuit</a>
+                        @php
+                            $ctaBadge = trim((string) $pageSettings->cta_badge);
+                            $ctaTitle = trim((string) $pageSettings->cta_title);
+                            $ctaText = trim((string) $pageSettings->cta_text);
+                            $ctaButtonLabel = trim((string) $pageSettings->cta_button_label);
+                            $ctaButtonUrl = trim((string) $pageSettings->cta_button_url);
+                        @endphp
+                        @if ($ctaBadge !== '')
+                            <span class="badge gold"><i class="fa-solid fa-rocket"></i> {{ $ctaBadge }}</span>
+                        @else
+                            <span class="badge gold"><i class="fa-solid fa-rocket"></i> Application pratique directe</span>
+                        @endif
+                        <h3>{{ $ctaTitle !== '' ? $ctaTitle : "Aimez-vous notre méthode d'explication ?" }}</h3>
+                        <p>{{ $ctaText !== '' ? $ctaText : "Réservez une séance d'essai en direct avec un enseignant spécialisé pour appliquer ces leçons avec votre enfant, étape par étape." }}</p>
+                        <a href="{{ $ctaButtonUrl !== '' ? $ctaButtonUrl : '#trial-form' }}" class="btn-primary"><i class="fa-solid fa-calendar-check"></i> {{ $ctaButtonLabel !== '' ? $ctaButtonLabel : "Réserver l'essai gratuit" }}</a>
                     </div>
                 </div>
             </main>

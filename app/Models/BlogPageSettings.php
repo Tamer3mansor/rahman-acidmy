@@ -20,6 +20,10 @@ class BlogPageSettings extends Model
         'sidebar_whatsapp_url',
         'sidebar_title',
         'sidebar_text',
+        'cta_title',
+        'cta_text',
+        'cta_button_label',
+        'cta_button_url',
     ];
 
     protected $casts = [

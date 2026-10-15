@@ -102,6 +102,32 @@ class BlogPageSettingsForm
                             ->columnSpan(1),
                     ])
                     ->columns(2),
+                Section::make('الدعوة داخل المقال (صفحة تفاصيل المقال)')
+                    ->description('بلوك الـ CTA داخل متن المقال: العنوان والنص وزره — تُترك فارغة للعودة إلى الوضع الافتراضي.')
+                    ->schema([
+                        TextInput::make('cta_title')
+                            ->label('العنوان')
+                            ->placeholder('Vous souhaitez un enseignant expérimenté pour accompagner votre enfant ?')
+                            ->maxLength(255)
+                            ->columnSpan(1),
+                        TextInput::make('cta_button_label')
+                            ->label('نص زر الدعوة')
+                            ->placeholder('Réserver un essai gratuit')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        Textarea::make('cta_text')
+                            ->label('النص')
+                            ->placeholder("Réservez dès maintenant une séance d'essai gratuite avec les meilleurs enseignants du Coran pour enfants.")
+                            ->rows(2)
+                            ->columnSpan(1),
+                        TextInput::make('cta_button_url')
+                            ->label('رابط زر الدعوة')
+                            ->helperText('فارغ = فورم الحجز داخل نفس الصفحة')
+                            ->placeholder('#trial-form')
+                            ->maxLength(255)
+                            ->columnSpan(1),
+                    ])
+                    ->columns(2),
             ]);
     }
 }

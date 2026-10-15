@@ -24,6 +24,9 @@ class BlogPageSettingsSeeder extends Seeder
                 'sidebar_whatsapp_label' => 'Contactez-nous via WhatsApp',
                 'sidebar_title' => 'Commencez le parcours de votre enfant',
                 'sidebar_text' => "Donnez à votre enfant les bonnes orientations dès le début pour gagner des années d'essais.",
+                'cta_title' => 'Vous souhaitez un enseignant expérimenté pour accompagner votre enfant ?',
+                'cta_text' => "Réservez dès maintenant une séance d'essai gratuite avec les meilleurs enseignants du Coran pour enfants.",
+                'cta_button_label' => 'Réserver un essai gratuit',
             ]
         );
     }
