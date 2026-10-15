@@ -8,6 +8,17 @@ class PricingSettings extends Model
 {
     protected $fillable = [
         'per_hour_price',
+        'hero_label',
+        'hero_label_icon',
+        'hero_title',
+        'hero_subtitle',
+        'cta_badge',
+        'cta_title',
+        'cta_text',
+        'cta_whatsapp_label',
+        'cta_whatsapp_url',
+        'cta_trial_label',
+        'cta_trial_url',
         'contents_label',
         'contents_title',
         'contents_subtitle',

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PricingSettings\Schemas;
 
+use App\Rules\CtaUrl;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -16,6 +17,33 @@ class PricingSettingsForm
     {
         return $schema
             ->components([
+                Section::make('هيرو الصفحة')
+                    ->description('الجزء العلوي من صفحة الأسعار — تُترك فارغة للعودة إلى النص الافتراضي.')
+                    ->schema([
+                        TextInput::make('hero_label')
+                            ->label('التسمية')
+                            ->helperText('السطر الصغير فوق العنوان — مثال: Première séance gratuite')
+                            ->placeholder('Première séance gratuite')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('hero_label_icon')
+                            ->label('أيقونة التسمية')
+                            ->helperText('صنف Font Awesome — مثال: fa-solid fa-gift')
+                            ->placeholder('fa-solid fa-gift')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('hero_title')
+                            ->label('العنوان')
+                            ->placeholder('Des offres claires pour apprendre en toute sérénité')
+                            ->maxLength(255)
+                            ->columnSpan(2),
+                        Textarea::make('hero_subtitle')
+                            ->label('الوصف')
+                            ->placeholder('Un tarif transparent calculé au taux horaire...')
+                            ->rows(2)
+                            ->columnSpan(2),
+                    ])
+                    ->columns(2),
                 Section::make('قسم محتويات الباقات')
                     ->description('القسم المعروض أسفل الباقات على صفحة الأسعار — العنوان والوصف وبطاقات المحتوى.')
                     ->schema([
@@ -44,6 +72,50 @@ class PricingSettingsForm
                             ->reorderableWithButtons()
                             ->collapsible()
                             ->columnSpanFull(),
+                    ])
+                    ->columns(2),
+                Section::make('شريط الدعوة الأخير (CTA)')
+                    ->description('الصندوق في نهاية صفحة الأسعار — الشارة والعنوان والنص وزرا الواتساب والحجز. تُترك فارغة للعودة إلى الوضع الافتراضي.')
+                    ->schema([
+                        TextInput::make('cta_badge')
+                            ->label('الشارة')
+                            ->placeholder('Sans aucun engagement')
+                            ->maxLength(100)
+                            ->columnSpan(2),
+                        TextInput::make('cta_title')
+                            ->label('العنوان')
+                            ->placeholder('Vous hésitez sur le pack qui convient à votre enfant ?')
+                            ->maxLength(255)
+                            ->columnSpan(2),
+                        Textarea::make('cta_text')
+                            ->label('النص')
+                            ->placeholder('Notre équipe pédagogique vous accompagne gratuitement...')
+                            ->rows(2)
+                            ->columnSpan(2),
+                        TextInput::make('cta_whatsapp_label')
+                            ->label('نص زر واتساب')
+                            ->placeholder('Discutez avec nous via WhatsApp')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('cta_whatsapp_url')
+                            ->label('رابط زر واتساب')
+                            ->helperText('فارغ = رابط الواتساب الافتراضي من إعدادات الرئيسية')
+                            ->placeholder('https://wa.me/...')
+                            ->rules([new CtaUrl])
+                            ->maxLength(255)
+                            ->columnSpan(1),
+                        TextInput::make('cta_trial_label')
+                            ->label('نص زر الحجز')
+                            ->placeholder('Réservez votre essai gratuit')
+                            ->maxLength(100)
+                            ->columnSpan(1),
+                        TextInput::make('cta_trial_url')
+                            ->label('رابط زر الحجز')
+                            ->helperText('فارغ = فورم الحجز في الصفحة الرئيسية. مثال: #trial-form أو رابط كامل.')
+                            ->placeholder('#trial-form')
+                            ->rules([new CtaUrl])
+                            ->maxLength(255)
+                            ->columnSpan(1),
                     ])
                     ->columns(2),
                 Section::make('تحسين محركات البحث (SEO)')

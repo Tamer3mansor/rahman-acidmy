@@ -105,6 +105,75 @@ class PricingPageTest extends TestCase
             ->assertSee('Des séances en tête-à-tête.');
     }
 
+    public function test_price_hero_and_cta_render_from_settings(): void
+    {
+        $this->seed([
+            PricingSettingsSeeder::class,
+            PricingPackageSeeder::class,
+        ]);
+
+        PricingSettings::singleton()->update([
+            'hero_label' => 'Label personnalisé',
+            'hero_label_icon' => 'fa-solid fa-star',
+            'hero_title' => 'Titre personnalisé',
+            'hero_subtitle' => 'Sous-titre personnalisé',
+            'cta_badge' => 'Badge personnalisé',
+            'cta_title' => 'Titre CTA personnalisé',
+            'cta_text' => 'Texte CTA personnalisé',
+            'cta_whatsapp_label' => 'WhatsApp personnalisé',
+            'cta_whatsapp_url' => 'https://wa.me/33111222333',
+            'cta_trial_label' => 'Essai personnalisé',
+            'cta_trial_url' => '#trial-form',
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('Label personnalisé')
+            ->assertSee('fa-solid fa-star', false)
+            ->assertSee('Titre personnalisé')
+            ->assertSee('Sous-titre personnalisé')
+            ->assertSee('Badge personnalisé')
+            ->assertSee('Titre CTA personnalisé')
+            ->assertSee('Texte CTA personnalisé')
+            ->assertSee('WhatsApp personnalisé')
+            ->assertSee('https://wa.me/33111222333', false)
+            ->assertSee('Essai personnalisé')
+            ->assertSee('href="'.route('home').'#trial-form" class="btn-primary"', false);
+    }
+
+    public function test_price_hero_and_cta_fall_back_to_defaults(): void
+    {
+        $this->seed([
+            LandingSettingsSeeder::class,
+            PricingSettingsSeeder::class,
+            PricingPackageSeeder::class,
+        ]);
+
+        PricingSettings::singleton()->update([
+            'hero_label' => null,
+            'hero_label_icon' => null,
+            'hero_title' => null,
+            'hero_subtitle' => null,
+            'cta_badge' => null,
+            'cta_title' => null,
+            'cta_text' => null,
+            'cta_whatsapp_label' => null,
+            'cta_whatsapp_url' => null,
+            'cta_trial_label' => null,
+            'cta_trial_url' => null,
+        ]);
+
+        $this->get('/price')
+            ->assertOk()
+            ->assertSee('fa-solid fa-gift', false)
+            ->assertSee('Des offres claires pour apprendre en toute sérénité')
+            ->assertSee('Sans aucun engagement')
+            ->assertSee('Discutez avec nous via WhatsApp')
+            ->assertSee('https://wa.me/201028268553', false)
+            ->assertSee('Réservez votre essai gratuit')
+            ->assertSee('href="'.route('home').'#trial-form" class="btn-primary"', false);
+    }
+
     public function test_package_cta_button_uses_custom_label_and_whatsapp_number(): void
     {
         $this->seed([
@@ -358,6 +427,8 @@ class PricingPageTest extends TestCase
             ->get('/admin/pricing-settings')
             ->assertOk()
             ->assertSee('إعدادات محتويات الباقات')
-            ->assertSee('قسم محتويات الباقات');
+            ->assertSee('هيرو الصفحة')
+            ->assertSee('قسم محتويات الباقات')
+            ->assertSee('شريط الدعوة الأخير (CTA)');
     }
 }

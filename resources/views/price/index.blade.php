@@ -36,9 +36,9 @@
     {{-- Hero --}}
     <section class="section price-hero">
         <div class="container section-center">
-            <span class="section-label"><i class="fa-solid fa-gift"></i> Première séance gratuite</span>
-            <h1 class="section-title">Des offres claires pour apprendre en toute sérénité</h1>
-            <p class="section-sub">Un tarif transparent calculé au taux horaire. Choisissez la durée de vos cours, puis le pack qui convient à votre enfant.</p>
+            <span class="section-label"><i class="{{ $pricing->hero_label_icon ?: 'fa-solid fa-gift' }}"></i> {{ $pricing->hero_label ?: 'Première séance gratuite' }}</span>
+            <h1 class="section-title">{{ $pricing->hero_title ?: 'Des offres claires pour apprendre en toute sérénité' }}</h1>
+            <p class="section-sub">{{ $pricing->hero_subtitle ?: 'Un tarif transparent calculé au taux horaire. Choisissez la durée de vos cours, puis le pack qui convient à votre enfant.' }}</p>
         </div>
 
         {{-- Lesson duration filter --}}
@@ -155,16 +155,16 @@
     <section class="section">
         <div class="container">
             <div class="cta-banner">
-                <span class="badge cta-banner-badge">Sans aucun engagement</span>
-                <h2 class="cta-banner-title">Vous hésitez sur le pack qui convient à votre enfant ?</h2>
-                <p class="cta-banner-sub">Notre équipe pédagogique vous accompagne gratuitement pour évaluer le niveau, choisir le pack adapté et planifier les cours.</p>
+                <span class="badge cta-banner-badge">{{ $pricing->cta_badge ?: 'Sans aucun engagement' }}</span>
+                <h2 class="cta-banner-title">{{ $pricing->cta_title ?: 'Vous hésitez sur le pack qui convient à votre enfant ?' }}</h2>
+                <p class="cta-banner-sub">{{ $pricing->cta_text ?: 'Notre équipe pédagogique vous accompagne gratuitement pour évaluer le niveau, choisir le pack adapté et planifier les cours.' }}</p>
 
                 <div class="cta-buttons-group">
-                    <a href="{{ $settings->header_btn1_url }}" target="_blank" rel="noopener" class="btn-whatsapp">
-                        <i class="fa-brands fa-whatsapp"></i> Discutez avec nous via WhatsApp
+                    <a href="{{ $pricing->cta_whatsapp_url ?: $settings->header_btn1_url }}" target="_blank" rel="noopener" class="btn-whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i> {{ $pricing->cta_whatsapp_label ?: 'Discutez avec nous via WhatsApp' }}
                     </a>
-                    <a href="{{ route('home') . '#trial-form' }}" class="btn-primary">
-                        <i class="fa-solid fa-laptop"></i> Réservez votre essai gratuit
+                    <a href="{{ \App\Support\CtaUrl::resolve($pricing->cta_trial_url ?: '#trial-form', 'price') }}" class="btn-primary">
+                        <i class="fa-solid fa-laptop"></i> {{ $pricing->cta_trial_label ?: 'Réservez votre essai gratuit' }}
                     </a>
                 </div>
             </div>
