@@ -335,6 +335,28 @@ class BlogPageTest extends TestCase
             ->assertSee('toggleTableReordering', false);
     }
 
+    public function test_blog_show_in_article_cta_comes_from_the_page_settings(): void
+    {
+        $category = BlogCategory::factory()->create();
+
+        $post = BlogPost::factory()->create(['slug' => 'cta-post']);
+        $post->categories()->attach($category->id);
+
+        BlogPageSettings::singleton()->update([
+            'cta_title' => 'Titre CTA personnalise',
+            'cta_text' => 'Texte CTA personnalise',
+            'cta_button_label' => 'Bouton personnalise',
+            'cta_button_url' => 'https://example.com/cta',
+        ]);
+
+        $this->get('/blog/cta-post')
+            ->assertOk()
+            ->assertSee('Titre CTA personnalise')
+            ->assertSee('Texte CTA personnalise')
+            ->assertSee('Bouton personnalise')
+            ->assertSee('https://example.com/cta', false);
+    }
+
     public function test_blog_show_uses_the_per_post_seo_fields(): void
     {
         $category = BlogCategory::factory()->create();

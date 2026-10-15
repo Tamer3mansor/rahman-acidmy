@@ -121,8 +121,32 @@ class LessonPageTest extends TestCase
             ->assertSee('audio', false)
             ->assertSee('application/ld+json', false)
             ->assertSee('Formations liées')
-            ->assertSee('Réserver l\'essai gratuit', false)
+            ->assertSee('Réserver l\'essai gratuit')
             ->assertSee('lesson-tip', false);
+    }
+
+    public function test_lesson_show_in_article_cta_comes_from_the_page_settings(): void
+    {
+        $this->seed([
+            CourseSeeder::class,
+            LessonSeeder::class,
+        ]);
+
+        LessonPageSettings::singleton()->update([
+            'cta_badge' => 'Badge personnalise',
+            'cta_title' => 'Titre CTA personnalise',
+            'cta_text' => 'Texte CTA personnalise',
+            'cta_button_label' => 'Bouton personnalise',
+            'cta_button_url' => 'https://example.com/cta',
+        ]);
+
+        $this->get('/lecons-gratuites/regles-nun-sakina-tanwin-izhar')
+            ->assertOk()
+            ->assertSee('Badge personnalise')
+            ->assertSee('Titre CTA personnalise')
+            ->assertSee('Texte CTA personnalise')
+            ->assertSee('Bouton personnalise')
+            ->assertSee('https://example.com/cta', false);
     }
 
     public function test_lesson_show_embeds_the_trial_form_so_ctas_scroll_within_the_page(): void
